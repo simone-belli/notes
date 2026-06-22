@@ -4,12 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Purpose
 
-This repo is a personal knowledge base. The user asks Claude to explain topics; Claude responds with a detailed explanation in the terminal and simultaneously writes a concise `.md` file capturing the key points.
+This repo is a personal knowledge base. The user asks Claude to explain topics; Claude writes a detailed explanation to a temporary file for immediate reading, and a concise `.md` file capturing the key points for permanent reference.
 
 ## Workflow
 
 I will ask you to explain a topic by starting the query with the uppercase string `EXPLAIN`. When asked to explain a topic:
-1. **Respond in the terminal** with a thorough explanation — more depth than the file, including intuition and context.
+1. **Write the detailed explanation to `_explain.md`** at the repo root — more depth than the permanent file, including intuition and context. Then immediately open it with `open _explain.md`. This file is gitignored and never committed.
 2. **Review folder structure** (read the `README.md` files only) to understand whether a change in an existing file is needed vs. the creation of a new file or folder. Try to keep the number of files limited. That means either:
     a. Add the information to an exisitng file if makes sense; otherwise,
     b. Merge the new information with existing information into a new file.
