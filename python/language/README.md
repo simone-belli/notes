@@ -16,3 +16,4 @@
 | [hash.md](hash.md) | note | `__hash__`: hash contract, `__eq__` coupling, mutability, dataclasses |
 | [comprehensions.md](comprehensions.md) | note | List, dict, set comprehensions — when each is more readable than a loop |
 | [operator.md](operator.md) | note | attrgetter, itemgetter, methodcaller — faster and clearer than lambdas in sort keys |
+| [concurrency.md](concurrency.md) | note | GIL, threading, multiprocessing, asyncio — when to use each |
