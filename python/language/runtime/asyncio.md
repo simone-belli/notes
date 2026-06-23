@@ -105,7 +105,7 @@ async def bad():
 # GOOD — suspends this coroutine, others keep running
 async def good():
     await asyncio.sleep(5)
-    async with aiohttp.ClientSession() as s:
+    async with aiohttp.ClientSession() as s:   # see aiohttp.md
         data = await s.get(url)
 ```
 
@@ -138,3 +138,4 @@ async for item in aiter():     # awaits __anext__ each step
 
 - [concurrency.md](concurrency.md) — threads vs asyncio decision guide, GIL, multiprocessing
 - [context-managers.md](context-managers.md) — `async with` protocol (`__aenter__`/`__aexit__`)
+- [../../tooling/aiohttp.md](../../tooling/aiohttp.md) — async HTTP client built on asyncio

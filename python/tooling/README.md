@@ -2,6 +2,7 @@
 
 | File | Type | Description |
 |------|------|-------------|
+| [aiohttp.md](aiohttp.md) | note | Async HTTP client: ClientSession, concurrency, streaming, error handling |
 | [mypy.md](mypy.md) | note | Static type checking: concepts, configuration, mental model |
 | [poetry.md](poetry.md) | note | Dependency and virtual environment management |
 | [pydantic.md](pydantic.md) | note | Data validation and parsing at application boundaries |
@@ -15,6 +16,7 @@
 ## Structure
 
 tooling/\
+├── [aiohttp.md](aiohttp.md)\
 ├── [mypy.md](mypy.md)\
 ├── [poetry.md](poetry.md)\
 ├── [pydantic.md](pydantic.md)\
