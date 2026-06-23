@@ -1,6 +1,6 @@
-# Datetime Parsing
+# Datetime
 
-Converting a datetime string to a `datetime.datetime` object.
+Converting between strings, integer timestamps, and `datetime.datetime` objects.
 
 ## Three approaches
 
@@ -75,9 +75,60 @@ dt = datetime.strptime("2024-06-21 14:30 +0000", "%Y-%m-%d %H:%M %z")
 dt = dt.replace(tzinfo=timezone.utc)
 ```
 
-## Going the other way
+## Going the other way (datetime → string)
 
 ```python
 dt.strftime("%Y-%m-%d")   # → "2024-06-21"
 dt.isoformat()             # → "2024-06-21T14:30:00"
 ```
+
+---
+
+## Integer timestamps
+
+A Unix timestamp is seconds since 1970-01-01 00:00:00 UTC. It has no timezone — that only enters when you convert it to a datetime.
+
+### Seconds → datetime
+
+```python
+from datetime import datetime, timezone
+
+ts = 1719000000
+
+# Always pass tz= — without it, fromtimestamp returns naive local time
+dt = datetime.fromtimestamp(ts, tz=timezone.utc)   # 2024-06-21 20:00:00+00:00
+
+# Specific timezone
+import zoneinfo
+dt = datetime.fromtimestamp(ts, tz=zoneinfo.ZoneInfo("Europe/Rome"))
+```
+
+`datetime.utcfromtimestamp(ts)` returns a **naive** UTC datetime and is deprecated in Python 3.12. Avoid it.
+
+### Millisecond timestamps (most APIs and financial data)
+
+```python
+ts_ms = 1719000000000          # e.g. from Binance, JavaScript Date.now()
+dt = datetime.fromtimestamp(ts_ms / 1000, tz=timezone.utc)
+```
+
+Quick sanity check: if the timestamp is > ~2 × 10¹⁰ it is almost certainly milliseconds, not seconds.
+
+### datetime → integer timestamp
+
+```python
+dt = datetime(2024, 6, 21, 20, 0, 0, tzinfo=timezone.utc)
+ts     = int(dt.timestamp())          # seconds  → 1719000000
+ts_ms  = int(dt.timestamp() * 1000)  # milliseconds → 1719000000000
+```
+
+`timestamp()` on a **naive** datetime assumes local time — the same footgun as `fromtimestamp()`. Always use aware datetimes for round-trips.
+
+### Resolution summary
+
+| Unit | Example | Common source |
+|------|---------|---------------|
+| seconds | `1719000000` | POSIX, most DBs, HTTP headers |
+| milliseconds | `1719000000000` | JS, Binance, most financial APIs |
+| microseconds | `1719000000000000` | PostgreSQL |
+| nanoseconds | `1719000000000000000` | Kafka, InfluxDB — `datetime` loses sub-µs precision |

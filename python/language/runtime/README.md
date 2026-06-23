@@ -6,7 +6,7 @@
 | [cli.md](cli.md) | ref | Running Python from the terminal: `-c`, `-m`, scripts |
 | [concurrency.md](concurrency.md) | note | GIL, threading, multiprocessing, asyncio — when to use each |
 | [context-managers.md](context-managers.md) | note | `with` statement, class-based and `@contextmanager` |
-| [datetime.md](datetime.md) | note | Parsing datetime strings: strptime, fromisoformat, dateutil, timezone awareness |
+| [datetime.md](datetime.md) | note | datetime from strings and integer timestamps; timezone awareness; strptime, fromisoformat, fromtimestamp |
 | [import-system.md](import-system.md) | note | Modules, packages, `__init__.py`, `sys.path`, public API |
 | [logging.md](logging.md) | note | stdlib logging: pipeline, levels, dictConfig, best practices, structured logging |
 
