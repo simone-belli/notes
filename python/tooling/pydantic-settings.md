@@ -105,6 +105,53 @@ def test_something():
     s = Settings(api_key="test-key", debug=True)
 ```
 
+## Refactoring away from global config reads
+
+The singleton `settings` global in `config.py` is fine — it's pure data. The anti-pattern is every other module calling `os.environ.get()` directly, or instantiating stateful dependencies (DB engines, HTTP clients) at module level.
+
+**Before (bad):**
+```python
+# db.py — two problems: direct env read + instantiation at import time
+import os, sqlalchemy
+engine = sqlalchemy.create_engine(os.environ.get("DATABASE_URL"))
+```
+
+**After (good):**
+```python
+# db.py
+from functools import lru_cache
+import sqlalchemy
+from .config import settings   # single source of truth
+
+@lru_cache(maxsize=1)
+def get_engine() -> sqlalchemy.Engine:
+    return sqlalchemy.create_engine(settings.database_url)
+```
+
+`@lru_cache` makes `get_engine()` behave like a singleton (creates once, returns cached) while keeping instantiation out of import time. In tests, call `get_engine.cache_clear()` to force a rebuild with different settings.
+
+**FastAPI pattern** — override the settings dependency instead of patching:
+```python
+# dependencies.py
+from functools import lru_cache
+from .config import Settings
+
+@lru_cache
+def get_settings() -> Settings:
+    return Settings()
+
+# in tests
+app.dependency_overrides[get_settings] = lambda: Settings(api_key="test")
+```
+
+**Rule of thumb:**
+
+| What | Pattern |
+|------|---------|
+| Config values | One `settings = Settings()` in `config.py` only |
+| DB engines, HTTP clients, API wrappers | `@lru_cache` factory — never module-level instantiation |
+| FastAPI | `Depends(get_settings)` + `dependency_overrides` in tests |
+
 ## Gotchas
 
 - `python-dotenv` not installed → `env_file` silently ignored
