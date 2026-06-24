@@ -6,6 +6,7 @@
 | [mypy.md](mypy.md) | note | Static type checking: concepts, configuration, mental model |
 | [poetry.md](poetry.md) | note | Dependency and virtual environment management |
 | [pydantic.md](pydantic.md) | note | Data validation and parsing at application boundaries |
+| [pydantic-settings.md](pydantic-settings.md) | note | Configuration via BaseSettings: env vars, .env files, type coercion |
 | [pyenv.md](pyenv.md) | ref | Python version management commands |
 | [pytest.md](pytest.md) | ref | Test discovery and command quick-reference |
 | [ruff.md](ruff.md) | ref | Linter and formatter replacing flake8/black/isort |
@@ -20,6 +21,7 @@ tooling/\
 ├── [mypy.md](mypy.md)\
 ├── [poetry.md](poetry.md)\
 ├── [pydantic.md](pydantic.md)\
+├── [pydantic-settings.md](pydantic-settings.md)\
 ├── [pyenv.md](pyenv.md)\
 ├── [pytest.md](pytest.md)\
 ├── [ruff.md](ruff.md)\

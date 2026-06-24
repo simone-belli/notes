@@ -49,6 +49,7 @@ notes/\
 │       ├── [mypy.md](python/tooling/mypy.md)\
 │       ├── [poetry.md](python/tooling/poetry.md)\
 │       ├── [pydantic.md](python/tooling/pydantic.md)\
+│       ├── [pydantic-settings.md](python/tooling/pydantic-settings.md)\
 │       ├── [pyenv.md](python/tooling/pyenv.md)\
 │       ├── [pytest.md](python/tooling/pytest.md)\
 │       ├── [ruff.md](python/tooling/ruff.md)\

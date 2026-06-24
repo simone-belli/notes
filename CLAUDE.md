@@ -58,7 +58,6 @@ I will ask you to restructure the project by starting the query with the upperca
 2. **Identify problems**: flag any file with >200 lines and any folder with >10 files (excluding `README.md`).
 3. **Propose a new structure** that resolves the problems by introducing subfolders. Requirements:
    - Group topics by logical criteria (e.g. language feature area, tool category) — never by arbitrary criteria like alphabetical order or file size alone.
-   - Aim for uniform depth across all branches: avoid one branch being 3 levels deep while siblings stay flat.
    - Keep the total number of new folders minimal — only introduce a subfolder when it contains at least 3 files.
    - Files >200 lines may be split into two focused files; propose the split with a one-line rationale.
 4. **Output both the old and the proposed structure as directory-tree diagrams in the terminal** (use `tree`-style ASCII art). Annotate each file with its line count and each folder with its file count.

@@ -41,12 +41,10 @@ trade = Trade(symbol="ES", price="5230.5", qty="10", side="BUY")
 ## Typical Uses
 
 - API request/response validation
-- Configuration management
 - Parsing JSON data
-- Environment variables
-- Structured application settings
 - Data pipelines and ETL
 - LLM structured outputs
+- Configuration management and env vars → see [pydantic-settings.md](pydantic-settings.md)
 
 ## Common Features
 - Runtime type checking
