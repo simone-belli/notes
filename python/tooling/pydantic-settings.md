@@ -68,6 +68,70 @@ settings = Settings()   # module-level — instantiate once
 from myproject.config import settings
 ```
 
+## Nested settings
+
+`.env` files are flat (`KEY=value` only — no native nesting). Pydantic-settings reconstructs structure in Python via three strategies.
+
+### Nested BaseModel + `env_nested_delimiter` (recommended)
+
+```python
+from pydantic import BaseModel, SecretStr
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+class DatabaseSettings(BaseModel):   # plain BaseModel, not BaseSettings
+    host: str = "localhost"
+    port: int = 5432
+    name: str
+    password: SecretStr
+
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env", env_nested_delimiter="__")
+
+    database: DatabaseSettings
+    debug: bool = False
+```
+
+`.env`:
+```
+DATABASE__HOST=db.prod.internal
+DATABASE__NAME=myapp
+DATABASE__PASSWORD=s3cr3t
+```
+
+```python
+settings.database.host   # "db.prod.internal"
+settings.database.port   # 5432 (int, not "5432")
+```
+
+`__` in the env var name means "go one level deeper". `env_nested_delimiter` is not set by default — you must add it.
+
+### JSON-encoded value (one var per section)
+
+```
+DATABASE={"host": "localhost", "port": 5432, "name": "myapp", "password": "s3cr3t"}
+```
+
+Pydantic detects the model field type and JSON-parses the string automatically. Useful for K8s secrets or CI env blobs; fragile for human-edited `.env` files.
+
+### `dict` field (dynamic keys)
+
+```python
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_nested_delimiter="__")
+    feature_flags: dict[str, bool] = {}
+```
+```
+FEATURE_FLAGS__dark_mode=true
+FEATURE_FLAGS__new_onboarding=false
+```
+
+Good for feature flags or any open-ended key set.
+
+### Nested settings gotchas
+
+- Sub-models must be `BaseModel`, not `BaseSettings` — nesting two `BaseSettings` doesn't compose as expected.
+- With `env_prefix="MYAPP_"` the full key becomes `MYAPP_DATABASE__HOST` (prefix first, then delimiter).
+
 ## Env prefix
 
 Namespace all keys to avoid collision with system env vars:
