@@ -31,6 +31,7 @@ notes/\
 │   │   │   ├── [exceptions.md](python/language/objects/exceptions.md)\
 │   │   │   ├── [hash.md](python/language/objects/hash.md)\
 │   │   │   ├── [oop.md](python/language/objects/oop.md)\
+│   │   │   ├── [typing.md](python/language/objects/typing.md)\
 │   │   │   └── [warnings.md](python/language/objects/warnings.md)\
 │   │   └── runtime/\
 │   │       ├── [asyncio.md](python/language/runtime/asyncio.md)\
