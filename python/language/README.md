@@ -16,13 +16,15 @@ language/\
 │   ├── [itertools-groupby.md](functional/itertools-groupby.md)\
 │   ├── [itertools.md](functional/itertools.md)\
 │   ├── [operator.md](functional/operator.md)\
-│   └── [string-formatting.md](functional/string-formatting.md)\
+│   ├── [string-formatting.md](functional/string-formatting.md)\
+│   └── [unpacking.md](functional/unpacking.md)\
 ├── objects/\
 │   ├── [data-model.md](objects/data-model.md)\
 │   ├── [exceptions.md](objects/exceptions.md)\
 │   ├── [hash.md](objects/hash.md)\
 │   ├── [oop.md](objects/oop.md)\
 │   ├── [repository-di.md](objects/repository-di.md)\
+│   ├── [typing.md](objects/typing.md)\
 │   └── [warnings.md](objects/warnings.md)\
 └── runtime/\
     ├── [asyncio.md](runtime/asyncio.md)\
@@ -30,4 +32,6 @@ language/\
     ├── [concurrency.md](runtime/concurrency.md)\
     ├── [context-managers.md](runtime/context-managers.md)\
     ├── [datetime.md](runtime/datetime.md)\
-    └── [import-system.md](runtime/import-system.md)
+    ├── [import-system.md](runtime/import-system.md)\
+    ├── [logging.md](runtime/logging.md)\
+    └── [threading.md](runtime/threading.md)

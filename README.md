@@ -41,7 +41,8 @@ notes/\
 │   │       ├── [context-managers.md](python/language/runtime/context-managers.md)\
 │   │       ├── [datetime.md](python/language/runtime/datetime.md)\
 │   │       ├── [import-system.md](python/language/runtime/import-system.md)\
-│   │       └── [logging.md](python/language/runtime/logging.md)\
+│   │       ├── [logging.md](python/language/runtime/logging.md)\
+│   │       └── [threading.md](python/language/runtime/threading.md)\
 │   └── tooling/\
 │       ├── [aiohttp.md](python/tooling/aiohttp.md)\
 │       ├── [mypy.md](python/tooling/mypy.md)\

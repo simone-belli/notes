@@ -34,83 +34,17 @@ The GIL protects CPython internals, **not your shared data**. Concurrent access 
 
 ## Threading — I/O-bound work
 
-While one thread waits for I/O (GIL released), another thread runs Python code (holds GIL). Threads genuinely overlap during I/O waits, making them effective for I/O-bound work.
+While one thread waits for I/O (GIL released), another thread runs Python code. Threads genuinely overlap during I/O waits.
 
 ```python
 from concurrent.futures import ThreadPoolExecutor
 
 with ThreadPoolExecutor(max_workers=10) as pool:
     futures = [pool.submit(fetch, url) for url in urls]
-    results = [f.result() for f in futures]  # .result() blocks; re-raises exceptions
+    results = [f.result() for f in futures]
 ```
 
-Manual control:
-
-```python
-import threading
-
-t = threading.Thread(target=fn, args=(x,), daemon=True)
-t.start()
-t.join()   # wait for completion
-```
-
-`daemon=True` — thread is killed when the main program exits.
-
-### Future mechanics
-
-`submit()` returns a `Future` immediately — the task is scheduled and the main thread moves on. `.result()` is where you actually block:
-
-```python
-f1 = pool.submit(fetch, url_a)   # returns at once
-f2 = pool.submit(fetch, url_b)   # returns at once
-r1 = f1.result()                 # blocks here until f1 is done
-r2 = f2.result()                 # then blocks here
-```
-
-Trap: calling `.result()` in submission order means you wait on `f1` even if `f2` finished first.
-
-**`as_completed()`** yields futures in completion order, not submission order:
-
-```python
-from concurrent.futures import as_completed
-
-futures = {pool.submit(fetch, url): url for url in urls}
-for f in as_completed(futures):
-    url = futures[f]   # recover original arg from the dict
-    try:
-        data = f.result()
-    except Exception as e:
-        print(f"{url} failed: {e}")
-```
-
-The `{submit(fn, x): x}` dict is the idiomatic way to map a future back to its input.
-
-**Exceptions** raised inside a thread are captured inside the Future. They don't propagate until you call `.result()`, which re-raises them:
-
-```python
-f = pool.submit(bad_fn, 42)
-# no error yet in the main thread
-f.result()   # raises here
-```
-
-`as_completed()` yields failed futures too — handle per-task without aborting the batch.
-
-```python
-exc = f.exception()   # returns the exception object, or None, without raising
-f.done()              # True if finished (success or error)
-```
-
-### Shared state
-
-Threads share memory. `counter += 1` is not atomic (read → add → write), so concurrent threads can corrupt it. Use a lock:
-
-```python
-lock = threading.Lock()
-with lock:
-    counter += 1   # only one thread at a time
-```
-
-`queue.Queue` is thread-safe by design — the idiomatic way to pass work between threads.
+See [threading.md](threading.md) for `Future` mechanics, `as_completed`, exception handling, and shared state.
 
 ---
 
@@ -143,20 +77,6 @@ A single-threaded **event loop** runs coroutines cooperatively. Instead of the O
 
 See [asyncio.md](asyncio.md) for a deep dive into `async def`, `await`, `asyncio.run()`, and `asyncio.gather()`.
 
-```python
-import asyncio, aiohttp
-
-async def fetch(session, url):
-    async with session.get(url) as r:
-        return await r.text()
-
-async def main():
-    async with aiohttp.ClientSession() as session:
-        results = await asyncio.gather(*[fetch(session, u) for u in urls])
-
-asyncio.run(main())
-```
-
 Key primitives:
 
 ```python
@@ -166,12 +86,11 @@ await asyncio.sleep(n)                               # non-blocking sleep
 await loop.run_in_executor(None, blocking_fn, arg)   # offload sync call to thread pool
 ```
 
-**Never call blocking code** (e.g. `requests.get`, `time.sleep`) inside `async def` — it freezes the entire event loop. Use async-native libraries (`aiohttp`, `asyncpg`, `aiofiles`) or `run_in_executor`.
+**Never call blocking code** (e.g. `requests.get`, `time.sleep`) inside `async def` — it freezes the entire event loop.
 
 ---
 
 ## Decision guide
-
 
 | Workload                    | Tool                                         |
 | --------------------------- | -------------------------------------------- |
@@ -180,9 +99,7 @@ await loop.run_in_executor(None, blocking_fn, arg)   # offload sync call to thre
 | CPU-bound, pure Python      | `ProcessPoolExecutor`                        |
 | CPU-bound, numpy/scipy      | Threads often fine (GIL released in C layer) |
 
-
 ### Threads vs asyncio for I/O
-
 
 |                    | Threads         | asyncio                               |
 | ------------------ | --------------- | ------------------------------------- |
@@ -191,11 +108,9 @@ await loop.run_in_executor(None, blocking_fn, arg)   # offload sync call to thre
 | Existing sync code | Works as-is     | Must use `run_in_executor` or rewrite |
 | Risk               | Race conditions | Blocking calls freeze the loop        |
 
-
 ---
 
 ## Key vocabulary
-
 
 | Term           | Meaning                                                                 |
 | -------------- | ----------------------------------------------------------------------- |
@@ -205,9 +120,9 @@ await loop.run_in_executor(None, blocking_fn, arg)   # offload sync call to thre
 | **Task**       | asyncio's version of a Future — a scheduled coroutine                   |
 | **Pickle**     | Python's serialisation format; used to pass data between processes      |
 
-
 ## Related notes
 
-- `[functools.md](../functional/functools.md)` — `@lru_cache` thread-safety note
-- `[context-managers.md](context-managers.md)` — `async with` uses `__aenter__`/`__aexit__`
-
+- [threading.md](threading.md) — `ThreadPoolExecutor` API, futures, `as_completed`, shared state
+- [asyncio.md](asyncio.md) — full async/await deep dive
+- [functools.md](../functional/functools.md) — `@lru_cache` thread-safety note
+- [context-managers.md](context-managers.md) — `async with` uses `__aenter__`/`__aexit__`
