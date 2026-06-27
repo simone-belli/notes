@@ -10,11 +10,14 @@
 
 language/\
 ├── functional/\
+│   ├── itertools/\
+│   │   ├── [accumulate.md](functional/itertools/accumulate.md)\
+│   │   ├── [core.md](functional/itertools/core.md)\
+│   │   └── [groupby.md](functional/itertools/groupby.md)\
 │   ├── [comprehensions.md](functional/comprehensions.md)\
 │   ├── [functools.md](functional/functools.md)\
 │   ├── [iterators-generators.md](functional/iterators-generators.md)\
-│   ├── [itertools-groupby.md](functional/itertools-groupby.md)\
-│   ├── [itertools.md](functional/itertools.md)\
+│   ├── [lazy-evaluation.md](functional/lazy-evaluation.md)\
 │   ├── [operator.md](functional/operator.md)\
 │   ├── [string-formatting.md](functional/string-formatting.md)\
 │   └── [unpacking.md](functional/unpacking.md)\
@@ -25,6 +28,7 @@ language/\
 │   ├── [oop.md](objects/oop.md)\
 │   ├── [repository-di.md](objects/repository-di.md)\
 │   ├── [sets.md](objects/sets.md)\
+│   ├── [subscriptable.md](objects/subscriptable.md)\
 │   ├── [typing.md](objects/typing.md)\
 │   └── [warnings.md](objects/warnings.md)\
 └── runtime/\
@@ -33,6 +37,8 @@ language/\
     ├── [concurrency.md](runtime/concurrency.md)\
     ├── [context-managers.md](runtime/context-managers.md)\
     ├── [datetime.md](runtime/datetime.md)\
+    ├── [entrypoint.md](runtime/entrypoint.md)\
     ├── [import-system.md](runtime/import-system.md)\
     ├── [logging.md](runtime/logging.md)\
+    ├── [scopes.md](runtime/scopes.md)\
     └── [threading.md](runtime/threading.md)

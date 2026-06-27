@@ -1,9 +1,6 @@
 site_name: Notes
 site_url: https://bellinquente-a11y.github.io/notes
-docs_dir: .
-exclude_docs: |
-  CLAUDE.md
-  _explain.md
+docs_dir: docs
 
 theme:
   name: material

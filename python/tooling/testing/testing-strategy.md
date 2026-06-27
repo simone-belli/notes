@@ -99,6 +99,6 @@ def test_rejects_any_negative_quantity(qty):
 ## Related notes
 
 - [`pytest.md`](pytest.md) — command quick-reference
-- [`pydantic.md`](pydantic.md) — validation logic concentrates at model boundaries, ideal test target
-- [`mypy.md`](mypy.md) — static types + dynamic tests are complementary, not redundant
+- [`pydantic.md`](../pydantic.md) — validation logic concentrates at model boundaries, ideal test target
+- [`mypy.md`](../mypy.md) — static types + dynamic tests are complementary, not redundant
 - [`testing-patterns.md`](testing-patterns.md) — practical patterns: external deps, file I/O, DB, stdout

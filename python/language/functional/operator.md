@@ -39,7 +39,7 @@ for desk, group in groupby(trades, key=by_desk):
     print(desk, sum(t['pnl'] for t in group))
 ```
 
-See [itertools-groupby.md](itertools-groupby.md) for the sort-first pattern.
+See [itertools/groupby.md](itertools/groupby.md) for the sort-first pattern.
 
 ---
 
