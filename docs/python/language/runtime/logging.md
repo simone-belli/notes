@@ -156,7 +156,7 @@ handler.setFormatter(jsonlogger.JsonFormatter(
 # extra fields are merged into the JSON object
 ```
 
-Alternative: `structlog` — richer API, keyword-argument style, pluggable renderers.
+Alternative: [`structlog`](../../../tooling/structlog.md) — richer API, keyword-argument style, pluggable renderers.
 
 ## Async I/O: QueueHandler + QueueListener
 
