@@ -141,6 +141,35 @@ async def fetch(url):
 
 Primary use case: preventing `asyncio.gather()` from firing hundreds of requests simultaneously — see [aiohttp.md](../../tooling/aiohttp.md#concurrent-requests).
 
+## asyncio.Lock — mutual exclusion
+
+The event loop is single-threaded but switches coroutines at every `await`. If two coroutines share mutable state and both `await` mid read-modify-write, you get a race:
+
+```python
+counter = 0
+
+async def increment():
+    global counter
+    value = counter          # read
+    await asyncio.sleep(0)   # yield — another coroutine can run here
+    counter = value + 1      # writes stale value
+```
+
+`asyncio.Lock` serialises the critical section — only one coroutine can hold it at a time:
+
+```python
+lock = asyncio.Lock()   # created once in outer scope
+
+async def increment():
+    async with lock:       # suspends here if another coroutine holds the lock
+        value = counter
+        await asyncio.sleep(0)
+        counter = value + 1
+```
+
+!!! note "Lock vs Semaphore"
+    `asyncio.Lock` is `Semaphore(1)` with clearer intent: use Lock for exclusive access to shared state, Semaphore for capping the number of concurrent workers. Don't use `asyncio.Lock` across threads — it's not thread-safe; use `threading.Lock` there.
+
 ## Key vocabulary
 
 | Term | Meaning |
