@@ -1,0 +1,28 @@
+/* ── Sidebar hierarchy ─────────────────────────────────────────────────── */
+
+/* Left border lines on every nested nav block to show depth */
+.md-nav--primary .md-nav {
+  border-left: 1px solid var(--md-default-fg-color--lightest);
+  margin-left: 0.55rem;
+  padding-left: 0.35rem;
+}
+
+/* Subfolder items (have children) — slightly bolder, primary-tinted */
+.md-nav__item--nested > .md-nav__link {
+  font-weight: 600;
+  color: var(--md-primary-fg-color);
+  opacity: 0.9;
+}
+
+/* Leaf page items — slightly smaller and muted */
+.md-nav__item:not(.md-nav__item--nested):not(.md-nav__item--section)
+  > .md-nav__link {
+  font-size: 0.78rem;
+  opacity: 0.75;
+}
+
+/* Active leaf page — restore full opacity */
+.md-nav__item:not(.md-nav__item--nested):not(.md-nav__item--section)
+  > .md-nav__link--active {
+  opacity: 1;
+}
