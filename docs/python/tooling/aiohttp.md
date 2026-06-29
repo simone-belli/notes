@@ -118,15 +118,25 @@ async def fetch_all(urls):
         )
 ```
 
-Cap concurrency with a semaphore for rate-limited APIs:
-```python
-sem = asyncio.Semaphore(5)
+Cap concurrency with a semaphore for rate-limited APIs. `asyncio.gather()` fires all tasks immediately — 200 URLs means 200 simultaneous requests, which most APIs rate-limit or ban.
 
-async def fetch_one(session, url):
-    async with sem:
-        async with session.get(url) as resp:
-            return await resp.json()
+!!! warning "Create the Semaphore once outside the coroutine, not inside it"
+    Creating `asyncio.Semaphore(10)` inside `fetch_one` gives every coroutine its own private counter — they don't share it and no cap is enforced. Create it once in the outer scope and let the inner function close over it.
+
+```python
+async def fetch_all(session, urls, concurrency=10):
+    sem = asyncio.Semaphore(concurrency)  # created once, shared by all
+
+    async def fetch_one(url):
+        async with sem:                   # blocks when concurrency limit is reached
+            async with session.get(url) as resp:
+                resp.raise_for_status()
+                return await resp.json()
+
+    return await asyncio.gather(*[fetch_one(url) for url in urls], return_exceptions=True)
 ```
+
+Unlike chunking the list into batches, a semaphore starts the next request the moment any running one finishes — no idle waiting for the slowest item in a batch.
 
 ---
 

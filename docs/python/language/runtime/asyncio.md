@@ -127,6 +127,20 @@ async for item in aiter():     # awaits __anext__ each step
     ...
 ```
 
+## asyncio.Semaphore — capping concurrency
+
+A Semaphore is a counter that starts at `n`. Each `async with sem:` decrements it; when it hits 0, the next coroutine blocks until one exits and increments it back. At most `n` coroutines run the guarded block at any moment.
+
+```python
+sem = asyncio.Semaphore(10)   # created once in outer scope
+
+async def fetch(url):
+    async with sem:            # blocks here if 10 already running
+        ...
+```
+
+Primary use case: preventing `asyncio.gather()` from firing hundreds of requests simultaneously — see [aiohttp.md](../../tooling/aiohttp.md#concurrent-requests).
+
 ## Key vocabulary
 
 | Term | Meaning |
