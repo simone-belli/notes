@@ -8,18 +8,20 @@ This repo is a personal knowledge base. The user asks Claude to explain topics; 
 
 ## Workflow
 
-I will ask you to explain a topic by starting the query with the uppercase string `EXPLAIN`. When asked to explain a topic:
+I will ask you to explain a topic by starting the query with the uppercase string `EXPLAIN`. 
+If I ask you toe `EXPLAIN BRIEFLY` try to keep the output coincise.
+When asked to explain a topic:
 1. **Write the detailed explanation to `_explain.md`** at the repo root — more depth than the permanent file, including intuition and context. Then immediately open it with `open _explain.md`. This file is gitignored and never committed.
 2. **Review folder structure** (read the `README.md` files only) to understand whether a change in an existing file is needed vs. the creation of a new file or folder. Try to keep the number of files limited. That means either:
     a. Add the information to an exisitng file if makes sense; otherwise,
     b. Merge the new information with existing information into a new file.
    It is imperative to keep good logic in structuring the information.
-3. **Write an `.md` file** in the appropriate directory. The file should be more succinct than the terminal explanation but still informative: prefer bullet points and short code examples over prose.
+3. **Write an `.md` file** in the appropriate directory. The file should be more succinct than the terminal explanation but still informative: prefer bullet points and short code examples over prose. Keep the title short.
 4. **Update `README.md`** in the relevant subdirectory and the root `README.md` if a new directory is created.
 5. **Update other .md files** with appropriate links, only if needed. The aim is to maintain conceptual links between different topics.
 6. **Commit changes** with an appropriate message — do not prompt for confirmation before committing.
 
-During the EXPLAIN workflow, write new files, edit existing files, and save all changes without prompting for confirmation.
+During the EXPLAIN workflow, write new files, edit existing files, and save all changes without prompting for confirmation. This applies to the `_explain.md` file as well.
 
 ## File organisation
 
@@ -60,6 +62,17 @@ Link related files using relative markdown links. Prefer linking on the first me
 - Use bullet points for lists of facts; use prose only for conceptual explanations.
 - No multi-paragraph docstrings or wall-of-text sections.
 - Use MkDocs admonition boxes (`!!! note`, `!!! tip`, `!!! warning`) to highlight key concepts — mental models, common pitfalls, or non-obvious distinctions worth calling out. Aim for 2–3 per page; don't use them for routine information that flows naturally as prose or bullets.
+
+## ADD TOPIC workflow
+
+I will ask you to add a topic by starting the query with the uppercase string `ADD TOPIC`. Use this for topics already broadly understood that just need capturing in the repo — no `_explain.md` is generated.
+
+When asked to add a topic:
+1. **Review folder structure** (read the `README.md` files only) to find the right location.
+2. **Write a concise `.md` file** (or add a section to an existing file) following the note style guidelines below. Keep it brief — bullet points and short code examples, no prose explanations.
+3. **Update `README.md`** in the relevant subdirectory (and root `README.md` if a new directory is created).
+4. **Update other `.md` files** with links, only if needed.
+5. **Commit changes** with an appropriate message — do not prompt for confirmation before committing.
 
 ## RESTRUCTURE workflow
 
