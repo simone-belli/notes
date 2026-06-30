@@ -67,6 +67,25 @@ for l in f:
 
 ---
 
+## How `for line in f` works
+
+A file object implements the iterator protocol (`__iter__` / `__next__`): each `__next__` call reads up to the next `\n` and returns that string, including the newline. At EOF it raises `StopIteration`.
+
+```python
+with path.open(encoding="utf-8") as f:
+    for line in f:
+        print(repr(line))   # "foo\n", "bar\n", ...
+```
+
+- Lines include the trailing `\n` — `line.strip()` removes it (also handles `\r\n` on Windows and the last line if it has no newline).
+- The file is read in OS-buffered chunks (~8 KB), not all at once — **O(1) memory** regardless of file size.
+- The file stays open across `yield` suspensions inside a generator; it closes when the generator is exhausted or garbage-collected.
+
+!!! note "readlines() vs iteration"
+    `f.readlines()` or `list(f)` load all lines into memory at once. Prefer `for line in f` unless you genuinely need random access to lines.
+
+---
+
 ## Streaming large files
 
 ```python
@@ -79,7 +98,7 @@ def iter_trades(path: Path):
                 yield Trade.model_validate_json(line)
 ```
 
-Python's file object is a lazy line iterator, so memory stays O(1).
+The `with` block stays open between `yield` suspensions; the file closes once the generator is exhausted.
 
 ---
 
