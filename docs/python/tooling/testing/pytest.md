@@ -30,3 +30,36 @@ Pytest automatically:
 ```bash
 poetry run pytest
 ```
+
+## Coverage
+
+Install `pytest-cov`, then use `--cov-report=term-missing` to see which line numbers are uncovered:
+
+```bash
+pytest --cov=mypackage --cov-report=term-missing
+```
+
+```
+Name                Stmts   Miss  Cover   Missing
+-------------------------------------------------
+mypackage/store.py     42      7    83%   34-36, 58, 72-74
+mypackage/trade.py     18      0   100%
+```
+
+```bash
+# Skip already-covered files
+pytest --cov=mypackage --cov-report=term-missing:skip-covered
+
+# HTML report (open htmlcov/index.html — uncovered lines highlighted)
+pytest --cov=mypackage --cov-report=html
+
+# Fail if coverage drops below threshold
+pytest --cov=mypackage --cov-fail-under=80
+```
+
+Persist flags in `pyproject.toml` so you don't retype them:
+
+```toml
+[tool.pytest.ini_options]
+addopts = "--cov=mypackage --cov-report=term-missing:skip-covered"
+```
