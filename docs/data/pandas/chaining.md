@@ -96,6 +96,19 @@ df.assign(price=lambda d: d['price'].astype('float32'))
 
 Use `.astype(dict)` for bulk casts; `.assign()` when interleaved with other column ops.
 
+**Low-cardinality string columns** (side, status, country) should be cast to `"category"` — stores integer codes + a lookup table instead of full strings per row. Lower memory, faster `groupby` and `value_counts`.
+
+```python
+df.astype({'side': 'category', 'status': 'category'})
+
+# Ordered categorical — enables > / < comparisons
+from pandas import CategoricalDtype
+size_type = CategoricalDtype(['S', 'M', 'L', 'XL'], ordered=True)
+df.astype({'size': size_type})
+```
+
+See [dtypes.md](dtypes.md) for full `CategoricalDtype` details.
+
 ### 4. Rename columns — `.rename()`
 
 ```python
