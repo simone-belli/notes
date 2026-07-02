@@ -54,6 +54,27 @@ trade = Trade(symbol="ES", price="5230.5", qty="10", side="BUY")
 - Optional/default fields
 - JSON serialization
 
+## Serialisation
+
+```python
+trade = Trade(symbol="AAPL", price=182.5, qty=10, side="BUY")
+
+trade.model_dump()           # → dict  {"symbol": "AAPL", "price": Decimal("182.5"), ...}
+trade.model_dump_json()      # → str   '{"symbol":"AAPL","price":"182.5",...}'
+```
+
+Key arguments to `model_dump()`:
+
+```python
+trade.model_dump(include={"symbol", "price"})    # only these fields
+trade.model_dump(exclude={"qty"})                # all except these
+trade.model_dump(exclude_none=True)              # drop fields whose value is None
+trade.model_dump(exclude_unset=True)             # drop fields not explicitly set by the caller
+trade.model_dump(mode="json")                    # coerce to JSON-safe types (e.g. Decimal → str)
+```
+
+`model_dump_json()` accepts the same arguments and returns a JSON string directly — faster than `json.dumps(model.model_dump())` because Pydantic serialises without an intermediate dict. See [jsonl.md](jsonl.md) for the file-persistence pattern.
+
 ## Notes
 - BaseModel is the core Pydantic class
 - Widely used with FastAPI
