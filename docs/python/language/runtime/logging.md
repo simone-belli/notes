@@ -1,6 +1,6 @@
-# Logging
+# Logging (stdlib)
 
-Python's `logging` stdlib module routes diagnostic messages through a configurable pipeline. Prefer it over `print` for anything beyond a throwaway script: you get severity filtering, multiple output destinations, structured metadata, and zero-code reconfiguration.
+Python's `logging` module routes diagnostic messages through a configurable pipeline. Prefer it over `print`: you get severity filtering, multiple destinations, structured metadata, and zero-code reconfiguration.
 
 ## Pipeline
 
@@ -8,66 +8,73 @@ Python's `logging` stdlib module routes diagnostic messages through a configurab
 Logger → [Filter] → Handler → [Filter] → Formatter → output
 ```
 
-- **Logger** — the object your code calls; created via `logging.getLogger(__name__)`.
-- **Handler** — sends a `LogRecord` somewhere (stream, file, queue, SMTP…).
-- **Formatter** — converts a record to a string (or JSON).
-- **Filter** — optional accept/reject gate on a logger or handler.
+- **Logger** — the object your code calls; named with dotted paths that mirror the package hierarchy.
+- **Handler** — sends records somewhere (stream, file, queue…).
+- **Formatter** — converts a record to a string.
+- **Filter** — optional accept/reject gate.
 
 ## Logger hierarchy
-
-Loggers are named with dotted paths that mirror Python packages:
 
 ```
 root → myapp → myapp.services → myapp.services.orders
 ```
 
-`propagate=True` (default) makes records bubble up to the parent. One `StreamHandler` on root catches everything.
+`propagate=True` (default) makes records bubble up to the parent. A single handler on root catches everything from all descendant loggers.
 
 ## Levels
 
-| Level    | Value | Use                                           |
-|----------|-------|-----------------------------------------------|
-| DEBUG    | 10    | Verbose trace; off in production              |
-| INFO     | 20    | Normal milestones                             |
-| WARNING  | 30    | Unexpected but recoverable (default)          |
-| ERROR    | 40    | Failed operation; program continues           |
-| CRITICAL | 50    | Fatal                                         |
+| Level    | Value | Use                              |
+|----------|-------|----------------------------------|
+| DEBUG    | 10    | Verbose trace; off in production |
+| INFO     | 20    | Normal milestones                |
+| WARNING  | 30    | Unexpected but recoverable       |
+| ERROR    | 40    | Failed operation                 |
+| CRITICAL | 50    | Fatal                            |
 
 A record is emitted only when `record.level >= logger.effectiveLevel` **and** `record.level >= handler.level`. Effective level is inherited from the nearest ancestor that has one set.
 
-## Standard module pattern
+---
 
-Every module does only this:
+## Library vs application — the fundamental split
+
+| | Library | Application |
+|---|---|---|
+| Configures logging? | **never** | **yes, once, at startup** |
+| Adds handlers? | **never** | yes |
+| Calls `basicConfig`? | **never** | optionally |
+| Does what instead? | `NullHandler` on its top-level logger | `dictConfig` or `basicConfig` at entry point |
+
+### Library setup
+
+**Every module** — always the same two lines, nothing else:
 
 ```python
 import logging
-log = logging.getLogger(__name__)
+log = logging.getLogger(__name__)   # e.g. "mylib.parser"
 ```
 
-No `basicConfig`, no `addHandler` — that's the application's job.
-
-## Configuration
-
-### `basicConfig` — scripts
+**`__init__.py` only** — add a `NullHandler` to the package root:
 
 ```python
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-    handlers=[logging.StreamHandler(), logging.FileHandler("app.log")],
-)
+import logging
+logging.getLogger(__name__).addHandler(logging.NullHandler())
 ```
 
-No-op if any handler is already on the root logger. Call once, early.
+`NullHandler` prevents "No handlers could be found for logger `mylib.parser`" warnings when the importing application has not configured logging. It does **not** block propagation — if the application later adds a handler to root, library records flow up to it normally.
 
-### `dictConfig` — applications
+!!! warning "Libraries must never call basicConfig or add handlers"
+    Calling `basicConfig` in a library silently hijacks the root logger for every application that imports it. `NullHandler` is the only permitted act.
+
+### Application setup
+
+Call `dictConfig` (or `basicConfig`) **once**, at the entry point, before other imports fire:
 
 ```python
 import logging.config
 
 logging.config.dictConfig({
     "version": 1,
-    "disable_existing_loggers": False,   # never set True — silences imported loggers
+    "disable_existing_loggers": False,     # never True — silences imported loggers
     "formatters": {
         "std": {"format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"},
     },
@@ -83,44 +90,52 @@ logging.config.dictConfig({
     },
     "root": {"level": "INFO", "handlers": ["console", "file"]},
     "loggers": {
-        "myapp.db": {"level": "DEBUG"},
-        "httpx": {"level": "WARNING"},
+        "myapp.db": {"level": "DEBUG"},     # verbose for one subtree
+        "httpx":    {"level": "WARNING"},   # silence a noisy library
     },
 })
 ```
 
-## Library rule
-
-!!! warning "Libraries must never call basicConfig or add handlers"
-    If a library calls `basicConfig`, it silently configures the root logger for every application that imports it — hijacking the application's logging setup. Libraries should only add a `NullHandler` to their own logger. Configuration belongs exclusively to the application entry point.
-
-Libraries **never** call `basicConfig` or add handlers. Add only a `NullHandler` to prevent "No handler found" warnings:
+**`basicConfig`** is simpler and fine for scripts:
 
 ```python
-# in library __init__.py
-logging.getLogger(__name__).addHandler(logging.NullHandler())
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+)
 ```
 
-## Key practices
+No-op if any handler is already on root — call it early.
 
-**`%`-style formatting** — deferred until the record is actually emitted:
-```python
-log.debug("parsed %d records from %s", n, fname)   # good
-log.debug(f"parsed {n} records from {fname}")       # always evaluated
-```
+### Where to set the log level
 
-**Exceptions with traceback:**
+- **Root level** in `dictConfig`/`basicConfig` — floor for the whole app.
+- **Per-logger overrides** in `"loggers": {...}` — turn up one module or silence a noisy dep.
+- **Never in library code.**
+
+---
+
+## Log call patterns
+
 ```python
+# %-style args — deferred until record is actually emitted (don't use f-strings)
+log.debug("parsed %d records from %s", n, fname)
+log.info("order placed: %s", order_id)
+log.warning("retry %d/%d for %s", attempt, max, url)
+
+# Exception with traceback (inside except block only)
 try:
     risky()
 except Exception:
     log.exception("risky() failed")   # = log.error(..., exc_info=True)
+
+# Structured context
+log.info("trade executed", extra={"order_id": 123, "symbol": "AAPL"})
 ```
 
-**Structured context via `extra`:**
-```python
-log.info("order placed", extra={"order_id": 123})
-```
+---
+
+## Key practices
 
 **Per-request context with `LoggerAdapter`:**
 ```python
@@ -132,7 +147,7 @@ class ReqAdapter(logging.LoggerAdapter):
 log = ReqAdapter(logging.getLogger(__name__), {"req_id": req_id})
 ```
 
-**Async context propagation with `contextvars`** (see [asyncio.md](asyncio.md)):
+**Async context propagation with `contextvars`:**
 ```python
 from contextvars import ContextVar
 req_id: ContextVar[str] = ContextVar("req_id", default="-")
@@ -143,56 +158,39 @@ class CtxFilter(logging.Filter):
         return True
 ```
 
-## JSON / structured logging
-
-For log aggregators (Datadog, Loki, CloudWatch):
-
-```bash
-pip install python-json-logger
+**Async I/O — offload file writes to a thread:**
+```python
+import queue, logging.handlers
+q = queue.Queue(-1)
+listener = logging.handlers.QueueListener(q, file_handler, respect_handler_level=True)
+listener.start()
+logging.getLogger().addHandler(logging.handlers.QueueHandler(q))
 ```
 
+**Rotating files:**
+```python
+from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
+RotatingFileHandler("app.log", maxBytes=10_000_000, backupCount=5)
+TimedRotatingFileHandler("app.log", when="midnight", backupCount=30)
+```
+
+**JSON output** for log aggregators (Datadog, Loki, CloudWatch):
 ```python
 from pythonjsonlogger import jsonlogger
 handler.setFormatter(jsonlogger.JsonFormatter(
     "%(asctime)s %(name)s %(levelname)s %(message)s"
 ))
-# extra fields are merged into the JSON object
 ```
 
-Alternative: [`structlog`](../../tooling/structlog.md) — richer API, keyword-argument style, pluggable renderers.
+Alternative: [`structlog`](../../tooling/structlog.md) — richer API, keyword-style, pluggable renderers.
 
-## Async I/O: QueueHandler + QueueListener
-
-Standard `log.info()` is synchronous — it briefly blocks the event loop. For high-throughput async apps, offload I/O to a thread:
-
-```python
-import queue, logging.handlers
-
-q = queue.Queue(-1)
-listener = logging.handlers.QueueListener(q, file_handler, respect_handler_level=True)
-listener.start()
-logging.getLogger().addHandler(logging.handlers.QueueHandler(q))
-# listener.stop() at shutdown
-```
-
-See [concurrency.md](concurrency.md) for threading context.
-
-## Rotating files
-
-```python
-from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
-
-RotatingFileHandler("app.log", maxBytes=10_000_000, backupCount=5)
-TimedRotatingFileHandler("app.log", when="midnight", backupCount=30)
-```
+---
 
 ## Setup checklist
 
-1. Entry point only: call `dictConfig` or `basicConfig`.
-2. Every module: `log = logging.getLogger(__name__)`.
-3. Libraries: `NullHandler` only.
-4. `%`-style args in log calls.
-5. `log.exception()` inside `except` blocks.
-6. Silence noisy deps: `logging.getLogger("httpx").setLevel(logging.WARNING)`.
-7. Production: JSON formatter + rotating file or sink.
-8. Async + file I/O: `QueueHandler` + `QueueListener`.
+1. **Entry point only**: `dictConfig` or `basicConfig`.
+2. **Every module**: `log = logging.getLogger(__name__)`.
+3. **Library `__init__.py`**: `NullHandler` only.
+4. **Log calls**: `%`-style args, `log.exception()` in `except` blocks.
+5. **Silence noisy deps**: `"httpx": {"level": "WARNING"}` in `loggers`.
+6. **Production**: JSON formatter + rotating file or queue sink.
