@@ -75,6 +75,40 @@ dt = datetime.strptime("2024-06-21 14:30 +0000", "%Y-%m-%d %H:%M %z")
 dt = dt.replace(tzinfo=timezone.utc)
 ```
 
+### Creating a datetime in a named timezone
+
+Use `zoneinfo.ZoneInfo` (stdlib since 3.9) to refer to IANA timezone names:
+
+```python
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
+# construct directly in a named tz
+dt = datetime(2024, 6, 21, 14, 30, tzinfo=ZoneInfo("Europe/Rome"))
+# → 2024-06-21 14:30:00+02:00
+
+# get "now" in a specific tz
+now = datetime.now(tz=ZoneInfo("US/Eastern"))
+```
+
+### Converting between timezones
+
+`astimezone()` shifts the instant to a new zone (the point in time is unchanged):
+
+```python
+utc_dt = datetime(2024, 6, 21, 12, 0, tzinfo=timezone.utc)
+rome_dt = utc_dt.astimezone(ZoneInfo("Europe/Rome"))
+# → 2024-06-21 14:00:00+02:00
+```
+
+!!! warning "replace() vs astimezone()"
+    `dt.replace(tzinfo=tz)` relabels the wall-clock time (changes the instant).
+    `dt.astimezone(tz)` keeps the instant and shifts the clock display.
+    Use `replace` only when attaching a tz to a naive datetime you know is already in that zone.
+
+!!! tip "pytz is legacy"
+    Before Python 3.9, `pytz` was standard. `zoneinfo` supersedes it and handles DST correctly without `localize()` / `normalize()` workarounds. Prefer `zoneinfo` in new code.
+
 ## Going the other way (datetime → string)
 
 ```python
