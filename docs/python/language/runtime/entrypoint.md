@@ -129,5 +129,5 @@ finlib-pipeline       # now available directly on PATH
 
 ## Related
 
-- [asyncio.md](asyncio.md) — event loop, `await`, `gather`, `create_task`
+- [asyncio.md](../concurrency/asyncio.md) — event loop, `await`, `gather`, `create_task`
 - [cli.md](cli.md) — CLI flags for running Python (`-c`, `-m`)

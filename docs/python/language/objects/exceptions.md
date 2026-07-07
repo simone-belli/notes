@@ -168,5 +168,5 @@ except* ValueError as eg:    # except* filters by type
 
 - [context-managers.md](../runtime/context-managers.md) — context managers (`__exit__` protocol, `@contextmanager`)
 - [testing-strategy.md](../../tooling/testing/testing-strategy.md) — `pytest.raises` to assert exceptions in tests
-- [pydantic.md](../../tooling/pydantic.md) — `ValidationError` is the canonical custom exception pattern at application boundaries
+- [pydantic.md](../../tooling/pydantic/pydantic.md) — `ValidationError` is the canonical custom exception pattern at application boundaries
 - [warnings.md](warnings.md) — `warnings.warn()`: downgrade a caught exception to a non-fatal advisory

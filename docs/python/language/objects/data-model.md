@@ -40,7 +40,7 @@ trade = Trade.from_dict({"symbol": "AAPL", "price": 182.5, "side": "BUY"})
 
 The main use is **alternative constructors** — multiple named ways to build an instance from different input formats. Using `cls(...)` instead of `Trade(...)` means subclasses get the right type back.
 
-`@classmethod` is also required by Pydantic for [`@field_validator`](../../tooling/pydantic-validators.md).
+`@classmethod` is also required by Pydantic for [`@field_validator`](../../tooling/pydantic/pydantic-validators.md).
 - Implement `__format__` that parses `format_spec` to use:
   - `format(obj, format_spec)`
   - `'1 BRL = {rate:0.2f} USD'.format(rate=brl)`

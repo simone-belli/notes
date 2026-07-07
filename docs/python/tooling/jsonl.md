@@ -21,7 +21,7 @@ A plain JSON array `[...]` requires loading and rewriting the whole file to appe
 
 ## With Pydantic
 
-[Pydantic](pydantic.md) models serialise and validate for free via `model_dump_json()` and `model_validate_json()` — faster than `json.dumps(model.model_dump())` because they skip the intermediate dict.
+[Pydantic](pydantic/pydantic.md) models serialise and validate for free via `model_dump_json()` and `model_validate_json()` — faster than `json.dumps(model.model_dump())` because they skip the intermediate dict.
 
 ```python
 from pathlib import Path

@@ -106,7 +106,7 @@ api_key = os.environ["API_KEY"]      # KeyError if missing
 api_key = os.getenv("API_KEY", "")   # default if missing
 ```
 
-With types + validation — prefer [pydantic-settings](../python/tooling/pydantic-settings.md):
+With types + validation — prefer [pydantic-settings](../python/tooling/pydantic/pydantic-settings.md):
 ```python
 from pydantic_settings import BaseSettings, SettingsConfigDict
 

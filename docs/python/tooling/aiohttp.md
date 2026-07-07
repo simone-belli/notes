@@ -1,6 +1,6 @@
 # aiohttp
 
-Async HTTP client (and server) library for [asyncio](../language/runtime/asyncio.md). The standard replacement for `requests` in async code — suspends the coroutine during network waits instead of blocking the thread.
+Async HTTP client (and server) library for [asyncio](../language/concurrency/asyncio.md). The standard replacement for `requests` in async code — suspends the coroutine during network waits instead of blocking the thread.
 
 ---
 
@@ -224,5 +224,5 @@ For a batteries-included version, `tenacity.AsyncRetrying` supports the same pat
 
 ## See also
 
-- [asyncio.md](../language/runtime/asyncio.md) — event loop, gather, create_task
+- [asyncio.md](../language/concurrency/asyncio.md) — event loop, gather, create_task
 - [market-data-apis.md](../../finance/market-data-apis.md) — free public endpoints to call with aiohttp
