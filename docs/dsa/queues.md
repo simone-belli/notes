@@ -61,9 +61,24 @@ heapq.heapify(lst)   # lst is now a valid heap in-place
 **nlargest / nsmallest** — more efficient than full sort when k << n:
 
 ```python
-heapq.nlargest(3, lst)   # O(n log k) — faster than sorted()[-3:]
+heapq.nlargest(3, lst)    # O(n log k) — faster than sorted()[-3:] when k is small
 heapq.nsmallest(3, lst)
 ```
+
+Use `key=` to rank objects by an attribute:
+
+```python
+from operator import attrgetter
+
+top3 = heapq.nlargest(3, trades, key=attrgetter("notional"))
+# equivalent: key=lambda t: t.notional
+```
+
+`attrgetter` is a compiled accessor — faster than lambda on large inputs and reads more clearly. Prefer it over `lambda` when selecting a single attribute.
+
+Why `nlargest` beats `sorted()` when k is small: `sorted()` is O(n log n);
+`nlargest(k, ...)` maintains a min-heap of size k while scanning → O(n log k).
+At n=1,000,000 and k=3 that's ~3M comparisons vs ~20M. Breakeven is roughly k > n/log(n); below that, always prefer `nlargest`/`nsmallest`.
 
 ### Priority queue pattern
 
@@ -102,4 +117,5 @@ max_val = -heapq.heappop(h)
 ## See also
 
 - [complexity.md](complexity.md) — full Big-O table for all built-in structures
+- [trees.md](trees.md) — `deque` for BFS; `heapq` for tree-path problems
 - [sets.md](../python/language/objects/sets.md) — O(1) membership, set operations

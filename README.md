@@ -15,7 +15,8 @@ Learning notes and references across software engineering, ML, and AI topics.
 notes/\
 ├── dsa/\
 │   ├── [complexity.md](dsa/complexity.md)\
-│   └── [queues.md](dsa/queues.md)\
+│   ├── [queues.md](dsa/queues.md)\
+│   └── [trees.md](dsa/trees.md)\
 ├── data/\
 │   ├── numpy/\
 │   │   ├── [broadcasting.md](data/numpy/broadcasting.md)\
