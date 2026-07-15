@@ -22,7 +22,7 @@ class TradeRepo(Protocol):
     def list_open(self) -> list[Trade]: ...
 ```
 
-Use [`Protocol`](oop.md) (structural typing), not ABC. Implementations don't need to inherit — they just need the right methods.
+Use [`Protocol`](structural-typing.md) (structural typing), not ABC. Implementations don't need to inherit — they just need the right methods.
 
 ## Business logic — only knows the Protocol
 
@@ -117,6 +117,6 @@ This factory is the only place that knows both `PostgresTradeRepo` and `TradingS
 
 ## Related
 
-- [oop.md](oop.md) — Protocol vs ABC detail
+- [structural-typing.md](structural-typing.md) — Protocol vs ABC detail, verifying conformance
 - [testing-patterns.md](../../tooling/testing/testing-patterns.md) — seams, `tmp_path`, in-memory DB strategies
 - [fastapi.md](../../tooling/fastapi.md) — how `Depends()` extends this pattern to request-scoped resources

@@ -54,6 +54,42 @@ isinstance(obj, Quackable)   # True if obj has .quack — checks name only, not 
 
 Use sparingly — it only verifies method *existence*, not signatures.
 
+## Verifying Protocol conformance
+
+Two separate questions: does a class satisfy a Protocol **statically** (mypy), or **at runtime**?
+
+### Static — assignability trick (catches signature mismatches)
+
+```python
+def _check(x: PostgresTradeRepo) -> TradeRepo:
+    return x   # mypy errors here if signatures don't match
+```
+
+Put this at module level. Zero runtime cost; mypy catches missing methods *and* wrong signatures.
+
+`assert_type` (Python 3.11+ / `typing_extensions`) is an alternative that reads more clearly:
+
+```python
+from typing import assert_type
+assert_type(PostgresTradeRepo(conn), TradeRepo)  # no-op at runtime
+```
+
+### Runtime — `isinstance` with `@runtime_checkable`
+
+```python
+assert isinstance(PostgresTradeRepo(conn), TradeRepo)  # usable in pytest
+```
+
+!!! warning "isinstance with @runtime_checkable only checks attribute names, not signatures"
+    A class with `def get(self, wrong_arg_name): return None` passes an `isinstance` check against a Protocol that requires `get(self, trade_id: int)`. The names match; the signatures don't. Use the assignability trick or `assert_type` (mypy) to catch signature mismatches — `isinstance` alone is insufficient.
+
+| Technique | Catches missing methods | Catches wrong signatures | Needs mypy |
+|-----------|------------------------|--------------------------|------------|
+| `isinstance` (`@runtime_checkable`) | Yes | **No** | No |
+| Assignability function / `assert_type` | Yes | Yes | Yes |
+
+Use both: mypy for correctness, `isinstance` test to document intent and catch omissions.
+
 ## Protocol inheritance
 
 ```python
@@ -78,4 +114,4 @@ class ReadWritable(Readable, Writable, Protocol): ...   # include Protocol in MR
 > Nominal: "Is it *declared* to be the right type?"  
 > Structural: "Does it *have the right shape*?"
 
-Related: [typing.md](typing.md) for `Literal` and other constructs; [mypy.md](../../tooling/mypy.md) for static checking configuration.
+Related: [oop.md](oop.md) for inheritance, MRO, and ABCs; [typing.md](typing.md) for `Literal` and other constructs; [mypy.md](../../tooling/mypy.md) for static checking configuration; [repository-di.md](repository-di.md) for Protocol-based dependency injection.

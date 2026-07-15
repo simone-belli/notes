@@ -1,4 +1,4 @@
-# Classes: Inheritance and Interfaces
+# Classes: Inheritance and ABCs
 
 ## Inheritance
 
@@ -8,6 +8,9 @@
 - Use `super()` to call the next class in the MRO.
 - Subclassing built-in types has pitfalls — consider before doing.
 - Some say only ABCs (abstract base classes) should be subclassed.
+
+!!! note "Composition over inheritance"
+    Inheritance couples the subclass to the parent's implementation, not just its interface — a change in the parent can silently break children. Reach for inheritance only when the subclass genuinely *is* a parent (and usually via an ABC); otherwise hold the other object as an attribute.
 
 ## Abstract Base Classes (ABCs)
 
@@ -29,73 +32,8 @@ class Instrument(ABC):
 - Better for frameworks, plugins, and strict class designs.
 - ABCs are better when the base class provides shared implementation.
 
-## Protocols
+## Interfaces without inheritance
 
-- `Protocol` defines an interface based on object structure, from `typing`: `from typing import Protocol`.
-- A class satisfies a protocol if it has the required methods/attributes — no explicit inheritance needed.
-- This is called **structural typing**, matching Python's duck typing idea.
-- Protocols are mainly useful for static type checkers like `[mypy](../../tooling/mypy.md)`.
-- By default, protocols do not enforce behaviour at runtime.
-- `@runtime_checkable` allows limited `isinstance()` checks.
+For duck-typed interfaces — `Protocol`, the Protocol-vs-ABC comparison, `@runtime_checkable`, and how to verify conformance — see [structural-typing.md](structural-typing.md).
 
-## Protocols vs ABCs
-
-
-|                      | ABC                               | Protocol                        |
-| -------------------- | --------------------------------- | ------------------------------- |
-| Typing               | Nominal                           | Structural                      |
-| Requires inheritance | Yes                               | No                              |
-| Runtime enforcement  | Yes                               | Optional (`@runtime_checkable`) |
-| Best for             | Frameworks, shared implementation | Flexible duck typing            |
-
-
-- ABC: "you belong to this family."
-- Protocol: "you behave in the required way."
-- In modern Python, protocols are often preferred for lightweight interfaces.
-
-## Verifying Protocol conformance
-
-Two separate questions: does a class satisfy a Protocol **statically** (mypy), or **at runtime**?
-
-### Static — assignability trick (catches signature mismatches)
-
-```python
-def _check(x: PostgresTradeRepo) -> TradeRepo:
-    return x   # mypy errors here if signatures don't match
-```
-
-Put this at module level. Zero runtime cost; mypy catches missing methods *and* wrong signatures.
-
-`assert_type` (Python 3.11+ / `typing_extensions`) is an alternative that reads more clearly:
-
-```python
-from typing import assert_type
-assert_type(PostgresTradeRepo(conn), TradeRepo)  # no-op at runtime
-```
-
-### Runtime — `isinstance` with `@runtime_checkable`
-
-```python
-from typing import runtime_checkable
-
-@runtime_checkable
-class TradeRepo(Protocol):
-    def get(self, trade_id: int) -> Trade: ...
-    def save(self, trade: Trade) -> None: ...
-
-assert isinstance(PostgresTradeRepo(conn), TradeRepo)  # usable in pytest
-```
-
-!!! warning "isinstance with @runtime_checkable only checks attribute names, not signatures"
-    A class with `def get(self, wrong_arg_name): return None` passes an `isinstance` check against a Protocol that requires `get(self, trade_id: int)`. The names match; the signatures don't. Use the assignability trick or `assert_type` (mypy) to catch signature mismatches — `isinstance` alone is insufficient.
-
-**Critical limitation**: `isinstance` only checks that the attribute *names* exist — not signatures. A class with `def get(self, x): return "nonsense"` passes.
-
-| Technique | Catches missing methods | Catches wrong signatures | Needs mypy |
-|-----------|------------------------|--------------------------|------------|
-| `isinstance` (`@runtime_checkable`) | Yes | **No** | No |
-| Assignability function / `assert_type` | Yes | Yes | Yes |
-
-Use both: mypy for correctness, `isinstance` test to document intent and catch omissions.
-
-See also: [data-model.md](data-model.md) for dunder methods and `@dataclass`; [repository-di.md](repository-di.md) for Protocol-based dependency injection; [structural-typing.md](structural-typing.md) for the deeper nominal vs structural type-theory framing.
+See also: [data-model.md](data-model.md) for dunder methods and `@dataclass`; [repository-di.md](repository-di.md) for interface-based dependency injection.

@@ -70,4 +70,4 @@ class Trade:
     price: float
 ```
 
-See also: [oop.md](oop.md) for inheritance, ABCs, and Protocols.
+See also: [oop.md](oop.md) for inheritance and ABCs; [structural-typing.md](structural-typing.md) for Protocols.
