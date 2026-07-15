@@ -1,88 +1,115 @@
-# FastAPI — Dependency Injection
+# FastAPI
 
-FastAPI's DI system does in two phases what you do manually in `Service.__init__(repo=...)` — but it handles request-scoped resources that can't exist at startup.
+FastAPI maps Python functions to HTTP endpoints. Its core idea: **type annotations are the single source of truth** — FastAPI reads them at decoration time and derives parsing, validation, serialisation, and API documentation automatically.
 
-## Two phases
+## The problem it solves
 
-| Phase | When | What happens |
-|-------|------|--------------|
-| Decoration | `@app.get(...)` executes | `inspect.signature()` → `get_dependant()` → tree of `Dependant` nodes stored on the route |
-| Request | HTTP arrives | `solve_dependencies()` walks tree, calls factories, caches results, injects values |
-
-The expensive reflection (`inspect`) runs once at startup. Per-request work is just function calls.
-
-## `get_dependant()` — inspection at decoration time
+Without FastAPI, every endpoint needs the same boilerplate:
 
 ```python
-# routing.py — called inside APIRoute.__init__()
-self.dependant = get_dependant(path=self.path_format, call=self.endpoint)
+# Flask — manual
+@app.route("/trades/<trade_id>")
+def get_trade(trade_id):
+    try:
+        trade_id = int(trade_id)
+    except ValueError:
+        return jsonify({"error": "trade_id must be int"}), 422
+    page = int(request.args.get("page", 1))
+    result = service.get_trade(trade_id, page)
+    return jsonify(result.to_dict())   # manual serialisation, no docs
 ```
 
-For each parameter in the endpoint signature, `analyze_param()` classifies it:
-
-- default is `Depends(f)` → recurse into `get_dependant(call=f)` and append as sub-dependency
-- default is `Query(...)` / annotation is `int` → path/query/body field
-
-`Depends` itself is a frozen dataclass — it stores the callable, not the result:
+With FastAPI, the annotations do that work:
 
 ```python
-@dataclass(frozen=True)
-class Depends:
-    dependency: Callable[..., Any] | None = None
-    use_cache: bool = True
+@app.get("/trades/{trade_id}")
+def get_trade(trade_id: int, page: int = 1) -> TradeResponse:
+    return service.get_trade(trade_id, page)
 ```
 
-The result is a tree of `Dependant` objects, built once, reused on every request.
+Same contract, no boilerplate. FastAPI reads `trade_id: int`, extracts the path segment, coerces it to `int`, returns `422` if it's not valid, and generates OpenAPI docs — all from the annotation.
 
-## `solve_dependencies()` — execution at request time
+## Three building blocks
 
-```python
-async def solve_dependencies(*, request, dependant, dependency_cache, ...):
-    for sub_dependant in dependant.dependencies:
-        call = sub_dependant.call
-        if use_cache and (call, ...) in dependency_cache:
-            solved = dependency_cache[(call, ...)]
-        else:
-            inner = await solve_dependencies(request, sub_dependant, ...)
-            solved = await call(**inner.values)   # ← factory called here
-            dependency_cache[(call, ...)] = solved
-        values[sub_dependant.name] = solved
+FastAPI coordinates three components:
+
+| Component | Role |
+|-----------|------|
+| **Starlette** | ASGI routing, `Request`/`Response` objects, middleware, WebSockets |
+| **Pydantic** | Validation + coercion of incoming params; serialisation of responses; JSON Schema for OpenAPI |
+| **`inspect`** | Reads annotations from function signatures at decoration time |
+
+FastAPI itself is mostly the glue: it uses `inspect` to understand what each endpoint needs, Pydantic to enforce it, and Starlette to shuttle bytes in and out.
+
+## Request lifecycle
+
+```
+HTTP request
+  → Starlette router matches URL → selects APIRoute
+  → FastAPI extracts raw values (path / query / headers / body)
+  → Pydantic validates + coerces          (type mismatch → 422 auto)
+  → solve_dependencies() resolves Depends() tree
+  → endpoint function called with typed, validated args
+  → return value serialised via response_model
+  → HTTP response
 ```
 
-Leaves resolved first (topological order). Generator dependencies (`yield`) tie into an `AsyncExitStack` for post-response cleanup.
+## At decoration time: `inspect` builds a dependency tree
 
-## What `Depends()` adds over manual injection
+When `@app.get(...)` runs, FastAPI calls `inspect.signature(fn)` immediately. For each parameter it decides:
 
-### 1 — Request-scoped resources
+- annotation is `int` / `str` + name matches path segment → **path param**
+- annotation is `int` / `str` + not in path → **query param**
+- annotation is a Pydantic model → **request body**
+- default is `Depends(f)` → **dependency** (recurse into `f`'s signature)
 
-Manual injection wires at startup. `Depends` wires at request time, so factories can consume live request data:
+The result is a `Dependant` tree stored on the route — built once, reused per request.
+
+!!! tip "Annotation = contract"
+    `trade_id: int` is not just a type hint for mypy. FastAPI reads it at runtime to decide where to find the value, how to validate it, and what to put in the OpenAPI spec.
+
+## Dependency Injection — `Depends()`
+
+Path/query/body params all come from the HTTP request directly. Some inputs can't:
+
+- database session (must open per-request, close after)
+- current user (derived from auth header + DB lookup)
+- config / rate limiter
+
+`Depends(f)` is a deferred call token: "call `f` at request time and inject its return value here."
 
 ```python
 def get_db() -> Generator[Session, None, None]:
     with Session(engine) as session:
-        yield session          # session closed after response
+        yield session           # session closed after response via AsyncExitStack
 
 def get_current_user(
     request: Request,
     db: Session = Depends(get_db),
 ) -> User:
-    token = request.headers["Authorization"]   # only exists at request time
+    token = request.headers["Authorization"]
     return db.query(User).filter(...).first()
+
+@app.get("/me")
+def me(user: User = Depends(get_current_user)):
+    return user
 ```
 
-This isn't automating what you'd do manually — it's enabling something you *can't* do at startup.
+Two things `Depends()` adds over [manual `__init__` injection](../language/objects/repository-di.md):
 
-### 2 — Automatic deduplication
+1. **Request-scoped resources** — manual injection wires at startup; `Depends` wires at request time, giving factories access to live request data. You can't pass a DB session in `__init__` because it doesn't exist until the request arrives.
+2. **Automatic deduplication** — with `use_cache=True` (default), each factory is called at most once per request. If two dependencies both declare `Depends(get_db)`, one session is shared between them; no manual threading required.
 
-With `use_cache=True` (default), each factory is called at most once per request, regardless of how many route parameters or sub-dependencies declare it. If both `get_trading_service` and `get_current_user` depend on `get_db`, it's called once and the session is shared. Manual factories require threading the shared instance by hand.
+!!! note "Decoration time vs request time"
+    `get_dependant()` runs at `@app.get(...)` — it inspects signatures and builds the dependency tree.
+    `solve_dependencies()` runs per request — it walks the tree, calls factories, caches results.
 
-!!! tip "Depends() is a deferred call token"
-    `Depends(f)` means "call `f` at request time and inject its return value here." The *how* (signature analysis, sub-dependency graph) is resolved once at decoration time; the *call* happens per request.
+## What FastAPI doesn't include
 
-!!! note "Manual DI vs framework DI"
-    Manual DI (`__init__` injection) is startup injection — right for stateless, long-lived objects like service classes. `Depends` is request injection — right for anything that needs live request state or must be scoped to a single request lifecycle.
+No ORM, no migrations, no admin UI, no project layout opinion. It does one thing: Python functions ↔ HTTP API, with the glue (validation, serialisation, DI, docs) handled from annotations.
 
 ## Related
 
-- [repository-di.md](../language/objects/repository-di.md) — manual DI with Protocol + `__init__` injection
-- [pydantic/pydantic.md](pydantic/pydantic.md) — Pydantic validates the resolved values from path/query params
+- [repository-di.md](../language/objects/repository-di.md) — manual DI with Protocol + `__init__` injection; the pattern `Depends()` extends
+- [pydantic/pydantic.md](pydantic/pydantic.md) — Pydantic is FastAPI's validation and serialisation engine
+- [asyncio.md](../language/concurrency/asyncio.md) — FastAPI is ASGI-native; endpoint functions can be `async def`

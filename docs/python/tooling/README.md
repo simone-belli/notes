@@ -3,7 +3,7 @@
 | File | Type | Description |
 |------|------|-------------|
 | [aiohttp.md](aiohttp.md) | note | Async HTTP client: ClientSession, concurrency, streaming, error handling |
-| [fastapi.md](fastapi.md) | note | FastAPI DI: get_dependant() inspection at decoration time, Depends() deferred to request time |
+| [fastapi.md](fastapi.md) | note | FastAPI: annotations as contract, Starlette+Pydantic+inspect, request lifecycle, Depends() |
 | [jsonl.md](jsonl.md) | note | JSON Lines: append-friendly, streamable records with Pydantic serialisation |
 | [mypy.md](mypy.md) | note | Static type checking: concepts, configuration, mental model |
 | [poetry.md](poetry.md) | note | Dependency and virtual environment management |
