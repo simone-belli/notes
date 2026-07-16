@@ -24,6 +24,8 @@ Path(__file__).parent    # directory of the current script — use this, not os.
 
 ## Reading and writing
 
+See [file-io.md](file-io.md) for `open()` patterns, CSV, JSON, and pickle. `Path` objects are accepted by `open()` directly and also expose convenience methods:
+
 ```python
 p.read_text(encoding="utf-8")            # whole file as str
 p.write_text("content\n", encoding="utf-8")
