@@ -1,0 +1,34 @@
+note: python/language/objects/sets.md
+tier: detail
+questions:
+  - id: empty-set-literal
+    type: mcq
+    q: "What does `{}` create?"
+    options:
+      - A dict — an empty set requires `set()`
+      - An empty set
+      - Either, decided by first insertion
+      - "`SyntaxError`"
+    explain: "`{}` has been a dict literal since Python 1; set literals need at least one element (`{1}`)."
+  - id: remove-vs-discard
+    type: mcq
+    q: What is the difference between `s.remove(x)` and `s.discard(x)`?
+    options:
+      - "`remove` raises `KeyError` if x is missing; `discard` is silent"
+      - "`discard` also returns the element"
+      - "`remove` works on frozensets too"
+      - No difference
+    explain: "`s.pop()` is the third variant — removes and returns an arbitrary element."
+  - id: operators-vs-methods
+    type: mcq
+    q: "What is the practical difference between `a | b` and `a.union(b)`?"
+    options:
+      - Operators require both operands to be sets; methods accept any iterable on the right
+      - The method returns a frozenset
+      - The operator mutates `a` in place
+      - The method is faster
+    explain: "`a.union([2, 3, 4])` works; `a | [2, 3, 4]` raises TypeError. Same for `&`/intersection, `-`/difference, `^`/symmetric_difference."
+  - id: frozenset-membership-pattern
+    type: recall
+    q: What is `frozenset` for, and what's the standard fast-membership filtering pattern?
+    answer: "frozenset is an immutable, hashable set — usable as a dict key or set element. The filtering pattern: convert the exclusion list once (`excluded = set(excluded_list)`) then test `x not in excluded` in O(1) inside the loop, instead of O(n) list scans."

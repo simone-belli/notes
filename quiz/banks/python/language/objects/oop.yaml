@@ -1,0 +1,34 @@
+note: python/language/objects/oop.md
+tier: core
+questions:
+  - id: composition-over-inheritance
+    type: mcq
+    q: Why is composition (has-a) preferred over inheritance (is-a)?
+    options:
+      - Inheritance couples the subclass to the parent's implementation — a parent change can silently break children
+      - Composition is faster at runtime
+      - Inherited methods can't be overridden safely
+      - Python limits inheritance depth
+    explain: "Reach for inheritance only when the subclass genuinely is-a parent (usually via an ABC); otherwise hold the collaborator as an attribute."
+  - id: mro
+    type: mcq
+    q: "With `class U(A, B)`, how does Python decide which parent's method runs, and what does `super()` do?"
+    options:
+      - The MRO (C3 linearisation, see `cls.__mro__`) fixes the order; `super()` calls the next class in that order
+      - Leftmost parent always wins; `super()` calls the direct parent
+      - Python raises on any ambiguous method
+      - The most recently defined parent wins
+    explain: "`super()` follows the MRO, not necessarily the literal parent — that's what makes cooperative multiple inheritance work."
+  - id: abc-instantiation
+    type: mcq
+    q: What happens when a subclass of an ABC fails to implement one of the abstract methods?
+    options:
+      - The subclass cannot be instantiated — `TypeError` at construction time
+      - It works until the missing method is called
+      - The abstract method returns None by default
+      - "`ImportError` when the module loads"
+    explain: That construction-time check is the point of ABCs — the contract is enforced before any instance exists.
+  - id: abc-vs-protocol
+    type: recall
+    q: When is an ABC the better choice over a Protocol?
+    answer: When the base class provides shared implementation to inherit, or for frameworks/plugins wanting explicit (nominal) opt-in — a class must inherit the ABC, and missing methods fail at instantiation. Protocols are structural: anything with the right methods conforms, no inheritance needed.

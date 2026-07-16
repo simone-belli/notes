@@ -1,0 +1,34 @@
+note: python/language/objects/typing/subscriptable.md
+tier: detail
+questions:
+  - id: getitem-sugar
+    type: mcq
+    q: "What does `obj[key]` desugar to?"
+    options:
+      - "`type(obj).__getitem__(obj, key)`"
+      - "`obj.__class_getitem__(key)`"
+      - "`obj.get(key)`"
+      - "`getattr(obj, key)`"
+    explain: "No `__getitem__` → `TypeError: not subscriptable`. Slices arrive as slice objects. `__class_getitem__` is the separate hook for subscripting the class itself (`list[int]`)."
+  - id: nonetype-subscript
+    type: mcq
+    q: "What usually causes `'NoneType' object is not subscriptable`?"
+    options:
+      - The variable is None — a function missed a `return`, or `dict.get()` returned None for a missing key
+      - Indexing an empty list
+      - Using a string key on a list
+      - Subscripting before the object is initialised
+    explain: "Fix the source: add the missing return, give `.get()` a default, or guard with `if x is not None`. It's the most common subscript error in practice."
+  - id: pre39-generics
+    type: mcq
+    q: "Why does `list[int]` raise `TypeError` on Python 3.8, and what are the fixes?"
+    options:
+      - "Built-ins got `__class_getitem__` only in 3.9 (PEP 585); use `typing.List` or `from __future__ import annotations`"
+      - Generics were introduced in 3.9 entirely
+      - "`list[int]` is valid but only inside function signatures"
+      - The fix is upgrading mypy
+    explain: "The future import defers annotation evaluation (stored as strings, never executed), so `list[int]` in annotations is safe even on 3.7+."
+  - id: generic-alias-runtime
+    type: recall
+    q: "What does `list[int]` evaluate to, and does Python enforce it?"
+    answer: "A `types.GenericAlias` (`__origin__` is list, `__args__` is `(int,)`) — pure metadata for type checkers. No runtime enforcement: a `list[int]` variable can hold anything. Make your own classes generic by inheriting `Generic[T]`."

@@ -1,0 +1,43 @@
+note: python/language/objects/repository-di.md
+tier: core
+questions:
+  - id: pattern-purpose
+    type: mcq
+    q: What do the repository pattern and dependency injection buy you together?
+    options:
+      - Business logic that is testable without a real database — the service only knows a minimal interface, and tests inject an in-memory implementation
+      - Automatic connection pooling
+      - Schema migrations managed in code
+      - Faster queries through caching
+    explain: "The repository hides where data lives; injection passes it in via the constructor instead of creating it internally."
+  - id: why-protocol
+    type: mcq
+    q: Why define the repository interface as a `Protocol` rather than an ABC?
+    options:
+      - Implementations don't need to inherit — external classes can satisfy the interface just by having the right methods
+      - Protocols are faster at runtime
+      - ABCs cannot declare method signatures
+      - Protocols allow private methods
+    explain: Structural typing means a third-party storage class you can't modify still counts as a TradeRepo. Keep the Protocol minimal — only methods the business logic actually calls.
+  - id: fake-vs-mock
+    type: mcq
+    q: Why prefer a fake (e.g. `InMemoryTradeRepo`) over a mock for repository tests?
+    options:
+      - A fake implements real behaviour, catching logic bugs in callers; a mock only records that methods were called and breaks on refactors
+      - Fakes are less code to write than mocks
+      - Mocks cannot return values
+      - Fakes run in-process while mocks need a server
+    explain: "`list_open()` on the fake really filters by status — a caller misusing it fails the test. A mock returning canned values would pass."
+  - id: injection-point
+    type: mcq
+    q: Where should the dependency be injected, and where do concrete implementation and service meet?
+    options:
+      - Constructor injection; only a composition-root factory (e.g. `build_trading_service`) knows both concrete repo and service
+      - Module-level global, set at import time
+      - Each method takes the repo as an argument
+      - A service locator singleton resolves it on demand
+    explain: Constructor injection keeps the dependency visible and overridable per test; the factory is the single place wiring Postgres to the service.
+  - id: pattern-summary
+    type: recall
+    q: Sketch the four pieces of the repository + DI pattern.
+    answer: "1) A Protocol declaring the minimal data-access interface; 2) a service taking the Protocol in its constructor, containing all business logic; 3) implementations — real (Postgres) and fake (in-memory dict) — that satisfy the Protocol without inheriting; 4) a factory wiring the real one in production, while tests inject the fake."

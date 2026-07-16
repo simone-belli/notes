@@ -1,0 +1,34 @@
+note: python/language/objects/mutation.md
+tier: core
+questions:
+  - id: rebind-vs-mutate
+    type: mcq
+    q: "A function does `data = [999]` on its list parameter. What does the caller see afterwards?"
+    options:
+      - The original list unchanged — assignment rebinds the local name only
+      - The caller's list becomes `[999]`
+      - "`UnboundLocalError`"
+      - Depends on whether the list was passed by value
+    explain: "Python passes object references; `x = ...` repoints the local name, while `.append`, `x[key] = v`, `x.attr = v` mutate the shared object and DO affect the caller."
+  - id: iadd-asymmetry
+    type: mcq
+    q: "Inside a function, `data += [99]` on a list parameter vs `n += 1` on an int parameter — which affects the caller?"
+    options:
+      - "The list (`__iadd__` mutates in place); the int rebinds to a new object"
+      - Both — `+=` always mutates
+      - Neither — `+=` always rebinds
+      - The int, because small ints are interned
+    explain: "`+=` calls `__iadd__` on mutable types (in-place) but creates a new object for immutables. Note `data = data + [99]` is a rebind even for lists."
+  - id: immutable-safety
+    type: mcq
+    q: Why are `int`, `str`, and `tuple` arguments always safe from caller-visible changes?
+    options:
+      - They cannot be mutated — any "change" creates a new object bound to the local name
+      - Python copies them at call time
+      - They are passed by value
+      - The interpreter locks them during the call
+    explain: There is no pass-by-value in Python; immutability itself is what protects the caller.
+  - id: defensive-copy
+    type: recall
+    q: A function needs to sort its list argument without touching the caller's data. What is the pattern?
+    answer: "Take a defensive copy first: `prices = list(prices)` (shallow) then mutate the copy; use `copy.deepcopy()` if elements are themselves mutable. Mental test for any operation: does it replace what the name points to (safe) or modify what it points to (caller-visible)?"

@@ -1,0 +1,47 @@
+note: python/language/objects/hash.md
+tier: core
+questions:
+  - id: hash-contract
+    type: mcq
+    q: What is the hash contract?
+    options:
+      - "If `a == b` then `hash(a) == hash(b)` — violating it silently corrupts sets and dicts"
+      - "If `hash(a) == hash(b)` then `a == b`"
+      - Hashes must be unique per object
+      - Hashes must be stable across processes
+    explain: "Hash maps to a bucket; `__eq__` resolves collisions within it. Equal objects with different hashes land in different buckets and become unfindable."
+  - id: eq-only-unhashable
+    type: mcq
+    q: What happens when a class defines `__eq__` but not `__hash__`?
+    options:
+      - Python sets `__hash__ = None` — instances become unhashable
+      - The default id-based hash is kept
+      - Python derives a hash from the `__eq__` fields automatically
+      - "`TypeError` at class definition time"
+    explain: Value-based equality with identity-based hashing would break the contract, so Python removes hashability until you define both. Subclasses defining `__eq__` need `__hash__ = Parent.__hash__` to restore it.
+  - id: mutate-after-insert
+    type: mcq
+    q: You put object `b` in a set, then mutate a field used in its `__hash__`. What does `b in s` return?
+    options:
+      - False — the object is "lost" in the wrong bucket
+      - True — sets track object identity
+      - It raises `RuntimeError`
+      - True, but only until the set is resized
+    explain: This is why list/dict/set are unhashable by design — only hash immutable or effectively frozen objects.
+  - id: implement-hash
+    type: mcq
+    q: What is the standard way to implement `__hash__` for a value class?
+    options:
+      - "`return hash((self.x, self.y))` — a tuple of the same fields used in `__eq__`"
+      - "`return id(self)`"
+      - "`return hash(self.x) + hash(self.y)`"
+      - "`return hash(str(self))`"
+    explain: Tuple hashing combines field hashes correctly, and using the `__eq__` fields keeps the contract intact.
+  - id: hash-randomisation
+    type: recall
+    q: Why must you never persist or compare `hash()` output across processes?
+    answer: Since Python 3.3, hashes are salted per session (PYTHONHASHSEED) to prevent hash-flooding DoS — the same string hashes differently in each run. Set PYTHONHASHSEED=0 only for debugging.
+  - id: dataclass-hash-options
+    type: recall
+    q: How do dataclass options affect hashability?
+    answer: "Plain `@dataclass` generates `__eq__` and sets `__hash__ = None` (unhashable). `frozen=True` generates both and blocks mutation — the safe choice. `unsafe_hash=True` forces a hash on a mutable dataclass, safe only if you never mutate after hashing."

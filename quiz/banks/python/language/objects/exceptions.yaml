@@ -1,0 +1,56 @@
+note: python/language/objects/exceptions.md
+tier: core
+questions:
+  - id: eafp
+    type: mcq
+    q: What is EAFP and why does Python favour it?
+    options:
+      - "Try the operation and handle failure (`try/except KeyError`) — avoids race conditions and is faster when success is common"
+      - Check preconditions before every operation
+      - Return error codes instead of raising
+      - Log every failure and continue
+    explain: "The LBYL alternative (`if key in d:`) has a time-of-check/time-of-use gap and pays the check on every call, even when it almost always succeeds."
+  - id: bare-except
+    type: mcq
+    q: Why is `except BaseException` (or a bare `except:`) wrong as a catch-all?
+    options:
+      - It swallows `KeyboardInterrupt` and `SystemExit` — Ctrl+C and `sys.exit()` stop working
+      - It is a `SyntaxError` in Python 3
+      - It only catches built-in exceptions, not custom ones
+      - It is slower than catching `Exception`
+    explain: "`except Exception` is the correct boundary: SystemExit, KeyboardInterrupt, and GeneratorExit deliberately live outside it."
+  - id: else-clause
+    type: mcq
+    q: In a try statement, when does the `else` clause run?
+    options:
+      - Only if no exception was raised in the `try` block
+      - Always, after `finally`
+      - Only if an exception was caught and handled
+      - When the `try` block was skipped
+    explain: "`else` marks the success path explicitly and keeps result-processing code outside the error-catching scope — unlike code merely placed after the try statement."
+  - id: chaining
+    type: mcq
+    q: "What does `raise ValueError('invalid config') from e` do?"
+    options:
+      - Sets `e` as `__cause__` — the traceback shows both exceptions when translating between layers
+      - Replaces `e` entirely, discarding its traceback
+      - Re-raises `e` with a new message
+      - Defers raising until `e` is garbage collected
+    explain: "Chaining preserves the low-level cause while raising a domain-appropriate exception. `from None` suppresses the implicit context instead."
+  - id: reraise
+    type: mcq
+    q: Inside an `except` block, what is the difference between `raise` and `raise e`?
+    options:
+      - Bare `raise` re-raises with the original traceback intact; `raise e` restarts the traceback at that line
+      - They are identical
+      - Bare `raise` only works for `Exception` subclasses
+      - "`raise e` preserves more context than bare `raise`"
+    explain: "Log-then-reraise uses bare `raise` — the standard pattern for 'don't swallow silently'."
+  - id: custom-hierarchy
+    type: recall
+    q: Why define a custom exception hierarchy (AppError → TradeError → InvalidQuantityError)?
+    answer: Callers can catch at the right level of specificity without accidentally catching unrelated library exceptions — broad recovery catches AppError, targeted handling catches InvalidQuantityError. The base class also gives one place to hook logging or error codes.
+  - id: exception-group
+    type: recall
+    q: What are ExceptionGroup and `except*` for (Python 3.11+)?
+    answer: "Concurrent code (e.g. `asyncio.TaskGroup`) where multiple tasks can fail simultaneously — the group carries all exceptions, and `except* ValueError as eg:` filters and handles just that type, iterating `eg.exceptions`."

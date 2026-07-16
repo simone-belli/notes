@@ -1,0 +1,47 @@
+note: python/language/objects/data-model.md
+tier: core
+questions:
+  - id: dunder-purpose
+    type: mcq
+    q: What is the main advantage of implementing dunder methods (`__len__`, `__getitem__`, …) on your classes?
+    options:
+      - Uniformity — your objects work with built-in functions and language syntax (`len(obj)`, `obj[i]`, `for x in obj`)
+      - They run faster than regular methods
+      - They are automatically thread-safe
+      - They are hidden from users of the class
+    explain: The Data Model is Python's key API — special methods let custom classes plug into the same protocols the built-ins use. Emulating sequences is the classic case.
+  - id: classmethod-use
+    type: mcq
+    q: What is the primary use of `@classmethod`, and why call `cls(...)` instead of the class name inside it?
+    options:
+      - Alternative constructors (`from_dict`, `from_string`); `cls(...)` makes subclasses get their own type back
+      - Utility functions that don't touch instance state
+      - Methods shared between unrelated classes
+      - Performance — class methods skip instance allocation
+    explain: "`@classmethod` receives `cls` as first argument. Multiple named constructors from different input formats is the idiom; `@staticmethod` is the one that ignores both instance and class."
+  - id: dataclass-hash
+    type: mcq
+    q: Why can't instances of a plain `@dataclass` be used in a set?
+    options:
+      - It generates `__eq__` but sets `__hash__ = None`, making instances unhashable
+      - Dataclasses don't support `__contains__`
+      - Sets require `__slots__`
+      - They can — dataclasses are hashable by default
+    explain: "`@dataclass(frozen=True)` generates `__hash__` and blocks mutation — the right default for value objects like Trade or Point."
+  - id: repr-vs-str
+    type: mcq
+    q: What is the intended difference between `__repr__` and `__str__`?
+    options:
+      - "`__repr__` is the unambiguous developer-facing representation; `__str__` the user-facing one (falls back to `__repr__`)"
+      - "`__str__` is required, `__repr__` optional"
+      - "`__repr__` must return valid Python syntax or raise"
+      - They are aliases in Python 3
+    explain: Implement `__repr__` at minimum — it's what debuggers, containers, and f-string `!r` show.
+  - id: callable-slots
+    type: recall
+    q: What do `__call__` and `__slots__` do?
+    answer: "`__call__` makes an instance callable — `obj(x)` runs `obj.__call__(x)` (useful for stateful function-like objects). `__slots__` declares a fixed set of attributes as a class attribute, replacing the per-instance `__dict__` to save memory."
+  - id: post-init
+    type: recall
+    q: Where does validation logic go in a dataclass?
+    answer: "`__post_init__` — it runs automatically after the generated `__init__` assigns the fields, so you can validate or derive attributes there."

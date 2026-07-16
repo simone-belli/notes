@@ -1,0 +1,52 @@
+note: python/language/objects/typing/structural-typing.md
+tier: core
+questions:
+  - id: nominal-vs-structural
+    type: mcq
+    q: What is the difference between nominal and structural typing?
+    options:
+      - Nominal requires X to be declared as T (inheritance/registration); structural requires only that X has T's shape — the right methods and attributes
+      - Nominal is checked at runtime, structural at compile time
+      - Structural typing requires type annotations
+      - Nominal typing is unique to Python
+    explain: Python's runtime has always been structural (duck typing); `Protocol` (PEP 544) brings that to static analysis.
+  - id: protocol-third-party
+    type: mcq
+    q: Why does `Protocol` work with third-party classes where ABCs don't?
+    options:
+      - Any class with a compatible method satisfies the Protocol without inheriting from it
+      - Protocols are registered globally at import time
+      - mypy patches third-party libraries automatically
+      - Protocols relax signature checks for external code
+    explain: You can't make an external library inherit your ABC, but its classes can satisfy your Protocol out of the box.
+  - id: runtime-checkable-limit
+    type: mcq
+    q: What does `isinstance(obj, SomeProtocol)` with `@runtime_checkable` actually verify?
+    options:
+      - Only that the method/attribute names exist — signatures are not checked
+      - Full signature compatibility, like mypy
+      - That the class explicitly registered as an implementation
+      - Nothing — it always raises TypeError for Protocols
+    explain: "A method with the wrong parameters still passes isinstance. Catch signature mismatches statically with the assignability trick or `assert_type`."
+  - id: assignability-trick
+    type: mcq
+    q: "What is the 'assignability trick' for statically verifying Protocol conformance?"
+    options:
+      - "A module-level function `def _check(x: ConcreteImpl) -> TheProtocol: return x` — mypy errors if signatures don't match, zero runtime cost"
+      - "`assert isinstance(impl, TheProtocol)` at import time"
+      - Subclassing the Protocol so mypy enforces it
+      - "`TheProtocol.validate(ConcreteImpl)`"
+    explain: "`assert_type(impl, TheProtocol)` (3.11+) reads even more clearly. Use both mypy and an isinstance test: static for correctness, runtime to document intent."
+  - id: protocol-inheritance
+    type: mcq
+    q: "When combining protocols — `class ReadWritable(Readable, Writable, ...)` — what must the base list include?"
+    options:
+      - "`Protocol` itself — otherwise mypy treats the subclass as a regular nominal class"
+      - "`ABC`, to keep it abstract"
+      - "`object`, explicitly"
+      - Nothing extra — protocol-ness is inherited
+    explain: "`class ReadWritable(Readable, Writable, Protocol): ...` — omitting `Protocol` silently breaks structural checking."
+  - id: protocol-vs-abc-choice
+    type: recall
+    q: When do you reach for Protocol vs ABC?
+    answer: "Protocol: accepting any object with the right shape, especially from libraries you don't control; checked statically by mypy. ABC: you own the hierarchy, want shared implementation, and need runtime enforcement — missing abstract methods fail at instantiation."

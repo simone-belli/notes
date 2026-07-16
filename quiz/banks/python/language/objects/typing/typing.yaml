@@ -1,0 +1,43 @@
+note: python/language/objects/typing/typing.md
+tier: core
+questions:
+  - id: literal-purpose
+    type: mcq
+    q: "What does `Side = Literal['BUY', 'SELL']` give you over plain `str`?"
+    options:
+      - mypy rejects any value outside the fixed set at check time — `place_order('hold')` is an error
+      - Runtime validation of the string value
+      - Automatic uppercase normalisation
+      - An Enum with two members
+    explain: "Literal narrows to specific constants (str, int, bool, bytes, None, Enum members). The runtime ignores it entirely."
+  - id: literal-subtype-direction
+    type: mcq
+    q: "Why does passing `x: str = 'BUY'` to a `Literal['BUY', 'SELL']` parameter fail mypy?"
+    options:
+      - "`str` is not a subtype of the Literal — a bare str variable could hold anything; you must narrow it first"
+      - Literals only accept literal expressions written inline
+      - mypy cannot track variable values at all
+      - It doesn't fail — the value matches
+    explain: "The subtype direction: `Literal['BUY']` IS a str (narrowing is safe), but not vice versa. Narrow via a branch, assert, or a Literal annotation at assignment."
+  - id: overload-literal
+    type: mcq
+    q: What problem does `@overload` combined with Literal solve?
+    options:
+      - Different return types per argument value — `parse(s, 'int') -> int` but `parse(s, 'float') -> float`
+      - Running different implementations per type at runtime
+      - Method overriding in subclasses
+      - Optional arguments with defaults
+    explain: The overloads are stubs for the checker; one real implementation follows. Callers get precise return types instead of a union.
+  - id: get-args
+    type: mcq
+    q: How do you validate a runtime value against a Literal type without Pydantic?
+    options:
+      - "`if value not in get_args(Side): raise ValueError(...)`"
+      - "`isinstance(value, Side)`"
+      - "`Side(value)`"
+      - "`typing.validate(Side, value)`"
+    explain: "`typing.get_args(Side)` returns `('BUY', 'SELL')` — the one bridge from the static definition to runtime checking."
+  - id: literal-vs-enum
+    type: recall
+    q: Literal vs Enum — when each?
+    answer: "Literal when you just need a static valid-value set with no behaviour: values stay plain str/int and serialise naturally (Pydantic/JSON). Enum when values need methods or identity — at the cost of `.value` unwrapping at boundaries."

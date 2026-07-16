@@ -1,0 +1,34 @@
+note: python/language/objects/warnings.md
+tier: detail
+questions:
+  - id: stacklevel
+    type: mcq
+    q: Why should library code call `warnings.warn(..., stacklevel=2)`?
+    options:
+      - So the warning points at the caller of your function — where the fix belongs — instead of your library internals
+      - It makes the warning appear twice for emphasis
+      - stacklevel controls severity, and 2 means "important"
+      - It skips the warning filter
+    explain: Default stacklevel=1 blames the `warn()` line itself. Increment further if `warn()` sits inside a nested helper.
+  - id: warning-vs-exception
+    type: mcq
+    q: When is a warning the right tool instead of an exception?
+    options:
+      - When the program can still proceed — deprecations, non-fatal anomalies, or a caught exception downgraded with a fallback
+      - When the error is severe enough to need user attention
+      - Whenever code runs in production
+      - When you don't know the exception type
+    explain: "Classic pattern: catch FileNotFoundError, `warnings.warn('using defaults', UserWarning, stacklevel=2)`, return DEFAULT_CONFIG."
+  - id: promote-to-error
+    type: mcq
+    q: How do you make warnings fail your test suite?
+    options:
+      - "`filterwarnings = [\"error\"]` in pytest config promotes every warning to an exception"
+      - "pytest does that by default"
+      - "`warnings.warn(..., fatal=True)`"
+      - Set the PYTHONWARNINGS env var to `once`
+    explain: "Per-test, `with pytest.warns(DeprecationWarning, match='...')` asserts a warning is emitted; `filterwarnings('error', category=X)` promotes selectively in code."
+  - id: dedup-behaviour
+    type: recall
+    q: How often is the same warning shown by default, and how do you change that?
+    answer: "Once per message+location. `warnings.filterwarnings('always')` shows every occurrence, 'ignore' hides, 'error' raises. Scope changes temporarily with `with warnings.catch_warnings(): warnings.simplefilter(...)`."
