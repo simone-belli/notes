@@ -1,0 +1,34 @@
+note: data/pandas/dtypes.md
+tier: detail
+questions:
+  - id: nullable-int
+    type: mcq
+    q: What is the difference between `dtype='Int64'` (capital I) and `dtype='int64'` in pandas?
+    options:
+      - "`Int64` is a nullable extension type using `pd.NA`; `int64` is plain NumPy and turns missing values into a float64 column"
+      - "`Int64` is 64-bit signed, `int64` is platform-dependent"
+      - They are identical; capitalisation is ignored
+      - "`Int64` is Arrow-backed and `int64` NumPy-backed, but both handle NA the same way"
+    explain: Plain NumPy integers can't hold missing values — a None forces float64. Capital-I types keep integer dtype with `pd.NA`.
+  - id: missing-sentinels
+    type: mcq
+    q: Which missing-value sentinel belongs with the nullable extension types (`Int64`, `StringDtype`, `BooleanDtype`)?
+    options:
+      - "`pd.NA`"
+      - "`np.nan`"
+      - "`None`"
+      - "`pd.NaT`"
+    explain: "`np.nan` is for plain float64 columns, `None` for object columns, `pd.NaT` for datetimes. The three don't compare equal — don't mix them in one column."
+  - id: extension-to-numpy
+    type: mcq
+    q: What does `.to_numpy()` return for an extension-type column like `Int64` or `StringDtype`?
+    options:
+      - A newly allocated array, often `dtype=object` — unless you pass explicit `dtype`/`na_value`
+      - A zero-copy view of the underlying buffer
+      - It raises `TypeError` for non-NumPy-backed columns
+      - Always a float64 array with NaN for missing values
+    explain: Only plain NumPy-backed columns give views. For extension types, be explicit, e.g. `.to_numpy(dtype=float, na_value=np.nan)`.
+  - id: object-string-fix
+    type: recall
+    q: Why are string columns stored as `object` dtype a problem, and what is the fix?
+    answer: Each cell is a separate Python str on the heap — no contiguous memory, no vectorisation, big footprint. Cast to `StringDtype` (`.astype('string')`), which uses an efficient Arrow/NumPy backing and `pd.NA` for missing values; use `category` for low-cardinality columns.

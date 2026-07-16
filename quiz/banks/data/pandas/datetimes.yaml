@@ -1,0 +1,34 @@
+note: data/pandas/datetimes.md
+tier: detail
+questions:
+  - id: naive-vs-aware
+    type: mcq
+    q: What happens when you compare a naive `datetime64` with a tz-aware one?
+    options:
+      - "`TypeError` — at every layer: Python, NumPy, pandas"
+      - The naive one is assumed to be UTC and the comparison proceeds
+      - The comparison silently returns False
+      - pandas localises the naive one to the aware one's timezone
+    explain: Naive and aware timestamps cannot be mixed. Commit to UTC at load time (`pd.to_datetime(..., utc=True)`) and never produce naive datetimes for time-series data.
+  - id: unix-ms-parsing
+    type: mcq
+    q: How do you parse a column of Unix millisecond timestamps (e.g. from an exchange API) into tz-aware datetimes?
+    options:
+      - "`pd.to_datetime(s, unit='ms', utc=True)`"
+      - "`pd.to_datetime(s, format='%s')`"
+      - "`s.astype('datetime64[ms]')` then `.dt.tz_convert('UTC')`"
+      - "`pd.Timestamp(s, tz='UTC')`"
+    explain: "`unit='ms'` interprets the integers as milliseconds since epoch; `utc=True` keeps the whole column tz-aware (`datetime64[ns, UTC]`)."
+  - id: localize-vs-convert
+    type: mcq
+    q: What is the difference between `.dt.tz_localize()` and `.dt.tz_convert()`?
+    options:
+      - localize attaches a timezone to naive timestamps; convert moves aware timestamps to another timezone
+      - convert attaches a timezone to naive timestamps; localize moves aware ones
+      - They are aliases; localize is the deprecated name
+      - localize works on Series, convert only on a DatetimeIndex
+    explain: naive → aware is `tz_localize`; aware → different tz is `tz_convert`. Calling the wrong one raises.
+  - id: timestamp-stack
+    type: recall
+    q: How does `pd.Timestamp` relate to `datetime.datetime` and `np.datetime64`, and what range limit follows?
+    answer: It subclasses `datetime.datetime` (inherits its methods) while storing the value as an int64 of nanoseconds since epoch like `np.datetime64[ns]`. Nanosecond int64 limits representable dates to ~1678–2262 CE (`OutOfBoundsDatetime` outside).

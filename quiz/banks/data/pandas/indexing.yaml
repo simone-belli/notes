@@ -1,0 +1,47 @@
+note: data/pandas/indexing.md
+tier: core
+questions:
+  - id: chained-assignment
+    type: mcq
+    q: Why is `df[df['age'] > 18]['name'] = 'adult'` unreliable?
+    options:
+      - It is two operations — the first may return a copy, so the write can land on a throwaway object
+      - Boolean masks cannot be used on the left side of an assignment
+      - String assignment requires `.astype('object')` first
+      - It mutates `df` twice, once per bracket
+    explain: This is the classic SettingWithCopyWarning — if step one returns a copy, `df` is silently unchanged.
+  - id: correct-write
+    type: mcq
+    q: What is the correct way to set `name` to `'adult'` for rows where `age > 18`?
+    options:
+      - "`df.loc[df['age'] > 18, 'name'] = 'adult'`"
+      - "`df[df['age'] > 18]['name'] = 'adult'`"
+      - "`df.query('age > 18')['name'] = 'adult'`"
+      - "`df.where(df['age'] > 18)['name'] = 'adult'`"
+    explain: "`.loc[mask, col] = value` is a single operation directly on the original — correct under both old and Copy-on-Write semantics."
+  - id: view-vs-copy-rule
+    type: mcq
+    q: When does NumPy-style indexing return a view rather than a copy?
+    options:
+      - Contiguous slices give views; boolean masks and fancy integer indexing give copies
+      - Views are returned whenever the result fits in the original's memory
+      - Boolean masks give views; slices give copies
+      - It always returns a view unless you call `.copy()`
+    explain: This is why pandas can't guarantee what chained indexing returns — the first `[]` may be either.
+  - id: cow-semantics
+    type: mcq
+    q: What changes under pandas Copy-on-Write (default in pandas 3.0)?
+    options:
+      - Every indexing result behaves as a copy — mutating a slice never modifies the original
+      - Writes to slices become views automatically
+      - "`.loc` assignments raise unless you opt in"
+      - DataFrames become immutable
+    explain: View-mutation is gone and SettingWithCopyWarning disappears; code that relied on writing through a slice silently stops affecting the original.
+  - id: independent-subset
+    type: recall
+    q: You want to take a filtered subset of a DataFrame and modify it without touching the original. What is the right pattern and why?
+    answer: "`sub = df[mask].copy()` then mutate `sub`. The explicit `.copy()` declares intent, guarantees an independent object, and avoids SettingWithCopyWarning regardless of whether the filter returned a view or copy."
+  - id: read-vs-write-rule
+    type: recall
+    q: What is the rule of thumb for chained indexing in pandas?
+    answer: Reading through a chain (`df[mask]['col'].mean()`) is fine; writing must be a single `.loc[mask, col] = value` on the original. Chained writes are two operations and the assignment may land on a copy.

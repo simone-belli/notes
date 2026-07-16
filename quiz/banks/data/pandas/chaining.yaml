@@ -1,0 +1,56 @@
+note: data/pandas/chaining.md
+tier: core
+questions:
+  - id: query-at-sign
+    type: mcq
+    q: In `df.query('price > @threshold')`, what does `@` do?
+    options:
+      - References a Python variable from the enclosing scope
+      - Marks the column as indexed for faster filtering
+      - Escapes a column name that clashes with a keyword
+      - Applies the comparison element-wise instead of to the whole frame
+    explain: "`@name` pulls a variable from the surrounding Python scope into the query expression."
+  - id: assign-ordering
+    type: mcq
+    q: Inside one `.assign()` call, can a later keyword argument use a column defined by an earlier one?
+    options:
+      - Yes — lambdas receive the DataFrame as it exists at that step (dict ordering)
+      - No — all lambdas see the DataFrame as it was before the call
+      - Only if the earlier column is wrapped in `pd.eval`
+      - Only when assigning plain values, not lambdas
+    explain: Columns assigned earlier in the same call are visible to later lambdas — you can build derived columns in sequence in one `.assign()`.
+  - id: pipe-semantics
+    type: mcq
+    q: What does `df.pipe(trim_outliers, col='returns')` do?
+    options:
+      - Calls `trim_outliers(df, col='returns')` — lets a named function join the chain
+      - Applies `trim_outliers` to each column named in `col`
+      - Runs `trim_outliers` row-by-row like `.apply`
+      - Registers `trim_outliers` to run lazily when the chain is evaluated
+    explain: "`.pipe(f, ...)` is a fluency adapter: it just calls `f(df, ...)` so functions that don't natively chain can sit mid-chain."
+  - id: category-dtype
+    type: mcq
+    q: Why cast a low-cardinality string column (e.g. `status`) to `"category"`?
+    options:
+      - It stores integer codes plus a lookup table — less memory, faster groupby
+      - It enables vectorised `.str` methods on the column
+      - It sorts the column values for faster filtering
+      - It compresses the strings with a dictionary encoder on disk
+    explain: Categoricals replace per-row strings with small integer codes; an ordered `CategoricalDtype` additionally enables `<`/`>` comparisons.
+  - id: named-agg
+    type: mcq
+    q: In `.groupby('symbol').agg(avg_close=('close', 'mean'))`, what does the `('close', 'mean')` tuple mean?
+    options:
+      - Aggregate the `close` column with `mean`, naming the output column `avg_close`
+      - Compute both `close` and `mean` columns and zip them into `avg_close`
+      - Group by `close` first, then take the mean of each group
+      - Apply `mean` only where `close` is non-null
+    explain: Named aggregation is `output_name=('source_column', 'function')` — output columns get clean names directly.
+  - id: why-chain
+    type: recall
+    q: Why prefer method chaining over repeatedly reassigning `df = ...`?
+    answer: The raw DataFrame is never mutated, each step returns a new frame so intermediate states can't leak, and every operation is independently readable/commentable — the pipeline reads top-to-bottom as a recipe.
+  - id: reset-index-drop
+    type: recall
+    q: What does `.reset_index(drop=True)` do, and when does it typically appear in a chain?
+    answer: It replaces the index with a clean 0…n-1 range and (with drop=True) discards the old index instead of inserting it as a column. Typically the last step after filtering/sorting has left gaps in the index.

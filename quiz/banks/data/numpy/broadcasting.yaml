@@ -1,0 +1,56 @@
+note: data/numpy/broadcasting.md
+tier: core
+questions:
+  - id: shape-trace-3d
+    type: mcq
+    q: What is the result shape of `(4, 1, 3) + (5, 3)`?
+    options:
+      - "`(4, 5, 3)`"
+      - "`ValueError` — shapes don't match"
+      - "`(4, 1, 3)`"
+      - "`(5, 4, 3)`"
+    explain: Pad left → `(1, 5, 3)`, then size-1 dims stretch — `4` vs `1` and `1` vs `5` both broadcast; output is the element-wise max.
+  - id: incompatible-shapes
+    type: mcq
+    q: Which pair of shapes raises a `ValueError` when added?
+    options:
+      - "`(2, 3)` and `(3, 2)`"
+      - "`(2, 3)` and `(2, 1)`"
+      - "`(2, 3)` and `(3,)`"
+      - "`(1, 3)` and `(3, 1)`"
+    explain: Comparing right-to-left, 3 vs 2 is neither equal nor 1 → error. The others align via padding and size-1 stretching.
+  - id: stretch-memory-cost
+    type: mcq
+    q: How much extra memory does broadcasting use to "stretch" a size-1 dimension?
+    options:
+      - None — a stride of 0 simulates repetition without copying
+      - It allocates the full stretched array temporarily
+      - It copies only the rows that are actually accessed
+      - One extra copy of the smaller array
+    explain: Virtual stretching is the point — no data is copied; the same element is re-read via a zero stride.
+  - id: keepdims-why
+    type: mcq
+    q: Why does `A - A.mean(axis=1)` give wrong results (or an error) for a 2-D array `A` of shape `(M, N)`?
+    options:
+      - "`mean(axis=1)` returns shape `(M,)`, which aligns on the column axis when broadcast back"
+      - "`mean(axis=1)` averages over rows, so the values themselves are wrong"
+      - Reductions always return scalars unless `keepdims=True`
+      - Subtraction never broadcasts; only multiplication does
+    explain: Use `keepdims=True` to get `(M, 1)`, which broadcasts correctly along columns.
+  - id: newaxis-alias
+    type: mcq
+    q: What is `np.newaxis` an alias for?
+    options:
+      - "`None`"
+      - "`Ellipsis`"
+      - "`np.nan`"
+      - "`slice(None)`"
+    explain: "`b[:, np.newaxis]` and `b[:, None]` are identical — both insert a size-1 axis to control alignment."
+  - id: three-rules
+    type: recall
+    q: State the three broadcasting rules.
+    answer: 1) Pad the shorter shape with 1s on the left; 2) stretch size-1 dimensions to match the other array; 3) error if two dimensions are neither equal nor 1. Comparison runs right-to-left; output shape is the element-wise max.
+  - id: why-vectorise
+    type: recall
+    q: Why is a vectorised NumPy operation ~100–500× faster than the equivalent Python loop?
+    answer: A Python loop boxes every number and dispatches through the interpreter per iteration; NumPy runs one tight C loop over contiguous typed memory, operating on multiple elements per clock cycle.

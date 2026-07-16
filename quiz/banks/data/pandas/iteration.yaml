@@ -1,0 +1,34 @@
+note: data/pandas/iteration.md
+tier: detail
+questions:
+  - id: iter-asymmetry
+    type: mcq
+    q: What does `for x in df:` iterate over for a DataFrame?
+    options:
+      - Column labels
+      - Rows as Series
+      - Rows as namedtuples
+      - Values of the first column
+    explain: "`Series.__iter__` yields values, but `DataFrame.__iter__` yields column names — a classic asymmetry gotcha."
+  - id: iterrows-coercion
+    type: mcq
+    q: Why is `itertuples()` preferred over `iterrows()`?
+    options:
+      - iterrows builds a Series per row, coercing mixed dtypes to a common type; itertuples preserves each column's dtype and is faster
+      - iterrows skips the index while itertuples includes it
+      - itertuples works on grouped frames, iterrows does not
+      - iterrows is deprecated since pandas 2.0
+    explain: A row Series must have one dtype, so mixed rows become `object`. itertuples yields namedtuples with original dtypes intact.
+  - id: scalar-access
+    type: mcq
+    q: For repeatedly reading/writing a single cell in a loop, which accessor is fastest?
+    options:
+      - "`.at[idx, 'col']` / `.iat[i, j]`"
+      - "`.loc[idx, 'col']` / `.iloc[i, j]`"
+      - "`df['col'][idx]`"
+      - "`df.get_value(idx, 'col')`"
+    explain: "`.at`/`.iat` are scalar-only accessors that skip the Series machinery `.loc`/`.iloc` go through."
+  - id: performance-hierarchy
+    type: recall
+    q: State the pandas row-processing performance hierarchy.
+    answer: vectorised operations > np.where > apply(axis=1) > itertuples > iterrows. Reach for a vectorised expression first; use itertuples only when a Python loop is unavoidable.

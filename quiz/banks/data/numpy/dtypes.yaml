@@ -1,0 +1,34 @@
+note: data/numpy/dtypes.md
+tier: detail
+questions:
+  - id: int8-overflow
+    type: mcq
+    q: What does `np.int8(127) + np.int8(1)` evaluate to?
+    options:
+      - "`-128` — silent wraparound"
+      - "`128` — NumPy upcasts to int16 automatically"
+      - "`OverflowError`"
+      - "`127` — saturates at the maximum"
+    explain: NumPy integer overflow wraps around silently — no error. Know your value ranges (`np.iinfo`).
+  - id: object-dtype-trap
+    type: mcq
+    q: What happens when an array ends up with `object` dtype (e.g. `np.array([1, 'a'])`)?
+    options:
+      - Every element is a Python heap object — vectorisation is lost, loop-level speed
+      - NumPy stores strings and ints in separate internal arrays
+      - Operations raise `TypeError` until you call `.astype`
+      - Only memory usage increases; speed is unchanged
+    explain: object dtype replaces tight C loops with per-element Python dispatch. Always check `.dtype` after loading CSV/JSON.
+  - id: nan-in-int-array
+    type: mcq
+    q: What is the dtype of `np.array([1, 2, np.nan])`?
+    options:
+      - "`float64` — NaN is a float concept, so the ints are upcast"
+      - "`int64` with NaN stored as a sentinel value"
+      - "`object`"
+      - It raises `ValueError` — integers cannot hold NaN
+    explain: Integer arrays cannot represent NaN; the whole array is silently promoted to float64.
+  - id: why-fixed-width
+    type: recall
+    q: Why does the dtype contract (fixed-width elements) make NumPy fast?
+    answer: Every element occupies the same number of bytes, contiguous in memory, with no per-element Python object overhead — the CPU strides predictably and processes multiple elements per cycle. It also makes broadcasting zero-copy via strides.
