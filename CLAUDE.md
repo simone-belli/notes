@@ -16,6 +16,7 @@ The workflows live as project skills in `.claude/skills/`. When a query starts w
 | `ADD TOPIC` | `/add-topic` | Concise note only, no `_explain.md` |
 | `RESTRUCTURE` | `/restructure` | Survey structure, propose reorganisation, execute after approval |
 | `AUDIT` | `/audit` | Check notes for stale claims, fix after approval |
+| `QUIZ` | `/quiz` | Create/update Anki question banks in `quiz/banks/`, rebuild deck |
 
 During these workflows, write and edit files without prompting for confirmation, and commit when the skill says to. Before any commit that touches `docs/`, run `mkdocs build --strict` — it must exit 0.
 
