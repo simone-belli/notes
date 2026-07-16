@@ -6,7 +6,7 @@ tags:
 
 # Testing — Contract Tests
 
-When you have two or more concrete classes that share an interface ([`Protocol`](../../language/objects/typing/structural-typing.md)), run the same test suite against all of them with a **parametrized fixture** — no test duplication, no `isinstance`.
+When you have two or more concrete classes that share an interface ([`Protocol`](../../language/objects/typing/structural-typing.md)), run the same test suite against all of them with a **parametrized [fixture](fixtures.md)** — no test duplication, no `isinstance`.
 
 ## The fixture
 

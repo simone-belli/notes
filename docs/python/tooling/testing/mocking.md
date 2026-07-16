@@ -213,7 +213,7 @@ mock_resp.__aenter__ = AsyncMock(return_value=mock_resp)
 mock_resp.__aexit__ = AsyncMock(return_value=False)
 ```
 
-Async fixtures work the same way — no extra decorator needed with `asyncio_mode = "auto"`:
+Async [fixtures](fixtures.md) work the same way — no extra decorator needed with `asyncio_mode = "auto"`:
 
 ```python
 @pytest.fixture
