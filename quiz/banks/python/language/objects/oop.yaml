@@ -31,4 +31,4 @@ questions:
   - id: abc-vs-protocol
     type: recall
     q: When is an ABC the better choice over a Protocol?
-    answer: When the base class provides shared implementation to inherit, or for frameworks/plugins wanting explicit (nominal) opt-in — a class must inherit the ABC, and missing methods fail at instantiation. Protocols are structural: anything with the right methods conforms, no inheritance needed.
+    answer: "When the base class provides shared implementation to inherit, or for frameworks/plugins wanting explicit (nominal) opt-in — a class must inherit the ABC, and missing methods fail at instantiation. Protocols are structural: anything with the right methods conforms, no inheritance needed."

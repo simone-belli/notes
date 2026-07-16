@@ -108,8 +108,11 @@ def note_url(note_path: str) -> str:
 
 
 def load_bank(path: Path) -> dict:
-    bank = yaml.safe_load(path.read_text())
     rel = path.relative_to(BANKS_DIR).as_posix()
+    try:
+        bank = yaml.safe_load(path.read_text())
+    except yaml.YAMLError as e:
+        sys.exit(f"{rel}: YAML parse error\n{e}")
     for key in ("note", "tier", "questions"):
         if key not in bank:
             sys.exit(f"{rel}: missing top-level key '{key}'")
