@@ -1,0 +1,65 @@
+note: python/tooling/testing/fixtures.md
+tier: core
+questions:
+  - id: fixture-injection
+    type: mcq
+    q: How does a pytest test get access to a fixture?
+    options:
+      - It declares the fixture name as a function parameter
+      - It imports the fixture from the test module that defines it
+      - It applies the fixture as a decorator on the test function
+      - It calls `pytest.use_fixture()` inside the test body
+    explain: Fixtures are dependency-injected — pytest matches parameter names to fixture names and builds the dependency graph automatically.
+  - id: scope-module
+    type: mcq
+    q: What does `scope="module"` mean for a pytest fixture?
+    options:
+      - One fixture instance is shared by all tests in the same file
+      - A new fixture instance is created for every test
+      - One instance is shared across the entire test run
+      - One instance is shared within a test class
+    explain: function (default) = per test, class = per class, module = per file, session = per run.
+  - id: yield-teardown
+    type: mcq
+    q: In a `yield` fixture, when does the code after `yield` run?
+    options:
+      - After the test finishes, even if the test failed
+      - After the test finishes, only if the test passed
+      - Only when the fixture goes out of scope at session end
+      - Never — code after `yield` is unreachable
+    explain: The post-`yield` block is the teardown; pytest runs it regardless of test outcome, so cleanup (rollback, close) always happens.
+  - id: conftest-visibility
+    type: mcq
+    q: Where are fixtures defined in a `conftest.py` visible?
+    options:
+      - To all tests in the same directory and below, with no import
+      - Only to tests in the same directory, not subdirectories
+      - To the whole test suite, regardless of location
+      - To any test that imports the `conftest` module
+    explain: conftest.py scopes fixtures hierarchically — a nested conftest.py can override or extend for its subtree. Never import from conftest.
+  - id: parametrized-fixture
+    type: mcq
+    q: A fixture is declared with `params=["sqlite", "postgres"]`. What happens to a test that uses it?
+    options:
+      - The test runs twice, once per parameter
+      - The test receives the list of both parameters at once
+      - The test runs once with the first parameter only
+      - pytest errors unless the test is also parametrized
+    explain: Parametrized fixtures multiply every dependent test — one run per parameter, accessed inside the fixture via `request.param`.
+  - id: autouse-meaning
+    type: mcq
+    q: What does `@pytest.fixture(autouse=True)` do?
+    options:
+      - Runs the fixture for every test in scope without being declared as a parameter
+      - Automatically re-runs the fixture whenever its dependencies change
+      - Makes the fixture available across the whole session
+      - Marks the fixture as required by at least one test
+    explain: autouse fixtures run implicitly — useful for resets/cleanup, but invisible in test signatures, so use sparingly.
+  - id: why-fixtures-beat-setup
+    type: recall
+    q: Why do pytest fixtures beat xUnit-style `setUp`/`tearDown` methods?
+    answer: Fixtures compose — a fixture can depend on other fixtures and pytest resolves the dependency graph automatically. Tests stay declarative, naming what they need instead of how to build it, and each test pulls in only the setup it actually uses.
+  - id: session-scope-danger
+    type: recall
+    q: What is the danger of a `scope="session"` fixture that holds mutable state?
+    answer: It acts like a global — mutations in one test bleed into the next, creating order-dependent tests. Also remember higher-scope fixtures can only depend on same-or-higher scope fixtures.
