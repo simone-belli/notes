@@ -75,13 +75,23 @@ def test_sends_alert_on_breach():
 
 ## TDD: Red → Green → Refactor
 
-Write the failing test first, then write the minimal code to pass it, then clean up.
+Test-Driven Development (TDD) writes the failing test *before* the code that satisfies it — the test drives the design rather than verifying it after the fact.
 
 ```
-Red (failing test) → Green (passes) → Refactor (clean without breaking)
+Red (failing test) → Green (minimal code to pass) → Refactor (clean without breaking)
 ```
 
-Most useful when fixing bugs (write a test that reproduces the bug, then fix it) and when designing new APIs.
+Robert C. Martin's three laws make the loop concrete: write no production code without a failing test first; write no more test than needed to fail; write no more production code than needed to pass the current test. The cycle is meant to be seconds to minutes long, not hours.
+
+!!! tip "Why write the test first, not after"
+    Tests written after the code tend to confirm what the code already does, not what it should do — and are the first thing skipped under deadline pressure. A test-first workflow also forces callable, decoupled designs, since untestable code can't be driven from a test at all.
+
+Two schools differ on what a test should verify:
+
+- **Chicago / classic (state-based)** — assert on return values or resulting state; prefers real collaborators over mocks. Resilient to refactoring but can be slower to pinpoint a failure.
+- **London / mockist (interaction-based)** — [mocks](mocking.md) collaborators and asserts the right calls happened; designs top-down, mocking out not-yet-built pieces. Pinpoints failures precisely but the tests can break on refactors that don't change behaviour (testing implementation, not behaviour).
+
+Most useful when fixing bugs (write a test that reproduces the bug, then fix it) and when designing new APIs. Less natural for exploratory/throwaway prototyping, where the shape of the solution isn't known yet — spike without tests, then rebuild with TDD once the design settles.
 
 ## Useful pytest ecosystem
 
