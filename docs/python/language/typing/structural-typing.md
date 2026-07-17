@@ -11,7 +11,7 @@ Two ways a type system decides "is X acceptable where T is expected?":
 - **Nominal** — X must be *declared* as T (via inheritance or registration).
 - **Structural** — X must have T's *shape*: the right methods and attributes, no declaration needed.
 
-Python's runtime has always been structural (duck typing). `Protocol` (PEP 544, Python 3.8+) extends that to static analysis via [mypy](../../../tooling/mypy.md).
+Python's runtime has always been structural (duck typing). `Protocol` (PEP 544, Python 3.8+) extends that to static analysis via [mypy](../../tooling/mypy.md).
 
 ## `Protocol`
 
@@ -120,4 +120,4 @@ class ReadWritable(Readable, Writable, Protocol): ...   # include Protocol in MR
 > Nominal: "Is it *declared* to be the right type?"  
 > Structural: "Does it *have the right shape*?"
 
-Related: [oop.md](../oop.md) for inheritance, MRO, and ABCs; [typing.md](typing.md) for `Literal` and other constructs; [mypy.md](../../../tooling/mypy.md) for static checking configuration; [repository-di.md](../repository-di.md) for Protocol-based dependency injection.
+Related: [oop.md](../objects/oop.md) for inheritance, MRO, and ABCs; [typing.md](typing.md) for `Literal` and other constructs; [mypy.md](../../tooling/mypy.md) for static checking configuration; [repository-di.md](../objects/repository-di.md) for Protocol-based dependency injection.

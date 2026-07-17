@@ -6,7 +6,7 @@ quiz: detail
 
 # structlog
 
-Third-party logging library that makes structured (key=value) logging the natural default. Every log call produces a dictionary; renderers output it as JSON, coloured console text, or anything else. Sits on top of (or beside) stdlib [`logging`](../language/runtime/logging.md).
+Third-party logging library that makes structured (key=value) logging the natural default. Every log call produces a dictionary; renderers output it as JSON, coloured console text, or anything else. Sits on top of (or beside) stdlib [`logging`](../language/stdlib/logging.md).
 
 ## Why over stdlib
 
@@ -195,7 +195,7 @@ Requires `merge_contextvars` as the first processor in the chain.
 
 ## Testing
 
-See [structlog-testing.md](testing/structlog-testing.md) — `capture_logs()`, assertion patterns, pytest fixture, comparison with `caplog`.
+See [structlog-testing.md](../tooling/testing/structlog-testing.md) — `capture_logs()`, assertion patterns, pytest fixture, comparison with `caplog`.
 
 ## Install
 

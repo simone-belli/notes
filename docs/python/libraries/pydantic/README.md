@@ -1,4 +1,4 @@
-# Python — Tooling / Pydantic
+# Python — Libraries / Pydantic
 
 | File | Type | Description |
 |------|------|-------------|

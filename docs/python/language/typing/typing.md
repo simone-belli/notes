@@ -6,7 +6,7 @@ quiz: core
 
 # typing module — selected constructs
 
-Key types from `typing` (and `typing_extensions`) that go beyond basic annotations. Enforced by [mypy](../../../tooling/mypy.md) and [Pydantic](../../../tooling/pydantic/pydantic.md) at parse time; ignored by the Python runtime.
+Key types from `typing` (and `typing_extensions`) that go beyond basic annotations. Enforced by [mypy](../../tooling/mypy.md) and [Pydantic](../../libraries/pydantic/pydantic.md) at parse time; ignored by the Python runtime.
 
 ---
 

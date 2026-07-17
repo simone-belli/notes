@@ -18,7 +18,7 @@ Three options in increasing power:
 
 ## 1. f-strings (no deps)
 
-Use the [format spec mini-language](../language/functional/string-formatting.md) for alignment and width:
+Use the [format spec mini-language](../language/stdlib/string-formatting.md) for alignment and width:
 
 ```python
 rows = [("Apple", 1.25, 100), ("Dragonfruit", 4.99, 12)]

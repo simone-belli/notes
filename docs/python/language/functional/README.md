@@ -8,5 +8,4 @@
 | [itertools/](itertools/) | — | `accumulate`, `chain`, `islice`, `product`, `combinations`, `groupby` |
 | [lazy-evaluation.md](lazy-evaluation.md) | note | Lazy vs eager: memory tradeoffs, sinks, when each wins, NumPy comparison |
 | [operator.md](operator.md) | note | attrgetter, itemgetter, methodcaller — faster and clearer than lambdas in sort keys |
-| [string-formatting.md](string-formatting.md) | ref | String ops: f-strings, str.format(), Template, format spec, split/join |
 | [unpacking.md](unpacking.md) | note | `*x` and `**x` operators: protocols, contexts (calls, literals, assignment) |

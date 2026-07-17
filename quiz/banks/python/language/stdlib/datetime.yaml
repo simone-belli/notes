@@ -1,4 +1,4 @@
-note: python/language/runtime/datetime.md
+note: python/language/stdlib/datetime.md
 tier: detail
 questions:
   - id: fromtimestamp-tz

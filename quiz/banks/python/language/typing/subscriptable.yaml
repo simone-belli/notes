@@ -1,4 +1,4 @@
-note: python/language/objects/typing/subscriptable.md
+note: python/language/typing/subscriptable.md
 tier: detail
 questions:
   - id: getitem-sugar

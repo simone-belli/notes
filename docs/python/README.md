@@ -2,5 +2,6 @@
 
 | Directory | Description |
 |-----------|-------------|
-| [language/](language/) | Core Python: data model, iterators, generators, exceptions, stdlib |
-| [tooling/](tooling/) | Environment, packaging, linting, type checking, testing |
+| [language/](language/) | Core Python: data model, iterators, generators, typing, stdlib |
+| [libraries/](libraries/) | Third-party runtime libraries: HTTP, web frameworks, validation, logging |
+| [tooling/](tooling/) | Development-time tools: environment, packaging, linting, type checking, testing |

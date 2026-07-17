@@ -1,4 +1,4 @@
-note: python/language/runtime/file-io.md
+note: python/language/stdlib/file-io.md
 tier: detail
 questions:
   - id: w-truncates

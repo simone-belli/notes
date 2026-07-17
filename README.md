@@ -8,7 +8,7 @@ Learning notes and references across software engineering, ML, and AI topics.
 | [dsa/](docs/dsa/) | Data structures and algorithms: complexity, queues, trees, graphs |
 | [finance/](docs/finance/) | Trading, exchanges, and market data APIs |
 | [git/](docs/git/) | Git workflows, commands, and CI/CD |
-| [python/](docs/python/) | Python language, tooling, and type system |
+| [python/](docs/python/) | Python language, libraries, and tooling |
 | [tools/](docs/tools/) | Language-agnostic tools and notation |
 
 ## Structure
@@ -54,13 +54,8 @@ notes/\
 │   │   │   ├── [iterators-generators.md](docs/python/language/functional/iterators-generators.md)\
 │   │   │   ├── [lazy-evaluation.md](docs/python/language/functional/lazy-evaluation.md)\
 │   │   │   ├── [operator.md](docs/python/language/functional/operator.md)\
-│   │   │   ├── [string-formatting.md](docs/python/language/functional/string-formatting.md)\
 │   │   │   └── [unpacking.md](docs/python/language/functional/unpacking.md)\
 │   │   ├── objects/\
-│   │   │   ├── typing/\
-│   │   │   │   ├── [structural-typing.md](docs/python/language/objects/typing/structural-typing.md)\
-│   │   │   │   ├── [subscriptable.md](docs/python/language/objects/typing/subscriptable.md)\
-│   │   │   │   └── [typing.md](docs/python/language/objects/typing/typing.md)\
 │   │   │   ├── [data-model.md](docs/python/language/objects/data-model.md)\
 │   │   │   ├── [exceptions.md](docs/python/language/objects/exceptions.md)\
 │   │   │   ├── [hash.md](docs/python/language/objects/hash.md)\
@@ -70,39 +65,48 @@ notes/\
 │   │   │   ├── [repository-di.md](docs/python/language/objects/repository-di.md)\
 │   │   │   ├── [sets.md](docs/python/language/objects/sets.md)\
 │   │   │   └── [warnings.md](docs/python/language/objects/warnings.md)\
-│   │   └── runtime/\
-│   │       ├── [cli.md](docs/python/language/runtime/cli.md)\
-│   │       ├── [context-managers.md](docs/python/language/runtime/context-managers.md)\
-│   │       ├── [datetime.md](docs/python/language/runtime/datetime.md)\
-│   │       ├── [entrypoint.md](docs/python/language/runtime/entrypoint.md)\
-│   │       ├── [import-system.md](docs/python/language/runtime/import-system.md)\
-│   │       ├── [logging.md](docs/python/language/runtime/logging.md)\
-│   │       ├── [match.md](docs/python/language/runtime/match.md)\
-│   │       ├── [pathlib.md](docs/python/language/runtime/pathlib.md)\
-│   │       ├── [scopes.md](docs/python/language/runtime/scopes.md)\
-│   │       └── [subprocess.md](docs/python/language/runtime/subprocess.md)\
+│   │   ├── runtime/\
+│   │   │   ├── [context-managers.md](docs/python/language/runtime/context-managers.md)\
+│   │   │   ├── [entrypoint.md](docs/python/language/runtime/entrypoint.md)\
+│   │   │   ├── [import-system.md](docs/python/language/runtime/import-system.md)\
+│   │   │   ├── [match.md](docs/python/language/runtime/match.md)\
+│   │   │   └── [scopes.md](docs/python/language/runtime/scopes.md)\
+│   │   ├── stdlib/\
+│   │   │   ├── [cli.md](docs/python/language/stdlib/cli.md)\
+│   │   │   ├── [datetime.md](docs/python/language/stdlib/datetime.md)\
+│   │   │   ├── [file-io.md](docs/python/language/stdlib/file-io.md)\
+│   │   │   ├── [logging.md](docs/python/language/stdlib/logging.md)\
+│   │   │   ├── [pathlib.md](docs/python/language/stdlib/pathlib.md)\
+│   │   │   ├── [string-formatting.md](docs/python/language/stdlib/string-formatting.md)\
+│   │   │   └── [subprocess.md](docs/python/language/stdlib/subprocess.md)\
+│   │   └── typing/\
+│   │       ├── [structural-typing.md](docs/python/language/typing/structural-typing.md)\
+│   │       ├── [subscriptable.md](docs/python/language/typing/subscriptable.md)\
+│   │       └── [typing.md](docs/python/language/typing/typing.md)\
+│   ├── libraries/\
+│   │   ├── pydantic/\
+│   │   │   ├── [pydantic.md](docs/python/libraries/pydantic/pydantic.md)\
+│   │   │   ├── [pydantic-settings.md](docs/python/libraries/pydantic/pydantic-settings.md)\
+│   │   │   └── [pydantic-validators.md](docs/python/libraries/pydantic/pydantic-validators.md)\
+│   │   ├── [aiohttp.md](docs/python/libraries/aiohttp.md)\
+│   │   ├── [fastapi.md](docs/python/libraries/fastapi.md)\
+│   │   ├── [jsonl.md](docs/python/libraries/jsonl.md)\
+│   │   ├── [structlog.md](docs/python/libraries/structlog.md)\
+│   │   └── [terminal-tables.md](docs/python/libraries/terminal-tables.md)\
 │   └── tooling/\
-│       ├── pydantic/\
-│       │   ├── [pydantic.md](docs/python/tooling/pydantic/pydantic.md)\
-│       │   ├── [pydantic-settings.md](docs/python/tooling/pydantic/pydantic-settings.md)\
-│       │   └── [pydantic-validators.md](docs/python/tooling/pydantic/pydantic-validators.md)\
 │       ├── testing/\
 │       │   ├── [contract-tests.md](docs/python/tooling/testing/contract-tests.md)\
+│       │   ├── [fixtures.md](docs/python/tooling/testing/fixtures.md)\
 │       │   ├── [hypothesis.md](docs/python/tooling/testing/hypothesis.md)\
 │       │   ├── [mocking.md](docs/python/tooling/testing/mocking.md)\
 │       │   ├── [pytest.md](docs/python/tooling/testing/pytest.md)\
 │       │   ├── [structlog-testing.md](docs/python/tooling/testing/structlog-testing.md)\
 │       │   ├── [testing-patterns.md](docs/python/tooling/testing/testing-patterns.md)\
 │       │   └── [testing-strategy.md](docs/python/tooling/testing/testing-strategy.md)\
-│       ├── [aiohttp.md](docs/python/tooling/aiohttp.md)\
-│       ├── [fastapi.md](docs/python/tooling/fastapi.md)\
-│       ├── [jsonl.md](docs/python/tooling/jsonl.md)\
 │       ├── [mypy.md](docs/python/tooling/mypy.md)\
 │       ├── [poetry.md](docs/python/tooling/poetry.md)\
 │       ├── [pyenv.md](docs/python/tooling/pyenv.md)\
-│       ├── [ruff.md](docs/python/tooling/ruff.md)\
-│       ├── [structlog.md](docs/python/tooling/structlog.md)\
-│       └── [terminal-tables.md](docs/python/tooling/terminal-tables.md)\
+│       └── [ruff.md](docs/python/tooling/ruff.md)\
 └── tools/\
     ├── [env-vars.md](docs/tools/env-vars.md)\
     ├── [markdown.md](docs/tools/markdown.md)\

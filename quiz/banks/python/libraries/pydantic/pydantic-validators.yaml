@@ -1,4 +1,4 @@
-note: python/tooling/pydantic/pydantic-validators.md
+note: python/libraries/pydantic/pydantic-validators.md
 tier: detail
 questions:
   - id: before-vs-after

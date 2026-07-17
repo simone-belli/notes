@@ -1,4 +1,4 @@
-# Python — Language / Objects / Typing
+# Python — Language / Typing
 
 | File | Type | Description |
 |------|------|-------------|

@@ -40,6 +40,6 @@ class Instrument(ABC):
 
 ## Interfaces without inheritance
 
-For duck-typed interfaces — `Protocol`, the Protocol-vs-ABC comparison, `@runtime_checkable`, and how to verify conformance — see [structural-typing.md](typing/structural-typing.md).
+For duck-typed interfaces — `Protocol`, the Protocol-vs-ABC comparison, `@runtime_checkable`, and how to verify conformance — see [structural-typing.md](../typing/structural-typing.md).
 
 See also: [data-model.md](data-model.md) for dunder methods and `@dataclass`; [repository-di.md](repository-di.md) for interface-based dependency injection.

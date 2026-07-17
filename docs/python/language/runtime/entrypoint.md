@@ -85,7 +85,7 @@ finlib-pipeline = "finlib.pipeline.cli:main"
 
 The value is `"dotted.module.path:callable"`. Pip generates a wrapper at
 `.venv/bin/finlib-pipeline` that imports the module and calls `main()` with no
-arguments — so `main()` must read `sys.argv` itself (e.g. via [argparse](cli.md)).
+arguments — so `main()` must read `sys.argv` itself (e.g. via [argparse](../stdlib/cli.md)).
 
 ```python
 # finlib/pipeline/cli.py
@@ -137,4 +137,4 @@ finlib-pipeline       # now available directly on PATH
 ## Related
 
 - [asyncio.md](../concurrency/asyncio.md) — event loop, `await`, `gather`, `create_task`
-- [cli.md](cli.md) — CLI flags for running Python (`-c`, `-m`)
+- [cli.md](../stdlib/cli.md) — CLI flags for running Python (`-c`, `-m`)

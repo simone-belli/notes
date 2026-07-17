@@ -24,7 +24,7 @@ finally:
     cleanup()
 ```
 
-Common uses: [file reading](file-io.md), database connections, threading, timing, changing settings temporarily.
+Common uses: [file reading](../stdlib/file-io.md), database connections, threading, timing, changing settings temporarily.
 
 ## Class-based Context Manager
 

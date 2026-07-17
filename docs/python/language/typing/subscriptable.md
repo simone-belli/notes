@@ -101,5 +101,5 @@ class Stack(Generic[T]):
 
 ## Related
 
-- [data-model.md](../data-model.md) — dunder methods overview; `__getitem__` in context
-- [../../../tooling/mypy.md](../../../tooling/mypy.md) — type checking generic aliases statically
+- [data-model.md](../objects/data-model.md) — dunder methods overview; `__getitem__` in context
+- [../../tooling/mypy.md](../../tooling/mypy.md) — type checking generic aliases statically

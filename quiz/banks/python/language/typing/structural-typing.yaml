@@ -1,4 +1,4 @@
-note: python/language/objects/typing/structural-typing.md
+note: python/language/typing/structural-typing.md
 tier: core
 questions:
   - id: nominal-vs-structural

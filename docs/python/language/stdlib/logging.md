@@ -190,7 +190,7 @@ handler.setFormatter(jsonlogger.JsonFormatter(
 ))
 ```
 
-Alternative: [`structlog`](../../tooling/structlog.md) — richer API, keyword-style, pluggable renderers.
+Alternative: [`structlog`](../../libraries/structlog.md) — richer API, keyword-style, pluggable renderers.
 
 ---
 

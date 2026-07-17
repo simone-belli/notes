@@ -88,7 +88,7 @@ raise ValueError(f"price missing for {symbol}")    # GOOD
 raise ValueError("price missing for %s", symbol)   # BUG — nothing interpolates
 ```
 
-- [Logging](../runtime/logging.md) uses `%`-style arguments for a real reason: interpolation is deferred until the record is actually emitted, so a disabled `log.debug()` in a hot loop never pays the string-building cost.
+- [Logging](../stdlib/logging.md) uses `%`-style arguments for a real reason: interpolation is deferred until the record is actually emitted, so a disabled `log.debug()` in a hot loop never pays the string-building cost.
 - Exceptions have no such mechanism — `BaseException.__init__` just stores its arguments as `e.args`. The "bug" line above raises `ValueError('price missing for %s', 'AAPL')`: a two-element tuple, never interpolated.
 
 !!! warning "Logging-style formatting in an exception is not lazy — it is silently broken"
@@ -187,5 +187,5 @@ except* ValueError as eg:    # except* filters by type
 
 - [context-managers.md](../runtime/context-managers.md) — context managers (`__exit__` protocol, `@contextmanager`)
 - [testing-strategy.md](../../tooling/testing/testing-strategy.md) — `pytest.raises` to assert exceptions in tests
-- [pydantic.md](../../tooling/pydantic/pydantic.md) — `ValidationError` is the canonical custom exception pattern at application boundaries
+- [pydantic.md](../../libraries/pydantic/pydantic.md) — `ValidationError` is the canonical custom exception pattern at application boundaries
 - [warnings.md](warnings.md) — `warnings.warn()`: downgrade a caught exception to a non-fatal advisory

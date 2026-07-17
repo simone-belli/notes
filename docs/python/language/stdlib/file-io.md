@@ -6,7 +6,7 @@ quiz: detail
 
 # File I/O
 
-Python's built-in `open()` returns a file object. Always wrap it in a [`with` statement](context-managers.md) so the file is closed even if an exception occurs.
+Python's built-in `open()` returns a file object. Always wrap it in a [`with` statement](../runtime/context-managers.md) so the file is closed even if an exception occurs.
 
 ```python
 with open('data.txt', 'r', encoding='utf-8') as f:

@@ -23,7 +23,7 @@ def test_rejects_negative_quantity():
         Trade(symbol='BHP', quantity=-10, price=45.5, side='BUY')
 ```
 
-The `Trade` model used here follows the pattern in [`pydantic.md`](../pydantic/pydantic.md).
+The `Trade` model used here follows the pattern in [`pydantic.md`](../../libraries/pydantic/pydantic.md).
 
 ### `pytest.raises(..., match=)`
 
