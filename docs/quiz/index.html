@@ -89,17 +89,25 @@
 const STORE_KEY = "kbquiz-v1";
 const DAY = 86400e3;
 let DATA = null;   // {generated, banks:[{path, note, tier, area, questions:[…]}]}
-let STATE = null;  // {version, settings:{newPerSession, tiers}, cards:{key:{ease,ivl,due,reps,lapses}}}
+let STATE = null;  // {version, settings:{sessionSize, tiers, types}, cards:{key:{ease,ivl,due,reps,lapses}}}
 let session = null;
 
 /* ---------- persistence ---------- */
 
+function normalizeSettings(s) {  // backfill missing fields; migrate pre-sessionSize states
+  const set = s.settings || (s.settings = {});
+  if (typeof set.sessionSize !== "number") set.sessionSize = typeof set.newPerSession === "number" ? set.newPerSession : 20;
+  delete set.newPerSession;
+  set.tiers = set.tiers || { core: true, detail: true };
+  set.types = set.types || { mcq: true, recall: true };
+  return s;
+}
 function loadState() {
   try {
     const s = JSON.parse(localStorage.getItem(STORE_KEY));
-    if (s && s.version === 1 && s.cards) return s;
+    if (s && s.version === 1 && s.cards) return normalizeSettings(s);
   } catch (e) { /* corrupt → start fresh */ }
-  return { version: 1, settings: { newPerSession: 20, tiers: { core: true, detail: true } }, cards: {} };
+  return normalizeSettings({ version: 1, cards: {} });
 }
 function saveState() { localStorage.setItem(STORE_KEY, JSON.stringify(STATE)); }
 
@@ -117,7 +125,7 @@ function gradeCard(key, grade) {  // grade: "again" | "hard" | "good" | "easy"
     if (grade === "hard") { c.ease = Math.max(1.3, c.ease - 0.15); }
     if (grade === "easy") { c.ease += 0.15; }
     if (c.ivl === 0) {               // new or relearning card graduates
-      c.ivl = grade === "easy" ? 4 : 1;
+      c.ivl = grade === "easy" ? 5 : 2;
     } else {
       const factor = grade === "hard" ? 1.2 : grade === "easy" ? c.ease * 1.3 : c.ease;
       c.ivl = Math.max(c.ivl + 1, Math.round(c.ivl * factor));
@@ -131,11 +139,12 @@ function gradeCard(key, grade) {  // grade: "again" | "hard" | "good" | "easy"
 
 /* ---------- card pool ---------- */
 
-function allCards() {  // respects tier toggles
+function allCards() {  // respects tier and question-type toggles
   const out = [];
   for (const bank of DATA.banks) {
     if (!STATE.settings.tiers[bank.tier]) continue;
     for (const q of bank.questions) {
+      if (!STATE.settings.types[q.type]) continue;
       out.push({ key: bank.path + "#" + q.id, bank, q });
     }
   }
@@ -188,18 +197,30 @@ function renderHome() {
   app.appendChild(el(`<h1>Notes Quiz</h1>`));
   app.appendChild(el(`<p class="muted">${cards.length} cards · updated ${DATA.generated}</p>`));
 
-  const toggles = el(`<div class="toggles"><span class="muted">Tiers:</span></div>`);
-  for (const tier of ["core", "detail"]) {
-    const b = el(`<button class="${STATE.settings.tiers[tier] ? "on" : ""}">${tier}</button>`);
-    b.onclick = () => {
-      const t = STATE.settings.tiers;
-      t[tier] = !t[tier];
-      if (!t.core && !t.detail) t[tier] = true;  // never filter everything out
-      saveState(); renderHome();
-    };
-    toggles.appendChild(b);
+  function toggleRow(label, obj, entries) {  // entries: [key, display][]
+    const row = el(`<div class="toggles"><span class="muted">${label}</span></div>`);
+    for (const [key, name] of entries) {
+      const b = el(`<button class="${obj[key] ? "on" : ""}">${name}</button>`);
+      b.onclick = () => {
+        obj[key] = !obj[key];
+        if (entries.every(([k]) => !obj[k])) obj[key] = true;  // never filter everything out
+        saveState(); renderHome();
+      };
+      row.appendChild(b);
+    }
+    app.appendChild(row);
   }
-  app.appendChild(toggles);
+  toggleRow("Tiers:", STATE.settings.tiers, [["core", "core"], ["detail", "detail"]]);
+  toggleRow("Type:", STATE.settings.types, [["mcq", "MCQ"], ["recall", "open"]]);
+
+  const cap = el(`<label>Questions per session
+    <input type="number" min="0" max="200" value="${STATE.settings.sessionSize}">
+    <span class="muted">(0 = no limit)</span></label>`);
+  cap.querySelector("input").onchange = (e) => {
+    STATE.settings.sessionSize = Math.max(0, parseInt(e.target.value, 10) || 0);
+    saveState(); renderHome();
+  };
+  app.appendChild(cap);
 
   const all = el(`<button class="deck primary"><span>Review all</span>
     <span class="counts">${totalDue} due · ${totalNew} new</span></button>`);
@@ -214,15 +235,7 @@ function renderHome() {
     app.appendChild(b);
   }
 
-  const tools = el(`<details><summary>Settings & backup</summary></details>`);
-  const cap = el(`<label>New cards per session
-    <input type="number" min="0" max="200" value="${STATE.settings.newPerSession}"></label>`);
-  cap.querySelector("input").onchange = (e) => {
-    STATE.settings.newPerSession = Math.max(0, parseInt(e.target.value, 10) || 0);
-    saveState(); renderHome();
-  };
-  tools.appendChild(cap);
-
+  const tools = el(`<details><summary>Backup</summary></details>`);
   const backup = el(`<div class="row">
     <button id="exp">Export progress</button>
     <button id="imp">Import progress</button></div>`);
@@ -261,7 +274,7 @@ function importState() {
       try {
         const s = JSON.parse(text);
         if (!s || s.version !== 1 || typeof s.cards !== "object") throw new Error("bad format");
-        STATE = s; saveState(); renderHome();
+        STATE = normalizeSettings(s); saveState(); renderHome();
         alert("Progress imported.");
       } catch (e) { alert("Not a valid progress file."); }
     });
@@ -273,9 +286,13 @@ function importState() {
 
 function startSession(area) {
   const pool = allCards().filter((c) => !area || c.bank.area === area);
-  const due = pool.filter(isDue).sort((a, b) => STATE.cards[a.key].due - STATE.cards[b.key].due);
-  const fresh = shuffle(pool.filter(isNew)).slice(0, STATE.settings.newPerSession);
-  const queue = due.concat(fresh);
+  const byDue = (a, b) => STATE.cards[a.key].due - STATE.cards[b.key].due;
+  // deck order: recently-wrong cards first, then unseen, previously-correct last —
+  // so a session cap trims the cards you already know before anything else
+  const relearn = pool.filter((c) => isDue(c) && STATE.cards[c.key].ivl === 0).sort(byDue);
+  const fresh = shuffle(pool.filter(isNew));
+  const review = pool.filter((c) => isDue(c) && STATE.cards[c.key].ivl > 0).sort(byDue);
+  const queue = relearn.concat(fresh, review).slice(0, STATE.settings.sessionSize || Infinity);
   if (!queue.length) { alert("Nothing due here — come back later."); return; }
   session = { queue, i: 0, done: 0, again: 0, total: queue.length };
   renderCard();

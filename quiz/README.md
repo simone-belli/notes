@@ -14,7 +14,10 @@ experience). No Anki or paid apps involved.
   `docs/quiz/data.json` (gitignored artifact, consumed by the app).
 - `../docs/quiz/index.html` — the quiz app: a single self-contained HTML file
   with SM-2 spaced-repetition scheduling; progress lives in the browser's
-  `localStorage`, with export/import buttons for backup.
+  `localStorage`, with export/import buttons for backup. Sessions are capped by
+  a "Questions per session" setting (0 = no limit) and ordered
+  recently-wrong → unseen → previously-correct, so the cap trims already-known
+  cards first.
 - `requirements.txt` — build dependency (`pyyaml`).
 
 ## Bank format
@@ -63,5 +66,6 @@ Export/Import buttons to back it up or move it between devices.
 - Question volume: ≤8 per `core` note, ≤4 per `detail` note; roughly 70% mcq / 30% recall.
 - Questions test understanding, not trivia; distractors must be plausible.
 - Cards inherit their tier (`core`/`detail`) and top-level area (`python`,
-  `data`, …) from the bank; the app filters on both.
+  `data`, …) from the bank; the app filters on both, plus on question type
+  (MCQ / open).
 - The `QUIZ` workflow (see `.claude/skills/quiz/`) maintains these banks.
