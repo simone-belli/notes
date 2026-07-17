@@ -54,7 +54,7 @@ One test, one behaviour. If a test has 10 assertions, split it into 10 tests.
 !!! tip "Mock at your own boundary — don't mock what you don't own"
     Mocking third-party library internals (e.g. `httpx.Response` internals) lets the mock drift from the real API — the library updates and your tests keep passing while your code breaks. Instead, mock at the boundary you own: your function that calls the library, or your repository interface. See the [testing-patterns.md](testing-patterns.md) decision guide.
 
-Don't mock what you don't own — mocking third-party library internals lets the mock drift from reality. Mock at your own boundary.
+Don't mock what you don't own — mocking third-party library internals lets the mock drift from reality. Mock at your own boundary. For the mechanics (`patch`, `autospec`, `side_effect`) and the full when-to-mock decision rule, see [mocking.md](mocking.md).
 
 ```python
 from unittest.mock import MagicMock, patch

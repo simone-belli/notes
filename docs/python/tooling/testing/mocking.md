@@ -9,6 +9,13 @@ quiz: core
 
 Patterns for replacing dependencies with controlled substitutes. Use mocks when you can't inject a seam (see [testing-patterns.md](testing-patterns.md)) or when you need to assert a side effect was triggered.
 
+## When to mock at all — the decision rule
+
+- **Mock boundaries you don't own** — network, clock, randomness, filesystem at the true edge. Slow, nondeterministic, unavailable in CI; patch the outermost function of *yours* that touches them.
+- **Use real fakes behind Protocols for seams you do own** — e.g. an `InMemoryTradeRepo` that actually behaves correctly (see [repository-di.md](../../language/objects/repository-di.md)). Fakes catch logic bugs in callers and survive refactors; mocks only verify "the right method was called" and break when internals change.
+- **Never mock the thing under test** — patching a method of the class being tested makes the test exercise the mock, not the code; passing is vacuous. If tempted, split the collaborator out behind a seam and fake that.
+- Prefer asserting state/output over asserting calls; assert calls only when the side effect *is* the behaviour ("an alert was sent"). See [testing-strategy.md](testing-strategy.md) for the broader philosophy.
+
 ## MagicMock
 
 `MagicMock` accepts any attribute access or method call without raising `AttributeError` — returning a new child `MagicMock` each time. It's a stand-in for any object without needing to subclass it.
@@ -60,8 +67,20 @@ m = MagicMock(spec=Notifier)
 m.sned_email(...)   # AttributeError — typo caught immediately
 ```
 
+`spec` checks attribute *names* only — it does **not** validate call signatures.
+
+**`autospec=True`** — builds the mock recursively from the real object, so every method enforces the real signature; wrong arguments raise `TypeError`. This catches **API drift**: with a bare mock, `m.assert_called_once_with("BTC", threshold=1000)` keeps passing after the real function is refactored to `send_alert(symbol, *, limit)` — the suite stays green while production breaks.
+
+```python
+with patch("mymodule.send_alert", autospec=True) as m:
+    run_checks()
+m.assert_called_once_with("BTC", threshold=1000)   # TypeError if signature drifted
+```
+
+Use `autospec=True` on `patch` by default (`create_autospec(obj)` for standalone mocks). Fall back to `spec=`/bare mocks only for attributes created dynamically at runtime (e.g. set in `__init__`), which autospec can't see.
+
 !!! note "MagicMock vs Mock"
-    `MagicMock` implements dunder methods (`__len__`, `__iter__`, `__enter__`, `__exit__`, …) so it works as an iterator, context manager, etc. Use `MagicMock` by default; drop to `Mock` only if you want dunder access to raise `AttributeError`.
+    `Mock` records calls and returns a child mock for any attribute — but dunder methods are looked up on the *type*, so `len(m)`, `list(m)`, or `with m:` raise `TypeError` on a plain `Mock`. `MagicMock` pre-wires the dunders (`__len__`, `__iter__`, `__enter__`, `__exit__`, …), so it works as a container, iterator, or context manager. Use `MagicMock` by default; drop to `Mock` only if you want dunder access to fail loudly.
 
 ## Testing functions that make network calls
 
@@ -162,7 +181,9 @@ If the module uses `import httpx` and calls `httpx.get(...)`, patch `"mymodule.h
 | Situation | Use |
 |-----------|-----|
 | Simple replacement, no call inspection | `monkeypatch.setattr` |
-| Need to count calls or inspect args | `patch` + `MagicMock` |
+| Need to count calls or inspect args | `patch(..., autospec=True)` |
+| Guard against signature drift | `autospec=True` / `create_autospec` |
+| Own repo/gateway interface | in-memory fake behind a `Protocol`, not a mock |
 | Sequential call sequence (first fails, second succeeds) | `side_effect=[...]` list |
 | Async network call | `patch` + `AsyncMock` |
 
