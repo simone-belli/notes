@@ -36,6 +36,40 @@ st.one_of(st.integers(), st.none())
 
 Compose freely: `st.lists(st.floats(...), min_size=1)`.
 
+## Multiple parameters
+
+`@given` accepts one strategy per test argument — positional or keyword — and draws each independently every example:
+
+```python
+@given(st.integers(), st.integers())
+def test_add_commutative(a, b):
+    assert a + b == b + a
+
+@given(a=st.integers(min_value=0), b=st.floats(allow_nan=False))
+def test_mixed_kwargs(a, b):
+    ...
+```
+
+When parameters must be *related* (e.g. `low <= high`), don't generate them independently and filter — Hypothesis may discard most examples before finding a valid one. Use `st.composite` to draw dependently instead:
+
+```python
+from hypothesis import strategies as st
+
+@st.composite
+def low_high(draw):
+    low = draw(st.integers(min_value=0, max_value=100))
+    high = draw(st.integers(min_value=low, max_value=100))
+    return low, high
+
+@given(low_high())
+def test_range(pair):
+    low, high = pair
+    assert low <= high
+```
+
+!!! tip "Filtering vs composite"
+    `st.tuples(a, b).filter(lambda p: p[0] <= p[1])` works but wastes examples on rejected draws; `st.composite` builds only valid combinations and shrinks them together.
+
 ## Property patterns
 
 | Pattern | Example assertion |
