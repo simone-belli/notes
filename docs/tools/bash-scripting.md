@@ -80,4 +80,4 @@ Bash-only — needs `#!/bin/bash`, not `#!/bin/sh`.
 ## See also
 
 - [zsh.md](zsh.md) — interactive shell use: aliases, navigation, PATH
-- [env-vars.md](env-vars.md#auto-loading-project-variables-into-a-terminal) — `PATH_add` to make a project's `bin/` scripts callable by name only inside that project
+- [direnv.md](direnv.md#direnv-commands) — `PATH_add` to make a project's `bin/` scripts callable by name only inside that project

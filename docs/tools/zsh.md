@@ -77,7 +77,7 @@ mkcd() { mkdir -p "$1" && cd "$1"; }
 Apply without reopening terminal: `source ~/.zshrc`
 
 !!! note "Project-scoped shortcuts, not global aliases"
-    An `alias` defined in `~/.zshrc` is global — visible (and often broken) in every project. `alias` also isn't an environment variable, so tools like direnv can't export it into a directory-scoped shell the way they export `PATH` or `API_KEY`. To get a command shortcut that only exists inside one project: put an executable script in a project `bin/` folder (see [bash-scripting.md](bash-scripting.md) for shebang/`exec`/argument-forwarding basics) and add that folder to `PATH` only while inside the project, via direnv's `PATH_add bin` — see [env-vars.md](env-vars.md#auto-loading-project-variables-into-a-terminal). This is git-shareable and shell-agnostic, unlike a real `alias`.
+    An `alias` defined in `~/.zshrc` is global — visible (and often broken) in every project. `alias` also isn't an environment variable, so tools like direnv can't export it into a directory-scoped shell the way they export `PATH` or `API_KEY`. To get a command shortcut that only exists inside one project: put an executable script in a project `bin/` folder (see [bash-scripting.md](bash-scripting.md) for shebang/`exec`/argument-forwarding basics) and add that folder to `PATH` only while inside the project, via direnv's `PATH_add bin` — see [direnv.md](direnv.md). This is git-shareable and shell-agnostic, unlike a real `alias`.
 
 ## Symlinks
 
