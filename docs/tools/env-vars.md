@@ -123,6 +123,35 @@ class Settings(BaseSettings):
 settings = Settings()
 ```
 
+## Auto-loading project variables into a terminal
+
+A `.env` file is inert text — nothing exports it into your shell automatically. To have variables appear in a terminal the moment you open a project, without touching `~/.zshrc` and without leaking to other projects, two options:
+
+**Editor-scoped (Cursor/VS Code only, zero shell config):**
+```json
+// <project-root>/.vscode/settings.json
+{
+  "terminal.integrated.env.osx": {
+    "DATABASE_URL": "postgres://localhost/dev"
+  }
+}
+```
+Applied only when Cursor spawns its own integrated terminal for that workspace; merges on top of the normal environment. A plain Terminal.app window in the same folder won't see it. Gitignore the file (or just this key) if it holds secrets.
+
+**Shell-scoped, any terminal (`direnv`):**
+```bash
+# one-time, in ~/.zshrc — generic hook, no project data
+eval "$(direnv hook zsh)"
+```
+```bash
+# <project-root>/.envrc — per project, auto-loads/unloads on cd
+dotenv   # or: export KEY=value directly
+```
+```bash
+direnv allow   # approve once per new/changed .envrc
+```
+direnv (`brew install direnv`) hooks the shell's directory-change event: `cd` into the folder and variables export automatically in *any* terminal (Cursor, Terminal.app, SSH); `cd` out and they unexport. The `.zshrc` line is written once, ever, and carries no secrets.
+
 ## Scope summary
 
 | Scope | Where | Who sees it |
