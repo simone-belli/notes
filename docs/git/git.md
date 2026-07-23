@@ -101,6 +101,20 @@ git rebase --continue   # after resolving a conflict + git add
 git rebase --abort       # bail out, restore the pre-rebase state
 ```
 
+### Cherry-picking a single commit
+
+`git cherry-pick <hash>` replays one commit's diff onto the current branch as a **new** commit —
+same idea as rebase, but for one hand-picked commit instead of a whole range (new parent → new SHA).
+Typical use: a hotfix on `main` needs to land on `release/1.2` too, without pulling in main's other
+unrelated commits.
+
+```bash
+git cherry-pick abc123        # apply abc123's diff onto HEAD as a new commit
+git cherry-pick -n abc123      # apply + stage, but don't commit yet
+git cherry-pick --continue     # after resolving a conflict
+git cherry-pick --abort         # bail out
+```
+
 ## Undoing changes
 
 | Situation | Command |
@@ -117,14 +131,39 @@ git rebase --abort       # bail out, restore the pre-rebase state
     reason as rebase above). `revert` creates a brand-new commit that undoes another one, so it's
     safe to use on shared/pushed history.
 
+### Recovering with reflog
+
+`reset --hard` only moves the branch ref backward — it doesn't delete the old commits (see
+[internals.md](internals.md#content-addressing-makes-history-tamper-evident)). `git reflog` is a
+local, chronological log of every place a ref has pointed, independent of the commit graph, so it
+can find commits `git log` can no longer reach:
+
+```bash
+git reset --hard HEAD~3   # branch ref moves back 3 commits — they vanish from `git log`
+git reflog                 # find the commit hash from just before the reset
+git reset --hard <hash>    # move the ref back — the 3 commits are visible again
+```
+
+!!! tip "The command to remember when you think you've lost work"
+    `git reflog` → find the pre-mistake SHA → `git reset --hard <sha>`. Works after a bad rebase,
+    an accidental `reset --hard`, or a deleted branch, as long as `git gc` hasn't pruned it yet
+    (unreachable objects are kept ~30 days by default).
+
 ## Stashing
 
 ```bash
 git stash              # shelve unstaged/staged changes, restore a clean working tree
-git stash list          # see shelved stashes
+git stash -u            # also shelve untracked files
+git stash list           # see shelved stashes: stash@{0}, stash@{1}, ...
+git stash show -p stash@{0}   # view a stash's diff
 git stash pop            # reapply the most recent stash and drop it
 git stash apply          # reapply without dropping it
+git stash drop stash@{1}      # discard a stash without applying it
+git stash branch new-branch stash@{0}   # new branch from the stash's base commit, then apply it
 ```
+
+`git stash branch` fixes the common failure where `stash pop` conflicts because the branch moved on
+since you stashed: it checks out a fresh branch from the stash's original commit first.
 
 ## Ignoring files
 

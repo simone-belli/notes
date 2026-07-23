@@ -39,6 +39,9 @@ a new object graph from that point forward and move a branch ref to its tip. The
 unreferenced, until garbage collected. This is *why* history is tamper-evident — a structural
 consequence of content-addressing, not a feature bolted on top.
 
+"Unreferenced, not deleted" is also the recovery mechanism after a mistaken `reset --hard`: see
+[recovering with reflog](git.md#recovering-with-reflog).
+
 ## Refs: pointers, not objects
 
 Branches, `HEAD`, and lightweight tags live outside the object database as plain text files holding
