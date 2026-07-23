@@ -80,3 +80,41 @@ git merge-base A B                 # nearest common ancestor node
     the only mutable piece: cheap plain-text bookmarks pointing at nodes in the graph. `reset`,
     `checkout`, and branch creation just rewrite a ref file; they never touch the object graph
     itself.
+
+## Rebase vs merge: two ways to resolve the same divergence
+
+Once `main` and `feature` have diverged from a common ancestor, there are exactly two ways to
+reconcile them, and the object model explains why they behave so differently:
+
+- **Merge** creates one new commit with **two parents** — the tips of both branches. `F`/`G` (the
+  original feature commits) are untouched; the DAG now records the true topology: two lines of work
+  that rejoined at this point.
+- **Rebase** takes each commit unique to `feature` and replays it — same diff — on top of `main`'s
+  tip, one at a time. Each replayed commit gets a **different parent** than the original, and since
+  a commit's hash is a function of its own tree *and* its parent's hash, a different parent means a
+  **different SHA**, even for an identical diff. Rebase doesn't edit `F` into `F'`; objects are
+  immutable, so it forges a brand-new object `F'` with the same payload and moves the branch ref to
+  point at the new tip. `F`/`G` become unreachable (GC-eligible) the moment nothing points at them.
+
+```
+merge:   A---B---C---D---E
+                          \
+                           H   (parents: [E, G])
+                          /
+                F--------G
+
+rebase:  A---B---C---D---E---F'---G'
+```
+
+This is why **rebasing a commit that anyone else has already pulled is unsafe**: their clone still
+has a ref pointing at the old SHA (`F`); yours now points at a different object (`F'`) claiming to
+be "the same work." Git has no way to know they're equivalent — content-addressing is exactly what
+prevents it from assuming that. A force-push then hands them a diverged history for work they
+thought they already had. Rebasing commits nobody else has fetched is completely safe, since no
+other ref anywhere can diverge from a SHA that never left your machine — which is also why
+throwaway local branches (`git branch -D wip/spike`) are safe to rebase or discard freely.
+
+Neither approach is "more correct" — merge preserves true topology (useful for audit/bisect context
+around *when* two lines of work joined); rebase produces a clean, linear line (simpler `git
+bisect`, easier to read serially). Which one a team uses is a convention, not a correctness
+question — see the command-level warning in [git.md](git.md#merging-and-rebasing).

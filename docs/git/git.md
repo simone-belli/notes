@@ -66,7 +66,7 @@ git rebase main              # replay the current branch's commits onto main's t
 
 !!! warning "Never rebase commits that are already pushed and shared"
     Rebase rewrites commits — new SHAs — because it builds a new object graph from that point
-    forward (see the [object model](internals.md#content-addressing-makes-history-tamper-evident)).
+    forward (see [rebase vs merge](internals.md#rebase-vs-merge-two-ways-to-resolve-the-same-divergence)).
     Anyone who already pulled the old commits will get diverged history. Rebase local/unpushed work
     freely; for shared branches, merge instead (or coordinate a force-push).
 
