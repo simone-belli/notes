@@ -45,6 +45,28 @@ git log --oneline --graph --all   # visualize branches and merges
 git blame file.py          # who last touched each line, and in which commit
 ```
 
+### Finding a bug with bisect
+
+`git bisect` binary-searches the commit DAG for the commit that introduced a regression — O(log n)
+checkouts instead of testing every commit.
+
+```bash
+git bisect start
+git bisect bad                  # current commit is broken
+git bisect good v1.2.0            # this older tag/commit was known to work
+# Git checks out a midpoint commit each round — test it, then:
+git bisect good                  # or: git bisect bad
+# ... repeats until Git reports the first bad commit ...
+git bisect reset                  # return to where you started
+
+git bisect run pytest tests/test_regression.py -x   # automate: exit 0 = good, nonzero = bad
+```
+
+!!! note "Merge commits complicate bisect"
+    Bisect walks parent pointers, and a merge commit has two — Git has to pick a side to descend
+    into. This is why a linear (rebased) history makes bisect simpler; see
+    [rebase vs merge](internals.md#rebase-vs-merge-two-ways-to-resolve-the-same-divergence).
+
 ## Branching
 
 ```bash
