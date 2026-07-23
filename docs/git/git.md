@@ -74,6 +74,33 @@ Merge conflicts leave `<<<<<<<` / `=======` / `>>>>>>>` markers in the affected 
 to the resolved content, then `git add <file>` and `git commit` (merge) or `git rebase --continue`
 (rebase).
 
+### Interactive rebase: cleaning up commits
+
+`git rebase -i HEAD~5` opens an editor listing the last 5 commits (oldest first); editing the verb
+and the line order is the whole interface.
+
+| Verb | Effect |
+|------|--------|
+| `pick` | keep as-is |
+| `reword` | keep the diff, edit the message |
+| `squash` | combine into the previous commit, merge both messages |
+| `fixup` | combine into the previous commit, discard this message |
+| `drop` (or delete the line) | discard the commit entirely |
+
+```
+pick a1b2c3d wip
+fixup e4f5g6h fix typo
+fixup h7i8j9k more wip
+reword k1l2m3n feat: add user auth endpoint
+```
+Squashes 4 messy commits into 1, using `reword` to write a single clean
+[Conventional Commit](https://www.conventionalcommits.org/) message.
+
+```bash
+git rebase --continue   # after resolving a conflict + git add
+git rebase --abort       # bail out, restore the pre-rebase state
+```
+
 ## Undoing changes
 
 | Situation | Command |
