@@ -3,7 +3,7 @@
 | File | Type | Description |
 |------|------|-------------|
 | [git.md](git.md) | ref | Setup, staging/diff, bisect, branching, merge/rebase, cherry-pick, undo, reflog, stash, .gitignore |
-| [github-actions.md](github-actions.md) | note | CI/CD with GitHub Actions: workflows, jobs, triggers, matrix, caching |
+| [github-actions.md](github-actions.md) | note | CI/CD with GitHub Actions: workflows, jobs, triggers, matrix, caching, concurrency |
 | [github-repo-governance.md](github-repo-governance.md) | note | Branch protection, PR templates, CODEOWNERS, issue templates, labels |
 | [internals.md](internals.md) | note | Object model: blobs, trees, commits, tags; refs; the commit DAG; rebase vs merge |
 | [tags-releases.md](tags-releases.md) | note | Tags (lightweight vs annotated), semver, GitHub releases, release workflow |

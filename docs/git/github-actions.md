@@ -18,6 +18,14 @@ Workflow (.yml file, triggered by events)
 
 - **Runner**: a fresh VM (`ubuntu-latest`, etc.) spun up per job.
 - **Action**: a reusable step, referenced as `owner/repo@version`.
+- **`uses:` vs `run:`**: `uses:` invokes a published Action — generic, reusable infrastructure
+  someone else wrote (checkout, language setup, caching). `run:` executes a shell command
+  directly — whatever's specific to this project's toolchain (your linter, your test
+  command). Pin Actions to a version tag (`@v4`, not `@main`) so an upstream change can't
+  silently break your CI.
+- Steps in a job run sequentially and **stop at the first non-zero exit** — this is what
+  gives a `ruff → mypy → pytest` step sequence fail-fast behavior for free, with no extra
+  config needed.
 
 ## Minimal Python CI workflow
 
@@ -100,30 +108,70 @@ steps:
 
 ## Matrix builds
 
-Fan out a job across multiple parameter combinations:
+Fan out a job across multiple parameter combinations — each combination runs on its own
+runner, in parallel, running the job's full step sequence independently:
 
 ```yaml
 strategy:
   matrix:
-    python-version: ["3.10", "3.11", "3.12"]
+    python-version: ["3.12", "3.13"]
 steps:
   - uses: actions/setup-python@v5
     with:
       python-version: ${{ matrix.python-version }}
 ```
 
+- The internal step order (e.g. `ruff → mypy → pytest`) is unaffected — the matrix only
+  adds a second dimension (which Python), not a change to how one leg's steps run.
+- Each matrix leg becomes a **separate required status check** (e.g. `quality (3.12)`,
+  `quality (3.13)`) — select all of them in branch protection, not just one, or the
+  unselected version goes unenforced.
+- `strategy: fail-fast: false` lets every leg run to completion even if one fails, instead
+  of GitHub cancelling the rest the moment any leg fails.
+
 ## Caching dependencies
 
-Runners start fresh. Cache to avoid re-installing on every run:
+Runners start fresh. Cache to avoid re-installing on every run — either let `setup-python`
+manage it (simplest, needs the package manager already on `PATH`):
+
+```yaml
+- uses: actions/setup-python@v5
+  with:
+    python-version: ${{ matrix.python-version }}
+    cache: poetry
+```
+
+or cache explicitly, which works regardless of install order:
 
 ```yaml
 - uses: actions/cache@v4
   with:
     path: ~/.cache/pypoetry/virtualenvs
-    key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+    key: ${{ runner.os }}-poetry-${{ matrix.python-version }}-${{ hashFiles('poetry.lock') }}
 ```
 
-Cache is invalidated when `poetry.lock` changes.
+Cache is invalidated when `poetry.lock` changes (the key's hash component). In a matrix,
+include `matrix.python-version` in the key too — different interpreters need separate
+virtualenvs (compiled extensions, wheel tags differ), so a shared key would serve the wrong
+cache to the wrong version.
+
+## Concurrency: cancelling superseded runs
+
+Without a `concurrency:` block, three quick pushes to the same branch start three full CI
+runs that all complete independently, burning runner-minutes on commits nobody cares about
+anymore:
+
+```yaml
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+```
+
+`group:` scopes what counts as "the same lineage" — `github.ref` keys it per branch/PR so
+pushing to one PR doesn't cancel a run on another; `github.workflow` keeps this workflow's
+grouping separate from any other workflow using the same ref. `cancel-in-progress: true`
+kills the older run in that group the moment a newer one starts. This is a workflow-level
+key, placed alongside `on:`, not nested under `jobs:`.
 
 ## Artifacts
 
