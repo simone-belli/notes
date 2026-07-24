@@ -42,6 +42,32 @@ See [scopes.md](../runtime/scopes.md#closures) for the full mechanics of what ge
 
 A function that takes a function as input and returns a new function.
 
+### Transforming vs. registering
+
+Decorators split into two categories that look identical (`@thing` above a `def`) but do fundamentally different jobs:
+
+- **Transforming** — returns a *different* callable (a `wrapper`) that replaces the original. Calling the decorated name now runs different code. Examples: `@functools.wraps`-based wrappers, `@retry`, `@lru_cache`.
+- **Registering** — returns `func` itself, unchanged. Its effect is a **side effect at decoration time**: recording `func` in a dict/list/class attribute so something else (a router, a validation framework) can find it later. Examples: `@app.route(...)`, Pydantic's `@field_validator`.
+
+```python
+routes = {}
+
+def route(path):
+    def register(func):
+        routes[path] = func   # side effect
+        return func            # same object back — nothing wraps it
+    return register
+
+@route("/health")
+def health_check():
+    return "ok"
+
+health_check is routes["/health"]   # True — registering decorator, identity preserved
+```
+
+!!! tip "The tell"
+    Does the decorator define a nested function and return *that*? Transforming. Does it return its argument unchanged (aside from bookkeeping)? Registering. Check with `decorated is original` or by reading whether the decorator body has a `return wrapper` vs. `return func`.
+
 ### No arguments — 2 levels of nesting
 
 ```python
