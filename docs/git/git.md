@@ -20,28 +20,8 @@ git config --global init.defaultBranch main
 git config --global alias.st status         # usage: git st
 ```
 
-### Shell autocomplete
-
-Tab-completion for `git` subcommands, flags, and branch names isn't a Git feature — it's a
-completion script Git ships (`contrib/completion/git-completion.bash`) that your *shell* runs, not
-something `git config` turns on.
-
-```bash
-# bash: source the script Git (or your package manager) installed
-source ~/.git-completion.bash            # e.g. $(brew --prefix)/etc/bash_completion.d/... on macOS
-
-# zsh: either point fpath at Git's own zsh wrapper...
-fpath=(/path/to/contrib/completion $fpath)
-autoload -Uz compinit && compinit
-# ...or, on oh-my-zsh, just enable the bundled plugin
-plugins=(git)   # ~/.zshrc — also adds aliases like gst, gco
-```
-
-!!! note "Completion is per-shell, not per-Git-install"
-    Homebrew, apt, and building from source each drop the script in a different place (or not at
-    all), and bash vs. zsh load it differently. If `git chec<TAB>` doesn't expand, the fix is a
-    shell config problem (`$fpath`, `.bashrc`/`.zshrc` sourcing), not a Git one — verify with
-    `type _git` (bash), which should show a function, not "not found".
+Tab-completion for `git` subcommands, flags, and branch names is a shell feature, not a Git one —
+see [command completion](../tools/zsh.md#command-completion).
 
 ## Typical workflow
 

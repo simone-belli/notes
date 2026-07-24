@@ -79,6 +79,33 @@ Apply without reopening terminal: `source ~/.zshrc`
 !!! note "Project-scoped shortcuts, not global aliases"
     An `alias` defined in `~/.zshrc` is global — visible (and often broken) in every project. `alias` also isn't an environment variable, so tools like direnv can't export it into a directory-scoped shell the way they export `PATH` or `API_KEY`. To get a command shortcut that only exists inside one project: put an executable script in a project `bin/` folder (see [bash-scripting.md](bash-scripting.md) for shebang/`exec`/argument-forwarding basics) and add that folder to `PATH` only while inside the project, via direnv's `PATH_add bin` — see [direnv.md](direnv.md). This is git-shareable and shell-agnostic, unlike a real `alias`.
 
+## Command completion
+
+Tab-completion for a command's subcommands, flags, and arguments (`git chec<TAB>` → `git
+checkout`) isn't built into the program itself — it's a **completion function** the shell loads.
+Most CLIs ship their own (`git`, `docker`, `kubectl`, `npm`), or one comes from a framework:
+
+```zsh
+# ~/.zshrc — zsh's completion system must be initialized once
+autoload -Uz compinit && compinit
+
+# a tool's completion script gets sourced directly, or added to the search path
+fpath=(/path/to/some-tool/completions $fpath)
+source ~/.git-completion.bash   # e.g. Git's own script, via zsh's bashcompinit
+```
+
+- **oh-my-zsh** plugins (`plugins=(git docker kubectl)`) bundle pre-wired completions for common
+  tools plus aliases (`gst`, `gco`, ...) — the easiest path if already using the framework.
+- Verify a completion function loaded: `type _git` should show a function, not "not found".
+- **Version skew**: an outdated completion script won't know about a tool's newer subcommands even
+  though the binary itself supports them (e.g. Git's `switch`/`restore`) — update the completion
+  script alongside the tool, not just the tool.
+
+!!! note "Same lookup mechanism as PATH"
+    Completion functions are found via `$fpath`, the same left-to-right search idea as `$PATH` for
+    executables (see [Variables and PATH](#variables-and-path) above). A command that won't
+    complete is a `$fpath`/loading problem, not a problem with the command itself.
+
 ## Symlinks
 
 ```zsh

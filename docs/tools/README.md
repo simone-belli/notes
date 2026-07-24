@@ -9,4 +9,4 @@ Language-agnostic tools and notation.
 | [env-vars.md](env-vars.md) | note | Environment variables: what they are, scopes, .env files, security |
 | [markdown.md](markdown.md) | ref | Markdown syntax: headings, lists, code, tables, links, MkDocs extensions |
 | [mermaid.md](mermaid.md) | ref | Mermaid diagram syntax: flowchart, sequence, class, ER, state, pie |
-| [zsh.md](zsh.md) | ref | zsh basics: navigation, files, pipes, variables, symlinks, shortcuts |
+| [zsh.md](zsh.md) | ref | zsh basics: navigation, files, pipes, variables, command completion, symlinks, shortcuts |
