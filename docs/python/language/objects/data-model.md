@@ -12,6 +12,31 @@ quiz: core
 - Typical examples: `__init__`, `__len__`, [`__getitem__`](../typing/subscriptable.md), `__repr__`, `__hash__` and arithmetic operators.
 - Emulating sequences is one of the most common uses.
 
+## `__new__` vs `__init__`
+
+`__new__` **creates** the instance; `__init__` only **initializes** one that already exists. Calling `C(...)` runs `cls.__new__(cls, ...)` first, then calls `obj.__init__(...)` — but only if `__new__` returned an instance of `cls` (or a subclass). Return something else (or `None`), and `__init__` never runs.
+
+```python
+class C:
+    def __new__(cls, *args, **kwargs):
+        return super().__new__(cls)   # actually allocates the object; cls, not self — no instance exists yet
+    def __init__(self, *args, **kwargs):
+        ...   # configures the already-created instance
+```
+
+!!! note "Why bother overriding `__new__` at all"
+    Because it decides *whether* an instance is created and *of what type* — `__init__` can't do either. Four cases where that matters: subclassing an immutable built-in (`int`/`str`/`tuple` — the value must be fixed before `__init__` could ever run); a singleton (`__new__` returns a cached instance instead of allocating a new one); a "virtual constructor" that dispatches to a different class based on arguments; and `type.__new__` itself — the same protocol one level up, used to construct class objects from a metaclass (see [class-creation.md](class-creation.md)).
+
+```python
+class PositiveInt(int):
+    def __new__(cls, value):
+        if value <= 0:
+            raise ValueError("must be positive")
+        return super().__new__(cls, value)   # value fixed here — too late once __init__ would run
+```
+
+A `@classmethod` alternative constructor (below) still goes through the full `__new__` → `__init__` cycle — it's a named wrapper around the normal path. Overriding `__new__` changes that path itself, for every call to `C(...)`.
+
 ## Pythonic Objects
 
 - String/bytes representation: `__repr__`, `__str__`, `__format__`, `__bytes__`

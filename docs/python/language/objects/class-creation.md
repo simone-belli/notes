@@ -88,7 +88,7 @@ Plugin._registry   # [CSVPlugin, JSONPlugin]
 
 ## Metaclasses — full control before the class exists
 
-A metaclass (`type` by default) receives the raw `(name, bases, namespace)` triple and constructs the class object itself, so it can rewrite the namespace before the class exists at all:
+A metaclass (`type` by default) receives the raw `(name, bases, namespace)` triple and constructs the class object itself, so it can rewrite the namespace before the class exists at all — `type.__new__` here is the same [`__new__` protocol](data-model.md#new-vs-init) used to construct ordinary instances, just one level up: metaclass is to class as class is to instance.
 
 ```python
 class Meta(type):
