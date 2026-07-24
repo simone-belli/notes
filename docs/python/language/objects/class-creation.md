@@ -16,6 +16,39 @@ class C:
 
 Nothing about `C()` appears here — the body runs exactly once regardless of how many (or how few) instances are ever created.
 
+## Classes vs. metaclasses: the instance-of chain, one level up
+
+A class is itself an object, so it has a type — that type is its **metaclass**. This is the same *instance-of* relationship as `isinstance(obj, C)`, just one level higher:
+
+```python
+type(5)      # <class 'int'>   — 5 is an instance of int
+type(int)    # <class 'type'>  — int is an instance of type (the default metaclass)
+type(type)   # <class 'type'>  — type is an instance of itself: the base case that stops the chain
+```
+
+`type` is unusual in being both the function that inspects an object's class (`type(obj)`) *and* the mechanism that constructs classes — a `class` statement is sugar for calling a metaclass with `(name, bases, namespace)`:
+
+```python
+class Point:
+    def __init__(self, x, y): self.x, self.y = x, y
+
+# equivalent to:
+Point = type("Point", (), {"__init__": lambda self, x, y: setattr(self, "x", x) or setattr(self, "y", y)})
+```
+
+A custom metaclass must itself derive from `type` — since `isinstance` is transitive through inheritance, every class remains an instance of `type` no matter its metaclass:
+
+```python
+class Meta(type): pass
+class C(metaclass=Meta): pass
+
+isinstance(C, Meta)   # True
+isinstance(C, type)   # True — Meta is-a type, so C is transitively an instance of type too
+```
+
+!!! note "Different questions, same hierarchy"
+    A method on `C` is available to `C()` instances. A method on `C`'s metaclass is available on `C` itself (`C.some_meta_method()`), not on its instances — conflating the two is the most common source of metaclass confusion.
+
 ## Why decorators inside a class body fire at definition time
 
 A `@decorator` on a method inside the body runs the instant that `def` executes — i.e. during class-body execution, before the class object even exists. This is how a [registering decorator](../functional/functools.md#transforming-vs-registering) accumulates entries in one place:

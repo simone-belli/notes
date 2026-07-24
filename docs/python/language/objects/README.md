@@ -3,7 +3,7 @@
 | File | Type | Description |
 |------|------|-------------|
 | [attribute-lookup.md](attribute-lookup.md) | note | `obj.x` lookup order: descriptors, `__getattr__` vs `__getattribute__`, `__slots__` |
-| [class-creation.md](class-creation.md) | note | Class body execution order, `__init_subclass__`, metaclasses |
+| [class-creation.md](class-creation.md) | note | Classes vs. metaclasses, class body execution order, `__init_subclass__` |
 | [data-model.md](data-model.md) | note | Dunder methods, pythonic objects, `@dataclass` |
 | [exceptions.md](exceptions.md) | note | Exception hierarchy, EAFP, raising/chaining, custom exceptions, best practices |
 | [hash.md](hash.md) | note | `__hash__`: hash contract, `__eq__` coupling, mutability, dataclasses |
