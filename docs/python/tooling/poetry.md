@@ -102,7 +102,7 @@ By default, Poetry writes a **caret constraint** (`^`):
 poetry add requests    # writes requests = "^2.31.0" in pyproject.toml
 ```
 
-Caret semantics follow semver:
+Caret semantics follow [semver](../../tools/semver.md):
 
 | Constraint | Resolves to          | Reasoning                           |
 |------------|----------------------|-------------------------------------|

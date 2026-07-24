@@ -44,13 +44,7 @@ git push origin --delete v1.0.0         # delete on remote
 
 ### Semantic versioning
 
-Tags follow `vMAJOR.MINOR.PATCH` by convention:
-
-| Increment | When |
-|-----------|------|
-| `MAJOR` | Breaking change |
-| `MINOR` | New backward-compatible feature |
-| `PATCH` | Bug fix |
+Tags follow `vMAJOR.MINOR.PATCH` by convention — see [semver.md](../tools/semver.md) for what each part means and how dependency managers interpret it.
 
 ## Releases
 
