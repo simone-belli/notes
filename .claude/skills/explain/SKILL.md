@@ -6,6 +6,8 @@ argument-hint: <topic> [BRIEFLY]
 
 Explain the given topic and capture it in the knowledge base. Follow the note style, cross-linking, and tag rules in CLAUDE.md throughout. Write and edit files without prompting for confirmation.
 
+Keep the explanation general and conceptual — describe the topic itself, not how it happens to be used in any of the user's local projects. Do not read files from other local repositories or codebases for context; work from general knowledge. Only look at another local project if the user explicitly asks you to.
+
 ## Steps
 
 1. **Write the detailed explanation to `_explain.md`** at the repo root — more depth than the permanent file, including intuition and context. Then immediately open it with `open _explain.md`. This file is gitignored and never committed. If the query says `BRIEFLY`, keep it concise.
