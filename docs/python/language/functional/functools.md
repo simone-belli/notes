@@ -4,6 +4,40 @@ quiz: core
 
 # Decorators and `functools`
 
+## First-class functions
+
+Python functions are **values**, not a special syntactic category: assign one to a name, store it in a list/dict, pass it as an argument, or return it from another function — the same as an `int` or a `str`.
+
+```python
+def shout(text: str) -> str:
+    return text.upper()
+
+greeter = shout          # assign to a name
+greeter("hi")             # "HI"
+
+def apply(f, value):     # pass a function as an argument
+    return f(value)
+
+apply(shout, "hi")        # "HI"
+```
+
+A function that **returns** a function is a [closure](../runtime/scopes.md#closures) — the returned function keeps access to variables from the scope it was created in, not just its own arguments:
+
+```python
+def make_multiplier(n):
+    def multiply(x):
+        return x * n   # n is captured from the enclosing scope, see scopes.md
+    return multiply
+
+double = make_multiplier(2)
+double(5)   # 10
+```
+
+See [scopes.md](../runtime/scopes.md#closures) for the full mechanics of what gets captured (the variable, not its value) and the late-binding gotcha that follows from it.
+
+!!! note "A decorator is just a closure, with `@` as sugar"
+    `@decorator` above a `def` is exactly equivalent to `func = decorator(func)` written after it. There is no separate decorator mechanism in the interpreter — it's first-class functions (passing `func` in) plus a closure (the `wrapper` returned, which closes over `func`) plus syntax sugar for the reassignment. Everything below follows from just those two ideas.
+
 ## Decorators
 
 A function that takes a function as input and returns a new function.

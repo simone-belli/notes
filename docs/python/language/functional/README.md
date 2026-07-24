@@ -3,7 +3,7 @@
 | File | Type | Description |
 |------|------|-------------|
 | [comprehensions.md](comprehensions.md) | note | List, dict, set comprehensions — when each is more readable than a loop |
-| [functools.md](functools.md) | note | Decorators, `lru_cache`, `partial`, `functools.wraps` |
+| [functools.md](functools.md) | note | First-class functions, decorators, `lru_cache`, `partial`, `functools.wraps` |
 | [iterators-generators.md](iterators-generators.md) | note | Iterables, generators, `yield`, `itertools` |
 | [itertools/](itertools/) | — | `accumulate`, `chain`, `islice`, `product`, `combinations`, `groupby` |
 | [lazy-evaluation.md](lazy-evaluation.md) | note | Lazy vs eager: memory tradeoffs, sinks, when each wins, NumPy comparison |
