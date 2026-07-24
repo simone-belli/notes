@@ -42,4 +42,4 @@ class Instrument(ABC):
 
 For duck-typed interfaces — `Protocol`, the Protocol-vs-ABC comparison, `@runtime_checkable`, and how to verify conformance — see [structural-typing.md](../typing/structural-typing.md).
 
-See also: [data-model.md](data-model.md) for dunder methods and `@dataclass`; [repository-di.md](repository-di.md) for interface-based dependency injection.
+See also: [data-model.md](data-model.md) for dunder methods and `@dataclass`; [attribute-lookup.md](attribute-lookup.md) for how the MRO is actually walked during `obj.x`; [repository-di.md](repository-di.md) for interface-based dependency injection.

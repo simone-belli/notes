@@ -50,7 +50,7 @@ The main use is **alternative constructors** — multiple named ways to build an
   - `'1 BRL = {rate:0.2f} USD'.format(rate=brl)`
   - `f'1 USD = {1 / brl:0.2f} BRL'`
 - Make objects immutable by making attributes private with `self.__x`, then define a getter with `@property`.
-- Declare the class attribute `__slots__` to save memory.
+- Declare the class attribute `__slots__` to save memory. See [attribute-lookup.md](attribute-lookup.md) for how `@property` and `__slots__` actually work — both are special cases of the descriptor protocol behind `obj.x`.
 - Define the class attribute `typecode`, which an instance can override.
 
 ## `@dataclass`
