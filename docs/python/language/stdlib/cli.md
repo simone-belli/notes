@@ -50,6 +50,25 @@ args = parser.parse_args()  # reads sys.argv[1:] by default
 
 `--help` is generated automatically. Bad input prints an error and exits.
 
+### Full script pattern
+
+Wrap parsing in `main()` behind the [`__name__ == "__main__"` guard](../runtime/entrypoint.md) so the file works both as a script and as an importable module:
+
+```python
+import argparse
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="What this script does")
+    parser.add_argument("filename")
+    parser.add_argument("--count", type=int, default=10)
+    args = parser.parse_args()
+
+    print(args.filename, args.count)
+
+if __name__ == "__main__":
+    main()
+```
+
 ### Positional vs optional
 
 | | Positional | Optional flag |

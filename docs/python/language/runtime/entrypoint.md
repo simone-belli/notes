@@ -27,6 +27,8 @@ Without the guard, every `import` would execute the top-level code as a side eff
 
 `main` is purely conventional — Python enforces nothing about the name.
 
+See [cli.md](../stdlib/cli.md#full-script-pattern) for this guard combined with `argparse`.
+
 ## `__main__.py` — runnable packages
 
 Add `__main__.py` to a package to make it runnable with `python -m mypackage`:
