@@ -92,6 +92,27 @@ which is a correctness bug and, with untrusted input, a potential
     first, so e.g. `\b` (regex word boundary) silently becomes a backspace
     character instead.
 
+## Common uses
+
+```python
+# 1. Validate a format (fullmatch, so no trailing garbage slips through)
+bool(re.fullmatch(r"[\w.+-]+@[\w-]+\.[\w.-]+", "user@example.com"))
+
+# 2. Extract structured fields with named groups
+m = re.search(r"(?P<host>[\w.-]+):(?P<port>\d+)", "db.internal:5432")
+m.groupdict()   # {'host': 'db.internal', 'port': '5432'}
+
+# 3. Clean/normalize text
+re.sub(r"\s+", " ", "too   much\n\twhitespace").strip()   # "too much whitespace"
+
+# 4. Tokenize / split on flexible delimiters
+re.split(r"[,;]\s*", "a, b; c,d")   # ['a', 'b', 'c', 'd']
+
+# 5. Scan a log or document for all occurrences
+for m in re.finditer(r"ERROR: (.+)", log_text):
+    print(m.group(1))
+```
+
 ## Python-specific notes
 
 - 3.11 added **possessive quantifiers** (`*+`, `++`, `?+`) and **atomic
