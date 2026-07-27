@@ -27,7 +27,7 @@ The `Trade` model used here follows the pattern in [`pydantic.md`](../../librari
 
 ### `pytest.raises(..., match=)`
 
-`match=` checks the exception message against a regex, so the test verifies both the error type *and* that the message is actually useful:
+`match=` checks the exception message against a [regex](../../../tools/regexp.md), so the test verifies both the error type *and* that the message is actually useful:
 
 ```python
 def test_rejects_negative_quantity():

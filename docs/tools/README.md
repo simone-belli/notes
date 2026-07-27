@@ -9,5 +9,6 @@ Language-agnostic tools and notation.
 | [env-vars.md](env-vars.md) | note | Environment variables: what they are, scopes, .env files, security |
 | [markdown.md](markdown.md) | ref | Markdown syntax: headings, lists, code, tables, links, MkDocs extensions |
 | [mermaid.md](mermaid.md) | ref | Mermaid diagram syntax: flowchart, sequence, class, ER, state, pie |
+| [regexp.md](regexp.md) | ref | Regular expressions: syntax, greedy vs. lazy, lookaround, backtracking vs. RE2 |
 | [semver.md](semver.md) | note | Semantic versioning: MAJOR.MINOR.PATCH, version ranges, pre-release tags |
 | [zsh.md](zsh.md) | ref | zsh basics: navigation, files, pipes, variables, command completion, symlinks, shortcuts |
