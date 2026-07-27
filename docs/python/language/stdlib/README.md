@@ -11,5 +11,6 @@ Practical guides to standard-library modules. Language-concept groupings (e.g. [
 | [logging.md](logging.md) | note | stdlib logging: pipeline, levels, dictConfig, best practices, structured logging |
 | [pathlib.md](pathlib.md) | ref | pathlib.Path: object-oriented filesystem paths, replacing os.path |
 | [random.md](random.md) | ref | Random permutations: shuffle in place vs sample for a new list |
+| [re.md](re.md) | ref | `re` module: match/search/fullmatch, Match objects, compile, flags, sub, escape |
 | [string-formatting.md](string-formatting.md) | ref | String ops: f-strings, str.format(), Template, split/join |
 | [subprocess.md](subprocess.md) | ref | Run shell commands from Python: subprocess.run(), shell=True, Popen |

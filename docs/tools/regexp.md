@@ -102,6 +102,6 @@ backtracking. Python's `re` added them in 3.11.
   quantifiers; alternation/groups need escaping unless in extended mode
   (`grep -E`).
 - **PCRE** (Perl Compatible Regular Expressions) — the featureful,
-  backtracking flavor most languages imitate (Python, JavaScript, Java).
+  backtracking flavor most languages imitate (Python's [`re`](../python/language/stdlib/re.md), JavaScript, Java).
 - **RE2 / Go / Rust `regex`** — linear-time guaranteed; no backreferences or
   lookaround.
