@@ -53,9 +53,10 @@ Zero-width assertions that check adjacent text without consuming it:
 - `(?<=...)` / `(?<!...)` — positive / negative lookbehind
 
 `\d+(?=px)` matches `"12"` in `"12px"` but not in `"12em"` — the `px` is
-checked, not captured. Lookbehind traditionally must be fixed-length (Python's
-`re` enforces this; some engines like PCRE allow variable length), since the
-engine has to know how far back to check.
+checked, not captured. Lookbehind traditionally must be fixed-length
+(Python's [`re`](../python/language/stdlib/re.md) enforces this; some
+engines like PCRE allow variable length), since the engine has to know how
+far back to check.
 
 ## Backtracking vs. finite-automaton engines
 
@@ -102,6 +103,6 @@ backtracking. Python's `re` added them in 3.11.
   quantifiers; alternation/groups need escaping unless in extended mode
   (`grep -E`).
 - **PCRE** (Perl Compatible Regular Expressions) — the featureful,
-  backtracking flavor most languages imitate (Python's [`re`](../python/language/stdlib/re.md), JavaScript, Java).
+  backtracking flavor most languages imitate (Python's `re`, JavaScript, Java).
 - **RE2 / Go / Rust `regex`** — linear-time guaranteed; no backreferences or
   lookaround.
