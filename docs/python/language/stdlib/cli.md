@@ -90,6 +90,36 @@ if __name__ == "__main__":
 
 Dashes in long flags become underscores in the namespace: `--output-file` → `args.output_file`.
 
+### Boolean flags
+
+```python
+parser.add_argument("--verbose", action="store_true")   # absent → False, present → True
+parser.add_argument("--no-cache", action="store_false", dest="cache")  # absent → True, present → False
+```
+
+`store_true`/`store_false` take no value — the flag's mere presence sets it. This
+is almost always what you want for a boolean switch.
+
+For a flag that also needs an explicit `--no-` form (so callers can override a
+`True` default on the command line), use `BooleanOptionalAction` (3.9+):
+
+```python
+parser.add_argument("--feature", action=argparse.BooleanOptionalAction, default=True)
+# --feature     → args.feature is True
+# --no-feature  → args.feature is False
+# (absent)      → args.feature is True (the default)
+```
+
+!!! warning "`type=bool` does not do what it looks like"
+    `parser.add_argument("--flag", type=bool)` calls `bool("false")`, and
+    `bool()` on any non-empty string is `True` — so `--flag false` sets
+    `args.flag` to `True`. `type` converts the string token; it is not a
+    validator against "truthy words". Use `action="store_true"` /
+    `BooleanOptionalAction` instead, or a custom `type=` function
+    (`lambda s: s.lower() in {"1", "true", "yes"}`) if the CLI must accept an
+    explicit `--flag=true`/`--flag=false` value (e.g. to match another tool's
+    interface).
+
 ### Short and long flags
 
 ```python
