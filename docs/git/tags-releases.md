@@ -46,6 +46,39 @@ git push origin --delete v1.0.0         # delete on remote
 
 Tags follow `vMAJOR.MINOR.PATCH` by convention — see [semver.md](../tools/semver.md) for what each part means and how dependency managers interpret it.
 
+## Conventional Commits
+
+A convention for commit message prefixes — `<type>[optional scope]: <description>` — that makes
+history machine-parseable and lets tools (`semantic-release`, `standard-version`) decide the next
+version automatically.
+
+| Type | Meaning | Triggers |
+|------|---------|----------|
+| `feat` | new feature | MINOR |
+| `fix` | bug fix | PATCH |
+| `perf` | performance improvement | PATCH |
+| `docs` | documentation only | no release |
+| `style` | formatting, no code meaning change | no release |
+| `refactor` | code change that's neither a fix nor a feature | no release |
+| `test` | adding/correcting tests | no release |
+| `build` | build system or dependencies | no release |
+| `ci` | CI configuration | no release |
+| `chore` | anything else (no src/test change) | no release |
+| `revert` | reverts a previous commit | varies |
+
+A `!` after the type/scope, or a `BREAKING CHANGE:` footer, forces MAJOR regardless of type:
+
+```text
+feat!: drop support for Python 3.8
+
+fix(parser): handle empty input
+
+BREAKING CHANGE: config file format changed from YAML to TOML
+```
+
+See [semver.md](../tools/semver.md#relation-to-changelogs) for what MAJOR/MINOR/PATCH mean —
+this table is the mapping automated tools use to pick the next tag's name.
+
 ## Releases
 
 A release is a platform layer on top of a tag (e.g. GitHub Releases). It adds:

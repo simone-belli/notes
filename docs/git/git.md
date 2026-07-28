@@ -120,7 +120,7 @@ fixup h7i8j9k more wip
 reword k1l2m3n feat: add user auth endpoint
 ```
 Squashes 4 messy commits into 1, using `reword` to write a single clean
-[Conventional Commit](https://www.conventionalcommits.org/) message.
+[Conventional Commit](tags-releases.md#conventional-commits) message.
 
 ```bash
 git rebase --continue   # after resolving a conflict + git add
