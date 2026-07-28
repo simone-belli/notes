@@ -92,3 +92,41 @@ subprocess.run(["./script.sh"], env={**os.environ, "DEBUG": "1"}, check=True)
 
 !!! tip "Don't shell out when Python can do it"
     `pathlib`, `shutil`, and `os` cover most file/dir operations without spawning a process. Reserve `subprocess` for external tools (`git`, `ffmpeg`, CLI utilities).
+
+## Running git specifically
+
+Git commands default to human-oriented output — colorized, paginated, subject
+to change between versions. When scripting, prefer:
+
+- **Plumbing commands** (`git rev-parse`, `git cat-file`, `git ls-tree`) over
+  **porcelain** ones (`git log`, `git status`, `git diff`) — plumbing output
+  is a stable, documented interface; porcelain output isn't guaranteed to
+  stay the same across git versions.
+- **`--porcelain` flags** on porcelain commands that offer one (`git status
+  --porcelain`) for a stable, script-friendly format without giving up the
+  more convenient command.
+- **`--no-pager` and `--no-color`** — `git --no-pager log ...` — a pager or
+  ANSI color codes in captured output will break naive parsing, even though
+  `subprocess` pipes (not a terminal) usually suppress both by default.
+
+```python
+# Target a repo without changing cwd
+subprocess.run(["git", "-C", "/path/to/repo", "status", "--porcelain"], ...)
+
+# Stop option parsing before a value that might start with '-'
+subprocess.run(["git", "log", "--", user_supplied_path], ...)
+```
+
+!!! warning "Exit codes aren't uniformly pass/fail"
+    Some git commands overload the exit code: `git diff --exit-code` returns
+    `1` for "a difference exists", not failure. Run with `check=False` and
+    branch on `result.returncode` for such commands instead of trusting
+    `check=True`. `128` conventionally means "fatal" (e.g. not a git repo).
+
+For frequent programmatic traversal of commits/branches/diffs as objects
+rather than parsed text, a library gives a nicer API than raw `subprocess`
+calls: **GitPython** wraps the `git` binary in a `Repo`/`Commit`/`Diff`
+object model (still shells out under the hood); **pygit2** binds `libgit2`
+directly (no `git` executable needed, faster for high call volume);
+**dulwich** is a pure-Python git implementation for environments without a
+system `git` binary at all.

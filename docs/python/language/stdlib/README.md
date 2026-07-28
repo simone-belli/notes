@@ -13,4 +13,4 @@ Practical guides to standard-library modules. Language-concept groupings (e.g. [
 | [random.md](random.md) | ref | Random permutations: shuffle in place vs sample for a new list |
 | [re.md](re.md) | ref | `re` module: match/search/fullmatch, Match objects, compile, flags, sub, escape |
 | [string-formatting.md](string-formatting.md) | ref | String ops: f-strings, str.format(), Template, split/join |
-| [subprocess.md](subprocess.md) | ref | Run shell commands from Python: subprocess.run(), shell=True, Popen |
+| [subprocess.md](subprocess.md) | ref | Run shell commands from Python: subprocess.run(), shell=True, Popen, running git |
