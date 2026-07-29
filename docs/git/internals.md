@@ -2,7 +2,7 @@
 
 Every Git command is a thin layer over four object types stored in `.git/objects/` and a few
 plain-text pointer files in `.git/refs/`. Git is a content-addressable key-value store with a
-directed acyclic graph (DAG) of commits layered on top.
+[directed acyclic graph](../dsa/graphs.md) (DAG) of commits layered on top.
 
 ## The four object types
 
