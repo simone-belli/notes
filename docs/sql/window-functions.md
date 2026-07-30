@@ -60,6 +60,10 @@ corresponds to `.rolling(n)`.
 
 ## Common Table Expressions (CTEs)
 
+See [basics.md](basics.md) for a first introduction to `WITH`/CTEs outside
+the window-function context — this section assumes that and focuses on
+multi-stage time-series pipelines.
+
 ```sql
 WITH returns AS (
     SELECT symbol, t, close / LAG(close) OVER (PARTITION BY symbol ORDER BY t) - 1 AS ret
