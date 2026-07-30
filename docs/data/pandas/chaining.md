@@ -62,3 +62,5 @@ result = (
 
 Extracted to [chaining-catalog.md](chaining-catalog.md) — a lookup catalog of the ten most-used chain operations (`.astype`, `.rename`, `.filter`, `.sort_values`, `.groupby().agg()`, …) with a full pipeline example.
 
+The same "named, single-purpose step" argument for chaining over nested calls is why SQL favours [CTEs](../../sql/window-functions.md) over nested subqueries.
+

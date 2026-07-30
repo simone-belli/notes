@@ -9,6 +9,7 @@ Learning notes and references across software engineering, ML, and AI topics.
 | [finance/](finance/README.md) | Trading, exchanges, and market data APIs |
 | [git/](git/README.md) | Git workflows, commands, and CI/CD |
 | [python/](python/README.md) | Python language, libraries, and tooling |
+| [sql/](sql/README.md) | Declarative query patterns, mapped to pandas equivalents |
 | [tools/](tools/README.md) | Language-agnostic tools and notation |
 
 Or browse notes by cross-cutting theme on the [tags page](tags.md).
