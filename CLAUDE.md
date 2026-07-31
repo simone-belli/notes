@@ -18,7 +18,15 @@ The workflows live as project skills in `.claude/skills/`. When a query starts w
 | `AUDIT` | `/audit` | Check notes for stale claims, fix after approval |
 | `QUIZ` | `/quiz` | Create/update question banks in `quiz/banks/`, rebuild web quiz data |
 
-During these workflows, write and edit files without prompting for confirmation, and commit when the skill says to. Before any commit that touches `docs/`, run `mkdocs build --strict` — it must exit 0.
+## Autonomy
+
+This repo is a personal knowledge base, not production code — reading and writing files locally is cheap and reversible via git. Work autonomously and don't ask for confirmation to:
+
+- Read, search, or list any file in the repo.
+- Create, write, or edit notes, `README.md` tables, and `_explain.md` files.
+- Run read-only commands (`mkdocs build --strict`, `git status`, `git diff`, etc.).
+
+Only pause to ask when the action is genuinely hard to undo or outward-facing: pushing to the remote, deleting many files at once, or a structural change (`RESTRUCTURE`, large `AUDIT` fix) where the skill calls for approval before executing. Commit when a skill says to. Before any commit that touches `docs/`, run `mkdocs build --strict` — it must exit 0.
 
 ## File organisation
 
