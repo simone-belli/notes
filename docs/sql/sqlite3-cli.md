@@ -2,7 +2,9 @@
 
 The official command-line shell for SQLite. Unlike `psql`/`mysql`, there's
 no server to connect to — a SQLite database is a single file, and the CLI
-just opens it directly like a text editor opens a `.txt` file.
+just opens it directly like a text editor opens a `.txt` file. To drive the
+same engine from Python, see the
+[`sqlite3` module](../python/language/stdlib/sqlite3.md).
 
 ```bash
 sqlite3 mydata.db      # open (creates on first write, not on open)

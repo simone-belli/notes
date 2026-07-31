@@ -12,5 +12,6 @@ Practical guides to standard-library modules. Language-concept groupings (e.g. [
 | [pathlib.md](pathlib.md) | ref | pathlib.Path: object-oriented filesystem paths, replacing os.path |
 | [random.md](random.md) | ref | Random permutations: shuffle in place vs sample for a new list |
 | [re.md](re.md) | ref | `re` module: match/search/fullmatch, Match objects, compile, flags, sub, escape |
+| [sqlite3.md](sqlite3.md) | note | `sqlite3` module: DB-API 2.0, Connection/Cursor, placeholders, transactions, row_factory, pandas bridge |
 | [string-formatting.md](string-formatting.md) | ref | String ops: f-strings, str.format(), Template, split/join |
 | [subprocess.md](subprocess.md) | ref | Run shell commands from Python: subprocess.run(), shell=True, Popen, running git |
