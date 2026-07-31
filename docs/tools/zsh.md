@@ -41,6 +41,17 @@ find . -name "*.py"       # files matching pattern
 grep -rn "pattern" .      # recursive search with line numbers
 ```
 
+Silence `find`'s "Permission denied" noise (which goes to stderr):
+
+```zsh
+find / -name "*.conf" 2>/dev/null           # drop all stderr — simplest
+find / -name "*.conf" 2>&1 | grep -v denied # keep other errors, filter noise
+```
+
+- Errors like `Permission denied` print to **stderr** (fd 2); real results go to stdout (fd 1). `2>/dev/null` discards only the errors, leaving matches intact.
+- Downside of `2>/dev/null`: it hides *all* stderr, including genuine problems. Use the `grep -v` filter when you still want to see other errors.
+- macOS/BSD `find` can prune unreadable dirs with `-perm -r` guards, but `2>/dev/null` is the portable one-liner.
+
 ## Redirects and pipes
 
 ```zsh
