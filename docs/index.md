@@ -2,15 +2,53 @@
 
 Learning notes and references across software engineering, ML, and AI topics.
 
-| Directory | Description |
-|-----------|-------------|
-| [data/](data/README.md) | NumPy and Pandas — arrays, vectorised operations, DataFrames |
-| [dsa/](dsa/README.md) | Data structures and algorithms: complexity, queues, heaps |
-| [finance/](finance/README.md) | Trading, exchanges, and market data APIs |
-| [git/](git/README.md) | Git workflows, commands, and CI/CD |
-| [python/](python/README.md) | Python language, libraries, and tooling |
-| [sql/](sql/README.md) | Declarative query patterns, mapped to pandas equivalents |
-| [tools/](tools/README.md) | Language-agnostic tools and notation |
+<div class="grid cards" markdown>
+
+-   :material-table-large:{ .lg .middle } __[Data](data/README.md)__
+
+    ---
+
+    NumPy and Pandas — arrays, vectorised operations, DataFrames
+
+-   :material-sitemap:{ .lg .middle } __[DSA](dsa/README.md)__
+
+    ---
+
+    Data structures and algorithms: complexity, queues, heaps
+
+-   :material-chart-line:{ .lg .middle } __[Finance](finance/README.md)__
+
+    ---
+
+    Trading, exchanges, and market-data APIs
+
+-   :material-source-branch:{ .lg .middle } __[Git](git/README.md)__
+
+    ---
+
+    Git workflows, commands, and CI/CD
+
+-   :material-language-python:{ .lg .middle } __[Python](python/README.md)__
+
+    ---
+
+    Python language, libraries, and tooling
+
+-   :material-database:{ .lg .middle } __[SQL](sql/README.md)__
+
+    ---
+
+    Declarative query patterns, mapped to pandas equivalents
+
+-   :material-tools:{ .lg .middle } __[Tools](tools/README.md)__
+
+    ---
+
+    Language-agnostic tools and notation
+
+</div>
+
+---
 
 Or browse notes by cross-cutting theme on the [tags page](tags.md).
 

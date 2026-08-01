@@ -2,7 +2,18 @@
 
 NumPy and Pandas — arrays, vectorised operations, DataFrames.
 
-| Directory | Description |
-|-----------|-------------|
-| [numpy/](numpy/) | NumPy — arrays, broadcasting, vectorised operations |
-| [pandas/](pandas/) | Pandas — DataFrame transforms, chaining, indexing |
+<div class="grid cards" markdown>
+
+-   :material-folder-outline:{ .lg .middle } __[NumPy](numpy/)__
+
+    ---
+
+    NumPy — arrays, broadcasting, vectorised operations
+
+-   :material-folder-outline:{ .lg .middle } __[Pandas](pandas/)__
+
+    ---
+
+    Pandas — DataFrame transforms, chaining, indexing
+
+</div>

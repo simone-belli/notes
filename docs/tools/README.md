@@ -2,13 +2,54 @@
 
 Language-agnostic tools and notation.
 
-| File | Type | Description |
-|------|------|-------------|
-| [bash-scripting.md](bash-scripting.md) | note | Shell script basics: shebang, exec, argument quoting, control flow |
-| [direnv.md](direnv.md) | note | Auto-loading project env vars: directory hook, `.envrc`, `PATH_add`, commands |
-| [env-vars.md](env-vars.md) | note | Environment variables: what they are, scopes, .env files, security |
-| [markdown.md](markdown.md) | ref | Markdown syntax: headings, lists, code, tables, links, MkDocs extensions |
-| [mermaid.md](mermaid.md) | ref | Mermaid diagram syntax: flowchart, sequence, class, ER, state, pie |
-| [regexp.md](regexp.md) | ref | Regular expressions: syntax, greedy vs. lazy, lookaround, backtracking vs. RE2 |
-| [semver.md](semver.md) | note | Semantic versioning: MAJOR.MINOR.PATCH, version ranges, pre-release tags |
-| [zsh.md](zsh.md) | ref | zsh basics: navigation, files, pipes, variables, command completion, symlinks, shortcuts |
+<div class="grid cards" markdown>
+
+-   :material-text-box-outline:{ .lg .middle } __[Bash/shell scripting basics](bash-scripting.md)__
+
+    ---
+
+    Shell script basics: shebang, exec, argument quoting, control flow
+
+-   :material-text-box-outline:{ .lg .middle } __[direnv — auto-loading project variables](direnv.md)__
+
+    ---
+
+    Auto-loading project env vars: directory hook, `.envrc`, `PATH_add`, commands
+
+-   :material-text-box-outline:{ .lg .middle } __[Environment Variables — macOS / Unix](env-vars.md)__
+
+    ---
+
+    Environment variables: what they are, scopes, .env files, security
+
+-   :material-card-bulleted-outline:{ .lg .middle } __[Markdown](markdown.md)__
+
+    ---
+
+    Markdown syntax: headings, lists, code, tables, links, MkDocs extensions
+
+-   :material-card-bulleted-outline:{ .lg .middle } __[Mermaid](mermaid.md)__
+
+    ---
+
+    Mermaid diagram syntax: flowchart, sequence, class, ER, state, pie
+
+-   :material-card-bulleted-outline:{ .lg .middle } __[Regular Expressions (Regexp)](regexp.md)__
+
+    ---
+
+    Regular expressions: syntax, greedy vs. lazy, lookaround, backtracking vs. RE2
+
+-   :material-text-box-outline:{ .lg .middle } __[Semantic Versioning (SemVer)](semver.md)__
+
+    ---
+
+    Semantic versioning: MAJOR.MINOR.PATCH, version ranges, pre-release tags
+
+-   :material-card-bulleted-outline:{ .lg .middle } __[zsh](zsh.md)__
+
+    ---
+
+    zsh basics: navigation, files, pipes, variables, command completion, symlinks, shortcuts
+
+</div>

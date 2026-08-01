@@ -2,8 +2,24 @@
 
 Domain-specific notes on trading, exchanges, and market data APIs.
 
-| File | Type | Description |
-|------|------|-------------|
-| [binance.md](binance.md) | note | Binance exchange mechanics, top coins, klines API column reference |
-| [kelly-criterion.md](kelly-criterion.md) | note | Growth-optimal position sizing from edge, odds, and variance |
-| [market-data-apis.md](market-data-apis.md) | ref | Free public APIs for FX rates and stock/crypto OHLCV |
+<div class="grid cards" markdown>
+
+-   :material-text-box-outline:{ .lg .middle } __[Binance](binance.md)__
+
+    ---
+
+    Binance exchange mechanics, top coins, klines API column reference
+
+-   :material-text-box-outline:{ .lg .middle } __[Kelly Criterion](kelly-criterion.md)__
+
+    ---
+
+    Growth-optimal position sizing from edge, odds, and variance
+
+-   :material-card-bulleted-outline:{ .lg .middle } __[Free Public Market Data APIs](market-data-apis.md)__
+
+    ---
+
+    Free public APIs for FX rates and stock/crypto OHLCV
+
+</div>

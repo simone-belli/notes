@@ -32,12 +32,19 @@ Only pause to ask when the action is genuinely hard to undo or outward-facing: p
 
 All notes live under `docs/`; the repo root contains only tooling files (`mkdocs.yml`, `CLAUDE.md`, `README.md`, `.gitignore`, `.github/`, `.claude/`). Top-level areas: `data/` (numpy, pandas), `dsa/`, `finance/`, `git/`, `python/` (`language/` and `tooling/`), and `tools/`. Subfolders evolve — consult the `README.md` files for the current layout rather than assuming it.
 
-Each subdirectory has a `README.md` with a table of three columns: **file**, **type** (`note` or `ref`), **one-line description**, sorted alphabetically by filename. Do not include a `## Structure` section — the MkDocs sidebar handles navigation.
+Each subdirectory has a `README.md` listing its children, sorted alphabetically by filename. Entries carry a **type**:
 
 - `note` — narrative explanation of a concept (the "why" and "how")
 - `ref` — command/syntax quick-reference meant for lookup
 
-When adding a new file, add a row to the subdirectory `README.md`. When adding a new directory under `docs/`, add a row to `docs/index.md`.
+Every entry links to a child page (or subdirectory) by its **title**, not its filename, and the icon encodes the type: `:material-folder-outline:` for a subdirectory, `:material-text-box-outline:` for a `note`, `:material-card-bulleted-outline:` for a `ref`. The title is the child's H1; for a subdirectory use the short last segment of its breadcrumb H1 (e.g. `Python — Language / Concurrency` → **Concurrency**), and trim any leading breadcrumb prefix that just repeats the current page's context (on the Pandas page, `Pandas — Iteration` → **Iteration**). The link target is still the file/directory path.
+
+Two layouts are used, both without a `## Structure` section (the MkDocs sidebar handles navigation):
+
+- **Section hubs** — `docs/index.md` and the seven top-level area READMEs (`data/`, `dsa/`, `finance/`, `git/`, `python/`, `sql/`, `tools/`) use a Material **grid of cards** (requires the `attr_list`, `md_in_html`, and `pymdownx.emoji` extensions). One card per child: `icon + linked title + one-line description`, separated by a `---` divider.
+- **Deeper subdirectory READMEs** use a **description list** (requires the `def_list` extension): each entry is a term line `icon + **[title](path)**` followed by a `:   one-line description` line, entries separated by a blank line.
+
+When adding a new file, add an entry to the parent `README.md` in whichever layout that page uses (a card on a section hub, a description-list entry deeper down), keeping entries sorted alphabetically by filename. When adding a new top-level area under `docs/`, add a card to `docs/index.md`.
 
 ## Cross-linking
 

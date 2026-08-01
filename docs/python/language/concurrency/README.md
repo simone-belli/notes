@@ -1,7 +1,10 @@
 # Python — Language / Concurrency
 
-| File | Type | Description |
-|------|------|-------------|
-| [asyncio.md](asyncio.md) | note | async def, await, asyncio.run(), gather(), create_task() — core mechanics |
-| [concurrency.md](concurrency.md) | note | GIL, threading, multiprocessing, asyncio — overview and decision guide |
-| [threading.md](threading.md) | note | `ThreadPoolExecutor`, `Future` mechanics, `as_completed`, exception handling, shared state |
+:material-text-box-outline: **[asyncio — Core Mechanics](asyncio.md)**
+:   async def, await, asyncio.run(), gather(), create_task() — core mechanics
+
+:material-text-box-outline: **[Concurrency: GIL, Threads, Processes, asyncio](concurrency.md)**
+:   GIL, threading, multiprocessing, asyncio — overview and decision guide
+
+:material-text-box-outline: **[Threading — `concurrent.futures` API](threading.md)**
+:   `ThreadPoolExecutor`, `Future` mechanics, `as_completed`, exception handling, shared state

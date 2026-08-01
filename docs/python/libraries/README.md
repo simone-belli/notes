@@ -2,11 +2,20 @@
 
 Third-party libraries your program imports at runtime — as opposed to [tooling/](../tooling/), the development-time tools you run.
 
-| File | Type | Description |
-|------|------|-------------|
-| [aiohttp.md](aiohttp.md) | note | Async HTTP client: ClientSession, concurrency, streaming, error handling |
-| [fastapi.md](fastapi.md) | note | FastAPI: annotations as contract, Starlette+Pydantic+inspect, request lifecycle, Depends() |
-| [jsonl.md](jsonl.md) | note | JSON Lines: append-friendly, streamable records with Pydantic serialisation |
-| [pydantic/](pydantic/) | — | Data validation, settings, and validators |
-| [structlog.md](structlog.md) | note | Structured logging: processor pipeline, context binding, JSON output |
-| [terminal-tables.md](terminal-tables.md) | note | Print tables in the terminal: f-strings, tabulate, rich |
+:material-text-box-outline: **[aiohttp](aiohttp.md)**
+:   Async HTTP client: ClientSession, concurrency, streaming, error handling
+
+:material-text-box-outline: **[FastAPI](fastapi.md)**
+:   FastAPI: annotations as contract, Starlette+Pydantic+inspect, request lifecycle, Depends()
+
+:material-text-box-outline: **[JSON Lines (JSONL)](jsonl.md)**
+:   JSON Lines: append-friendly, streamable records with Pydantic serialisation
+
+:material-folder-outline: **[Pydantic](pydantic/)**
+:   Data validation, settings, and validators
+
+:material-text-box-outline: **[structlog](structlog.md)**
+:   Structured logging: processor pipeline, context binding, JSON output
+
+:material-text-box-outline: **[Printing Tables in the Terminal](terminal-tables.md)**
+:   Print tables in the terminal: f-strings, tabulate, rich
