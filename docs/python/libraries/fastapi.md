@@ -72,7 +72,7 @@ The return annotation (or explicit `response_model=`) declares the response shap
 ```python
 @app.get("/trades/{trade_id}")
 def get_trade(trade_id: int) -> Trade:
-    return repo.get(trade_id)   # ORM row / dict / Trade → serialised to Trade's fields
+    return repo.get(trade_id)   # Object-Relational Mapping (ORM) row / dict / Trade → serialised to Trade's fields
 ```
 
 - **Serialises** whatever you return (ORM object, dict, model) into JSON via the model.
@@ -88,7 +88,7 @@ FastAPI coordinates three components:
 
 | Component | Role |
 |-----------|------|
-| **Starlette** | ASGI routing, `Request`/`Response` objects, middleware, WebSockets |
+| **Starlette** | Asynchronous Server Gateway Interface (ASGI) routing, `Request`/`Response` objects, middleware, WebSockets |
 | **Pydantic** | Validation + coercion of incoming params; serialisation of responses; JSON Schema for OpenAPI |
 | **`inspect`** | Reads annotations from function signatures at decoration time |
 
