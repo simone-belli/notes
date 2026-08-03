@@ -54,7 +54,7 @@ Zero-width assertions that check adjacent text without consuming it:
 
 `\d+(?=px)` matches `"12"` in `"12px"` but not in `"12em"` — the `px` is
 checked, not captured. Lookbehind traditionally must be fixed-length
-(Python's [`re`](../python/language/stdlib/re.md) enforces this; some
+(Python's [`re`](../python/language/stdlib/text/re.md) enforces this; some
 engines like PCRE allow variable length), since the engine has to know how
 far back to check.
 

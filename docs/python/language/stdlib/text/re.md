@@ -1,6 +1,6 @@
 # `re` — Regular Expressions
 
-Python's `re` module matches [regex patterns](../../../tools/regexp.md)
+Python's `re` module matches [regex patterns](../../../../tools/regexp.md)
 against strings (or `bytes`). It's a **backtracking** engine, so everything
 about catastrophic backtracking applies directly — `re` has no built-in
 match timeout.
@@ -85,7 +85,7 @@ re.escape("3.14 (pi)")   # r'3\.14\ \(pi\)'
 Always wrap literal/user-supplied text with `re.escape` before splicing it
 into a larger pattern — otherwise its regex metacharacters are interpreted,
 which is a correctness bug and, with untrusted input, a potential
-[ReDoS](../../../tools/regexp.md) vector.
+[ReDoS](../../../../tools/regexp.md) vector.
 
 !!! tip "Always use raw strings"
     `r"\d+"`, not `"\d+"` — plain strings run Python's own escape processing
