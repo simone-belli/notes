@@ -121,9 +121,23 @@ def create_trade(trade: Trade) -> Trade:             # Pydantic model → JSON b
 | name matches a `{...}` path segment | **path param** |
 | scalar (`int`/`str`/…), not in path | **query param** — required if no default |
 | a Pydantic model / dataclass | **request body** (JSON) |
+| **anything else non-scalar** (`list[...]`, `dict[...]`, `set[...]`) | **request body** (JSON) |
 | default is `Depends(...)` | **dependency** |
 
-Any type mismatch or constraint violation (`ge`/`le` via `Query`) yields an automatic **422** with field-level detail from Pydantic. You never pull values off a `request` object.
+The rule is really *"scalar ⇒ query, everything else ⇒ body"* — **only scalars auto-map to the query string.** Any type mismatch or constraint violation (`ge`/`le` via `Query`) yields an automatic **422** with field-level detail from Pydantic. You never pull values off a `request` object.
+
+!!! warning "A bare `list[str]` becomes a body, not a repeated query key"
+    `def f(symbols: list[str])` is treated as a **request body**, so `GET /x?symbols=A&symbols=B` never populates it and fails validation with **422** — before the function runs. Non-scalar ⇒ body is the default; you opt back out explicitly. To read a repeated query key into a list, annotate with `Query()`:
+
+    ```python
+    from typing import Annotated
+    from fastapi import Query
+
+    def f(symbols: Annotated[list[str], Query()] = []): ...
+    # ?symbols=A&symbols=B  →  ["A", "B"]
+    ```
+
+    The mirror trap on `POST`: a lone **scalar** you want in the JSON body is read from the query instead — force it with `Body()` (`x: Annotated[int, Body()]`). Both escape hatches exist because the type alone is ambiguous once you leave the happy path.
 
 ## `response_model`: serialise and filter output
 
