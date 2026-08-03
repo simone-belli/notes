@@ -193,6 +193,28 @@ def test_get_trade():
 
 Both implementations satisfy the same `TradeRepository` Protocol, so nothing else changes. Prefer a [fake over a mock](../language/objects/repository-di.md) — it exercises the endpoint against correct behaviour.
 
+## Server vs client — FastAPI is not an HTTP client
+
+FastAPI is a **server**: it answers inbound requests (`caller → you`). An HTTP **client** — [aiohttp](aiohttp.md), `httpx`, `requests` — does the opposite: it makes outbound requests (`you → some API`). They sit on opposite sides of the HTTP boundary and are **not substitutes**. "Call FastAPI to fetch data" is incoherent: inside a fetch there is no inbound request to serve.
+
+When code both fetches upstream data *and* exposes its own API, keep the two in separate layers:
+
+- **Pure library function** (client side) — fetches with aiohttp, returns a domain object (e.g. a `DataFrame`); knows nothing about being served over HTTP.
+- **Thin endpoint** (server side) — a separate module that *calls* that function and converts the result to the wire format at the boundary.
+
+```python
+# data/binance.py — pure, framework-free
+async def fetch_binance(symbol: str) -> pd.DataFrame: ...
+
+# api/routes.py — FastAPI boundary
+@app.get("/klines/{symbol}")
+async def get_klines(symbol: str) -> list[Kline]:
+    df = await fetch_binance(symbol)   # call the pure core
+    return df.to_dict("records")       # convert at the edge
+```
+
+The core never imports FastAPI; the boundary holds no fetch logic. This keeps the fetch reusable (CLI, notebook, batch job — none of which run a server) and each layer testable in isolation — the same edges-only-I/O instinct as the [repository pattern](../language/objects/repository-di.md). A server is often *also* a client (an endpoint may call other services with aiohttp while serving a request); direction is per-connection, not per-process.
+
 ## What FastAPI doesn't include
 
 No ORM, no migrations, no admin UI, no project layout opinion. It does one thing: Python functions ↔ HTTP API, with the glue (validation, serialisation, DI, docs) handled from annotations.
@@ -202,3 +224,4 @@ No ORM, no migrations, no admin UI, no project layout opinion. It does one thing
 - [repository-di.md](../language/objects/repository-di.md) — manual DI with Protocol + `__init__` injection; the pattern `Depends()` extends
 - [pydantic/pydantic.md](pydantic/pydantic.md) — Pydantic is FastAPI's validation and serialisation engine
 - [asyncio.md](../language/concurrency/asyncio.md) — FastAPI is ASGI-native; endpoint functions can be `async def`
+- [aiohttp.md](aiohttp.md) — the HTTP *client* side of the boundary; keep outbound fetches in a pure function and the endpoint thin

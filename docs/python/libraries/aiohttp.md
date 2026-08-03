@@ -232,3 +232,4 @@ For a batteries-included version, `tenacity.AsyncRetrying` supports the same pat
 
 - [asyncio.md](../language/concurrency/asyncio.md) — event loop, gather, create_task
 - [market-data-apis.md](../../finance/market-data-apis.md) — free public endpoints to call with aiohttp
+- [fastapi.md](fastapi.md) — the *server* side of the boundary; a client library and a server framework aren't substitutes
