@@ -10,6 +10,33 @@ quiz: core
 
 FastAPI maps Python functions to HTTP endpoints. Its core idea: **type annotations are the single source of truth** — FastAPI reads them at decoration time and derives parsing, validation, serialisation, and API documentation automatically.
 
+## Importing
+
+The package name is `fastapi` (all lowercase); the application class is `FastAPI` (the `app = FastAPI()` you instantiate):
+
+```python
+from fastapi import FastAPI
+
+app = FastAPI()
+```
+
+Almost everything is exported from the **top-level `fastapi` package** — a flat import surface, not deep submodule paths. Pull request-declaration helpers, DI, routing, and errors straight from `fastapi`:
+
+```python
+from fastapi import (
+    FastAPI, APIRouter,          # app + sub-app routers
+    Query, Path, Body, Header, Cookie, Form, File,  # parameter sources
+    Depends,                     # dependency injection
+    HTTPException, status,       # errors + status-code constants
+    Request, Response,           # raw ASGI objects (re-exported from Starlette)
+)
+from fastapi.responses import JSONResponse, StreamingResponse  # response classes: fastapi.responses
+from fastapi.testclient import TestClient                      # test client: fastapi.testclient
+```
+
+- **Domain models are *not* from `fastapi`** — `BaseModel`, `Field` come from `pydantic`; `fastapi` only imports the request-plumbing helpers.
+- Only a few things live in submodules: `fastapi.responses`, `fastapi.testclient`, `fastapi.security`, `fastapi.middleware`.
+
 ## The problem it solves
 
 Without FastAPI, every endpoint needs the same boilerplate:
