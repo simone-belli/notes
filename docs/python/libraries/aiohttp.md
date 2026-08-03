@@ -205,7 +205,7 @@ def async_retry(max_attempts=3, base_delay=1.0):
 | `aiohttp.ClientError` | Base class: DNS, connection refused, bad response |
 | `asyncio.TimeoutError` | Timeout exceeded |
 
-Don't retry 4xx — check `e.status >= 500` on `ClientResponseError` first.
+Don't retry [4xx](../../tools/http-status-codes.md) — check `e.status >= 500` on `ClientResponseError` first.
 
 **Timeout inside the retried function** — use `asyncio.timeout(n)` (Python 3.11+) to cover the whole block, or `asyncio.wait_for(coro, timeout=n)` for older versions:
 

@@ -22,6 +22,12 @@ Language-agnostic tools and notation.
 
     Environment variables: what they are, scopes, .env files, security
 
+-   :material-card-bulleted-outline:{ .lg .middle } __[HTTP Status Codes](http-status-codes.md)__
+
+    ---
+
+    HTTP status codes: the five classes, common codes, 401 vs 403, retry rules
+
 -   :material-card-bulleted-outline:{ .lg .middle } __[Markdown](markdown.md)__
 
     ---
