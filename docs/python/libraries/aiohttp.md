@@ -18,6 +18,8 @@ Async HTTP client (and server) library for [asyncio](../language/concurrency/asy
 Manages a connection pool, cookie jar, and request defaults. **Create one session per application, not one per request.**
 
 ```python
+import aiohttp, asyncio
+
 # BAD — new TCP connection on every call
 async def fetch(url):
     async with aiohttp.ClientSession() as session:  # ← don't do this in a loop
