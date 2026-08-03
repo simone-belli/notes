@@ -48,6 +48,8 @@ USDT appears everywhere as the *quote* currency, not as a traded base asset.
 
 ## Klines (OHLCV) API — column reference
 
+Each kline (candlestick) row is Open, High, Low, Close, Volume (OHLCV) for a time interval.
+
 ```
 GET https://api.binance.com/api/v3/klines
     ?symbol=BTCUSDT&interval=1d&limit=500

@@ -77,7 +77,7 @@ f.done()             # True if finished (success or error)
 ## Shared state
 
 !!! warning "counter += 1 is not atomic — concurrent threads will corrupt it"
-    `counter += 1` compiles to three bytecode instructions: LOAD, ADD, STORE. The GIL can be released between any two of them, letting another thread read the pre-increment value. The result: updates are silently lost. Use `threading.Lock()` around any read-modify-write cycle, or `queue.Queue` to communicate between threads without shared mutable state.
+    `counter += 1` compiles to three bytecode instructions: LOAD, ADD, STORE. The Global Interpreter Lock (GIL) can be released between any two of them, letting another thread read the pre-increment value. The result: updates are silently lost. Use `threading.Lock()` around any read-modify-write cycle, or `queue.Queue` to communicate between threads without shared mutable state.
 
 Threads share memory. `counter += 1` is not atomic (read → add → write), so concurrent threads can corrupt it:
 

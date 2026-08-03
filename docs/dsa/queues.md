@@ -29,7 +29,7 @@ for x in range(10):
 # last_5 → deque([5, 6, 7, 8, 9], maxlen=5)
 ```
 
-Useful for: sliding windows, BFS queues, keeping the last N items.
+Useful for: sliding windows, breadth-first search (BFS) queues, keeping the last N items.
 
 !!! warning "deque is not random-access"
     `d[i]` is O(n) — deque is a doubly-linked list of fixed-size blocks, not a contiguous array. Use list when you need fast indexing; use deque when you need fast both-end mutation.

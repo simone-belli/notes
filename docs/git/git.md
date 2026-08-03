@@ -50,7 +50,7 @@ git blame file.py          # who last touched each line, and in which commit
 
 ### Finding a bug with bisect
 
-`git bisect` binary-searches the commit DAG for the commit that introduced a regression — O(log n)
+`git bisect` binary-searches the commit Directed Acyclic Graph (DAG) for the commit that introduced a regression — O(log n)
 checkouts instead of testing every commit.
 
 ```bash

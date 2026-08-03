@@ -173,7 +173,7 @@ def is_valid_bst(node, lo=float('-inf'), hi=float('inf')) -> bool:
 | Subtree height / size | Postorder |
 | Delete tree | Postorder |
 | Evaluate expression tree | Postorder |
-| Level-order / BFS | `collections.deque`, not DFS |
+| Level-order / breadth-first search (BFS) | `collections.deque`, not depth-first search (DFS) |
 
 ## See also
 

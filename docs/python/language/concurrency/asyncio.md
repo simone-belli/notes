@@ -44,7 +44,7 @@ async def process(url):
 
 `await` can only appear inside `async def`. You can only `await` an **awaitable**: coroutine objects, `Task`, `Future`, or objects with `__await__`.
 
-`await` is not blocking — a blocked thread holds the GIL and does nothing; an awaited coroutine suspends and frees the event loop to run other work.
+`await` is not blocking — a blocked thread holds the Global Interpreter Lock (GIL) and does nothing; an awaited coroutine suspends and frees the event loop to run other work.
 
 ## asyncio.run(): the entry point
 

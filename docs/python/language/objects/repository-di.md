@@ -30,7 +30,7 @@ class TradeRepo(Protocol):
     def list_open(self) -> list[Trade]: ...
 ```
 
-Use [`Protocol`](../typing/structural-typing.md) (structural typing), not ABC. Implementations don't need to inherit — they just need the right methods.
+Use [`Protocol`](../typing/structural-typing.md) (structural typing), not an Abstract Base Class (ABC). Implementations don't need to inherit — they just need the right methods.
 
 ## Business logic — only knows the Protocol
 

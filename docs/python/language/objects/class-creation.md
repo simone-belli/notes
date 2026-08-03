@@ -104,4 +104,4 @@ class C(metaclass=Meta): ...
 
 `__set_name__` (see [attribute-lookup.md](attribute-lookup.md#the-descriptor-protocol)) is called by this same construction step, after the namespace exists — which is why it can be told the attribute's name, something a decorator running earlier during body execution has no way to know.
 
-See [oop.md](oop.md) for the MRO these constructed classes participate in.
+See [oop.md](oop.md) for the Method Resolution Order (MRO) these constructed classes participate in.

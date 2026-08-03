@@ -34,7 +34,7 @@ class HasName(Protocol):
     name: str
 ```
 
-## Protocol vs ABC
+## Protocol vs Abstract Base Class (ABC)
 
 | | `Protocol` | `abc.ABC` |
 |--|-----------|-----------|
@@ -105,7 +105,7 @@ class Readable(Protocol):
 class Writable(Protocol):
     def write(self, data: bytes) -> int: ...
 
-class ReadWritable(Readable, Writable, Protocol): ...   # include Protocol in MRO
+class ReadWritable(Readable, Writable, Protocol): ...   # include Protocol in the Method Resolution Order (MRO)
 ```
 
 !!! warning "Always include `Protocol` when inheriting protocols"
