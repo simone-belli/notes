@@ -64,6 +64,39 @@ def get_trade(trade_id: int, page: int = 1) -> TradeResponse:
 
 Same contract, no boilerplate. FastAPI reads `trade_id: int`, extracts the path segment, coerces it to `int`, returns `422` if it's not valid, and generates OpenAPI docs — all from the annotation.
 
+## Path operation decorators: `get`, `post`, … vs `route`
+
+Every HTTP request carries a **method** (a verb: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`). The path says *what resource*; the method says *what to do to it*. `GET /trades` and `POST /trades` are two different endpoints sharing a path.
+
+FastAPI gives one decorator **per method**:
+
+```python
+@app.get("/items/{id}")     # read one
+@app.post("/items")         # create (no id yet)
+@app.put("/items/{id}")     # replace wholesale
+@app.patch("/items/{id}")   # partial update
+@app.delete("/items/{id}")  # remove
+```
+
+- Each is a thin wrapper that calls the internal `api_route` with `methods=[...]` pre-filled. `get` and `post` differ **only** in that list.
+- All of them run the FastAPI machinery: signature inspection, Pydantic validation, `response_model` serialisation, dependency resolution, and OpenAPI/`/docs` registration.
+- The verbs follow HTTP conventions — `GET` is *safe* (no state change) and *idempotent*; `POST` is neither (calling twice creates two). `PUT`/`DELETE` are idempotent. This mirrors Representational State Transfer (REST) directly.
+
+`@app.route(path, methods=[...])` is the **generic Starlette registration** FastAPI inherits — a different, lower-level code path:
+
+| | `@app.get`/`@app.post` (`api_route`) | `@app.route` (Starlette) |
+|---|---|---|
+| Handler signature | typed params (`id: int`, `item: Item`) | one `Request` arg only |
+| Validation → 422 | automatic from annotations | none — parse `request` by hand |
+| `response_model` / serialisation | yes | no — build `Response` manually |
+| In OpenAPI / `/docs` | yes | **no** |
+| `Depends()` resolved | yes | no |
+
+!!! warning "Prefer the verb decorators; `route` is a raw escape hatch"
+    `@app.route` bypasses everything FastAPI is for — annotations are ignored, nothing is validated or documented. Use it only for raw ASGI mounts or catch-alls. To answer several methods from one FastAPI-aware function, use `@app.api_route("/ping", methods=["GET", "HEAD"])` (the `api_` engine the verb decorators sit on), **not** `route`. The naming is the tell: `api_` = FastAPI's typed machinery; no prefix = Starlette's raw path.
+
+The same decorators (`get`, `post`, …, `api_route`, `route`) also live on `APIRouter` for splitting an app into modules — identical semantics at sub-app scope.
+
 ## Declaring inputs: the four parameter sources
 
 A **path operation** is the pair *(method, path)* bound to a function (`@app.get`, `@app.post`, …). The function signature *is* the request schema — FastAPI decides each parameter's source from its annotation:
