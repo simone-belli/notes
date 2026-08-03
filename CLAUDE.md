@@ -69,6 +69,7 @@ tags:
 
 - Lead with what the thing is and why it matters, then how to use it.
 - Short code examples are preferred over long ones.
+- When documenting a module, class, or function, always show how it's imported before describing how it's used (e.g. `from fastapi import FastAPI` before the first `FastAPI()` example).
 - Use bullet points for lists of facts; use prose only for conceptual explanations.
 - No multi-paragraph docstrings or wall-of-text sections.
 - Use MkDocs admonition boxes (`!!! note`, `!!! tip`, `!!! warning`) to highlight key concepts — mental models, common pitfalls, or non-obvious distinctions worth calling out. Aim for 2–3 per page; don't use them for routine information that flows naturally as prose or bullets.
