@@ -20,3 +20,6 @@
 
 :material-text-box-outline: **[Iteration](iteration.md)**
 :   `__iter__` asymmetry, `.items()`, `iterrows()` vs `itertuples()`, scalar access
+
+:material-card-bulleted-outline: **[to_dict()](to-dict.md)**
+:   Convert DataFrame/Series to dicts: `orient` options, records for JSON, gotchas

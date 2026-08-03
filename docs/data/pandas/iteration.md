@@ -68,3 +68,5 @@ vectorized ops  >  np.where  >  apply(axis=1)  >  itertuples  >  iterrows
 ```
 
 Reach for a vectorized expression first. Use `itertuples` when a Python loop is unavoidable; avoid `iterrows` unless dtype coercion is acceptable.
+
+To materialise the whole frame as Python structures at once (rather than loop), see [to_dict()](to-dict.md).
