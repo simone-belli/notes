@@ -200,7 +200,7 @@ def get_engine() -> sqlalchemy.Engine:
 
 `@lru_cache` makes `get_engine()` behave like a singleton (creates once, returns cached) while keeping instantiation out of import time. In tests, call `get_engine.cache_clear()` to force a rebuild with different settings.
 
-**FastAPI pattern** — override the settings dependency instead of patching:
+**[FastAPI](../fastapi.md) pattern** — override the settings dependency instead of patching (the same `Settings` also backs a [`Depends`-based API-key check](../fastapi.md#api-key-check-as-a-dependency-a-toy-guard)):
 ```python
 # dependencies.py
 from functools import lru_cache

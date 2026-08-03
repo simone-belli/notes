@@ -6,7 +6,7 @@ Third-party libraries your program imports at runtime — as opposed to [tooling
 :   Async HTTP client: ClientSession, concurrency, streaming, error handling
 
 :material-text-box-outline: **[FastAPI](fastapi.md)**
-:   FastAPI: annotations as contract, path/query/body params, response_model, Depends() injection and test overrides
+:   FastAPI: annotations as contract, path/query/body params, response_model, Depends() injection, API-key guard, test overrides
 
 :material-text-box-outline: **[JSON Lines (JSONL)](jsonl.md)**
 :   JSON Lines: append-friendly, streamable records with Pydantic serialisation

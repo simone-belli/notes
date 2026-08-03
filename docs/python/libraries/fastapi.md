@@ -253,6 +253,75 @@ def test_get_trade():
 
 Both implementations satisfy the same `TradeRepository` Protocol, so nothing else changes. Prefer a [fake over a mock](../language/objects/repository-di.md) — it exercises the endpoint against correct behaviour.
 
+## API-key check as a dependency (a toy guard)
+
+A dependency that raises `HTTPException` *is* a gate: if it raises, the handler
+never runs. That makes a minimal "keep randoms out" check a few lines — read a
+secret header, compare it to the configured key, reject on mismatch.
+
+The key lives in [`Settings`](pydantic/pydantic-settings.md), never hardcoded —
+so it can differ per deployment and rotate without a code change:
+
+```python
+# config.py
+from pydantic import SecretStr
+from pydantic_settings import BaseSettings
+
+class Settings(BaseSettings):
+    api_key: SecretStr          # required; SecretStr keeps it out of logs/repr
+```
+
+```python
+import secrets
+from fastapi import Depends, HTTPException, status
+from fastapi.security import APIKeyHeader
+from .config import settings
+
+api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
+
+def require_api_key(key: str | None = Depends(api_key_header)) -> None:
+    if key is None:                                    # header absent
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Missing API key")
+    if not secrets.compare_digest(key, settings.api_key.get_secret_value()):
+        raise HTTPException(status.HTTP_403_FORBIDDEN, "Invalid API key")
+```
+
+- **`auto_error=False`** — the default (`True`) auto-raises `403` on a missing
+  header before your code runs, costing you the 401/403 split. `False` injects
+  `None` instead so *you* choose the status.
+- **`401` vs `403`** — `401 Unauthorized` means *unauthenticated* ("send
+  credentials"): use it when the header is **absent**. `403 Forbidden` means
+  *authenticated but not allowed*: use it when a key was sent but is **wrong**.
+- **`secrets.compare_digest`, not `==`** — `==` short-circuits on the first
+  differing byte, leaking key length/prefix via response timing (a *timing
+  attack*). `compare_digest` is constant-time.
+
+Apply it with `dependencies=[...]` (return value ignored — it runs only to
+raise-or-pass), at endpoint, router, or app scope:
+
+```python
+@app.get("/trades", dependencies=[Depends(require_api_key)])   # one endpoint
+router = APIRouter(dependencies=[Depends(require_api_key)])     # whole router
+app = FastAPI(dependencies=[Depends(require_api_key)])          # whole app
+```
+
+!!! warning "This is a toy guard, not production authentication"
+    It's a single shared static secret, which is fine for an internal service or
+    demo but is missing everything real auth needs:
+
+    - **No rotation** — one key forever; changing it means editing `.env` and
+      redeploying, with no overlapping-validity window and no expiry. A leak
+      forces every client to update at once.
+    - **No scoping or identity** — all-or-nothing access; you can't grant one
+      caller read-only, attribute a request to *who* sent it, or revoke one
+      client without breaking all of them (they share the key).
+    - **No hashing / per-key management / rate limiting.**
+
+    Real options: OAuth2 / OpenID Connect with short-lived JSON Web Tokens
+    (JWTs, via `OAuth2PasswordBearer`), a hashed-key store with per-key scopes +
+    expiry + revocation, or auth pushed into an API gateway / mutual TLS. The
+    dependency *shape* is unchanged — only what it validates gets richer.
+
 ## Server vs client — FastAPI is not an HTTP client
 
 FastAPI is a **server**: it answers inbound requests (`caller → you`). An HTTP **client** — [aiohttp](aiohttp.md), `httpx`, `requests` — does the opposite: it makes outbound requests (`you → some API`). They sit on opposite sides of the HTTP boundary and are **not substitutes**. "Call FastAPI to fetch data" is incoherent: inside a fetch there is no inbound request to serve.
