@@ -195,6 +195,58 @@ The result is a `Dependant` tree stored on the route — built once, reused per 
 !!! tip "Annotation = contract"
     `trade_id: int` is not just a type hint for mypy. FastAPI reads it at runtime to decide where to find the value, how to validate it, and what to put in the OpenAPI spec.
 
+## `APIRouter`: splitting an app into modules
+
+A single `FastAPI()` app in one file doesn't scale. `APIRouter` is a **mini-app** you register routes on exactly like the main app, then attach to the app (or to another router) with `include_router`. It carries no server of its own — it's a collection of routes that gets merged in.
+
+```python
+# routers/trades.py
+from fastapi import APIRouter
+
+router = APIRouter(prefix="/trades", tags=["trades"])
+
+@router.get("/{trade_id}")          # real path: /trades/{trade_id}
+def get_trade(trade_id: int) -> Trade: ...
+
+@router.post("")                    # real path: /trades
+def create_trade(trade: Trade) -> Trade: ...
+```
+
+```python
+# main.py
+from fastapi import FastAPI
+from routers import trades, users
+
+app = FastAPI()
+app.include_router(trades.router)
+app.include_router(users.router)
+```
+
+- Same decorators as the app (`get`, `post`, `api_route`, …) with identical semantics — a router *is* the sub-app scope those decorators already live on.
+- `prefix` is prepended to every path in the router (no trailing slash; `""` matches the bare prefix). `tags` groups the routes in `/docs`.
+- `include_router` copies the router's routes into the target at call time — order of inclusion sets the order routes are matched.
+
+**Options set once on the router** apply to all its routes, and `include_router` can add another layer on top:
+
+```python
+router = APIRouter(
+    prefix="/admin",
+    tags=["admin"],
+    dependencies=[Depends(require_admin)],   # runs for every route (see Depends page)
+    responses={404: {"description": "Not found"}},
+)
+
+app.include_router(router, prefix="/v1")     # extra prefix → /v1/admin/...
+```
+
+- `dependencies=[...]` on a router (or on `include_router`) runs for every route beneath it — the idiomatic place for auth guards that cover a whole section. These use `Depends()` for the side effect only; there's no parameter to receive the value.
+- Prefixes and `tags`/`dependencies` **compose**: those on `include_router` stack on top of those on the `APIRouter`.
+
+!!! tip "Router = organisation, not a new runtime"
+    An `APIRouter` changes nothing about how requests are handled — the [lifecycle](#request-lifecycle), validation, and `response_model` are identical. It's purely a **source-code** boundary: split routes across files, apply shared prefix/tags/dependencies to a group, and keep `main.py` a thin list of `include_router` calls.
+
+Routers nest — a router can `include_router` another before the app includes it — letting you build `/v1` → `/v1/trades` → `/v1/trades/{id}` hierarchies from small files.
+
 ## Dependency injection, testing, and auth
 
 `Depends()` — request-scoped resources, injecting a repository, testing with `TestClient` + `dependency_overrides`, and an API-key guard — is covered on its own page: [FastAPI — Dependency Injection, Testing & Auth](fastapi-dependencies.md).

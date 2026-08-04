@@ -9,7 +9,7 @@ Third-party libraries your program imports at runtime — as opposed to [tooling
 :   Depends() injection, repository wiring, TestClient + dependency_overrides, API-key guard
 
 :material-text-box-outline: **[FastAPI](fastapi.md)**
-:   FastAPI: annotations as contract, path/query/body params, response_model, request lifecycle, server-vs-client boundary
+:   FastAPI: annotations as contract, path/query/body params, response_model, APIRouter, request lifecycle, server-vs-client boundary
 
 :material-text-box-outline: **[JSON Lines (JSONL)](jsonl.md)**
 :   JSON Lines: append-friendly, streamable records with Pydantic serialisation
