@@ -99,6 +99,30 @@ pd.Timestamp(np.datetime64('...'))   # np.datetime64 → pd.Timestamp
 
 Common aliases: `'1min'`, `'1h'`, `'1D'`, `'1W'`, `'1ME'` (month-end), `'1QE'` (quarter-end).
 
+## Lagging / shifting
+
+`.shift()` has two modes on a DatetimeIndex — one moves values, one moves the index:
+
+```python
+df['close_lag1'] = df['close'].shift(1)     # move VALUES back 1 row (index fixed)
+df['close_lead1'] = df['close'].shift(-1)   # forward 1 row (a lead)
+
+df.shift(freq='1D')                          # move the INDEX forward 1 day (values fixed)
+df.shift(3, freq='h')                        # index forward 3 hours
+```
+
+- `shift(periods)` — lag by **rows**; the first *N* rows become `NaN`. Use when
+  there is one row per period.
+- `shift(freq=...)` — lag by **real time**; re-timestamps every label, no `NaN`.
+  Use for irregular/gappy series, then let index alignment match the lagged copy.
+- Lag *within* groups so values don't leak across entities:
+  `df.groupby('symbol')['close'].shift(1)`.
+
+!!! tip "`.diff()` and `.pct_change()` are shift underneath"
+    `s.diff(n)` is `s - s.shift(n)` and `s.pct_change(n)` is `s / s.shift(n) - 1`.
+    For a positional lag on time series, [`resample`](#resampling-datetimeindex-as-time-axis)
+    to a regular grid first if timestamps are uneven.
+
 ## Quick reference
 
 | Need | Code |
@@ -111,3 +135,5 @@ Common aliases: `'1min'`, `'1h'`, `'1D'`, `'1W'`, `'1ME'` (month-end), `'1QE'` (
 | Pass to Python lib | `ts.to_pydatetime()` |
 | Missing value | `pd.NaT` |
 | Time-based groupby | `.resample('1D')` on DatetimeIndex |
+| Lag by rows | `s.shift(1)` |
+| Lag by real time | `df.shift(freq='1D')` |
