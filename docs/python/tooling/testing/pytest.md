@@ -48,6 +48,41 @@ Pytest automatically:
 poetry run pytest
 ```
 
+### Selecting specific tests
+
+Every test has a **node ID** of the form `path::function` (`::Class::method` for
+methods on a class). Pass it to run exactly one test:
+
+```bash
+pytest tests/test_trade.py                          # every test in the file
+pytest tests/test_trade.py::test_rejects_negative   # one function
+pytest tests/test_trade.py::TestTrade::test_buy     # one method on a class
+```
+
+Each `@pytest.mark.parametrize` case gets a **parameter ID** in square brackets;
+append it to run a single case (quote it — `[]` are shell glob characters):
+
+```bash
+pytest --collect-only tests/test_trade.py   # list the exact IDs first
+# tests/test_trade.py::test_side[BUY]
+
+pytest "tests/test_trade.py::test_side[BUY]"   # just that one parametrized case
+```
+
+!!! tip "Node IDs vs `-k`"
+    Node IDs are exact. `-k EXPR` selects by *name substring* with `and`/`or`/`not`
+    (`pytest -k "side and BUY"`), and `-m EXPR` selects by marker (`pytest -m slow`).
+    Use `-k` when you remember only part of a name; use the node ID when you want one
+    precise test.
+
+Discovery and re-run helpers:
+
+```bash
+pytest --collect-only   # show all node IDs without running (--co -q for short)
+pytest --lf             # re-run only last-failed
+pytest -x               # stop at first failure
+```
+
 ## Coverage
 
 Install `pytest-cov`, then use `--cov-report=term-missing` to see which line numbers are uncovered:
