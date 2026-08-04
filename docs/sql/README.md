@@ -10,6 +10,12 @@ Declarative query patterns, with an explicit mapping to pandas equivalents.
 
     SELECT/WHERE/ORDER BY/LIMIT, JOIN types and the fan-out trap, GROUP BY/HAVING, subqueries, first CTE
 
+-   :material-text-box-outline:{ .lg .middle } __[Modifying data: INSERT, UPDATE, DELETE, upsert](modifying-data.md)__
+
+    ---
+
+    Writing rows: `INSERT`/`UPDATE`/`DELETE`, the missing-`WHERE` trap, and replacing a row via upsert (`ON CONFLICT`) vs `REPLACE`
+
 -   :material-card-bulleted-outline:{ .lg .middle } __[sqlite3 CLI](sqlite3-cli.md)__
 
     ---
