@@ -23,6 +23,18 @@ git config --global alias.st status         # usage: git st
 Tab-completion for `git` subcommands, flags, and branch names is a shell feature, not a Git one —
 see [command completion](../tools/zsh.md#command-completion).
 
+### Cloning a specific branch
+
+```bash
+git clone -b <branch> <url>                 # check out <branch> instead of the default; still fetches all branches
+git clone -b <branch> --single-branch <url> # only fetch that branch's history — smaller, faster
+git clone --depth 1 -b <branch> <url>       # shallow: latest commit only (--single-branch is implied)
+```
+
+- `-b` also accepts a tag name (checks out that tag in detached HEAD).
+- Without `--single-branch`, other branches are still downloaded; switch to one later with `git switch <name>`.
+- To grab a branch after an ordinary clone: `git fetch origin <branch>` then `git switch <branch>`.
+
 ### Deleting a repo
 
 The whole repository — history, branches, config — lives in the hidden `.git` folder. There's no `git` command to delete a repo; it's a plain filesystem operation.
