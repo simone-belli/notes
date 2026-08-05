@@ -10,6 +10,12 @@ Language-agnostic tools and notation.
 
     Shell script basics: shebang, exec, argument quoting, control flow
 
+-   :material-card-bulleted-outline:{ .lg .middle } __[curl](curl.md)__
+
+    ---
+
+    Command-line HTTP client: request parts as flags, sending data, auth, exit codes
+
 -   :material-text-box-outline:{ .lg .middle } __[direnv — auto-loading project variables](direnv.md)__
 
     ---
