@@ -48,12 +48,34 @@ Keep it **one worker** (the default) if startup seeds shared state — a single 
 
 See [Environment Variables](env-vars.md) for the underlying model.
 
-## First deploy — verify in order
+## Verifying a live service — in stages
 
-1. **Build succeeds** — the classic failure is *Poetry not found*, which the `pip install poetry` build command fixes.
-2. **Startup logs fire** — seed/init lines prove the lifespan ran and populated state.
-3. **Endpoints respond** — open `/docs`, authorise, call the real routes; expect non-empty results and no `500`s.
-4. **Outbound calls may be blocked** — third-party APIs that geofence datacenter IPs can return [`403`/`451`](http-status-codes.md). Expected, not your bug — don't make it the headline of a demo.
+"Live" in the Render dashboard only means the health check got a TCP answer on `$PORT` — it says nothing about whether your app works. Verify in a ladder, cheapest checks first, so a failure points at one layer instead of the whole stack. Stop at the first red stage and fix it before moving on.
+
+**1. Build succeeded** — read the *Build* log to its end. The classic failure is *Poetry not found* (fixed by the `pip install poetry` build command); the next is a dependency that won't resolve on Render's Python version. A red build never reaches your code.
+
+**2. Startup logs fired** — read the *Deploy/runtime* log. You want the [lifespan](../python/libraries/fastapi.md#lifespan-startup-and-shutdown) seed/init lines *and* uvicorn's `Uvicorn running on http://0.0.0.0:$PORT`. Common failures: app crashes on boot (missing env var, `pydantic-settings` validation error), or it binds `127.0.0.1`/a hardcoded port so Render's health check never connects and the deploy loops.
+
+**3. The port answers** — hit the root from your machine, not the browser:
+
+```bash
+curl -i https://myapp.onrender.com/
+```
+
+Any HTTP status (even a FastAPI `404` on `/`) proves routing works. A hang or connection reset means the process isn't listening on `$PORT` — back to stage 2. A `502`/`503` from Render's edge means the app crashed *after* binding, or is still cold-starting (~30–50s on free tier — retry once).
+
+**4. Health check is green** — `curl -i .../health` should give `200`. A trivial `/health → 200` route (see free-tier note) makes this an unambiguous "app is up" signal distinct from the root `404`.
+
+**5. Auth behaves** — a protected route with **no** key should be `401`/`403`, and **with** the demo key `200`. Getting `200` unauthenticated means the key check isn't wired; getting `401` *with* the key means the secret in the dashboard doesn't match what you're sending (trailing newline, wrong var name — remember `pydantic-settings` matches case-insensitively but not typos).
+
+**6. Real endpoints return real data** — open `/docs`, authorise, call the actual routes. Expect non-empty results and no `500`s. An empty-but-`200` response usually means the writable data path is wrong or the seed didn't populate it — check the data-path env var against `/opt/render/project/src/data`.
+
+**7. State survives a restart** — trigger a *Manual Deploy → Clear build cache & deploy* (or just restart) and re-run stages 3–6. On the free tier the disk is [ephemeral](#free-tier-realities), so anything written at runtime is gone; only a reseed-on-boot contract survives. This catches "worked right after deploy, broke overnight" before a visitor does.
+
+**8. Outbound calls** — third-party APIs that geofence datacenter IPs can return [`403`/`451`](http-status-codes.md) from Render even though they work from your laptop. Expected, not your bug — but confirm it's *that* and not a missing API-key secret, and don't make it the headline of a demo.
+
+!!! tip "A one-liner smoke test beats clicking around"
+    Chain the stages into a script — `curl` root, `/health`, an unauthenticated call (expect `401`), then an authenticated call (expect `200` + data) — and eyeball the four status codes. It reproduces the whole ladder in seconds after every redeploy. See [curl](curl.md) for `-i`, `-H`, and exit codes.
 
 ## Free-tier realities
 

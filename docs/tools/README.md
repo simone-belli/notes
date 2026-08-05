@@ -56,7 +56,7 @@ Language-agnostic tools and notation.
 
     ---
 
-    Deploy a Python web app to Render: build/start commands, `$PORT`, Python version, env vars, free-tier realities
+    Deploy a Python web app to Render: build/start commands, `$PORT`, env vars, staged post-deploy verification, free-tier realities
 
 -   :material-text-box-outline:{ .lg .middle } __[Semantic Versioning (SemVer)](semver.md)__
 
