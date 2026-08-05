@@ -79,7 +79,7 @@ For multiple cores: `--workers N` forks N independent single-loop processes behi
 client → [ nginx :443, TLS ] → [ uvicorn :8000, HTTP + event loop ] → [ FastAPI app ]
 ```
 
-Dev usually skips the proxy and hits uvicorn directly on `http://localhost:8000`. Production puts a reverse proxy on 443 (TLS termination) forwarding plaintext to uvicorn on a private high port.
+Dev usually skips the proxy and hits uvicorn directly on `http://localhost:8000`. Production puts a reverse proxy on 443 (TLS termination) forwarding plaintext to uvicorn on a private high port. A Platform-as-a-Service like [Render](../../tools/render.md) supplies that proxy and TLS for you — you just give it the uvicorn start command binding `0.0.0.0:$PORT`.
 
 ### Common failures
 

@@ -52,6 +52,12 @@ Language-agnostic tools and notation.
 
     Regular expressions: syntax, greedy vs. lazy, lookaround, backtracking vs. RE2
 
+-   :material-text-box-outline:{ .lg .middle } __[Render — deploying a web service](render.md)__
+
+    ---
+
+    Deploy a Python web app to Render: build/start commands, `$PORT`, Python version, env vars, free-tier realities
+
 -   :material-text-box-outline:{ .lg .middle } __[Semantic Versioning (SemVer)](semver.md)__
 
     ---
