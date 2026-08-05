@@ -23,6 +23,19 @@ git config --global alias.st status         # usage: git st
 Tab-completion for `git` subcommands, flags, and branch names is a shell feature, not a Git one —
 see [command completion](../tools/zsh.md#command-completion).
 
+### Deleting a repo
+
+The whole repository — history, branches, config — lives in the hidden `.git` folder. There's no `git` command to delete a repo; it's a plain filesystem operation.
+
+```bash
+rm -rf my-project        # delete the whole project, files + history
+rm -rf my-project/.git   # "un-git" it: keep files, drop version control
+```
+
+- Local only — a repo you pushed still exists on the remote; delete that separately.
+- `rm -rf` is irreversible and skips Trash; on a desktop, drag to Trash instead for a recoverable delete.
+- `.git` is a dotfile — use `ls -a` to see it.
+
 ## Typical workflow
 
 ```bash
