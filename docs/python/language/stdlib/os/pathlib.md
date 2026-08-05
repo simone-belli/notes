@@ -22,6 +22,22 @@ Path.cwd()               # current working directory
 Path(__file__).parent    # directory of the current script — use this, not os.path.dirname
 ```
 
+## Parent and ancestors
+
+`.parent` is an attribute (no parentheses). It's purely lexical — a new `Path`, no filesystem access, target need not exist.
+
+```python
+p = Path("/home/user/data/aapl.csv")
+p.parent            # Path("/home/user/data")
+p.parent.parent     # Path("/home/user")
+p.parents[1]        # Path("/home/user")  — same as p.parent.parent
+list(p.parents)     # all ancestors, closest first: data, user, home, /
+```
+
+- Relative paths bottom out at `.`, not the real root: `Path("a/b").parents[1]` → `Path(".")`.
+- The root is its own parent — climbing plateaus, never raises: `Path("/").parent` → `Path("/")`.
+- `..` is treated as a literal segment: `Path("foo/..").parent` → `Path("foo")`. Call `.resolve()` first to collapse it against the real filesystem.
+
 ## Reading and writing
 
 See [file-io.md](file-io.md) for `open()` patterns, CSV, JSON, and pickle. `Path` objects are accepted by `open()` directly and also expose convenience methods:
