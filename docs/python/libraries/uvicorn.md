@@ -38,6 +38,8 @@ ASGI (Asynchronous Server Gateway Interface) is the contract between an async we
 
 An ASGI app is any callable `async def app(scope, receive, send)`. `FastAPI()` builds exactly that call signature, so `app = FastAPI()` *is* a valid ASGI app — uvicorn just needs pointing at it.
 
+Beyond per-request traffic, uvicorn also drives the ASGI **lifespan** protocol: it sends a startup event before binding the socket to traffic and a shutdown event on `SIGTERM`/`SIGINT`, which is what runs a FastAPI app's [lifespan](fastapi.md#lifespan-startup-and-shutdown) setup and teardown. Each `--workers` process runs that lifespan independently.
+
 ### Running it
 
 The CLI takes an **import string** `module:attribute` (not a filename — it does `import main; main.app`):

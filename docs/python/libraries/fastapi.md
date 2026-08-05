@@ -251,6 +251,42 @@ Routers nest — a router can `include_router` another before the app includes i
 
 `Depends()` — request-scoped resources, injecting a repository, testing with `TestClient` + `dependency_overrides`, and an API-key guard — is covered on its own page: [FastAPI — Dependency Injection, Testing & Auth](fastapi-dependencies.md).
 
+## Lifespan: startup and shutdown
+
+Some work happens **once per process**, not per request: open a DB connection pool, create a shared [aiohttp](aiohttp.md) `ClientSession`, load an ML model, warm a cache — and tear each down cleanly on exit. **Lifespan** is an async context manager passed to `FastAPI(lifespan=...)`; everything before `yield` is startup, everything after is shutdown.
+
+```python
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
+import aiohttp
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    app.state.http = aiohttp.ClientSession()   # startup: before any request
+    yield                                       # <-- app serves here
+    await app.state.http.close()                # shutdown: after requests drain
+
+app = FastAPI(lifespan=lifespan)
+```
+
+- The `yield` **is** the running server: setup runs, control blocks at `yield` for the whole serving lifetime, then teardown runs on shutdown.
+- Hand resources to handlers by stashing on `app.state` (read via `request.app.state`, ideally behind a `Depends` wrapper for testability), or by **yielding a dict** — its keys land on `request.state`.
+- Replaces the deprecated `@app.on_event("startup")` / `@app.on_event("shutdown")` callbacks. One function means teardown sees startup's local variables via closure, and resources that are themselves context managers nest under a single `async with`.
+
+Lifespan is part of the [ASGI](uvicorn.md) spec and **driven by the server**: [Uvicorn](uvicorn.md) sends `lifespan.startup` before binding traffic and `lifespan.shutdown` on `SIGTERM`/`SIGINT`.
+
+- **Startup blocks serving** — no request is accepted until setup reaches `yield`, so resources are guaranteed ready. If startup raises, the app never serves.
+- **Shutdown is graceful-only** — a `kill -9` or hard crash skips teardown, so don't rely on it for correctness-critical flushing.
+
+!!! warning "Once per worker, not once per app"
+    `uvicorn --workers 4` forks four processes; each runs the lifespan independently with its **own** pool, session, model, and [event loop](../language/concurrency/asyncio.md). Nothing here is shared across workers — an in-process cache is per-worker; cross-worker state needs Redis or similar.
+
+!!! tip "Lifespan vs. `Depends(...)` with `yield` — scope, not syntax"
+    Both do setup-before / teardown-after, but lifespan runs **once per process** while a `yield` dependency runs **once per request**. The idiomatic pairing: the connection **pool** lives in the lifespan (created once); a per-request **connection/transaction** is a [`yield` dependency](fastapi-dependencies.md) that acquires from it and returns it when the response is sent.
+
+!!! warning "`TestClient` only runs lifespan inside `with`"
+    `TestClient(app)` alone does **not** fire startup/shutdown — endpoints reading `app.state` set up there hit `AttributeError`. Use it as a context manager: `with TestClient(app) as client:`. (Overriding the resource dependency in tests sidesteps this — the real lifespan never runs.)
+
 ## Server vs client — FastAPI is not an HTTP client
 
 FastAPI is a **server**: it answers inbound requests (`caller → you`). An HTTP **client** — [aiohttp](aiohttp.md), `httpx`, `requests` — does the opposite: it makes outbound requests (`you → some API`). They sit on opposite sides of the HTTP boundary and are **not substitutes**. "Call FastAPI to fetch data" is incoherent: inside a fetch there is no inbound request to serve.
