@@ -22,3 +22,6 @@ Third-party libraries your program imports at runtime — as opposed to [tooling
 
 :material-text-box-outline: **[Printing Tables in the Terminal](terminal-tables.md)**
 :   Print tables in the terminal: f-strings, tabulate, rich
+
+:material-text-box-outline: **[Uvicorn & Ports](uvicorn.md)**
+:   The ASGI server that serves a FastAPI app: ports, `--host`/`--port`, import string, one event loop, workers

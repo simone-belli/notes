@@ -275,11 +275,12 @@ The core never imports FastAPI; the boundary holds no fetch logic. This keeps th
 
 ## What FastAPI doesn't include
 
-No ORM, no migrations, no admin UI, no project layout opinion. It does one thing: Python functions ↔ HTTP API, with the glue (validation, serialisation, DI, docs) handled from annotations.
+No ORM, no migrations, no admin UI, no project layout opinion — and **no server**: a `FastAPI()` app is an ASGI callable that can't receive a request on its own. An ASGI server like [Uvicorn](uvicorn.md) binds the port and calls it. It does one thing: Python functions ↔ HTTP API, with the glue (validation, serialisation, DI, docs) handled from annotations.
 
 ## Related
 
 - [FastAPI — Dependency Injection, Testing & Auth](fastapi-dependencies.md) — `Depends()`, `TestClient`, and the API-key guard
 - [pydantic/pydantic.md](pydantic/pydantic.md) — Pydantic is FastAPI's validation and serialisation engine
+- [Uvicorn & Ports](uvicorn.md) — the ASGI server that binds a port and actually serves the app
 - [asyncio.md](../language/concurrency/asyncio.md) — FastAPI is ASGI-native; endpoint functions can be `async def`
 - [aiohttp.md](aiohttp.md) — the HTTP *client* side of the boundary; keep outbound fetches in a pure function and the endpoint thin
