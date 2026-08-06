@@ -57,10 +57,10 @@ curl -u user:pass https://.../me                        # HTTP basic auth
 
 ## Handy
 
-- `curl -s .../x | jq` — pipe JSON into [`jq`](jq.md) for readable output.
+- `curl -s .../x | jq` — pipe JSON into [`jq`](../jq.md) for readable output.
 - `-w "%{http_code}\n"` — print just the status code (or timing/size) after the body.
 
 ## Related
 
 - [HTTP Status Codes](http-status-codes.md) — the codes curl reports; `-f` keys off ≥400
-- [Uvicorn & Ports](../python/libraries/uvicorn.md) — the server side curl talks to (`localhost:8000`)
+- [Uvicorn & Ports](../../python/libraries/uvicorn.md) — the server side curl talks to (`localhost:8000`)

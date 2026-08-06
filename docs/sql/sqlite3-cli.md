@@ -55,7 +55,7 @@ as most Unix tools (`-csv`, `-json`, `-header`, `-readonly`).
 
 ## Persisting settings
 
-`~/.sqliterc` runs at startup like [`~/.zshrc`](../tools/zsh.md) for a
+`~/.sqliterc` runs at startup like [`~/.zshrc`](../tools/shell/zsh.md) for a
 shell — put `.mode column` / `.headers on` there instead of retyping them
 every session. Skip with `-noninit`; override with `-init myfile.sql`.
 

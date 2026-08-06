@@ -21,7 +21,7 @@ git config --global alias.st status         # usage: git st
 ```
 
 Tab-completion for `git` subcommands, flags, and branch names is a shell feature, not a Git one —
-see [command completion](../tools/zsh.md#command-completion).
+see [command completion](../tools/shell/zsh.md#command-completion).
 
 ### Cloning a specific branch
 

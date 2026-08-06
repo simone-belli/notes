@@ -5,7 +5,7 @@ tags:
 
 # jq — formatting & querying JSON
 
-APIs return JSON as one unbroken line — fine for machines, unreadable for humans. **`jq`** is the de-facto tool to fix that: a command-line JSON processor that both **pretty-prints** and **queries/transforms** JSON. It reads JSON on stdin, applies a *filter*, and writes to stdout — a natural [pipe](zsh.md) partner for [curl](curl.md). Install it: `brew install jq` / `apt install jq`.
+APIs return JSON as one unbroken line — fine for machines, unreadable for humans. **`jq`** is the de-facto tool to fix that: a command-line JSON processor that both **pretty-prints** and **queries/transforms** JSON. It reads JSON on stdin, applies a *filter*, and writes to stdout — a natural [pipe](shell/zsh.md) partner for [curl](web/curl.md). Install it: `brew install jq` / `apt install jq`.
 
 !!! tip "Two habits cover 90%"
     **`| jq`** pretty-prints anything; **`| jq -r '<path>'`** pulls one value out as plain text. Everything else is refinement.
@@ -102,6 +102,6 @@ These also **validate** — invalid JSON exits non-zero with a parse error.
 
 ## Related
 
-- [curl](curl.md) — produces the JSON you pipe into `jq`
-- [HTTP Requests](http-request.md) — the request behind the response you're formatting
+- [curl](web/curl.md) — produces the JSON you pipe into `jq`
+- [HTTP Requests](web/http-request.md) — the request behind the response you're formatting
 - [JSON Lines (JSONL)](../python/libraries/jsonl.md) — streams of JSON values; pair with `jq -s`

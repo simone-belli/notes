@@ -1,4 +1,4 @@
-note: tools/env-vars.md
+note: tools/shell/env-vars.md
 tier: detail
 questions:
   - id: env-inheritance

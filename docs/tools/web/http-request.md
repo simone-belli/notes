@@ -1,6 +1,6 @@
 # HTTP Requests
 
-HyperText Transfer Protocol (HTTP) is a **request–response** protocol: a client sends a *request message*, the server replies with a *response*. In HTTP/1.1 a request is **just text** over a Transmission Control Protocol (TCP) connection — every client ([curl](curl.md), Python `requests`/[aiohttp](../python/libraries/aiohttp.md), a browser) is a convenience layer that formats the same bytes.
+HyperText Transfer Protocol (HTTP) is a **request–response** protocol: a client sends a *request message*, the server replies with a *response*. In HTTP/1.1 a request is **just text** over a Transmission Control Protocol (TCP) connection — every client ([curl](curl.md), Python `requests`/[aiohttp](../../python/libraries/aiohttp.md), a browser) is a convenience layer that formats the same bytes.
 
 ## Anatomy of a request
 
@@ -97,4 +97,4 @@ Same shape in reverse: a status line (`HTTP/1.1 200 OK`) instead of a request li
 
 - [curl](curl.md) — send requests from the terminal; flags map onto the four parts
 - [HTTP Status Codes](http-status-codes.md) — the response side's verdict
-- [aiohttp](../python/libraries/aiohttp.md) — async HTTP client in Python
+- [aiohttp](../../python/libraries/aiohttp.md) — async HTTP client in Python

@@ -38,7 +38,7 @@ Every HTTP response carries a three-digit **status code** + reason phrase (`200 
 - `404 Not Found` — no such resource.
 - `405 Method Not Allowed` — URL exists, not for that verb.
 - `409 Conflict` — clashes with current state (duplicate, version conflict).
-- `422 Unprocessable Entity` — syntactically valid but semantically wrong; [FastAPI](../python/libraries/fastapi.md)/Pydantic returns this on validation failure.
+- `422 Unprocessable Entity` — syntactically valid but semantically wrong; [FastAPI](../../python/libraries/fastapi.md)/Pydantic returns this on validation failure.
 - `429 Too Many Requests` — rate-limited; often a `Retry-After` header.
 
 **5xx**
@@ -55,4 +55,4 @@ Every HTTP response carries a three-digit **status code** + reason phrase (`200 
 
 - **4xx** — don't retry unchanged; fix the request. Exception: `429` (back off, then retry after the delay).
 - **5xx** — often transient (`502`/`503`/`504`); retry with exponential backoff. `500` is ambiguous — retry cautiously.
-- The [aiohttp](../python/libraries/aiohttp.md) retry helper encodes exactly this: retry on `status >= 500`, give up on `4xx`.
+- The [aiohttp](../../python/libraries/aiohttp.md) retry helper encodes exactly this: retry on `status >= 500`, give up on `4xx`.

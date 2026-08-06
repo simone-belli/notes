@@ -62,7 +62,7 @@ def get_trade(trade_id: int, page: int = 1) -> TradeResponse:
     return service.get_trade(trade_id, page)
 ```
 
-Same contract, no boilerplate. FastAPI reads `trade_id: int`, extracts the path segment, coerces it to `int`, returns [`422`](../../tools/http-status-codes.md) if it's not valid, and generates OpenAPI docs — all from the annotation.
+Same contract, no boilerplate. FastAPI reads `trade_id: int`, extracts the path segment, coerces it to `int`, returns [`422`](../../tools/web/http-status-codes.md) if it's not valid, and generates OpenAPI docs — all from the annotation.
 
 ## Path operation decorators: `get`, `post`, … vs `route`
 
