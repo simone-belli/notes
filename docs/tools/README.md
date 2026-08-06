@@ -40,6 +40,12 @@ Language-agnostic tools and notation.
 
     HTTP status codes: the five classes, common codes, 401 vs 403, retry rules
 
+-   :material-card-bulleted-outline:{ .lg .middle } __[jq — formatting & querying JSON](jq.md)__
+
+    ---
+
+    Pretty-print and query JSON in the terminal: filters, `.[]`, select, `-r`, plus no-install alternatives
+
 -   :material-card-bulleted-outline:{ .lg .middle } __[Markdown](markdown.md)__
 
     ---

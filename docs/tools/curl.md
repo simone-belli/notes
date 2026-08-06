@@ -57,7 +57,7 @@ curl -u user:pass https://.../me                        # HTTP basic auth
 
 ## Handy
 
-- `curl -s .../x | jq` — pipe JSON into `jq` for readable output.
+- `curl -s .../x | jq` — pipe JSON into [`jq`](jq.md) for readable output.
 - `-w "%{http_code}\n"` — print just the status code (or timing/size) after the body.
 
 ## Related
