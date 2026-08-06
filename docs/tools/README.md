@@ -28,6 +28,12 @@ Language-agnostic tools and notation.
 
     Environment variables: what they are, scopes, .env files, security
 
+-   :material-text-box-outline:{ .lg .middle } __[HTTP Requests](http-request.md)__
+
+    ---
+
+    Anatomy of an HTTP request: request line, methods, headers, query strings, body formats
+
 -   :material-card-bulleted-outline:{ .lg .middle } __[HTTP Status Codes](http-status-codes.md)__
 
     ---

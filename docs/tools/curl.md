@@ -9,7 +9,7 @@ tags:
 
 ## Mental model
 
-Every invocation is one HTTP request. Flags set its four parts; the **response body** goes to stdout (status line and headers are *not* shown unless you ask):
+Every invocation is one [HTTP request](http-request.md). Flags set its four parts; the **response body** goes to stdout (status line and headers are *not* shown unless you ask):
 
 - **method** — `-X GET/POST/…` (defaults to `GET`, or `POST` when a body is sent)
 - **URL** — the positional argument (`?k=v` query string lives here)

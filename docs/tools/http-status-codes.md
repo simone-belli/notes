@@ -1,6 +1,6 @@
 # HTTP Status Codes
 
-Every HTTP response carries a three-digit **status code** + reason phrase (`200 OK`, `404 Not Found`) — the server's one-number verdict on the request. The first digit is the **class**.
+Every HTTP response carries a three-digit **status code** + reason phrase (`200 OK`, `404 Not Found`) — the server's one-number verdict on the [request](http-request.md). The first digit is the **class**.
 
 !!! note "4xx vs 5xx"
     **4xx blames the caller** (the request was bad), **5xx blames the server** (the request was fine, the server failed). This drives retry logic: repeating a 4xx unchanged is pointless; many 5xx are transient and worth a retry.
