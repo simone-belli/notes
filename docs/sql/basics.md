@@ -86,6 +86,9 @@ for conditions that genuinely need the aggregate result.
 pandas: `WHERE` ~ a boolean mask before `.groupby()`; `HAVING` ~
 `.groupby(...).sum().query(...)` after.
 
+See [aggregation](aggregation.md) for multi-key grouping, `COUNT(DISTINCT)`, and
+the `SUM(CASE WHEN…)` pivot idiom.
+
 ## Subqueries
 
 - **Uncorrelated** (derived table) — self-contained, computed once.

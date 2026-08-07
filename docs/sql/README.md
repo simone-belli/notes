@@ -4,6 +4,12 @@ Declarative query patterns, with an explicit mapping to pandas equivalents.
 
 <div class="grid cards" markdown>
 
+-   :material-text-box-outline:{ .lg .middle } __[Aggregation: multi-key GROUP BY, HAVING, COUNT(DISTINCT), pivots](aggregation.md)__
+
+    ---
+
+    Multi-key grouping, WHERE vs HAVING, `COUNT(DISTINCT)`, and the conditional-aggregation (`SUM(CASE WHEN…)`) pivot idiom
+
 -   :material-text-box-outline:{ .lg .middle } __[SQL basics: SELECT, JOIN, GROUP BY, subqueries, CTEs](basics.md)__
 
     ---
