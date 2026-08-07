@@ -111,6 +111,9 @@ the `SUM(CASE WHEN…)` pivot idiom.
     `NOT IN` predicate matches nothing (three-valued logic). `NOT EXISTS`
     doesn't have this trap — prefer it for "no counterpart in B" checks.
 
+See [subqueries](subqueries.md) for correlated vs uncorrelated forms, when a
+correlated subquery is really a JOIN, and how CTEs replace deep nesting.
+
 ## A first CTE
 
 ```sql
