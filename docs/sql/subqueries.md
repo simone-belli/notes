@@ -88,8 +88,8 @@ Use `LEFT JOIN` so zero-order customers survive with `COUNT = 0`; `COUNT(col)`
 
 Chained subqueries nest **inside-out**: the innermost, most-indented `SELECT`
 runs first, and each stage is an anonymous, untestable, sometimes-duplicated
-block. A **CTE** (`WITH name AS (...)`) names each stage and lays them
-**top-to-bottom** as a pipeline.
+block. A **Common Table Expression (CTE)** (`WITH name AS (...)`) names each
+stage and lays them **top-to-bottom** as a pipeline.
 
 ```sql
 WITH per_customer AS (
@@ -106,12 +106,45 @@ SELECT region, avg_order FROM per_region WHERE avg_order > 500;
 
 Each stage is named, single-purpose, reads in execution order, is independently
 inspectable (`SELECT * FROM per_customer`), and a name reused twice is written
-once — the same instinct as [pandas method
-chaining](../data/pandas/chaining.md) over nested calls.
+once — the exact instinct behind chaining [`.pipe()`](../data/pandas/chaining.md)
+calls in pandas rather than nesting them inside-out. Each `WITH stage AS (...)`
+maps to one `.pipe(f)`: a named, single-purpose step you can inspect on its own.
 
 !!! note "CTE ≈ named subquery"
-    A non-recursive CTE is sugar over a subquery (same semantics). Caveats:
-    materialization is engine-dependent (a CTE used twice may be **recomputed**),
-    and `WITH RECURSIVE` adds hierarchy/graph traversal that plain subqueries
-    can't express. See [window functions](window-functions.md) for CTEs staging
+    A non-recursive CTE is sugar over a subquery (same semantics) — a
+    *readability* tool, not a performance one. Materialization is
+    engine-dependent: a CTE used twice may be **recomputed** each time (some
+    engines materialize automatically or take `MATERIALIZED` / `NOT MATERIALIZED`
+    hints). See [window functions](window-functions.md) for CTEs staging
     time-series pipelines.
+
+## Recursive CTEs — know it exists
+
+`WITH RECURSIVE` is the one thing subqueries **can't** express: a CTE that
+references *itself*, so the query iterates. The shape is always an **anchor**
+member (the base rows), `UNION ALL`, and a **recursive** member that joins back
+to the CTE's own name — re-running, feeding each pass into the next, until it
+yields no new rows.
+
+```sql
+-- sequence generation (rows in no table): 1..10
+WITH RECURSIVE seq(n) AS (
+    SELECT 1                                                 -- anchor
+    UNION ALL
+    SELECT n + 1 FROM seq WHERE n < 10                       -- recurse
+)
+SELECT n FROM seq;
+
+-- hierarchy traversal: employee 1 and everyone under them
+WITH RECURSIVE reports AS (
+    SELECT id, manager_id FROM employees WHERE id = 1        -- anchor: root
+    UNION ALL
+    SELECT e.id, e.manager_id
+    FROM employees e JOIN reports r ON e.manager_id = r.id   -- recurse down
+)
+SELECT * FROM reports;
+```
+
+Reach for it for self-referential hierarchies (org charts, category/comment
+trees, dependency graphs) or generating a series — recognise the shape; it's not
+worth drilling beyond that.

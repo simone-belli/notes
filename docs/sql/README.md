@@ -32,7 +32,7 @@ Declarative query patterns, with an explicit mapping to pandas equivalents.
 
     ---
 
-    Uncorrelated (derived table, scalar) vs correlated (`EXISTS`/`IN`), when a correlated subquery is a JOIN, and deep nesting → CTEs
+    Uncorrelated (derived table, scalar) vs correlated (`EXISTS`/`IN`), when a correlated subquery is a JOIN, deep nesting → chained CTEs, and recursive CTEs
 
 -   :material-text-box-outline:{ .lg .middle } __[Window functions & CTEs](window-functions.md)__
 
