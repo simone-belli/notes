@@ -56,7 +56,18 @@ result = (
 )
 ```
 
-`df.pipe(f, ...)` calls `f(df, ...)` — a fluency adapter for functions that don't natively chain. Debug mid-chain: `.pipe(lambda d: (print(d.shape), d)[1])`.
+`df.pipe(f, ...)` calls `f(df, ...)` — a fluency adapter for functions that don't natively chain. It flips inside-out nesting into top-to-bottom order: `trim_outliers(add_returns(clean(raw)))` (read right-to-left) becomes `raw.pipe(clean).pipe(add_returns).pipe(trim_outliers)` (read top-down, matching execution). Debug mid-chain: `.pipe(lambda d: (print(d.shape), d)[1])`.
+
+If the target function takes the DataFrame under a keyword other than its first argument (e.g. statsmodels' `data=`), pass a `(callable, keyword)` tuple — `.pipe` routes `df` there:
+
+```python
+df.pipe((smf.ols, 'data'), formula='y ~ x')   # df -> data=df
+```
+
+Also works on `Series` and `GroupBy`, not just DataFrames.
+
+!!! tip "`.pipe` vs `.apply`"
+    `.pipe` passes the **whole** object to your function once; `.apply` calls your function **per row/column/group**. Reach for `.pipe` when the operation is DataFrame-level (a transform stage), `.apply` when it's element-wise.
 
 ## Common chain operations
 
