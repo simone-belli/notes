@@ -33,6 +33,7 @@ aggregated away.
 | `LEAD(x) OVER (...)` | `df.groupby('g')['x'].shift(-1)` | Value from 1 row after |
 | `ROW_NUMBER() OVER (PARTITION BY g ORDER BY t)` | `df.groupby('g').cumcount() + 1` | Sequential rank, no ties |
 | `RANK() OVER (PARTITION BY g ORDER BY x)` | `df.groupby('g')['x'].rank(method='min')` | Rank with gaps after ties |
+| `DENSE_RANK() OVER (PARTITION BY g ORDER BY x)` | `df.groupby('g')['x'].rank(method='dense')` | Rank, ties share, no gaps |
 | `SUM(x) OVER (PARTITION BY g ORDER BY t)` | `df.groupby('g')['x'].cumsum()` | Running total |
 | `SUM(x) OVER (... ROWS BETWEEN n PRECEDING AND CURRENT ROW)` | `df.groupby('g')['x'].rolling(n+1).sum()` | Rolling sum |
 | `MAX(x) OVER (... ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)` | `df.groupby('g')['x'].cummax()` | Running maximum |
@@ -45,6 +46,15 @@ aggregated away.
 `LAG`/`LEAD` produce `NULL` at partition boundaries, like `.shift()`
 produces `NaN` at group edges — both need an explicit `PARTITION BY` /
 `groupby` or they'll leak values across logical groups.
+
+!!! note "`ROW_NUMBER` vs `RANK` vs `DENSE_RANK` on ties"
+    For values ordered `100, 90, 90, 80`: `ROW_NUMBER` → `1, 2, 3, 4`
+    (always distinct, ties broken arbitrarily); `RANK` → `1, 2, 2, 4`
+    (ties share, then a **gap** — "Olympic" ranking); `DENSE_RANK` →
+    `1, 2, 2, 3` (ties share, **no gap**). Pick `ROW_NUMBER` for exactly one
+    row per position (dedup, top-1), `RANK`/`DENSE_RANK` when ties should
+    legitimately tie. Add tiebreaker columns to `ORDER BY` to make
+    `ROW_NUMBER` deterministic.
 
 ## Frame clauses
 
@@ -86,6 +96,51 @@ CTEs aren't automatically materialized — a CTE referenced multiple times
 may be re-evaluated each time (some engines materialize automatically or
 support `MATERIALIZED` explicitly). `WITH RECURSIVE` is a separate feature
 for hierarchical/graph traversal, not covered here.
+
+## Top-N per group
+
+"Top 3 highest-paid employees per department", "most recent order per customer",
+"2 largest trades per symbol" — all the same shape, and a classic interview
+question. A window function **can't** go in `WHERE` (it's computed *after* `WHERE`
+in the [logical order](aggregation.md)), so number the rows in a
+[CTE](subqueries.md) and filter in the outer query:
+
+```sql
+WITH ranked AS (
+    SELECT *,
+           ROW_NUMBER() OVER (PARTITION BY department
+                              ORDER BY salary DESC) AS rn
+    FROM employees
+)
+SELECT department, name, salary
+FROM ranked
+WHERE rn <= 3;            -- rn = 1 for the single top row per group
+```
+
+`ROW_NUMBER()` numbers each group `1, 2, 3, …` in descending salary; `rn <= n`
+slices the top `n` of every group in one pass — replacing a clumsy correlated
+subquery.
+
+!!! warning "Which ranking function you filter on changes the meaning of \"top N\""
+    At a tie on the boundary: **`ROW_NUMBER` + `rn <= 3`** → exactly 3 rows,
+    ties cut arbitrarily. **`RANK` + `rk <= 3`** → keeps ranks `1,2,2` (can be
+    ≥3 rows), all tied rows qualify. **`DENSE_RANK` + `dr <= 3`** → every row in
+    the top 3 distinct *values* (e.g. "top 3 salary bands"). "Top 3" is ambiguous
+    exactly at ties — say which you mean.
+
+**Deduplication** is the top-1 special case: `ROW_NUMBER() ... = 1`, partitioned
+by the key that defines a duplicate, ordered by recency/priority, keeps the best
+row per key.
+
+```sql
+WITH d AS (
+    SELECT *, ROW_NUMBER() OVER (PARTITION BY email ORDER BY updated_at DESC) AS rn
+    FROM contacts
+)
+SELECT * FROM d WHERE rn = 1;    -- newest row per email
+```
+
+Same as `df.sort_values('updated_at').groupby('email').tail(1)`.
 
 ## Time-series patterns
 
