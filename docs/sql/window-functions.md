@@ -56,6 +56,12 @@ produces `NaN` at group edges — both need an explicit `PARTITION BY` /
     legitimately tie. Add tiebreaker columns to `ORDER BY` to make
     `ROW_NUMBER` deterministic.
 
+!!! tip "Rank over the whole table"
+    `PARTITION BY` is optional. Omit it — `RANK() OVER (ORDER BY salary DESC)` —
+    and the window is the *entire* result set, so the rank is **global** instead
+    of per-group (`ORDER BY` is still required; it's what you rank by). Same as
+    dropping the `.groupby()`: `df['salary'].rank(method='min', ascending=False)`.
+
 ## Frame clauses
 
 ```sql
