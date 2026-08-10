@@ -174,6 +174,78 @@ SELECT * FROM d WHERE rn = 1;    -- newest row per email
 
 Same as `df.sort_values('updated_at').groupby('email').tail(1)`.
 
+## Gaps and islands
+
+Detecting **consecutive runs** in ordered data — a login streak, a period a
+sensor stayed "on", contiguous ID ranges — and collapsing each run to
+`(start, end, length)`. **Islands** are the runs; **gaps** are the holes
+between them. It's the canonical hard window-function interview question, and
+structurally a **streak / regime detector**: the imperative "loop and keep a
+counter, reset on change" becomes the set-based "manufacture a key that's
+constant within each run, then `GROUP BY` it".
+
+!!! note "The core trick: two counters that drift apart"
+    Two monotonic sequences that both step by 1 stay a **constant distance
+    apart** — until the data skips. Subtract them and the difference is
+    constant within a run and jumps between runs, so it works as a group key.
+
+**Consecutive values** (dense dates/integers): the data itself is one counter,
+`ROW_NUMBER()` is the other. Within a run of consecutive days both climb by 1,
+so `date − rn` is constant per run:
+
+```sql
+WITH numbered AS (
+    SELECT user_id, login_date,
+           login_date - INTERVAL (ROW_NUMBER() OVER (PARTITION BY user_id
+                                  ORDER BY login_date)) DAY AS grp   -- anchor date, constant per run
+    FROM logins
+)
+SELECT user_id, MIN(login_date) AS start_date, MAX(login_date) AS end_date, COUNT(*) AS len
+FROM numbered
+GROUP BY user_id, grp;
+```
+
+**Same-value runs** (the general `ROW_NUMBER()` *difference*): number rows
+twice — once over the whole partition, once partitioned by the value tracked —
+and subtract. `rn_all − rn_grp` is constant along each maximal same-value run:
+
+```sql
+WITH numbered AS (
+    SELECT machine_id, t, status,
+           ROW_NUMBER() OVER (PARTITION BY machine_id ORDER BY t)         AS rn_all,
+           ROW_NUMBER() OVER (PARTITION BY machine_id, status ORDER BY t) AS rn_grp
+    FROM status_log
+)
+SELECT machine_id, status, MIN(t) AS run_start, MAX(t) AS run_end, COUNT(*) AS len
+FROM numbered
+GROUP BY machine_id, status, rn_all - rn_grp;   -- value + diff: the pair is unique per run
+```
+
+!!! warning "Group by the value *and* the difference"
+    `rn_all − rn_grp` can repeat across two runs of the **same** value, so
+    grouping on the bare difference merges them. Always `GROUP BY` the value
+    column **together with** the difference — the pair is unique per run.
+
+**Boundary-flag + cumulative sum** — the more flexible idiom: flag where a run
+starts with [`LAG`](#mapping-to-pandas), then a running `SUM` of the flags is
+the run id. Unlike the `ROW_NUMBER` difference, the boundary rule is arbitrary
+(value change, or a time gap over a threshold for sessionising):
+
+```sql
+WITH flagged AS (
+    SELECT *, CASE WHEN status = LAG(status) OVER (PARTITION BY machine_id ORDER BY t)
+                   THEN 0 ELSE 1 END AS is_new_run
+    FROM status_log
+)
+SELECT machine_id, status, MIN(t), MAX(t), COUNT(*)
+FROM (SELECT *, SUM(is_new_run) OVER (PARTITION BY machine_id ORDER BY t) AS run_id FROM flagged) g
+GROUP BY machine_id, run_id, status;
+```
+
+This is exactly the pandas `(s != s.shift()).cumsum()` group-key idiom. To
+report the **gaps** instead, pair each row with the next via `LEAD` and keep
+the jumps: `WHERE LEAD(id) OVER (ORDER BY id) - id > 1`.
+
 ## Time-series patterns
 
 ```sql

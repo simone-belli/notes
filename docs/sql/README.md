@@ -38,6 +38,6 @@ Declarative query patterns, with an explicit mapping to pandas equivalents.
 
     ---
 
-    `OVER`/`PARTITION BY`/frames mapped to `groupby`/`shift`/`rolling`; ranking (`ROW_NUMBER`/`RANK`/`DENSE_RANK`) and top-N per group; CTEs; time-series patterns
+    `OVER`/`PARTITION BY`/frames mapped to `groupby`/`shift`/`rolling`; ranking (`ROW_NUMBER`/`RANK`/`DENSE_RANK`), top-N per group, gaps-and-islands; CTEs; time-series patterns
 
 </div>
