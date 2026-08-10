@@ -14,60 +14,116 @@
 | Visual | `v` (char) `V` (line) `Ctrl-v` (block) | Selecting a region |
 | Command-line (Ex) | `:` | File/search/config ops |
 
-Insert entries: `i` before cursor · `a` after · `I` line start · `A` line end · `o` new line below · `O` new line above.
+The keys that enter Insert mode differ by where they drop the cursor:
+
+| Key | Enters Insert… |
+|-----|----------------|
+| `i` | before the cursor |
+| `a` | after the cursor |
+| `I` | at line start |
+| `A` | at line end |
+| `o` | on a new line below |
+| `O` | on a new line above |
 
 ## The grammar: `operator + count + motion`
 
-Many commands parse as a sentence — `[count] operator [count] motion/text-object` — so they **compose**:
+Many commands parse as a sentence — `[count] operator [count] motion/text-object` — so they **compose**.
 
-- **Operators**: `d` delete · `c` change (delete + insert) · `y` yank (copy) · `>`/`<` indent · `=` auto-indent · `gu`/`gU` lower/upper.
-- **Motions**: `w`/`b`/`e` word fwd/back/end · `0`/`$` line start/end · `gg`/`G` file top/bottom · `f x` to next `x` · `t x` till `x` · `}` paragraph · `%` matching bracket.
-- **Text objects** (range by structure): `iw`/`aw` inner/a word · `i"` inside quotes · `i(` / `ib` inside parens · `a(` incl. parens · `i{` braces · `it`/`at` HTML tag · `ip` paragraph.
+**Operators** (the verb — what to do to a range):
 
-```
-dw      delete word            d3w / 3dw  delete three words
-ci"     change inside quotes   ca(        change a (…) block, parens included
-dd      delete line            yy         yank line      >>  indent line
-di{     empty a brace block    dt,        delete till next comma   cip  change paragraph
-```
+| Key | Action |
+|-----|--------|
+| `d` | delete |
+| `c` | change (delete, then insert) |
+| `y` | yank (copy) |
+| `>` / `<` | indent / dedent |
+| `=` | auto-indent |
+| `gu` / `gU` | lowercase / uppercase |
+
+**Motions** (define the range by movement):
+
+| Key | Moves to |
+|-----|----------|
+| `w` / `b` / `e` | next word / back a word / end of word |
+| `0` / `$` | start / end of line |
+| `gg` / `G` | top / bottom of file |
+| `f x` / `t x` | onto / just before next `x` |
+| `}` | next paragraph |
+| `%` | matching bracket |
+
+**Text objects** (define the range by structure — the real superpower):
+
+| Object | Selects |
+|--------|---------|
+| `iw` / `aw` | inner word / a word (incl. surrounding space) |
+| `i"` | inside quotes |
+| `i(` / `ib` | inside parentheses |
+| `a(` | a `(…)` block, parens included |
+| `i{` | inside braces |
+| `it` / `at` | inside / around an HTML tag |
+| `ip` | paragraph |
+
+Combining a verb with a motion or object gives you the actual edits:
+
+| Command | Meaning |
+|---------|---------|
+| `dw` | delete word |
+| `d3w` / `3dw` | delete three words |
+| `ci"` | change inside quotes |
+| `ca(` | change a `(…)` block, parens included |
+| `di{` | empty a brace block |
+| `dt,` | delete till next comma |
+| `cip` | change this paragraph |
+| `dd` / `yy` / `>>` | delete / yank / indent the whole line |
 
 Doubling an operator (`dd`, `yy`, `>>`) targets the whole line.
 
 ## Everyday commands
 
-- **Repeat**: `.` repeats the last change — pair with search (`n` then `.`) as surgical find-and-replace.
-- **Undo/redo**: `u` undo · `Ctrl-r` redo (Vim keeps a branching undo *tree*).
-- **Paste**: `p` after cursor · `P` before · `3p` paste ×3. Yank/paste use **registers**; `"+y` / `"+p` use the system clipboard.
-- **Counts multiply**: `5j` down 5 lines · `2dd` delete 2 lines.
-- **Marks**: `ma` set mark `a` · `` `a `` jump to it.
-- **Macros**: `qa` record into `a`, `q` stop, `@a` replay, `@@` repeat, `10@a` run 10×.
+| Command | Action |
+|---------|--------|
+| `.` | repeat the last change (pair with `n` after a search for surgical find-and-replace) |
+| `u` / `Ctrl-r` | undo / redo (Vim keeps a branching undo *tree*) |
+| `p` / `P` | paste after / before the cursor (`3p` pastes ×3) |
+| `"+y` / `"+p` | yank / paste via the system clipboard |
+| `5j` / `2dd` | counts multiply a command: down 5 lines / delete 2 lines |
+| `ma` / `` `a `` | set mark `a` / jump to it |
+| `qa` … `q` / `@a` / `@@` | record macro into `a` / replay it / repeat last (`10@a` runs it 10×) |
 
 ## Search & substitute
 
-```vim
-/pattern      search forward (n / N = next / prev)      *  search word under cursor
-?pattern      search backward
-:s/old/new/g          substitute on current line (g = all matches)
-:%s/old/new/g         substitute in whole file (% = all lines)
-:%s/old/new/gc        …with confirm on each
-```
+| Command | Action |
+|---------|--------|
+| `/pattern` / `?pattern` | search forward / backward |
+| `n` / `N` | next / previous match |
+| `*` | search for the word under the cursor |
+| `:s/old/new/g` | substitute on the current line (`g` = all matches, not just the first) |
+| `:%s/old/new/g` | substitute in the whole file (`%` = all lines) |
+| `:%s/old/new/gc` | …with confirmation on each match |
 
 Patterns are [regex](regexp.md). A [Visual](#modes) selection + `:s` scopes the substitute to the selection.
 
 ## Windows, buffers, tabs
 
-- **Buffers** (open files): `:e file` · `:ls` · `:bn`/`:bp`.
-- **Splits**: `:sp` horizontal · `:vsp` vertical · move with `Ctrl-w` then `h`/`j`/`k`/`l`.
-- **Tabs**: `:tabnew` · `gt`/`gT`.
+| Command | Action |
+|---------|--------|
+| `:e file` / `:ls` | open a file into a buffer / list buffers |
+| `:bn` / `:bp` | next / previous buffer |
+| `:sp` / `:vsp` | split horizontally / vertically |
+| `Ctrl-w` then `h` `j` `k` `l` | move between splits |
+| `:tabnew` / `gt` / `gT` | new tab / next / previous tab |
 
 ## Exit (the famous one)
 
-```vim
-:w      save              :q      quit            :wq  /  :x  /  ZZ   save & quit
-:q!     quit, discard changes                     :qa                quit all
-```
+| Command | Action |
+|---------|--------|
+| `:w` | save |
+| `:q` | quit |
+| `:wq` / `:x` / `ZZ` | save & quit |
+| `:q!` | quit, discarding changes |
+| `:qa` | quit all windows |
 
 ## Config & learning
 
-- Config: `~/.vimrc` (Vim) or `~/.config/nvim/init.lua` (Neovim). Common: `set number`, `syntax on`, `set expandtab shiftwidth=4`.
+- Config lives in `~/.vimrc` (Vim) or `~/.config/nvim/init.lua` (Neovim). Common lines: `set number`, `syntax on`, `set expandtab shiftwidth=4`.
 - `:help <topic>` opens the built-in manual. Run **`vimtutor`** in a terminal for a 30-minute guided intro — the best way to start.
