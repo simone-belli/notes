@@ -11,5 +11,8 @@ The shell environment: scripting, navigation, and per-project variables.
 :material-text-box-outline: **[Environment Variables — macOS / Unix](env-vars.md)**
 :   Environment variables: what they are, scopes, .env files, security
 
+:material-card-bulleted-outline: **[Shell history](history.md)**
+:   Reusing past commands: `Ctrl+R`, prefix search, `Alt+.`, `!`-expansion, fzf, config
+
 :material-card-bulleted-outline: **[zsh](zsh.md)**
 :   zsh basics: navigation, files, pipes, variables, command completion, symlinks, shortcuts

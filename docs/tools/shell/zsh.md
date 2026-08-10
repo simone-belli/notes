@@ -147,10 +147,13 @@ Use symlinks almost always. Hard links are for deduplication/backup tooling.
 |-----|--------|
 | `Ctrl+C` | Kill process |
 | `Ctrl+Z` | Suspend (resume: `fg`) |
-| `Ctrl+R` | Reverse-search history |
+| `Ctrl+R` | Reverse-search history (see [history.md](history.md)) |
 | `Ctrl+L` | Clear screen |
 | `!!` | Repeat last command |
 | `!$` | Last argument of previous command |
+
+For recalling and reusing past commands efficiently — prefix search, `Alt+.`,
+`!`-expansion, fzf, and history config — see [Shell history](history.md).
 
 ## Introspection
 
