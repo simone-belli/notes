@@ -40,6 +40,12 @@ Language-agnostic tools and notation.
 
     The shell environment: scripting, navigation, and per-project variables
 
+-   :material-card-bulleted-outline:{ .lg .middle } __[Vim](vim.md)__
+
+    ---
+
+    Modal editing cheat sheet: modes, the operator+motion grammar, text objects, search/substitute, exiting
+
 -   :material-folder-outline:{ .lg .middle } __[Web](web/)__
 
     ---
