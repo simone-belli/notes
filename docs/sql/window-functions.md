@@ -64,15 +64,41 @@ produces `NaN` at group edges — both need an explicit `PARTITION BY` /
 
 ## Frame clauses
 
+The **frame** is the slice of the partition the aggregate sees *for the current
+row* — what turns a window aggregate into a *running* / *rolling* quantity rather
+than a partition-wide constant.
+
 ```sql
-ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW   -- running/expanding
-ROWS BETWEEN 2 PRECEDING AND CURRENT ROW           -- rolling window of 3
+ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW   -- running/expanding  → .expanding()
+ROWS BETWEEN 2 PRECEDING AND CURRENT ROW           -- rolling window of 3 → .rolling(3)
 ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING  -- whole partition
 ```
 
-`ROWS` counts physical rows; `RANGE` groups by the *value* of the `ORDER BY`
-column instead (relevant with ties or date ranges) — `ROWS` is what
-corresponds to `.rolling(n)`.
+### Default frame — what you get when you omit one
+
+- **No `ORDER BY`** → whole partition (`RANGE … UNBOUNDED PRECEDING AND UNBOUNDED
+  FOLLOWING`). `SUM(x) OVER (PARTITION BY g)` is the group total on every row (the
+  "% of group" move).
+- **`ORDER BY`, no frame** → `RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`.
+  This is what makes `SUM(x) OVER (ORDER BY t)` a *running* total — but the
+  default is **`RANGE`, not `ROWS`**.
+
+### `ROWS` vs `RANGE`
+
+`ROWS` counts **physical rows**: `CURRENT ROW` is this one row. `RANGE` counts by
+the **value** of the `ORDER BY` column: `CURRENT ROW` means *all rows whose
+`ORDER BY` value ties the current one*. With a unique `ORDER BY` key they're
+identical; they diverge only on **ties**.
+
+!!! warning "Default `RANGE` + ties = silent bug"
+    A "running total" `SUM(amt) OVER (ORDER BY day)` where `day` repeats gives
+    **every tied row the same cumulative value** — the default `RANGE` frame
+    sweeps all same-`day` peers into `CURRENT ROW` at once. For a true
+    row-by-row running total, write the frame explicitly:
+    `SUM(amt) OVER (ORDER BY day ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)`.
+    Rule: if you mean "up to and including *this* row", say `ROWS`. `ROWS` is also
+    what maps to pandas' `.rolling(n)` / `.expanding()`; `RANGE` is for genuine
+    value-based windows ("within 7 days").
 
 ## Common Table Expressions (CTEs)
 
