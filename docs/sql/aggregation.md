@@ -1,4 +1,4 @@
-# Aggregation: multi-key GROUP BY, HAVING, COUNT(DISTINCT), pivots
+# Aggregation
 
 Past the [basics](basics.md): `GROUP BY` partitions the post-`WHERE` rows into
 groups (one per distinct key), and each aggregate is computed **once per group**,

@@ -5,7 +5,7 @@ tags:
 quiz: core
 ---
 
-# Concurrency in Python: GIL, Threads, Processes, asyncio
+# Concurrency in Python
 
 ## Foundations
 

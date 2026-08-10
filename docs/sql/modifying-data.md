@@ -1,4 +1,4 @@
-# Modifying data: INSERT, UPDATE, DELETE, upsert
+# Modifying data
 
 Data Manipulation Language (DML) beyond `SELECT` — writing rows. Each
 statement affects rows chosen by a `WHERE` clause and reports a row count,

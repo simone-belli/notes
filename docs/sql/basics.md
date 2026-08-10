@@ -1,4 +1,4 @@
-# SQL basics: SELECT, JOIN, GROUP BY, subqueries, CTEs
+# SQL basics
 
 Structural Query Language (SQL) is **declarative** — you describe the result
 you want, not how to compute it. The engine's query planner picks the actual

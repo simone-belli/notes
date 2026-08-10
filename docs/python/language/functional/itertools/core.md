@@ -2,7 +2,7 @@
 quiz: detail
 ---
 
-# `itertools` — chain, islice, product, combinations
+# `itertools`
 
 All four operate on *iterators* — they are lazy and never materialise the full sequence in memory. This matters when your input is a tick stream, a 5000-ticker universe, or a cross of many scenario axes.
 

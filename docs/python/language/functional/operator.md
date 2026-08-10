@@ -2,7 +2,7 @@
 quiz: detail
 ---
 
-# `operator` — attrgetter, itemgetter, methodcaller
+# `operator`
 
 The `operator` module provides C-implemented callables for attribute, item, and method access. They replace common lambdas used as sort keys, `map` arguments, and `groupby` key functions.
 

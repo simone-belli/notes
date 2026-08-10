@@ -3,10 +3,10 @@
 :material-text-box-outline: **[`itertools.accumulate` — running totals](accumulate.md)**
 :   Running totals and compound products; lazy numpy.cumsum; NAV series pattern
 
-:material-text-box-outline: **[`itertools` — chain, islice, product, combinations](core.md)**
+:material-text-box-outline: **[`itertools`](core.md)**
 :   chain, islice, product, combinations — lazy combinatorics and slicing
 
-:material-text-box-outline: **[itertools filtering — compress, dropwhile, filterfalse, takewhile](filtering.md)**
+:material-text-box-outline: **[`itertools` filtering](filtering.md)**
 :   compress, dropwhile, filterfalse, takewhile — lazy filtering and prefix selection
 
 :material-text-box-outline: **[`itertools.groupby`](groupby.md)**

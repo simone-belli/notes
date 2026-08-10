@@ -15,7 +15,7 @@
 :material-text-box-outline: **[Lazy vs Eager Evaluation](lazy-evaluation.md)**
 :   Lazy vs eager: memory tradeoffs, sinks, when each wins, NumPy comparison
 
-:material-text-box-outline: **[`operator` — attrgetter, itemgetter, methodcaller](operator.md)**
+:material-text-box-outline: **[`operator`](operator.md)**
 :   attrgetter, itemgetter, methodcaller — faster and clearer than lambdas in sort keys
 
 :material-text-box-outline: **[Unpacking Operators: `*x` and `**x`](unpacking.md)**

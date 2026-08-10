@@ -1,4 +1,4 @@
-# Subqueries & CTEs: correlated vs not, subquery-as-JOIN
+# Subqueries & CTEs
 
 Past the [basics](basics.md): a subquery is a `SELECT` nested in another
 statement. The axis that matters is **whether the inner query depends on the
