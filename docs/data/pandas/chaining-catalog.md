@@ -125,7 +125,7 @@ df.reset_index()                # move index back to a column
 )
 ```
 
-Named aggregations (`output=('source', 'func')`) name columns directly. The result of `.agg()` re-enters the chain as a normal DataFrame.
+Named aggregations (`output=('source', 'func')`) name columns directly. The result of `.agg()` re-enters the chain as a normal DataFrame. See [groupby.md](groupby.md) for the full split-apply-combine model (`transform`, `filter`, `apply`).
 
 ## Full pipeline example
 
