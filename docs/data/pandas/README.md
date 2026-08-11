@@ -16,7 +16,7 @@
 :   dtype system — nullable types, categoricals, StringDtype, pd.NA
 
 :material-text-box-outline: **[GroupBy](groupby.md)**
-:   Split-apply-combine — `agg`, `transform`, `filter`, `apply`; fast paths and keywords
+:   Split-apply-combine — `agg`, `transform`, `filter`, `apply`; multi-key groups, fast paths and keywords
 
 :material-text-box-outline: **[Indexing, Views and Copies](indexing.md)**
 :   Views vs copies, SettingWithCopyWarning, `.loc` rules, Copy-on-Write

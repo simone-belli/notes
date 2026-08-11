@@ -27,6 +27,28 @@ g.get_group('BTC')         # one group's sub-DataFrame
 !!! note "Choosing the verb"
     One number per group → **`agg`**. Same rows back, enriched with a group stat → **`transform`**. Drop/keep whole groups → **`filter`**. None of the above → **`apply`**.
 
+## Grouping by multiple columns
+
+Pass a **list** of keys — the groups are then the distinct combinations of those columns (a cartesian split), and the result carries a **MultiIndex** with one level per key.
+
+```python
+df.groupby(['symbol', 'venue'])['close'].mean()   # MultiIndex (symbol, venue) → mean
+df.groupby(['symbol', 'venue']).size()             # rows per combination
+```
+
+- The key order sets the MultiIndex level order (and the sort order, unless `sort=False`).
+- `as_index=False` returns the keys as plain columns instead — a flat, tabular result that's easier to chain or merge.
+- Reshape the MultiIndex result with `.unstack('venue')` to pivot the last key into columns, or `.reset_index()` to flatten.
+- Select or aggregate a single level afterwards with `level=`: `g.mean().mean(level='symbol')`, or better `df.groupby(level='symbol')` on an already-MultiIndexed frame.
+
+```python
+(df.groupby(['symbol', 'venue'], as_index=False)
+   .agg(avg_close=('close', 'mean'), n=('close', 'count')))   # tidy 4-column table
+```
+
+!!! tip "Keys can be more than column names"
+    A groupby key can be a column label, a list of labels, a Series/array of the same length (group by a derived value), an index level name, or a `pd.Grouper`. Mix them freely: `df.groupby(['symbol', df['ts'].dt.hour])`.
+
 ## `agg` — reduce each group to a scalar
 
 Builds a **summary table**: one row per group.
