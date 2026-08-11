@@ -102,6 +102,20 @@ df['pct']  = df['volume'] / df.groupby('symbol')['volume'].transform('sum')
 
 `transform` = `agg` **then** merge the summary back onto the original rows, in one step. Cumulative/window methods (`cumsum`, `rank`, `shift`, `ffill`) are already transform-shaped and callable directly: `g['close'].cumsum()`.
 
+### `rank` — position within each group
+
+`groupby(...).rank()` ranks every row **within its group**, returning a same-length Series (transform shape). Ties and direction are controlled by keywords, not by the group split:
+
+```python
+df['rk']   = df.groupby('symbol')['close'].rank(method='dense', ascending=False)
+df['pctl'] = df.groupby('symbol')['close'].rank(pct=True)   # 0–1 percentile per group
+```
+
+- `method=` breaks ties: `'average'` (default), `'min'`, `'max'`, `'first'` (by order of appearance), `'dense'` (no gaps between rank values).
+- `ascending=False` ranks largest first; `pct=True` returns the percentile rank (rank ÷ group count) in `(0, 1]`.
+- `na_option=` places `NaN`s: `'keep'` (default, `NaN` rank), `'top'`, or `'bottom'`.
+- Common uses: top-N *per group* (`rank(method='first') <= n`), within-group percentiles, cross-sectional ranking of a metric per date.
+
 ## `filter` — keep or drop whole groups
 
 Row filtering at **group** granularity. The callback gets each sub-DataFrame and returns one bool; failing groups are dropped entirely.
