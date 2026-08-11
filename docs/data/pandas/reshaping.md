@@ -61,7 +61,7 @@ All rearrange between long and wide; pick by what you start from and whether you
 | `pivot_table` | columns of a flat frame | **yes** (`aggfunc`) | long → wide *with* duplicates to reduce; spreadsheet-style pivot |
 | `melt` | columns of a wide frame | no | wide → long ("unpivot"), the inverse of `pivot` |
 
-Rule of thumb: if the data is **already indexed** the way you want, use `stack`/`unstack`. If you start from flat columns and want to name index/columns/values, use `pivot`/`pivot_table`. Both `stack` and `melt` go wide→long — `stack` works on the column *index*, `melt` on named columns.
+Rule of thumb: if the data is **already indexed** the way you want, use `stack`/`unstack`. If you start from flat columns and want to name index/columns/values, use `pivot`/`pivot_table`. Both `stack` and `melt` go wide→long — `stack` works on the column *index*, `melt` on named columns. All of these rearrange **one** frame; to combine **two** frames on a key, use [merge.md](merge.md).
 
 ```python
 df.pivot(index='date', columns='symbol', values='close')                 # no aggregation

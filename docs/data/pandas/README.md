@@ -24,6 +24,9 @@
 :material-text-box-outline: **[Iteration](iteration.md)**
 :   `__iter__` asymmetry, `.items()`, `iterrows()` vs `itertuples()`, scalar access
 
+:material-text-box-outline: **[Merge](merge.md)**
+:   SQL-style joins — `how` (inner/left/outer), `on`/`left_on`/`right_on`, the fan-out trap and `validate=`
+
 :material-text-box-outline: **[Reshaping](reshaping.md)**
 :   `stack`/`unstack` to rotate index↔columns; vs `pivot`, `pivot_table`, `melt`
 
