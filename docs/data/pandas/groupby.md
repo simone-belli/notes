@@ -70,6 +70,26 @@ Named aggregation (`output=('col', 'func')`, pandas ≥ 0.25) avoids the MultiIn
 !!! warning "Prefer string reducers over lambdas"
     Built-in names (`'sum'`, `'mean'`, `'count'`) dispatch to Cython group loops (fast path). An equivalent `lambda s: s.sum()` runs once per group in Python (slow path) — often 10–100× slower on many small groups.
 
+### Built-in reducers (Cython fast path)
+
+Pass any of these as a string to `agg` (or call as a method on the GroupBy) to stay on the fast path:
+
+- **Counts:** `count` (non-null), `size` (all rows incl. `NaN`), `nunique` (distinct non-null).
+- **Sums/products:** `sum`, `prod`.
+- **Central/spread:** `mean`, `median`, `std`, `var`, `sem`, `quantile`.
+- **Extremes/positions:** `min`, `max`, `idxmin`, `idxmax`, `first`, `last`, `nth`.
+- **Boolean:** `any`, `all`.
+
+**Count distinct** is `nunique` — there is no `count_distinct`:
+
+```python
+df.groupby('symbol')['venue'].nunique()                 # distinct venues per symbol
+df.groupby('symbol').agg(n_venues=('venue', 'nunique')) # named, inside agg
+```
+
+!!! note "`count` vs `size` vs `nunique`"
+    `count` = non-null values, `size` = every row (nulls included), `nunique` = distinct non-null values. `nunique(dropna=False)` counts `NaN` as one of the distinct values.
+
 ## `transform` — broadcast a group stat back to every row
 
 Attaches a group-level statistic to each row (de-mean, z-score, share of total, group-wise NA fill). Returns a scalar (broadcast to group length) or a same-length Series, realigned to the original index.
