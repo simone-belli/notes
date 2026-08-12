@@ -106,9 +106,9 @@ past folds. Pipeline handles *preprocessing* leakage; `TimeSeriesSplit` handles
 
 - `make_pipeline(StandardScaler(), Ridge())` — terser constructor that auto-names
   steps from class names (`"standardscaler"`, `"ridge"`).
-- `ColumnTransformer` — apply different transformers to different columns (scale
-  numerics, one-hot encode categoricals) as one `fit`/`transform` object, with
-  the same per-group leakage guarantee.
+- [`ColumnTransformer`](column-transformer.md) — apply different transformers to
+  different columns (scale numerics, one-hot encode categoricals) as one
+  `fit`/`transform` object, with the same per-group leakage guarantee.
 - `GridSearchCV(pipe, {"model__alpha": [0.1, 1, 10]})` — address a step's
   hyperparameter with `"stepname__param"` (double underscore). The search refits
   the whole pipeline per fold, so even the scaler is re-fit per candidate.
