@@ -28,6 +28,12 @@ Learning notes and references across software engineering, ML, and AI topics.
 
     Git workflows, commands, and CI/CD
 
+-   :material-robot-outline:{ .lg .middle } __[Machine Learning](ml/README.md)__
+
+    ---
+
+    scikit-learn workflow: pipelines, and preventing data leakage
+
 -   :material-language-python:{ .lg .middle } __[Python](python/README.md)__
 
     ---
