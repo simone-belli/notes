@@ -114,6 +114,6 @@ unique = [x for x in lst if not (x in seen or seen.add(x))]  # O(n)
 
 ## See also
 
-- [sets.md](../python/language/objects/sets.md) — set operations and O(1) membership in detail
-- [hash.md](../python/language/objects/hash.md) — `__hash__` contract, why mutability breaks dicts
+- [sets.md](../../python/language/objects/sets.md) — set operations and O(1) membership in detail
+- [hash.md](../../python/language/objects/hash.md) — `__hash__` contract, why mutability breaks dicts
 - [queues.md](queues.md) — deque and heapq API in full

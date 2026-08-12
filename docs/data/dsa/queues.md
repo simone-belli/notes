@@ -122,4 +122,4 @@ max_val = -heapq.heappop(h)
 
 - [complexity.md](complexity.md) — full Big-O table for all built-in structures
 - [trees.md](trees.md) — `deque` for BFS; `heapq` for tree-path problems
-- [sets.md](../python/language/objects/sets.md) — O(1) membership, set operations
+- [sets.md](../../python/language/objects/sets.md) — O(1) membership, set operations

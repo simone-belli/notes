@@ -1,8 +1,14 @@
 # Data
 
-NumPy and Pandas — arrays, vectorised operations, DataFrames.
+Data structures and algorithms, plus NumPy and Pandas — arrays, vectorised operations, DataFrames.
 
 <div class="grid cards" markdown>
+
+-   :material-sitemap:{ .lg .middle } __[DSA](dsa/)__
+
+    ---
+
+    Data structures and algorithms: complexity, queues, heaps, graphs, trees
 
 -   :material-folder-outline:{ .lg .middle } __[NumPy](numpy/)__
 

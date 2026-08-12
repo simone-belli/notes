@@ -8,13 +8,7 @@ Learning notes and references across software engineering, ML, and AI topics.
 
     ---
 
-    NumPy and Pandas — arrays, vectorised operations, DataFrames
-
--   :material-sitemap:{ .lg .middle } __[DSA](dsa/README.md)__
-
-    ---
-
-    Data structures and algorithms: complexity, queues, heaps
+    Data structures and algorithms, NumPy, and Pandas
 
 -   :material-chart-line:{ .lg .middle } __[Finance](finance/README.md)__
 
