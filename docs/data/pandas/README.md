@@ -30,6 +30,9 @@
 :material-text-box-outline: **[MultiIndex](multiindex.md)**
 :   Hierarchical index of tuples — selecting with `.loc`/`.xs`/`IndexSlice`, level ops, sort-before-slice, `reset_index`
 
+:material-text-box-outline: **[Parquet](parquet.md)**
+:   Columnar file format — column/predicate pushdown, row groups, `read_parquet`/`to_parquet`, partitioning
+
 :material-text-box-outline: **[Reshaping](reshaping.md)**
 :   Long vs wide; `stack`/`unstack` to rotate index↔columns; `pivot`, `pivot_table`, `melt`
 

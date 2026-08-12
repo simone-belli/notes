@@ -116,4 +116,4 @@ The `with` block stays open between `yield` suspensions; the file closes once th
 | SQLite | ✅ | ✅ | ❌ | ✅ |
 
 !!! tip "When to switch"
-    JSONL is the right choice up to a few hundred MB. Beyond that, or when you need queries/indexes, reach for SQLite (structured) or Parquet (columnar analytics).
+    JSONL is the right choice up to a few hundred MB. Beyond that, or when you need queries/indexes, reach for SQLite (structured) or [Parquet](../../data/pandas/parquet.md) (columnar analytics).
