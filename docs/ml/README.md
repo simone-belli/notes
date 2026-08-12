@@ -1,13 +1,13 @@
 # Machine Learning
 
-Modelling workflow and the libraries that support it, starting with scikit-learn.
+Modelling workflow, organised by library.
 
 <div class="grid cards" markdown>
 
--   :material-text-box-outline:{ .lg .middle } __[scikit-learn Pipelines](pipelines.md)__
+-   :material-folder-outline:{ .lg .middle } __[scikit-learn](scikit-learn/)__
 
     ---
 
-    Chaining preprocessing and an estimator so `fit` touches only the training fold — how it makes `scale-then-split` data leakage structurally impossible
+    Classical ML in Python: the estimator API, pipelines, and leakage-safe evaluation
 
 </div>

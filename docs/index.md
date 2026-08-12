@@ -32,7 +32,7 @@ Learning notes and references across software engineering, ML, and AI topics.
 
     ---
 
-    scikit-learn workflow: pipelines, and preventing data leakage
+    scikit-learn: the estimator API, pipelines, and leakage-safe evaluation
 
 -   :material-language-python:{ .lg .middle } __[Python](python/README.md)__
 

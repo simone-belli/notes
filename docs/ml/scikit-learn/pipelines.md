@@ -5,8 +5,8 @@ tags:
 
 # scikit-learn Pipelines
 
-A `Pipeline` chains preprocessing transformers and a final estimator into one
-object that implements `fit`/`transform`/`predict`. It is not just convenience
+A `Pipeline` chains preprocessing transformers and a final [estimator](estimators.md)
+into one object that implements `fit`/`transform`/`predict`. It is not just convenience
 plumbing — it is a **correctness guarantee** that makes the most common form of
 data leakage structurally impossible.
 
