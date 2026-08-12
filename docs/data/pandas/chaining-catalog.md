@@ -14,6 +14,7 @@ Lookup catalog of the operations most used in method chains. For the chaining co
 | 8 | `.assign(c=lambda d: d['c'].str...)` | String operations on a column |
 | 9 | `.set_index()` / `.reset_index(drop=True)` | Index management |
 | 10 | `.groupby().agg(...)` | Aggregate by group |
+| 11 | `df[[...]]` / `.reindex(columns=...)` | Reorder columns |
 
 ## 1. Filter rows — `.query()`
 
@@ -126,6 +127,26 @@ df.reset_index()                # move index back to a column
 ```
 
 Named aggregations (`output=('source', 'func')`) name columns directly. The result of `.agg()` re-enters the chain as a normal DataFrame. See [groupby.md](groupby.md) for the full split-apply-combine model (`transform`, `filter`, `apply`).
+
+## 11. Reorder columns
+
+```python
+df[['date', 'symbol', 'close', 'open']]          # explicit order; omitted cols are dropped
+df.reindex(columns=['date', 'symbol', 'close'])  # like above, but unknown names → all-NaN col
+df[df.columns[::-1]]                             # reverse
+df.sort_index(axis=1)                            # sort column labels alphabetically
+```
+
+Move one column to the front (keep the rest in place):
+
+```python
+df[['close'] + [c for c in df.columns if c != 'close']]
+df.insert(0, 'close', df.pop('close'))           # in-place: pop then reinsert at position 0
+```
+
+- Selection (`df[[...]]`) reorders by **listing columns in the wanted order** — a subset that omits names also drops them.
+- `.reindex(columns=...)` is the same reorder but tolerates missing names (adds an all-`NaN` column) — safer when the set is dynamic.
+- `.insert(loc, name, values)` and `.pop(name)` mutate in place; the `pop`+`insert` combo relocates a single column to position `loc`.
 
 ## Full pipeline example
 
