@@ -173,8 +173,37 @@ you want to run it using the poetry environment.
 poetry run python -m finlib.module
 ```
 
-### Sync environment to lock file
+---
+
+## `poetry install`
+
+Syncs the virtual environment to the project's declared dependencies — the "set up / reproduce my environment" command you run after cloning a repo or pulling changes. What it does:
+
+1. **Finds or creates** the project's virtualenv (creates one if none exists).
+2. **Decides whether to resolve**, by comparing `poetry.lock` to `pyproject.toml` via a content hash:
+   - lock **fresh** → install the exact pins straight from the lock, no resolution (fast, deterministic);
+   - lock **missing** → resolve from `pyproject.toml` and write a fresh `poetry.lock` first;
+   - lock **stale** (hand-edited `pyproject.toml`) → warns to run `poetry lock`, installs from the lock anyway.
+3. **Installs only the delta** — already-correct packages are untouched (idempotent).
+4. **Installs the root project itself** in editable mode (like `pip install -e .`), unless `--no-root`.
+
+!!! note "`install` obeys the lock; `update` rewrites it"
+    `poetry install` treats `poetry.lock` as the source of truth and never changes the pins — it only makes the environment reflect them. `poetry update` re-resolves within the `pyproject.toml` constraints, bumps to newer allowed versions, and rewrites the lock. `install` is the *consumer* of reproducibility; `add`/`update`/`lock` are the *producers*. A committed lock means every `poetry install` yields an identical environment.
+
+### Scope flags
 
 ```bash
-poetry install
+poetry install                     # full dev environment (main + non-optional groups + root)
+poetry install --without dev       # runtime deps only (replaces deprecated --no-dev)
+poetry install --with docs         # include an optional group that's off by default
+poetry install --only main --no-root   # lean prod: no dev tools, don't install the app
+poetry install --sync              # prune packages present in the venv but not in the lock
 ```
+
+- Default installs **main** deps + all **non-optional** [groups](#dependency-groups) + the root package.
+- `--no-root` — install dependencies but not the project itself (Docker layer caching: copy `pyproject.toml`/`poetry.lock`, `install --no-root`, then copy source; also for non-package apps).
+- `--sync` — make the env *exactly* the lock (removes strays); plain `install` only **adds**. (Older Poetry: `--remove-untracked`; Poetry 2.x also has `poetry sync`.)
+- `--extras "name"` / `--all-extras` — include the project's optional extras; `--dry-run` previews.
+
+!!! warning "It never updates versions"
+    A released newer version won't be picked up — the lock still pins the old one. Use [`poetry update`](#add-vs-install-vs-update) (or `poetry add pkg@latest`). And `install` only sets the env up; run code through it with `poetry run …`.
