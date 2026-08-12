@@ -27,8 +27,11 @@
 :material-text-box-outline: **[Merge](merge.md)**
 :   SQL-style joins — `how` (inner/left/outer), `on`/`left_on`/`right_on`, the fan-out trap and `validate=`
 
+:material-text-box-outline: **[MultiIndex](multiindex.md)**
+:   Hierarchical index of tuples — selecting with `.loc`/`.xs`/`IndexSlice`, level ops, sort-before-slice, `reset_index`
+
 :material-text-box-outline: **[Reshaping](reshaping.md)**
-:   `stack`/`unstack` to rotate index↔columns; vs `pivot`, `pivot_table`, `melt`
+:   Long vs wide; `stack`/`unstack` to rotate index↔columns; `pivot`, `pivot_table`, `melt`
 
 :material-card-bulleted-outline: **[to_dict()](to-dict.md)**
 :   Convert DataFrame/Series to dicts: `orient` options, records for JSON, gotchas

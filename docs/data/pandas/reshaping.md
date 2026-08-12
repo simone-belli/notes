@@ -1,5 +1,25 @@
 # Pandas — Reshaping
 
+## Long vs wide — the two shapes
+
+The same data lives in two canonical layouts and real work bounces between them. **Long (tidy)** = one row per observation, the variable's identity stored *as data* in a column. **Wide (matrix)** = a grid, one variable's values spread *across columns*, identity stored as column labels.
+
+```
+# long                          # wide
+date        symbol   ret        symbol        AAPL    MSFT
+2024-01-02  AAPL     0.011      date
+2024-01-02  MSFT    -0.004      2024-01-02   0.011  -0.004
+2024-01-03  AAPL     0.002      2024-01-03   0.002   0.008
+```
+
+Same information, different shape — each is the natural input for a different operation, which is why you convert constantly:
+
+- **Long** is for **storage, filtering, grouping, and plotting-by-category** — the database/`GROUP BY` shape most files arrive in. Adding an asset or variable is just more rows/columns. `groupby('symbol')`, boolean masks, and seaborn `hue=` all want long.
+- **Wide** is for **cross-sectional math** — a returns matrix (dates × assets) is what `.corr()`, `.cov()`, a covariance optimiser, `.dot()`, or per-column arithmetic (`df['AAPL'] - df['MSFT']`) expect.
+
+!!! note "The rule of thumb"
+    Store, group, and filter in **long**; reshape to **wide** the moment you need `.corr()`, matrix math, or column arithmetic — then often go back. `pivot`/`pivot_table`/`unstack` go long→wide; `melt`/`stack` go wide→long. Wide frames commonly carry a [MultiIndex](multiindex.md) once you pivot on more than one key.
+
 ## `stack` / `unstack` — rotate levels between index and columns
 
 `unstack` moves an **index** level out to become **column** labels; `stack` moves a **column** level down into the index. They are inverses, and both are pure relabelling — no values change, nothing is aggregated. Use them to rotate a DataFrame between a **long** shape (info in the index, typically post-`groupby`) and a **wide** shape (info across columns).
@@ -65,6 +85,15 @@ Rule of thumb: if the data is **already indexed** the way you want, use `stack`/
 
 ```python
 df.pivot(index='date', columns='symbol', values='close')                 # no aggregation
-df.pivot_table(index='date', columns='symbol', values='close', aggfunc='mean')
-df.melt(id_vars='date', var_name='symbol', value_name='close')           # wide → long
+df.pivot_table(index='date', columns='symbol', values='close',
+               aggfunc='mean', fill_value=0, margins=True)               # aggregate + totals
+df.melt(id_vars='date', value_vars=['AAPL', 'MSFT'],                     # wide → long
+        var_name='symbol', value_name='close')
 ```
+
+- **`pivot`** names three roles — `index` (row labels), `columns` (key whose distinct values become headers), `values` (cells). Pure relabel; **requires unique `(index, columns)` pairs** or it raises `ValueError: Index contains duplicate entries`. Omit `values` to pivot all remaining columns → MultiIndex columns.
+- **`pivot_table`** adds the reduction `pivot` lacks: `aggfunc` (default `'mean'`; a list → MultiIndex columns) collapses colliding rows, `fill_value` replaces absent-combination `NaN`s, `margins=True` adds an "All" totals row/column. It's `groupby(index+columns).agg(aggfunc).unstack(columns)` written declaratively.
+- **`melt`** gathers columns into two: `id_vars` stay fixed (repeated down), the rest unpivot into `var_name`/`value_name`. Wide frames usually hold the identifier in the *index*, so `reset_index()` first to expose it as an `id_var`.
+
+!!! tip "`pivot` vs `pivot_table`: uniqueness decides"
+    Guaranteed-unique index/column pairs → **`pivot`** (fast, lossless; a duplicate is a *bug* worth surfacing). Duplicates you must collapse (intraday ticks → daily, multiple venues) → **`pivot_table`** with the right `aggfunc`.

@@ -29,7 +29,7 @@ g.get_group('BTC')         # one group's sub-DataFrame
 
 ## Grouping by multiple columns
 
-Pass a **list** of keys — the groups are then the distinct combinations of those columns (a cartesian split), and the result carries a **MultiIndex** with one level per key.
+Pass a **list** of keys — the groups are then the distinct combinations of those columns (a cartesian split), and the result carries a [**MultiIndex**](multiindex.md) with one level per key.
 
 ```python
 df.groupby(['symbol', 'venue'])['close'].mean()   # MultiIndex (symbol, venue) → mean
