@@ -100,7 +100,7 @@ df['z']    = df.groupby('symbol')['close'].transform(lambda s: (s - s.mean()) / 
 df['pct']  = df['volume'] / df.groupby('symbol')['volume'].transform('sum')
 ```
 
-`transform` = `agg` **then** merge the summary back onto the original rows, in one step. Cumulative/window methods (`cumsum`, `rank`, `shift`, `ffill`) are already transform-shaped and callable directly: `g['close'].cumsum()`.
+`transform` = `agg` **then** merge the summary back onto the original rows, in one step. Cumulative/window methods (`cumsum`, `rank`, `shift`, `ffill`) are already transform-shaped and callable directly: `g['close'].cumsum()`. See [windows.md](windows.md) for the ordered `shift`/`rolling`/`expanding` family (the pandas form of SQL window functions).
 
 ### `rank` — position within each group
 

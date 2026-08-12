@@ -7,9 +7,9 @@ tags:
 
 A **window function** computes a value across a set of rows related to the
 current row *without* collapsing them — unlike `GROUP BY`, which reduces N
-rows to 1 per group. If you think in [pandas](../data/pandas/chaining.md),
-window functions are `groupby` + an ordered, row-wise op (`shift`, `rank`,
-`rolling`, `cumsum`, ...) broadcast back onto every row instead of
+rows to 1 per group. If you think in pandas, window functions are
+[`groupby` + an ordered, row-wise op](../data/pandas/windows.md) (`shift`,
+`rank`, `rolling`, `cumsum`, ...) broadcast back onto every row instead of
 aggregated away.
 
 ```sql

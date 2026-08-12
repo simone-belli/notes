@@ -32,3 +32,6 @@
 
 :material-card-bulleted-outline: **[to_dict()](to-dict.md)**
 :   Convert DataFrame/Series to dicts: `orient` options, records for JSON, gotchas
+
+:material-text-box-outline: **[Window Operations](windows.md)**
+:   `shift`/`rolling`/`expanding` = SQL `LAG`/`ROWS BETWEEN`/`UNBOUNDED PRECEDING`; the off-by-one and partition reflexes
