@@ -61,6 +61,37 @@ git push -u origin main       # first push: also sets the upstream branch
 git pull                      # fetch + merge from the tracked upstream
 ```
 
+## Referring to commits
+
+Almost every command (`log`, `diff`, `show`, `reset`, `rebase`, `checkout`) takes a *revision* —
+any of these forms resolves to a commit SHA:
+
+| Form | Means |
+|------|-------|
+| `HEAD` (or `@`) | the commit currently checked out |
+| `HEAD~` / `HEAD~1` | its parent — one commit back |
+| `HEAD~3` | three commits back along the first-parent line |
+| `HEAD^` | same as `HEAD~1` (`^` = `^1` = first parent) |
+| `HEAD^2` | the **second** parent — only exists on a merge commit |
+| `main~2`, `v1.2.0~1` | same arithmetic from any branch or tag, not just `HEAD` |
+| `a1b2c3d` | a commit SHA (any unambiguous prefix, usually 7+ chars) |
+| `HEAD@{2}` | where `HEAD` pointed 2 moves ago (from the [reflog](#recovering-with-reflog)) |
+| `main@{yesterday}` | where `main` pointed at that time |
+
+!!! note "`~` walks back, `^` picks a parent"
+    On a linear history they're interchangeable: `HEAD~2` == `HEAD^^`. They diverge only at merge
+    commits — `~n` always follows the *first* parent n times, while `^n` selects the n-th parent
+    of one commit. So `HEAD^2` is "the branch that was merged in", and it's an error on a
+    non-merge commit.
+
+Two commits also form ranges:
+
+```bash
+git log main..feature      # commits in feature but not in main
+git log main...feature     # commits in either but not both (symmetric difference)
+git diff HEAD~3 HEAD       # cumulative diff over the last 3 commits
+```
+
 ## Inspecting changes
 
 ```bash
@@ -151,6 +182,42 @@ Squashes 4 messy commits into 1, using `reword` to write a single clean
 git rebase --continue   # after resolving a conflict + git add
 git rebase --abort       # bail out, restore the pre-rebase state
 ```
+
+The argument is the **base** — the commit *below* the ones you want to edit, which is itself left
+untouched:
+
+```bash
+git rebase -i HEAD~5      # edit the last 5 commits
+git rebase -i a1b2c3d~1   # edit a1b2c3d and everything after it
+git rebase -i --root       # include the very first commit (which has no parent)
+```
+
+Use `edit` as the verb to stop *at* a commit: Git replays up to it and hands back the working tree,
+so you can amend the content, not just the message.
+
+```bash
+git rebase -i HEAD~3      # mark the target line `edit`
+# ... change files ...
+git add .
+git commit --amend        # rewrite that commit in place
+git rebase --continue      # replay the commits that came after it
+```
+
+### Rebasing onto a different base
+
+`git rebase --onto <newbase> <upstream> [<branch>]` moves the commits in `<upstream>..<branch>`
+onto `<newbase>` — the explicit three-argument form when "replay my branch onto main" isn't what
+you want.
+
+```bash
+git rebase --onto main feature~3           # replay only feature's last 3 commits onto main
+git rebase --onto main old-parent feature   # move feature off old-parent and onto main
+git rebase --onto HEAD~2 HEAD~1             # drop HEAD~1 from history, keeping HEAD
+```
+
+With two arguments `<branch>` defaults to the current one, so `--onto HEAD~2 HEAD~1` replays the
+range `HEAD~1..HEAD` (just the tip commit) onto `HEAD~2` — deleting one commit from the middle of
+local history without opening the interactive editor.
 
 ### Cherry-picking a single commit
 

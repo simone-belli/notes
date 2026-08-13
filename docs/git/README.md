@@ -8,7 +8,7 @@ Git workflows, commands, internals, and CI/CD.
 
     ---
 
-    Setup, staging/diff, bisect, branching, merge/rebase, cherry-pick, undo, reflog, stash, .gitignore
+    Setup, revision syntax, staging/diff, bisect, branching, merge/rebase, cherry-pick, undo, reflog, stash, .gitignore
 
 -   :material-text-box-outline:{ .lg .middle } __[GitHub Actions & CI](github-actions.md)__
 
