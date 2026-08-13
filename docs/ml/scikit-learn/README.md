@@ -11,3 +11,6 @@
 
 :material-text-box-outline: **[scikit-learn Pipelines](pipelines.md)**
 :   Chaining preprocessing and an estimator so `fit` touches only the training fold — how it makes `scale-then-split` data leakage structurally impossible
+
+:material-text-box-outline: **[Train/Test Splitting](splitting.md)**
+:   Holding out data with `train_test_split` and cross-validation splitters — stratification, and why you never shuffle a time series
