@@ -55,7 +55,7 @@ Any column not routed to a branch is handled by `remainder`, which defaults to
 
 ## Canonical pattern: nest Pipelines inside branches
 
-A branch's transformer can be a Pipeline, giving "impute then scale" for numerics
+A branch's transformer can be a Pipeline, giving "[impute](imputation.md) then scale" for numerics
 and "impute then one-hot" for categoricals — the whole recipe as one leak-safe
 `fit` boundary:
 
