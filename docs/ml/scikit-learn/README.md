@@ -3,6 +3,9 @@
 :material-text-box-outline: **[ColumnTransformer](column-transformer.md)**
 :   Different preprocessing per column group — scale the numerics, encode the categoricals — concatenated into one leak-safe preprocessing step
 
+:material-text-box-outline: **[Custom Transformers](custom-transformers.md)**
+:   Writing your own feature-engineering steps (rolling stats, regime tags) as `fit`/`transform` classes so they live inside the Pipeline and stay leak-free
+
 :material-text-box-outline: **[The Estimator API](estimators.md)**
 :   The one interface every model shares — construct with hyperparameters, `fit` to learn, then `predict` or `transform`; hyperparameters vs `trailing_underscore_` learned attributes
 

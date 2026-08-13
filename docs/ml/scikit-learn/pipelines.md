@@ -62,7 +62,9 @@ preds = pipe.predict(X_test)    # scaler.transform + model.predict — no re-fit
 ```
 
 Each step is a `(name, estimator)` tuple; every step but the last must be a
-transformer (`fit`/`transform`), the last is the final estimator (`fit`/`predict`).
+transformer (`fit`/`transform`) — a stock one or a [custom
+transformer](custom-transformers.md) you write — the last is the final estimator
+(`fit`/`predict`).
 
 - `pipe.fit` walks the steps calling **`fit_transform`** on each transformer over
   the data passed in — the scaler learns `μ, σ` **inside the fold**. `X_test` is
