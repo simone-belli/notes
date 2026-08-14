@@ -14,7 +14,7 @@ df[df['age'] > 18]['name'] = 'adult'   # WARNING — assignment likely lost
 
 Step 1 (`df[df['age'] > 18]`) returns a new object (view or copy — not guaranteed). Step 2 writes to that object. If it's a copy, `df` is unchanged.
 
-**Why view vs copy is unpredictable:** NumPy returns a view for contiguous slices, a copy for boolean masks and fancy integer indexing. Pandas can't tell you which you got.
+**Why view vs copy is unpredictable:** [NumPy returns a view](../numpy/indexing.md) for contiguous slices, a copy for boolean masks and fancy integer indexing. Pandas can't tell you which you got.
 
 ### The fix: `.loc` for any write
 

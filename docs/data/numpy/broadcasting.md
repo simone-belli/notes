@@ -58,7 +58,8 @@ b = np.array([10, 20])    # (2,)
 b[:, np.newaxis] + a      # (2, 1) + (1, 3)  →  (2, 3)  — outer sum
 ```
 
-`np.newaxis` is an alias for `None`; both work identically.
+`np.newaxis` is an alias for `None`; both work identically. It's often the fix
+when [indexing](indexing.md) dropped an axis you still needed.
 
 ## Why it's fast
 
