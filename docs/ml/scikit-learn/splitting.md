@@ -56,7 +56,9 @@ cross_val_score(model, X, y, cv=TimeSeriesSplit(n_splits=5))   # expanding windo
 - `StratifiedKFold` — `KFold` that preserves class proportions per fold;
   classification default.
 - `TimeSeriesSplit` — expanding train window that always **precedes** its
-  validation window; the time-series-safe replacement for `KFold`.
+  validation window; the time-series-safe replacement for `KFold`. See
+  [Time-Series Cross-Validation](time-series-cv.md) for its parameters and for
+  the leak it *doesn't* fix.
 
 !!! note "Splitting is the other half of leak-proofing"
     A [Pipeline](pipelines.md) stops preprocessing statistics from crossing the

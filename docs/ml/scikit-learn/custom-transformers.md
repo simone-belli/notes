@@ -92,4 +92,6 @@ Use it when there's nothing to learn; write a `BaseEstimator` class the moment
     rolling feature no access to the tail of the preceding data, so its first
     `window - 1` rows come out `NaN`/truncated — pessimistic, not leaky. The
     proper fix is a fold-boundary-aware transform that carries a burn-in buffer of
-    prior rows (handled separately), never one that reaches across the split.
+    prior rows, never one that reaches across the split — see
+    [Time-Series Cross-Validation](time-series-cv.md) for why the boundary stays
+    porous in both directions.

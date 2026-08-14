@@ -94,7 +94,7 @@ from sklearn.model_selection import cross_val_score, TimeSeriesSplit
 scores = cross_val_score(pipe, X, y, cv=TimeSeriesSplit(n_splits=5))
 ```
 
-[`TimeSeriesSplit`](splitting.md) produces expanding train windows that always precede their
+[`TimeSeriesSplit`](time-series-cv.md) produces expanding train windows that always precede their
 validation window — never shuffle a time series, as that leaks future rows into
 past folds. Pipeline handles *preprocessing* leakage; `TimeSeriesSplit` handles
 *temporal* leakage.
