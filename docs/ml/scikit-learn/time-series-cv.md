@@ -128,6 +128,7 @@ scores = cross_val_score(search, X, y, cv=TimeSeriesSplit(n_splits=5))   # outer
 
 ## Related
 
+- [Running Cross-Validation](cross-validation.md) — reading per-fold results out of the loop
 - [Train/Test Splitting](splitting.md) — the splitter catalogue and stratification
 - [scikit-learn Pipelines](pipelines.md) — keeping preprocessing inside the fold
 - [Custom Transformers](custom-transformers.md) — causal windows and warm-up gaps

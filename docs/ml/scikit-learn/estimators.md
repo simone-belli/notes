@@ -69,7 +69,8 @@ model.predict(X_test)
 The same uniformity lets *meta*-tools accept any estimator without knowing which
 one it is:
 
-- `cross_val_score(est, X, y, cv=...)` clones and fits/scores across folds.
+- [`cross_val_score(est, X, y, cv=...)`](cross-validation.md) clones and
+  fits/scores across folds.
 - `GridSearchCV(est, param_grid)` is *itself* an estimator (`fit`/`predict`) that
   searches hyperparameters by cross-validation; nested params use double
   underscore, `"model__alpha"`.

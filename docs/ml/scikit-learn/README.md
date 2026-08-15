@@ -3,6 +3,9 @@
 :material-text-box-outline: **[ColumnTransformer](column-transformer.md)**
 :   Different preprocessing per column group — scale the numerics, encode the categoricals — concatenated into one leak-safe preprocessing step
 
+:material-text-box-outline: **[Running Cross-Validation](cross-validation.md)**
+:   `cross_val_score` vs `cross_validate` vs `cross_val_predict` — what the loop returns, multi-metric scoring, the `neg_` sign convention, and per-fold diagnostics
+
 :material-text-box-outline: **[Custom Transformers](custom-transformers.md)**
 :   Writing your own feature-engineering steps (rolling stats, regime tags) as `fit`/`transform` classes so they live inside the Pipeline and stay leak-free
 

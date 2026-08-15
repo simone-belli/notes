@@ -83,7 +83,7 @@ leaking through the public interface is not discouraged — it is *unreachable*.
 
 ## Where it pays off: cross-validation
 
-`cross_val_score`/`GridSearchCV` clone the pipeline and call `fit` on each
+[`cross_val_score`](cross-validation.md)/`GridSearchCV` clone the pipeline and call `fit` on each
 training fold, `predict` on the held-out fold — so the scaler is re-fitted per
 fold automatically. Doing this by hand across five folds × several steps is where
 manual code reliably breaks.
