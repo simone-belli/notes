@@ -94,18 +94,53 @@ metric you care about. Valid strings come from
     is the root of the mean squared error (MSE) averaged over folds, not the
     mean of the per-fold root mean squared errors (RMSE). They differ.
 
-Custom metrics go through `make_scorer`, which converts a
-`(y_true, y_pred) -> float` metric into an `(estimator, X, y) -> float` scorer:
+### Adding your own scorer
+
+Two callables are easy to conflate, and `scoring=` wants the second:
+
+- **Metric** — `(y_true, y_pred) -> float`; everything in `sklearn.metrics`.
+- **Scorer** — `(estimator, X, y) -> float`; receives the *fitted* estimator and
+  decides itself which prediction method to call.
+
+`make_scorer` is the adapter between them:
 
 ```python
-from sklearn.metrics import make_scorer, fbeta_score
+from sklearn.metrics import make_scorer, fbeta_score, recall_score
 
 f2 = make_scorer(fbeta_score, beta=2)                      # kwargs pass through
 loss = make_scorer(my_cost_fn, greater_is_better=False)    # negates for you
+minority = make_scorer(recall_score, pos_label=0)          # class-dependent kwargs
 ```
 
-`response_method="predict_proba"` (or `"decision_function"`) selects what the
-scorer is fed.
+`response_method` selects what the metric is fed — `"predict"` (default),
+`"predict_proba"` for log loss and Brier score, `"decision_function"` for margin
+metrics, or a list like `["decision_function", "predict_proba"]` to take
+whichever the estimator offers. It supersedes the older `needs_proba` and
+`needs_threshold` flags.
+
+When the metric needs the **model itself** — sparsity, latency, a custom
+threshold — skip `make_scorer` and pass a function with the scorer signature:
+
+```python
+def sparsity(estimator, X, y):
+    return (estimator[-1].coef_ == 0).mean()
+
+cross_validate(pipe, X, y, scoring={"r2": "r2", "sparsity": sparsity})
+```
+
+The dict form is the one to reach for with several metrics — it names the output
+keys, which come back as `test_<name>`. Strings, adapted metrics and raw
+callables can be mixed freely in one dict.
+
+!!! warning "Don't negate twice"
+    `greater_is_better=False` already flips the sign. Negating inside your
+    metric as well silently inverts the ranking — you'll select the worst
+    candidate while everything appears to work.
+
+Two more sharp edges: a scorer must return a **scalar** (a per-class F1 vector
+fails — pick an `average=`), and an exception raised inside one is swallowed
+into `nan` by the default `error_score`, so develop new scorers with
+`error_score="raise"`.
 
 ## Other arguments
 
