@@ -57,7 +57,8 @@ collect manually and control the index yourself.
 Three steps, and the order is the point:
 
 1. **Pin position scale** in the position map — before any objective is computed.
-2. **Select on** mean OOS return (or rank information coefficient).
+2. **Select on** mean OOS return (or
+   [rank information coefficient](../../finance/information-coefficient.md)).
 3. **Report** pooled-OOS Sharpe with its standard error.
 
 At fixed variance, `argmax(mean) = argmax(Sharpe)` **exactly**. There is no
@@ -142,5 +143,6 @@ Write **K** down before the study runs, with the search space. Not after, and no
 
 - [Time-Series Validation](time-series-validation.md) — purging, embargo, and why the folds don't partition
 - [Model Validation](model-validation.md) — selection bias on the maximum, and nested CV
+- [Information Coefficient](../../finance/information-coefficient.md) — how rank IC is defined, and what magnitudes are believable
 - [Optuna](../optuna.md) — where the objective function and trial count live
 - [Hyperparameter Search](../scikit-learn/hyperparameter-search.md) — the searchers this replaces the scoring of

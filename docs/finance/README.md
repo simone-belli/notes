@@ -10,6 +10,12 @@ Domain-specific notes on trading, exchanges, and market data APIs.
 
     Binance exchange mechanics, top coins, klines API column reference
 
+-   :material-text-box-outline:{ .lg .middle } __[Information Coefficient](information-coefficient.md)__
+
+    ---
+
+    Rank IC as a signal-quality metric: cross-sectional vs time-series, ICIR, and the magnitudes that signal a bug
+
 -   :material-text-box-outline:{ .lg .middle } __[Kelly Criterion](kelly-criterion.md)__
 
     ---

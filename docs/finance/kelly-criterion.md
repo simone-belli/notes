@@ -56,5 +56,6 @@ In practice: compute full Kelly, apply a haircut (commonly half-Kelly), then cap
 
 ## Related ideas
 
+- **[Information Coefficient](information-coefficient.md)** — where the `μ` this formula is so sensitive to comes from; the Fundamental Law (`IR ≈ IC × √breadth`) is the same edge measured before sizing.
 - **Ergodicity** — Kelly is a canonical illustration of *ensemble average* vs *time average* diverging for multiplicative processes; the two only coincide for additive processes. This is why "maximise EV" and "maximise Kelly growth" disagree.
 - **Gambler's ruin** — Kelly avoids fixed-stake ruin by always betting a fraction of *current* wealth, so bankroll approaches but never reaches zero from a single bad sequence (while `f* < 1`).
