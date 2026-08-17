@@ -26,7 +26,7 @@ Learning notes and references across software engineering, ML, and AI topics.
 
     ---
 
-    scikit-learn: the estimator API, pipelines, and leakage-safe evaluation
+    Leakage-safe evaluation, the scikit-learn estimator API and pipelines, and hyperparameter tuning with Optuna
 
 -   :material-language-python:{ .lg .middle } __[Python](python/README.md)__
 

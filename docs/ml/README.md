@@ -10,6 +10,12 @@ Modelling workflow — the library-agnostic protocol first, then the library.
 
     Library-agnostic foundations: what makes a validation score honest, and the leakage that quietly makes it a lie
 
+-   :material-text-box-outline:{ .lg .middle } __[Optuna](optuna.md)__
+
+    ---
+
+    Hyperparameter optimisation beyond the grid: define-by-run search spaces, TPE sampling, pruning, and resumable distributed studies
+
 -   :material-folder-outline:{ .lg .middle } __[scikit-learn](scikit-learn/)__
 
     ---
