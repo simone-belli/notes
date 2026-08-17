@@ -20,6 +20,3 @@
 
 :material-text-box-outline: **[Train/Test Splitting](splitting.md)**
 :   Holding out data with `train_test_split` and cross-validation splitters — stratification, and why you never shuffle a time series
-
-:material-text-box-outline: **[Time-Series Cross-Validation](time-series-cv.md)**
-:   Honest model selection on financial data — how a shuffled KFold lies, expanding-window CV as the floor, and the overlapping-label leak that purging and embargo exist to stop

@@ -1,4 +1,4 @@
-# Time-Series Cross-Validation
+# Time-Series Validation
 
 Standard k-fold cross-validation assumes rows are **independent and identically
 distributed** (i.i.d.) draws — which is why shuffling is safe, even required.
@@ -65,10 +65,11 @@ scores = cross_val_score(pipe, X, y, cv=tscv)   # X must be time-sorted
   averages that death away. Read `scores` per fold, never just `scores.mean()`.
 
 Splitting is only half the guarantee: everything that learns — scalers,
-imputers, [custom feature transformers](custom-transformers.md), *and feature
-selection* — must refit inside the fold, which is what a
-[Pipeline](pipelines.md) enforces. Picking the top-50 correlated features on the
-full sample and cross-validating afterwards is theatre.
+imputers, [custom feature transformers](../scikit-learn/custom-transformers.md),
+*and feature selection* — must refit inside the fold, which is what a
+[Pipeline](../scikit-learn/pipelines.md) enforces. Picking the top-50 correlated
+features on the full sample and cross-validating afterwards is
+[feature-selection leakage](data-leakage.md), and it is theatre.
 
 ## Its limitation: the boundary is porous
 
@@ -128,7 +129,9 @@ scores = cross_val_score(search, X, y, cv=TimeSeriesSplit(n_splits=5))   # outer
 
 ## Related
 
-- [Running Cross-Validation](cross-validation.md) — reading per-fold results out of the loop
-- [Train/Test Splitting](splitting.md) — the splitter catalogue and stratification
-- [scikit-learn Pipelines](pipelines.md) — keeping preprocessing inside the fold
-- [Custom Transformers](custom-transformers.md) — causal windows and warm-up gaps
+- [Model Validation](model-validation.md) — the k-fold premise this note is the exception to
+- [Data Leakage](data-leakage.md) — the full taxonomy; purging and embargo close two entries in it
+- [Running Cross-Validation](../scikit-learn/cross-validation.md) — reading per-fold results out of the loop
+- [Train/Test Splitting](../scikit-learn/splitting.md) — the splitter catalogue and stratification
+- [scikit-learn Pipelines](../scikit-learn/pipelines.md) — keeping preprocessing inside the fold
+- [Custom Transformers](../scikit-learn/custom-transformers.md) — causal windows and warm-up gaps

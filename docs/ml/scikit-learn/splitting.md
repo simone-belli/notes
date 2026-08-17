@@ -1,9 +1,10 @@
 # Train/Test Splitting
 
-Hold out data the model never trains on, to estimate how it generalises. The
-cardinal rule: **split first, then fit everything (scalers, imputers, model) on
-the training part only** — see [Pipelines](pipelines.md) for why this must be
-structural.
+Hold out data the model never trains on, to estimate how it generalises — see
+[Model Validation](../concepts/model-validation.md) for why the estimate needs a
+protocol at all. The cardinal rule: **split first, then fit everything (scalers,
+imputers, model) on the training part only** — see [Pipelines](pipelines.md) for
+why this must be structural.
 
 ## train_test_split
 
@@ -58,8 +59,8 @@ cross_val_score(model, X, y, cv=TimeSeriesSplit(n_splits=5))   # expanding windo
   classification default.
 - `TimeSeriesSplit` — expanding train window that always **precedes** its
   validation window; the time-series-safe replacement for `KFold`. See
-  [Time-Series Cross-Validation](time-series-cv.md) for its parameters and for
-  the leak it *doesn't* fix.
+  [Time-Series Validation](../concepts/time-series-validation.md) for its
+  parameters and for the leak it *doesn't* fix.
 
 !!! note "Splitting is the other half of leak-proofing"
     A [Pipeline](pipelines.md) stops preprocessing statistics from crossing the

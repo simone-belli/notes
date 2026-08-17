@@ -146,7 +146,7 @@ into `nan` by the default `error_score`, so develop new scorers with
 
 - **`cv`** — an int picks `StratifiedKFold` for classifiers, `KFold` otherwise.
   Pass a splitter explicitly for anything time-ordered; see
-  [Time-Series Cross-Validation](time-series-cv.md).
+  [Time-Series Validation](../concepts/time-series-validation.md).
 - **`n_jobs=-1`** — folds are embarrassingly parallel. Watch for
   oversubscription when the estimator has its own `n_jobs`.
 - **`error_score=np.nan`** — the default silently turns a failing fold into
@@ -197,4 +197,5 @@ predictions are exactly the leak-free features a meta-learner needs.
 - [Train/Test Splitting](splitting.md) — the `cv=` splitters this loop consumes
 - [scikit-learn Pipelines](pipelines.md) — what must be inside the fold
 - [The Estimator API](estimators.md) — the `fit`/`score` contract being cloned
-- [Time-Series Cross-Validation](time-series-cv.md) — when the int default is wrong
+- [Model Validation](../concepts/model-validation.md) — what the number this loop returns actually estimates
+- [Time-Series Validation](../concepts/time-series-validation.md) — when the int default is wrong

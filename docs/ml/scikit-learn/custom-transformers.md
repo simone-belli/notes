@@ -7,9 +7,9 @@ tags:
 
 Your real features — [rolling](../../data/pandas/windows.md) stats, regime tags,
 cross-asset interactions — don't exist in scikit-learn; you write them. Compute
-them in pandas over the full frame before splitting and you leak: any feature
-built from a cross-row statistic (mean, quantile, fitted boundary) folds the test
-period into training. Fix: wrap the feature as a **transformer** so it lives
+them in pandas over the full frame before splitting and you
+[leak](../concepts/data-leakage.md): any feature built from a cross-row statistic
+(mean, quantile, fitted boundary) folds the test period into training. Fix: wrap the feature as a **transformer** so it lives
 inside the [Pipeline](pipelines.md) and is recomputed per fold, leak-free.
 
 ## The fit/transform contract
@@ -93,5 +93,5 @@ Use it when there's nothing to learn; write a `BaseEstimator` class the moment
     `window - 1` rows come out `NaN`/truncated — pessimistic, not leaky. The
     proper fix is a fold-boundary-aware transform that carries a burn-in buffer of
     prior rows, never one that reaches across the split — see
-    [Time-Series Cross-Validation](time-series-cv.md) for why the boundary stays
-    porous in both directions.
+    [Time-Series Validation](../concepts/time-series-validation.md) for why the
+    boundary stays porous in both directions.

@@ -8,7 +8,7 @@ tags:
 A `Pipeline` chains preprocessing transformers and a final [estimator](estimators.md)
 into one object that implements `fit`/`transform`/`predict`. It is not just convenience
 plumbing — it is a **correctness guarantee** that makes the most common form of
-data leakage structurally impossible.
+[data leakage](../concepts/data-leakage.md) structurally impossible.
 
 ## The cardinal sin: `scale then split`
 
@@ -94,7 +94,7 @@ from sklearn.model_selection import cross_val_score, TimeSeriesSplit
 scores = cross_val_score(pipe, X, y, cv=TimeSeriesSplit(n_splits=5))
 ```
 
-[`TimeSeriesSplit`](time-series-cv.md) produces expanding train windows that always precede their
+[`TimeSeriesSplit`](../concepts/time-series-validation.md) produces expanding train windows that always precede their
 validation window — never shuffle a time series, as that leaks future rows into
 past folds. Pipeline handles *preprocessing* leakage; `TimeSeriesSplit` handles
 *temporal* leakage.
