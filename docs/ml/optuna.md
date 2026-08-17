@@ -194,7 +194,9 @@ def objective(trial):
 
 Optuna replaces the *search strategy*, not the *validation protocol*: explicit
 splitter, `gap` on time series, preprocessing inside the
-[Pipeline](scikit-learn/pipelines.md).
+[Pipeline](scikit-learn/pipelines.md). For a trading strategy, don't route
+through `cross_val_score` at all — pool the out-of-fold predictions and score
+once; see [Tuning a Trading Strategy](concepts/strategy-tuning.md).
 
 `OptunaSearchCV` (from `optuna-integration`) is the drop-in alternative — same
 `fit`/`best_params_`/`best_estimator_` surface as `RandomizedSearchCV`, so it
@@ -224,7 +226,9 @@ narrow. `optuna-dashboard` renders all of this live against a running study.
     fold noise. Report a nested-CV score or a sealed period, never
     `study.best_value`, and record `len(study.trials)`: the count of
     configurations tried deflates everything you report. In finance this is
-    [backtest overfitting](concepts/time-series-validation.md).
+    backtest overfitting — see
+    [Tuning a Trading Strategy](concepts/strategy-tuning.md) for how much Sharpe
+    a zero-skill model buys from 20 trials.
 
 ## When not to reach for it
 
@@ -241,4 +245,5 @@ narrow. `optuna-dashboard` renders all of this live against a running study.
 - [Hyperparameter Search](scikit-learn/hyperparameter-search.md) — grid, random, and halving, and why the exhaustive product doesn't scale
 - [Running Cross-Validation](scikit-learn/cross-validation.md) — the loop the objective usually wraps
 - [Time-Series Validation](concepts/time-series-validation.md) — the protocol tuning must not break
+- [Tuning a Trading Strategy](concepts/strategy-tuning.md) — what the objective should return, and what to report instead of `best_value`
 - [Model Validation](concepts/model-validation.md) — selection bias on the maximum, and nested CV

@@ -110,7 +110,8 @@ TimeSeriesSplit(n_splits=5, gap=max(label_horizon, feature_lookback))
 - **Selection bias survives every splitter.** Try 400 configurations and report
   the best, and you get a Sharpe of 2 on pure noise. No cross-validation scheme
   fixes this — record the trial count, deflate the Sharpe ratio for it, and keep
-  one final period sealed until the model is frozen.
+  one final period sealed until the model is frozen. See
+  [Tuning a Trading Strategy](strategy-tuning.md).
 
 ## Nested CV
 
@@ -136,6 +137,7 @@ scores = cross_val_score(search, X, y, cv=TimeSeriesSplit(n_splits=5))   # outer
 
 - [Model Validation](model-validation.md) — the k-fold premise this note is the exception to
 - [Data Leakage](data-leakage.md) — the full taxonomy; purging and embargo close two entries in it
+- [Tuning a Trading Strategy](strategy-tuning.md) — pooled out-of-sample scoring and the selection channel these folds don't close
 - [Running Cross-Validation](../scikit-learn/cross-validation.md) — reading per-fold results out of the loop
 - [Hyperparameter Search](../scikit-learn/hyperparameter-search.md) — why `cv=5` leaks even without shuffling
 - [Train/Test Splitting](../scikit-learn/splitting.md) — the splitter catalogue and stratification
