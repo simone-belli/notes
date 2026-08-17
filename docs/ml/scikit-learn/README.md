@@ -12,6 +12,9 @@
 :material-text-box-outline: **[The Estimator API](estimators.md)**
 :   The one interface every model shares — construct with hyperparameters, `fit` to learn, then `predict` or `transform`; hyperparameters vs `trailing_underscore_` learned attributes
 
+:material-text-box-outline: **[Hyperparameter Search](hyperparameter-search.md)**
+:   Tuning with `GridSearchCV` and `RandomizedSearchCV` — the `step__param` grid, `refit` semantics, reading `cv_results_`, why the exhaustive product doesn't scale, and nesting for an honest score
+
 :material-text-box-outline: **[Imputation](imputation.md)**
 :   Filling missing values (`NaN`) that would otherwise crash downstream estimators — SimpleImputer strategies, KNN/iterative imputers, and doing it leak-safe inside a Pipeline
 

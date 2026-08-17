@@ -115,7 +115,8 @@ TimeSeriesSplit(n_splits=5, gap=max(label_horizon, feature_lookback))
 ## Nested CV
 
 Tuning and scoring on the same folds reports the noise you selected for. Nest
-them, so the number you quote estimates the *procedure*, not one model:
+the [search](../scikit-learn/hyperparameter-search.md), so the number you quote
+estimates the *procedure*, not one model:
 
 ```python
 from sklearn.model_selection import GridSearchCV, TimeSeriesSplit, cross_val_score
@@ -136,6 +137,7 @@ scores = cross_val_score(search, X, y, cv=TimeSeriesSplit(n_splits=5))   # outer
 - [Model Validation](model-validation.md) — the k-fold premise this note is the exception to
 - [Data Leakage](data-leakage.md) — the full taxonomy; purging and embargo close two entries in it
 - [Running Cross-Validation](../scikit-learn/cross-validation.md) — reading per-fold results out of the loop
+- [Hyperparameter Search](../scikit-learn/hyperparameter-search.md) — why `cv=5` leaks even without shuffling
 - [Train/Test Splitting](../scikit-learn/splitting.md) — the splitter catalogue and stratification
 - [scikit-learn Pipelines](../scikit-learn/pipelines.md) — keeping preprocessing inside the fold
 - [Custom Transformers](../scikit-learn/custom-transformers.md) — causal windows and warm-up gaps

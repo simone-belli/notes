@@ -184,7 +184,7 @@ predictions are exactly the leak-free features a meta-learner needs.
 | Diagnosing over/underfitting | `cross_validate(return_train_score=True)` |
 | Inspecting per-fold coefficients | `cross_validate(return_estimator=True)` |
 | Out-of-fold predictions, stacking | `cross_val_predict` |
-| Tuning hyperparameters | `GridSearchCV` / `RandomizedSearchCV` |
+| Tuning hyperparameters | [`GridSearchCV` / `RandomizedSearchCV`](hyperparameter-search.md) |
 | Honest score *after* tuning | `cross_val_score(search, X, y, cv=outer)` — nested |
 
 !!! tip "Default to `cross_validate`"
@@ -197,5 +197,6 @@ predictions are exactly the leak-free features a meta-learner needs.
 - [Train/Test Splitting](splitting.md) — the `cv=` splitters this loop consumes
 - [scikit-learn Pipelines](pipelines.md) — what must be inside the fold
 - [The Estimator API](estimators.md) — the `fit`/`score` contract being cloned
+- [Hyperparameter Search](hyperparameter-search.md) — the tuning loop wrapped around this one
 - [Model Validation](../concepts/model-validation.md) — what the number this loop returns actually estimates
 - [Time-Series Validation](../concepts/time-series-validation.md) — when the int default is wrong

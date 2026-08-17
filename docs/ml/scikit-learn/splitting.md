@@ -43,7 +43,7 @@ y_train, y_test = y[:split], y[split:]
 ## Cross-validation splitters
 
 For repeated splits, pass a splitter as `cv=` to
-[`cross_val_score`](cross-validation.md)/`GridSearchCV`:
+[`cross_val_score`](cross-validation.md)/[`GridSearchCV`](hyperparameter-search.md):
 
 ```python
 from sklearn.model_selection import KFold, StratifiedKFold, TimeSeriesSplit, cross_val_score

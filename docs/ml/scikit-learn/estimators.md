@@ -71,7 +71,7 @@ one it is:
 
 - [`cross_val_score(est, X, y, cv=...)`](cross-validation.md) clones and
   fits/scores across folds.
-- `GridSearchCV(est, param_grid)` is *itself* an estimator (`fit`/`predict`) that
+- [`GridSearchCV(est, param_grid)`](hyperparameter-search.md) is *itself* an estimator (`fit`/`predict`) that
   searches hyperparameters by cross-validation; nested params use double
   underscore, `"model__alpha"`.
 - `Pipeline([...])` chains transformers and a final predictor into one estimator.
