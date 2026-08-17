@@ -1,3 +1,7 @@
+---
+quiz: core
+---
+
 # Model Validation
 
 Training error is not generalisation error. Any model with enough capacity can

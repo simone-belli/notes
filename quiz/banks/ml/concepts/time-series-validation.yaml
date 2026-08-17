@@ -1,0 +1,65 @@
+note: ml/concepts/time-series-validation.md
+tier: core
+questions:
+  - id: kfold-bias-direction
+    type: mcq
+    q: When rows are serially correlated, what happens to a shuffled k-fold score?
+    options:
+      - It is biased upward — not merely noisier
+      - It becomes noisier but stays unbiased
+      - It is biased downward, making the model look worse than it is
+      - It is unaffected as long as `k` is large enough
+    explain: Direction matters — in a domain where a real edge is 52% accuracy, an upward bias is the entire result.
+  - id: three-mechanisms
+    type: mcq
+    q: Which is NOT one of the mechanisms by which a shuffled KFold inflates a time-series score?
+    options:
+      - Class imbalance between the training and validation folds
+      - Look-ahead — the model sees labelled examples from inside the test period's regime
+      - Near-duplicate rows from overlapping feature windows split across folds
+      - Overlapping labels, where a forward return makes neighbouring targets share price paths
+    explain: The three real mechanisms are look-ahead, near-duplicate rows and overlapping labels; imbalance is a separate concern that stratification handles.
+  - id: timestamps-vs-information
+    type: mcq
+    q: "`TimeSeriesSplit` guarantees `max(time(train)) < min(time(test))`. Why is that not enough?"
+    options:
+      - It is a claim about timestamps, not information — labels leak forward and features leak backward across the boundary
+      - It only holds when `n_splits` is greater than 5
+      - It silently reshuffles when the index is not sorted
+      - It compares timestamps as strings, so the ordering can be wrong
+    explain: "With a forward 5-day return, the last training labels are computed from test-period days; with a 20-day feature, the first test rows are built mostly from training data."
+  - id: gap-parameter
+    type: mcq
+    q: What does the `gap` argument to `TimeSeriesSplit` do, and how should you size it?
+    options:
+      - Discards rows between train and test — set it to roughly `max(label_horizon, feature_lookback)`
+      - Shrinks each validation window by a fixed number of rows
+      - Adds a warm-up period before the first training fold
+      - Controls the stride by which the validation window slides forward
+    explain: It is a crude combined purge and embargo — a fixed row count rather than per-label intervals — but one argument converts a known-biased protocol into a roughly honest one.
+  - id: max-train-size
+    type: mcq
+    q: What does setting `max_train_size` change about expanding-window cross-validation?
+    options:
+      - It caps the training window, turning expanding CV into rolling CV — adapting to regime change and making fold scores comparable
+      - It limits the total number of rows the splitter will consider
+      - It reduces memory use without affecting which rows are trained on
+      - It forces every fold to use the same validation window
+    explain: Equal training sizes are what make per-fold scores genuinely comparable to one another.
+  - id: per-fold-scores
+    type: mcq
+    q: Why read the per-fold scores rather than just `scores.mean()`?
+    options:
+      - Per-fold scores form a time series of performance — a model that died in 2021 shows as a declining sequence the mean averages away
+      - The mean is computed with a biased denominator
+      - Only the final fold uses the full training history
+      - The mean is undefined when folds have different sizes
+    explain: Decay is the most common way a strategy fails, and it is invisible in a single averaged number.
+  - id: purging-embargo
+    type: recall
+    q: Define purging and embargo, and state which leak each one closes.
+    answer: "Purging drops training rows whose label horizon overlaps the test period — closing the forward label leak. Embargo drops a buffer of test rows just after the boundary so their feature windows cannot reach back into training data — closing the backward feature leak."
+  - id: one-path-problem
+    type: recall
+    q: Why are five chronological folds not five independent estimates, and what addresses it?
+    answer: They are one history cut five times — the same regimes in the same order — so fold variance badly understates true uncertainty. Combinatorial Purged Cross-Validation tests on all combinations of `k` time blocks, purged at every internal boundary, reassembling many backtest paths to give a distribution of outcomes rather than a point estimate.

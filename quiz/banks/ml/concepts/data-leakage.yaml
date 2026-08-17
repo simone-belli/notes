@@ -1,0 +1,65 @@
+note: ml/concepts/data-leakage.md
+tier: core
+questions:
+  - id: leakage-definition
+    type: mcq
+    q: What defines data leakage?
+    options:
+      - The model saw information during training that it will not have at prediction time
+      - The training and test sets are different sizes
+      - The model overfits the training data
+      - Sensitive data was exposed outside the training environment
+    explain: Leakage is a mismatch between what the model trains on and what will actually be available live — which is why the score is not merely optimistic but meaningless.
+  - id: preprocessing-leakage-subtle
+    type: mcq
+    q: Standardising the full dataset before splitting leaks. Why does it so often go unnoticed?
+    options:
+      - No test label is ever shown to the model — only the feature scaling carries future information
+      - The leak only affects tree models, which most people avoid
+      - Scalers are fitted lazily, so the bug appears intermittently
+      - The scores stay realistic, so nothing looks wrong
+    explain: "The absence of label exposure is exactly what makes it feel safe; the mean and standard deviation still encode the test period's drift and volatility."
+  - id: target-leakage-identify
+    type: mcq
+    q: Which feature is target leakage rather than a legitimate predictor of customer churn?
+    options:
+      - "`account_closed_date` — populated only as a consequence of churning"
+      - Number of support tickets in the last 30 days
+      - Months since signup
+      - Average monthly spend
+    explain: Target leakage features are downstream consequences of the label, not causes of it, so they simply do not exist at prediction time.
+  - id: feature-selection-leakage
+    type: mcq
+    q: You rank features by correlation with the target across the whole dataset, keep the top 50, then cross-validate. What is wrong?
+    options:
+      - The selection already consumed the test labels, so every fold scores a feature set chosen with knowledge of the answers
+      - Correlation is the wrong ranking statistic for this purpose
+      - Fifty features is too many for cross-validation to be stable
+      - Nothing — selection happens before fitting, so it is outside the fold
+    explain: Selection is a learned step and belongs inside the fold like a scaler or an imputer.
+  - id: group-leakage
+    type: mcq
+    q: Why do overlapping 20-day rolling windows cause leakage when folds are assigned randomly?
+    options:
+      - Rows at `t` and `t+1` share 19 of 20 observations, so the model interpolates between near-copies instead of generalising
+      - Rolling windows introduce `NaN` values that the splitter mishandles
+      - The window length exceeds the fold length
+      - Rolling statistics are always computed with future data
+    explain: This is group leakage — the fix is a group-aware splitter that keeps every row of a group on one side of the boundary.
+  - id: protocol-gap-diagnostic
+    type: mcq
+    q: Shuffled k-fold reports 0.60 accuracy; a chronological split on the same features reports 0.51. How should you read that?
+    options:
+      - The difference is a measurement of the leak — 0.51 is the result, and the gap is the diagnostic
+      - The truth is somewhere between them, so average the two
+      - The shuffled score is the model's true ceiling under ideal conditions
+      - The chronological split is underpowered and should be discarded
+    explain: Running both protocols deliberately is one of the few practical ways to quantify a leak you cannot see in the code.
+  - id: diagnostic-question
+    type: recall
+    q: What single question, asked of every value that reaches `fit`, catches most leakage?
+    answer: "\"At the moment of prediction, would I actually have had this number?\" If the answer is no — or only because it was computed over the whole dataset — it is leakage."
+  - id: selection-bias-researcher
+    type: recall
+    q: Why does no cross-validation scheme protect against trying 400 configurations and reporting the best?
+    answer: The leak runs through the researcher, not the code — each look at the test set spends some of its independence, so the best of many trials reflects selection on noise. Mitigate by recording the trial count, deflating the reported metric for it, and keeping one period sealed until the model is frozen.

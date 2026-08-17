@@ -1,0 +1,65 @@
+note: ml/concepts/model-validation.md
+tier: core
+questions:
+  - id: validation-vs-test-role
+    type: mcq
+    q: What distinguishes a validation set from a test set?
+    options:
+      - You compare candidates against the validation set; the test set is used once, on a frozen model
+      - The validation set is larger and drawn from the same period
+      - The validation set is used during fitting, the test set after fitting
+      - They are the same thing under two names
+    explain: If you tuned against it, it is a validation set no matter what the variable is called — and the reported number then describes the best of your attempts.
+  - id: holdout-variance
+    type: mcq
+    q: On a small dataset, what is the main weakness of a single hold-out split?
+    options:
+      - High variance — reshuffle and the score moves several points, telling you more about the split than the model
+      - It systematically underestimates performance
+      - It cannot be used with classification metrics
+      - It requires the data to be time-ordered
+    explain: k-fold reduces this by averaging over `k` partitions, at the cost of `k` fits.
+  - id: kfold-premise
+    type: mcq
+    q: What assumption licenses shuffling rows before k-fold cross-validation?
+    options:
+      - Rows are independent and identically distributed, and therefore exchangeable
+      - The target is balanced across classes
+      - The features have been standardised
+      - The dataset is large enough for the folds to be representative
+    explain: When exchangeability fails — time series, repeated measures, clustered observations — the folds share information and the score is biased upward.
+  - id: fold-spread
+    type: mcq
+    q: Beyond the mean of the `k` fold scores, what should you report?
+    options:
+      - Their spread — high variance across folds means the estimate itself is unstable
+      - The single best fold, as the achievable ceiling
+      - The fold count and the random seed only
+      - The training score of the final fold
+    explain: A mean quoted without its spread hides whether the model is reliable or the partition was lucky.
+  - id: leave-one-out
+    type: mcq
+    q: Leave-one-out cross-validation is near-unbiased. Why is it often still a poor choice?
+    options:
+      - It costs `n` fits, and its folds are so correlated that the variance of the estimate is frequently worse
+      - It cannot be stratified, so classification results are invalid
+      - It systematically overestimates performance on small data
+      - It requires every class to appear in every fold
+    explain: Lower bias buys you nothing if the variance rises to meet it — and you pay `n` fits for the privilege.
+  - id: nested-cv-why
+    type: mcq
+    q: Why nest cross-validation when tuning hyperparameters?
+    options:
+      - Tuning and scoring on the same folds means the reported score includes the noise you selected for
+      - It reduces the total number of model fits required
+      - It is the only way to search more than one hyperparameter at a time
+      - The inner loop produces the model you deploy
+    explain: "The outer loop scores the whole tuned procedure on data the inner search never touched; optimistic bias otherwise grows with the size of the search."
+  - id: cv-estimates-what
+    type: recall
+    q: The cross-validation loop fits `k` models and discards all of them. So what does the resulting number actually estimate?
+    answer: "The performance of the *procedure* — this preprocessing, model family and hyperparameter set, trained on data of this size — not of any particular model. This is why every learned step must sit inside the loop: the recipe includes the preprocessing. The model you ship is a separate final fit on all the data."
+  - id: metric-baseline
+    type: recall
+    q: Why is 99% accuracy potentially worthless, and what should every candidate be compared against?
+    answer: On a 99%-negative dataset, a model that predicts nothing scores 99%. Choose a metric sensitive to the errors you care about (precision/recall, ROC AUC, mean absolute error) and compare against a trivial baseline — the majority class, the mean, or yesterday's value.

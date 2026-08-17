@@ -1,3 +1,7 @@
+---
+quiz: core
+---
+
 # Data Leakage
 
 Leakage is when a model sees, during training, information it will not have at

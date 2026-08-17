@@ -1,3 +1,7 @@
+---
+quiz: core
+---
+
 # Time-Series Validation
 
 Standard k-fold cross-validation assumes rows are **independent and identically
