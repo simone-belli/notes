@@ -41,7 +41,7 @@ A `@classmethod` alternative constructor (below) still goes through the full `__
 
 - String/bytes representation: `__repr__`, `__str__`, `__format__`, `__bytes__`
 - Use `__eq__` and `__hash__` to support equality testing and use in sets/dicts.
-- `__call__` makes an object callable (i.e., `obj(x)`).
+- `__call__` makes an object callable (i.e., `obj(x)`) — see [callable.md](../typing/callable.md).
 - Decorators `@classmethod` (e.g. alternative constructor) and `@staticmethod` (not very useful).
 
 ### @classmethod

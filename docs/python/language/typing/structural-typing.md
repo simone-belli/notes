@@ -113,7 +113,7 @@ class ReadWritable(Readable, Writable, Protocol): ...   # include Protocol in th
 
 ## `Callable` is structural too
 
-`Callable[[int], str]` — accepts any callable with that signature (function, lambda, `__call__` object). Structural typing working implicitly in everyday annotations.
+`Callable[[int], str]` — accepts any callable with that signature (function, lambda, `__call__` object). Structural typing working implicitly in everyday annotations. See [callable.md](callable.md) for the full annotation, including callback Protocols for keyword arguments.
 
 ## Mental model
 

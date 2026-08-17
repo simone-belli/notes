@@ -83,7 +83,7 @@ def my_decorator(func):
     return wrapper
 ```
 
-`@functools.wraps` preserves the metadata of the original function (name, docstring) instead of exposing the wrapper.
+`@functools.wraps` preserves the metadata of the original function (name, docstring) instead of exposing the wrapper. To preserve the *type signature* as well, annotate the decorator with `ParamSpec` — see [callable.md](../typing/callable.md).
 
 ### With arguments — 3 levels of nesting
 

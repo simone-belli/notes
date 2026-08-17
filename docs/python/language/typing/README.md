@@ -1,5 +1,8 @@
 # Python — Language / Typing
 
+:material-text-box-outline: **[Callable](callable.md)**
+:   `__call__` protocol, callable objects, `Callable[[A], R]`, variance, callback Protocols, `ParamSpec`
+
 :material-text-box-outline: **[Structural Typing](structural-typing.md)**
 :   Structural vs nominal typing: Protocol, ABC comparison, runtime_checkable, verifying conformance
 
