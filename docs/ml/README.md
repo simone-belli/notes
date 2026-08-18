@@ -10,6 +10,12 @@ Modelling workflow — the library-agnostic protocol first, then the library.
 
     Library-agnostic foundations: what makes a validation score honest, and the leakage that quietly makes it a lie
 
+-   :material-text-box-outline:{ .lg .middle } __[MLflow](mlflow.md)__
+
+    ---
+
+    Experiment tracking: params, metrics, and artifacts as a queryable record, plus nested runs for a study of trials
+
 -   :material-text-box-outline:{ .lg .middle } __[Optuna](optuna.md)__
 
     ---

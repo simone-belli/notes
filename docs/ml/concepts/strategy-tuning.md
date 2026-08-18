@@ -137,7 +137,9 @@ Write **K** down before the study runs, with the search space. Not after, and no
 - **It is not a formal correction either.** The Deflated Sharpe Ratio (DSR) and
   the Probability of Backtest Overfitting (PBO) are the real machinery, and both
   take K as an input. Logging it now is what makes deflation possible later; you
-  cannot reconstruct it afterwards.
+  cannot reconstruct it afterwards. [MLflow](../mlflow.md) (or Optuna's own
+  storage) makes this a query — `len(mlflow.search_runs(...))` — instead of a
+  number you have to remember.
 
 ## Related
 
@@ -145,4 +147,5 @@ Write **K** down before the study runs, with the search space. Not after, and no
 - [Model Validation](model-validation.md) — selection bias on the maximum, and nested CV
 - [Information Coefficient](../../finance/information-coefficient.md) — how rank IC is defined, and what magnitudes are believable
 - [Optuna](../optuna.md) — where the objective function and trial count live
+- [MLflow](../mlflow.md) — a durable, queryable record of the trial count and every trial's config
 - [Hyperparameter Search](../scikit-learn/hyperparameter-search.md) — the searchers this replaces the scoring of

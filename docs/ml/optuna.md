@@ -164,6 +164,8 @@ SQLite locks under contention — use PostgreSQL for a cluster, or `JournalStora
 (append-only file) on a shared filesystem. `study.optimize(n_jobs=4)` is
 *thread*-based and mostly useless for CPU-bound Python objectives; prefer the
 process pattern. See [Concurrency](../python/language/concurrency/README.md).
+[MLflow](mlflow.md) solves the same durable-record problem more generally —
+`optuna.integration.MLflowCallback` logs each trial as a nested MLflow run.
 
 ```python
 study.enqueue_trial({"learning_rate": 0.05, "max_depth": 6})   # seed today's prod config
@@ -300,6 +302,7 @@ narrow. `optuna-dashboard` renders all of this live against a running study.
 
 ## Related
 
+- [MLflow](mlflow.md) — the general-purpose durable-record library `MLflowCallback` writes trials into
 - [Hyperparameter Search](scikit-learn/hyperparameter-search.md) — grid, random, and halving, and why the exhaustive product doesn't scale
 - [Running Cross-Validation](scikit-learn/cross-validation.md) — the loop the objective usually wraps
 - [Time-Series Validation](concepts/time-series-validation.md) — the protocol tuning must not break
