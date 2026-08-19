@@ -19,3 +19,8 @@ new_order = random.sample(items, len(items))  # items unchanged, new_order is th
 Reproducible results: `random.seed(42)` (module-global) or `random.Random(42)` (private instance, no global side effects).
 
 numpy equivalent: `numpy.random.default_rng().permutation(arr)` (copy) or `.shuffle(arr)` (in place).
+
+For seeding an ML stack end to end — why a global seed isn't enough once
+[scikit-learn](../../../ml/scikit-learn/estimators.md) or
+[Optuna](../../../ml/optuna.md) are involved — see
+[Reproducibility and Seeding](../../../ml/concepts/reproducibility.md).

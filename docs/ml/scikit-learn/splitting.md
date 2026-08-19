@@ -23,6 +23,9 @@ X_train, X_test, y_train, y_test = train_test_split(
 - Returns the four splits in a fixed order: `X_train, X_test, y_train, y_test`.
 - `stratify=y` — preserve each class's proportion in both splits; standard for
   imbalanced classification.
+- `random_state` — an int gives a fresh, independent, reproducible generator
+  per call; see [Reproducibility and Seeding](../concepts/reproducibility.md)
+  for what that means next to `None` or a `RandomState` instance.
 - Accepts any number of equal-length arrays (`X, y, weights, …`) and splits them
   consistently.
 

@@ -91,4 +91,6 @@ one it is:
 - **Metrics** beyond `score` live in `sklearn.metrics` (`accuracy_score`,
   `mean_squared_error`, `roc_auc_score`).
 - **`random_state`** — pass an int to any stochastic estimator (tree ensembles,
-  k-means, shuffled splits) for reproducibility.
+  k-means, shuffled splits) for reproducibility; see
+  [Reproducibility and Seeding](../concepts/reproducibility.md) for what the
+  int vs `None` vs a `RandomState` instance each mean.

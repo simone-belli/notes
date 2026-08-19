@@ -98,6 +98,10 @@ The default TPE is **univariate**: one independent density per parameter, so it
 cannot represent "high learning rate works, but only with shallow trees".
 `multivariate=True` is worth switching on for gradient-boosting spaces.
 
+`seed=` above reproduces only the sampler's proposals — the objective's own
+randomness (a train/test split, a model's `random_state`) is a separate seed
+you own; see [Reproducibility and Seeding](concepts/reproducibility.md).
+
 | Sampler | Use when |
 |---|---|
 | `TPESampler` | default — tens to thousands of trials, mixed/conditional spaces |
@@ -303,6 +307,7 @@ narrow. `optuna-dashboard` renders all of this live against a running study.
 ## Related
 
 - [MLflow](mlflow.md) — the general-purpose durable-record library `MLflowCallback` writes trials into
+- [Reproducibility and Seeding](concepts/reproducibility.md) — the sampler's `seed` vs the objective's own
 - [Hyperparameter Search](scikit-learn/hyperparameter-search.md) — grid, random, and halving, and why the exhaustive product doesn't scale
 - [Running Cross-Validation](scikit-learn/cross-validation.md) — the loop the objective usually wraps
 - [Time-Series Validation](concepts/time-series-validation.md) — the protocol tuning must not break
