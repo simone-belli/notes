@@ -85,14 +85,30 @@ no surrogate over `y` and no kernel matrix to invert — which is why it handles
 "Tree-structured" is the conditional part: each parameter's density uses only the
 trials where it was actually suggested.
 
+A sampler is a standalone object — construct it, then hand it to
+`create_study` via `sampler=`. Nothing about a sampler is study-specific
+until that call:
+
 ```python
-optuna.samplers.TPESampler(
+sampler = optuna.samplers.TPESampler(
     seed=42,               # reproducibility needs this, not a global seed
     n_startup_trials=10,   # random draws before the model engages
     multivariate=True,     # joint density — models interactions
     constant_liar=True,    # distributed runs: stops workers proposing the same point
 )
+study = optuna.create_study(sampler=sampler, direction="minimize")
+study.optimize(objective, n_trials=100)
 ```
+
+- `sampler=` defaults to `TPESampler()` (unseeded) if omitted — passing your
+  own instance is the only way to set `seed=` or any other sampler option.
+- The sampler is attached to `study`, not to `optimize`: calling
+  `study.optimize(...)` again later (resuming, or another batch of trials)
+  reuses the same sampler instance and its accumulated state — you don't
+  reconstruct or re-pass it per call.
+- Swapping samplers means constructing a different object and passing it the
+  same way — `optuna.create_study(sampler=optuna.samplers.CmaEsSampler(seed=42))`
+  — `create_study` doesn't know or care which sampler class it receives.
 
 The default TPE is **univariate**: one independent density per parameter, so it
 cannot represent "high learning rate works, but only with shallow trees".
