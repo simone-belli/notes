@@ -46,8 +46,9 @@ configured separately — the same database/blob-store split
 reason.
 
 Runs are scoped to an **experiment**
-(`mlflow.set_experiment("name")`, created on first use). `mlflow ui` serves
-the table/plot view against whichever store it's pointed at.
+(`mlflow.set_experiment("name")`, created on first use). Whichever store you
+configure here is the one the [web interface](#the-web-interface) has to be
+pointed at.
 
 ## Querying — the actual point
 
@@ -65,6 +66,47 @@ runs = mlflow.search_runs(
 columns) — a direct query against the backend store, not a reconstruction.
 `MlflowClient` (`from mlflow import MlflowClient`) gives the same access
 without the DataFrame wrapper, useful for pulling a single run by ID.
+
+## The web interface
+
+`mlflow ui` starts a local web user interface (UI) over a tracking store and
+serves it on `localhost:5000`:
+
+```bash
+mlflow ui                                          # reads ./mlruns, relative to CWD
+mlflow ui --port 5001
+mlflow ui --backend-store-uri sqlite:///mlflow.db  # match whatever the script logged to
+mlflow server --host 0.0.0.0 --port 5000           # the long-running variant
+```
+
+- `mlflow ui` resolves `./mlruns` **relative to the working directory it is
+  launched from** — an empty run table almost always means the wrong
+  directory, not lost data. Pass `--backend-store-uri` explicitly to be sure.
+- `mlflow server` is the same app configured for a shared, long-running
+  deployment (worker processes, a separate `--artifacts-destination`);
+  `mlflow ui` is the local single-user shorthand. Point clients at either
+  with `mlflow.set_tracking_uri("http://localhost:5000")`.
+
+What it gives you beyond `search_runs`:
+
+- **Runs table** — one row per run, sortable, with a column picker for
+  `params.*` / `metrics.*` / `tags.*`. Nested runs collapse under their parent
+  with an expand arrow, so a study reads as one row until opened.
+- **The search box takes the same `filter_string` syntax** as `search_runs` —
+  prototype a filter interactively, then paste it into code unchanged.
+- **Run comparison** — select several runs → *Compare* for parallel
+  coordinates, scatter, and contour plots across params against metrics. The
+  visual counterpart to reading a `trials_dataframe`.
+- **Metric curves** — anything logged with `step=` renders as a line chart on
+  the run's page rather than a single number.
+- **Artifacts tab** — previews images, text, and CSV inline per run, so
+  plots logged with `log_artifact` are viewable without downloading them.
+
+!!! tip "The UI is a read-only view, not a second source of truth"
+    Everything it shows comes from the same backend store `search_runs`
+    queries. Use it to explore and to eyeball curves; use the query API for
+    anything that has to end up in a calculation — such as the trial count
+    `K` — so the number is reproducible rather than transcribed by hand.
 
 ## Nested runs — study and trial
 
