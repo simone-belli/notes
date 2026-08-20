@@ -10,3 +10,6 @@ Filesystem and process interaction from the standard library.
 
 :material-card-bulleted-outline: **[subprocess](subprocess.md)**
 :   Run shell commands from Python: subprocess.run(), shell=True, Popen, running git
+
+:material-text-box-outline: **[tempfile](tempfile.md)**
+:   Temp directories and files with random names: TemporaryDirectory, mkdtemp, cleanup, TMPDIR

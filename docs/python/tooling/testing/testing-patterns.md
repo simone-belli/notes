@@ -30,7 +30,7 @@ Receive dependencies as arguments rather than creating them internally.
 
 ### Strategy 1 — real file via `tmp_path` (best for file I/O)
 
-pytest's built-in [`tmp_path` fixture](fixtures.md) provides a fresh temp directory per test. Deleted automatically after the test.
+pytest's built-in [`tmp_path` fixture](fixtures.md) provides a fresh temp directory per test. Deleted automatically after the test. Outside tests, reach for [`tempfile`](../../language/stdlib/os/tempfile.md) directly.
 
 ```python
 def test_load_prices(tmp_path):
