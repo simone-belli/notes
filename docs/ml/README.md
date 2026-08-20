@@ -14,7 +14,7 @@ Modelling workflow — the library-agnostic protocol first, then the library.
 
     ---
 
-    Experiment tracking: params, metrics, and artifacts as a queryable record, the web interface over it, nested runs for a study of trials, and wiring it to Optuna
+    Experiment tracking: the setup workflow, params, metrics, and artifacts as a queryable record, the web interface over it, nested runs for a study of trials, and wiring it to Optuna
 
 -   :material-text-box-outline:{ .lg .middle } __[Optuna](optuna.md)__
 

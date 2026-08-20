@@ -28,6 +28,73 @@ with mlflow.start_run():
 - Without an explicit `start_run()`, the first `log_*` call auto-creates one;
   fine for a one-off, but you lose control over naming and nesting.
 
+## The workflow
+
+Four steps, and the order is load-bearing — each of the first three sets
+process-global state the next one reads:
+
+```python
+import mlflow
+
+mlflow.set_tracking_uri("sqlite:///mlflow.db")   # 1. where the record lives
+mlflow.set_experiment("strategy-tuning")         # 2. which namespace runs join
+with mlflow.start_run(run_name="baseline"):      # 3. one execution
+    mlflow.log_params({"learning_rate": 0.01, "max_depth": 6})
+    mlflow.log_metric("sharpe", 0.72)
+    mlflow.log_artifact("equity_curve.png")
+
+mlflow.search_runs(experiment_names=["strategy-tuning"])   # 4. read it back
+```
+
+- Steps 1–2 run once per script; step 3 repeats per run. `set_experiment`
+  before `set_tracking_uri` resolves the experiment against the *previous*
+  store — the usual cause of runs appearing in a `./mlruns` nobody meant to
+  create.
+- Skipping step 2 puts everything in the `Default` experiment (ID `0`).
+- Both are settable from the environment instead, keeping the store out of the
+  code: `MLFLOW_TRACKING_URI`, `MLFLOW_EXPERIMENT_NAME`.
+- `mlflow.autolog()` (or the flavour-specific `mlflow.sklearn.autolog()`)
+  before a `fit` call logs that library's params, metrics, and model without
+  explicit `log_*` calls. A fast start; it logs what the integration chose,
+  not what you chose.
+
+### Creating an experiment
+
+`set_experiment` creates on first use with defaults. `create_experiment` is
+the explicit form, and the only way to control the artifact location:
+
+```python
+mlflow.create_experiment(
+    "strategy-tuning",
+    artifact_location="file:///path/to/artifacts",   # or s3://bucket/prefix
+    tags={"project": "momentum"},
+)
+mlflow.set_experiment("strategy-tuning")             # still needed to select it
+```
+
+- It returns an experiment ID and **raises if the name exists** — it is not
+  idempotent, so guard it:
+
+```python
+from mlflow import MlflowClient
+
+exp = MlflowClient().get_experiment_by_name("strategy-tuning")
+exp_id = exp.experiment_id if exp else mlflow.create_experiment("strategy-tuning")
+```
+
+- `artifact_location` is fixed at creation; no API changes it afterwards.
+  Left unset, artifacts default to the tracking store's root — for
+  `sqlite:///`, that means metadata in the database but artifacts still under
+  `./mlruns`.
+- `mlflow.set_experiment(experiment_id=...)` selects by ID instead of name,
+  useful once the ID is captured.
+
+!!! warning "Deleting an experiment only hides it"
+    Deletion sets `lifecycle_stage` to `deleted` and **keeps the name
+    reserved**, so re-creating with the same name still raises — the confusing
+    case where a name is both "gone" and taken. `client.restore_experiment(id)`
+    undoes it; `mlflow gc` is what actually frees the name.
+
 ## Backend store and tracking URI
 
 ```python
@@ -45,10 +112,9 @@ configured separately — the same database/blob-store split
 [Optuna](optuna.md#storage-and-parallelism)'s `storage=` uses, for the same
 reason.
 
-Runs are scoped to an **experiment**
-(`mlflow.set_experiment("name")`, created on first use). Whichever store you
-configure here is the one the [web interface](#the-web-interface) has to be
-pointed at.
+Whichever store you configure here is the one the
+[web interface](#the-web-interface) has to be pointed at, and the one
+[experiments](#creating-an-experiment) resolve against.
 
 ## Querying — the actual point
 
