@@ -23,12 +23,71 @@ git add data/raw.csv.dvc data/.gitignore
 git commit -m "add raw dataset v1"
 ```
 
-`data/raw.csv.dvc` is YAML holding the file's hash and size. Git only ever
-sees this tiny pointer — never the dataset itself — so the dataset's
-*identity* is versioned in Git history even though its bytes live elsewhere.
-This mirrors how Git itself stores blobs by content hash (see
+`data/raw.csv.dvc` is YAML holding the file's hash and size:
+
+```yaml
+outs:
+- md5: a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
+  size: 5368709120
+  hash: md5
+  path: raw.csv
+```
+
+`path` is relative to the `.dvc` file's own directory (not the repo root),
+so the pointer stays valid if the tracked directory is moved as a whole. Git
+only ever sees this tiny pointer — never the dataset itself — so the
+dataset's *identity* is versioned in Git history even though its bytes live
+elsewhere. This mirrors how Git itself stores blobs by content hash (see
 [Git Internals: The Object Model](../git/internals.md)), just with one more
-layer of indirection to keep the big bytes out of `.git/objects`.
+layer of indirection to keep the big bytes out of `.git/objects`. Tracking a
+directory instead of a file works the same way, but the `.dvc` file's hash
+is of a **directory manifest** (a JSON listing of every contained file's
+hash, itself stored in the cache) rather than of any single file's bytes —
+marked with a `.dir` suffix so directory hashes and file hashes never
+collide in the same hash space.
+
+### The cache: content-addressed, and linked rather than copied
+
+`.dvc/cache` stores objects under a two-character-prefix directory (the same
+trick `.git/objects/ab/cdef…` uses to avoid one huge flat directory),
+keyed by hash — identical bytes anywhere in the project dedupe to one cache
+entry. Materializing a cached file into the working directory (on
+`dvc checkout` or right after `dvc add`) uses, in order of preference:
+**reflink** (copy-on-write, free and safe where the filesystem supports it),
+**hardlink** (free, but the cache file is kept read-only to stop an in-place
+edit from silently corrupting every other checkout of that hash),
+**symlink**, or a plain **copy** as the always-correct fallback. This choice
+has no Git equivalent because Git's blobs are small enough that copying is
+free; DVC's often aren't. It's configurable via `dvc config cache.type`.
+
+!!! warning "A hardlink is not a private copy"
+    If the cache type includes `hardlink` and something strips the
+    read-only bit and edits the working-directory file in place, that edit
+    lands on the cache object too — every other checkout sharing that hash
+    (other branches, other clones on the same machine) is now silently
+    wrong, since the hash recorded in the `.dvc` file no longer matches the
+    bytes at that cache path.
+
+### `.gitignore` is auto-managed, but not auto-staged
+
+`dvc add` also appends an entry to a `.gitignore` **in the same directory**
+as the tracked path (`data/.gitignore` gets `/raw.csv`, not a repo-root
+entry) — precisely scoped so it can't accidentally ignore an unrelated file
+elsewhere in the tree. DVC owns this file: adding more files in that
+directory appends more lines, `dvc remove` deletes the matching one.
+
+!!! tip "The step people forget"
+    DVC edits `.gitignore` on disk but doesn't stage it. Forgetting
+    `git add data/.gitignore` alongside the `.dvc` file means a teammate who
+    clones and runs `dvc pull` sees the raw data file show up as untracked
+    in `git status` — the ignore rule never made it into the commit.
+
+Pipeline outputs get this treatment automatically — declaring a file under
+`outs:` in `dvc.yaml` is enough for `dvc repro` to both cache it and gitignore
+it, no separate `dvc add` needed. An `outs` entry with `cache: false` opts
+out of both the cache and the ignore rule, leaving the file for Git to track
+directly — useful for a small metrics file you want human-diffable in a pull
+request.
 
 ## Git ↔ DVC command mapping
 
