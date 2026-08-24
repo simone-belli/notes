@@ -99,4 +99,6 @@ class Trade:
     price: float
 ```
 
+See [dataclasses.md](dataclasses.md) for the full cheat sheet: decorator parameters, `field()`, `InitVar`, and helper functions.
+
 See also: [oop.md](oop.md) for inheritance and ABCs; [structural-typing.md](../typing/structural-typing.md) for Protocols.

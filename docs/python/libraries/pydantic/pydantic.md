@@ -104,6 +104,8 @@ For:
 
 ### dataclass
 
+See [dataclasses.md](../../language/objects/dataclasses.md).
+
 - stdlib
 - lightweight
 - no runtime validation

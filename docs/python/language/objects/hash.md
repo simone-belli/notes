@@ -71,7 +71,7 @@ class ImmutableTrade:      # __eq__ + __hash__ both generated → hashable
     price: float
 ```
 
-`unsafe_hash=True` forces hash generation for a mutable dataclass — only safe if you guarantee no mutation after hashing.
+`unsafe_hash=True` forces hash generation for a mutable dataclass — only safe if you guarantee no mutation after hashing. See [dataclasses.md](dataclasses.md) for the full set of decorator parameters.
 
 ## Restoring hashability in subclasses
 

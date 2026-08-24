@@ -9,6 +9,9 @@
 :material-text-box-outline: **[The Data Model and Pythonic Objects](data-model.md)**
 :   Dunder methods, `__new__` vs `__init__`, pythonic objects, `@dataclass`
 
+:material-card-bulleted-outline: **[Dataclasses](dataclasses.md)**
+:   `@dataclass` cheat sheet: decorator parameters, `field()`, `__post_init__`, `InitVar`, helpers, inheritance
+
 :material-text-box-outline: **[Exceptions](exceptions.md)**
 :   Exception hierarchy, EAFP, raising/chaining, custom exceptions, best practices
 
