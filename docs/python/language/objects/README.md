@@ -21,8 +21,8 @@
 :material-text-box-outline: **[Mutation of function arguments](mutation.md)**
 :   Rebind vs mutate: when function argument changes are visible to the caller
 
-:material-text-box-outline: **[Float Comparison](numbers.md)**
-:   Float comparison: `math.isclose`, `rel_tol`/`abs_tol`, `pytest.approx`, `np.isclose`
+:material-text-box-outline: **[Numbers](numbers.md)**
+:   Integers: arbitrary precision, floor division, bitwise, bases, rounding. Floats: `math.isclose`, `pytest.approx`, `np.isclose`
 
 :material-text-box-outline: **[Classes: Inheritance and ABCs](oop.md)**
 :   Inheritance, MRO, composition over inheritance, ABCs

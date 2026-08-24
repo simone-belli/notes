@@ -63,7 +63,7 @@ np.iinfo(np.int8)      # min=-128, max=127
 !!! warning "object dtype silently kills all performance"
     When NumPy falls back to `object` dtype (mixed types, strings without explicit dtype), every element becomes a Python heap object. Vectorised C loops are replaced by per-element Python dispatch — the same speed as a hand-written loop. Always inspect `.dtype` after loading data from CSV or JSON.
 
-**Silent integer overflow** — no error, wraps around:
+**Silent integer overflow** — no error, wraps around (unlike Python's [arbitrary-precision `int`](../../python/language/objects/numbers.md), which never overflows):
 ```python
 np.int8(127) + np.int8(1)   # -128
 ```
