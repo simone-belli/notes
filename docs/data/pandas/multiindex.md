@@ -30,6 +30,33 @@ df.loc[idx[:, '2024-01-02'], :]         # IndexSlice — the readable form of th
 !!! warning "Sort before you slice"
     Range/partial slicing needs the MultiIndex **lexicographically sorted**, else pandas raises `UnsortedIndexError` (or warns on performance). Call `df.sort_index()` right after building one; `df.index.is_monotonic_increasing` tells you if it's ready.
 
+## Adding a level
+
+Adding a level means every key `k` becomes `(new, k)` or `(k, new)` — the data body is untouched. The tool depends on where the new label comes from.
+
+```python
+# From an existing column — lands INNERMOST
+df.set_index('symbol', append=True)          # append=True keeps the current index
+df.assign(scenario='base').set_index('scenario', append=True)   # constant, chain-friendly
+
+# A constant tag — lands OUTERMOST
+pd.concat([df], keys=['base'], names=['scenario'])
+pd.concat([base, stress], keys=['base', 'stress'], names=['scenario'])  # the general form
+
+# From a computed array — rebuild the index
+df.index = pd.MultiIndex.from_arrays([['base'] * len(df), df.index],
+                                     names=['scenario', 'date'])
+
+# On the COLUMNS axis — namespace the columns
+df.columns = pd.MultiIndex.from_product([['prices'], df.columns])
+```
+
+- `from_arrays` (parallel label arrays), `from_tuples` (you already have the tuples), `from_product` (Cartesian grid).
+- `set_index` consumes the column; pass `drop=False` to keep a copy in the body.
+
+!!! warning "Position and sortedness"
+    `set_index(append=True)` puts the new level **innermost**, `concat(keys=)` **outermost** — fix with `swaplevel`/`reorder_levels`. Either way the index is usually no longer lexicographically sorted, so follow with `.sort_index()` before slicing. Unnamed levels can only be addressed by integer position, so always pass `names=`.
+
 ## Rearranging and flattening levels
 
 ```python

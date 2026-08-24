@@ -107,9 +107,12 @@ Chain `.str` methods: `.str.strip().str.lower().str.replace('-', '_')`. Always v
 
 ```python
 df.set_index('date')            # promote column to index (enables resample)
+df.set_index('symbol', append=True)  # add a level instead of replacing the index
 df.reset_index(drop=True)       # clean 0…n-1 index after filtering/sorting
 df.reset_index()                # move index back to a column
 ```
+
+See [multiindex.md](multiindex.md) for adding, reordering, and flattening index levels.
 
 ## 10. Groupby aggregation — `.groupby().agg()`
 

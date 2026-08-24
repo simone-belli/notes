@@ -28,7 +28,7 @@
 :   SQL-style joins — `how` (inner/left/outer), `on`/`left_on`/`right_on`, the fan-out trap and `validate=`
 
 :material-text-box-outline: **[MultiIndex](multiindex.md)**
-:   Hierarchical index of tuples — selecting with `.loc`/`.xs`/`IndexSlice`, level ops, sort-before-slice, `reset_index`
+:   Hierarchical index of tuples — selecting with `.loc`/`.xs`/`IndexSlice`, adding/reordering/flattening levels, sort-before-slice
 
 :material-text-box-outline: **[Parquet](parquet.md)**
 :   Columnar file format — column/predicate pushdown, row groups, `read_parquet`/`to_parquet`, partitioning
