@@ -15,6 +15,7 @@ The workflows live as project skills in `.claude/skills/`. When a query starts w
 | `EXPLAIN` (or `EXPLAIN BRIEFLY`) | `/explain` | Deep dive to `_explain.md` + permanent note |
 | `ADD TOPIC` | `/add-topic` | Concise note only, no `_explain.md` |
 | `RESTRUCTURE` (or `RESTRUCTURE DEEP`) | `/restructure` | Survey structure (`DEEP`: whole taxonomy top-down), propose reorganisation, execute after approval |
+| `RESHAPE` | `/reshape` | Break a page's wall-of-text prose into sections/subsections, without rewriting it |
 | `AUDIT` | `/audit` | Check notes for stale claims, fix after approval |
 | `QUIZ` | `/quiz` | Create/update question banks in `quiz/banks/`, rebuild web quiz data |
 
@@ -71,7 +72,13 @@ tags:
 - Short code examples are preferred over long ones.
 - When documenting a module, class, or function, always show how it's imported before describing how it's used (e.g. `from fastapi import FastAPI` before the first `FastAPI()` example).
 - Use bullet points for lists of facts; use prose only for conceptual explanations.
-- No multi-paragraph docstrings or wall-of-text sections.
+- No multi-paragraph docstrings or wall-of-text sections. Concretely: never
+  leave three consecutive prose paragraphs with no heading, code block, list,
+  or admonition between them, and give any page over ~40 lines `##` sections.
+  Cut where the subject changes, not every N lines; name each heading after
+  the thing it covers (`## dvc.lock`), and give it at least two sentences or a
+  code block of content. Add `###` only for two or more parallel parts under
+  one `##`. The `/reshape` skill fixes pages that have drifted past this.
 - Use MkDocs admonition boxes (`!!! note`, `!!! tip`, `!!! warning`) to highlight key concepts — mental models, common pitfalls, or non-obvious distinctions worth calling out. Aim for 2–3 per page; don't use them for routine information that flows naturally as prose or bullets.
 - Expand every acronym in full on its first use in each document (including `_explain.md`), e.g. "Abstract Syntax Tree (AST)". Exempt (never need expansion — expanding them is noise): `API`, `CLI`, `CPU`, `CSV`, `GPU`, `HTML`, `HTTP`, `HTTPS`, `ID`, `JSON`, `OS`, `RAM`, `SQL`, `TSV`, `URL`, `UTF`, `YAML`. Everything else — especially domain- or library-specific initialisms like `ORM`, `ASGI`, `GIL`, `AST`, `ADT` — gets expanded on first use. The rule targets substantive page content; skip terse navigation contexts — `README` card/description/title lines and *Related* / *See also* link lists — where the acronym is only a pointer and the linked page carries the expansion.
 - The repo and site are public: never include personal identifiers, real credentials, real account data, or local filesystem paths in notes — use placeholder values in examples.
