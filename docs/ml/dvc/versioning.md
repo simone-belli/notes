@@ -117,6 +117,82 @@ it and gitignore it, no separate `dvc add` needed. An `outs` entry with
 file for Git to track directly — useful for a small metrics file you want
 human-diffable in a pull request.
 
+## Reading the data version
+
+DVC has no version numbers. A dataset's version is a **pair**: the content hash (which
+bytes) and the Git revision containing that pointer (which bytes *together with which
+code*). Both are already in the repo:
+
+```bash
+cat data/raw.csv.dvc                      # the md5 of what's checked out
+git rev-parse HEAD                        # the revision pinning it
+git log --oneline -- data/raw.csv.dvc     # every version this file has had
+```
+
+`git log` on the pointer file is the closest thing to a version *list* — one commit per
+change — and each entry is checkout-able:
+
+```bash
+git checkout <commit> -- data/raw.csv.dvc
+dvc checkout data/raw.csv
+```
+
+Pipeline outputs have no `.dvc` file; their hashes live in [`dvc.lock`](pipelines.md) under
+the producing stage's `outs:`, and the same `git log` reasoning applies to that file.
+
+- `dvc status` — do the files on disk still match the recorded hashes?
+- `dvc data status` — Git-status-style view (`not_in_cache`, `modified`, `uncommitted`).
+- `dvc diff <rev> <rev>` — which paths and hashes changed between two versions; compares
+  hash and size, never line content.
+
+!!! tip "Give versions human names with Git tags"
+    `git tag -a data-v2` after committing the pointer, and `dvc diff data-v1 data-v2` or
+    `git checkout data-v2 && dvc checkout` read the way people expect versions to read —
+    without DVC needing a version concept of its own.
+
+### From Python
+
+```python
+import dvc.api
+
+url = dvc.api.get_url("data/raw.csv", rev="v1.0")     # its location in the remote
+
+with dvc.api.open("data/raw.csv", rev="v1.0") as f:   # stream a past version
+    ...
+```
+
+`rev=` takes anything Git resolves (tag, branch, commit hash) and leaves the working tree
+untouched — safe to call from inside a training script. The hash itself is plain YAML:
+
+```python
+import yaml
+from pathlib import Path
+
+md5 = yaml.safe_load(Path("data/raw.csv.dvc").read_text())["outs"][0]["md5"]
+```
+
+!!! tip "Log both halves with every run"
+    Record the Git commit *and* the data hash next to each result. That pair is the
+    difference between reproducing a number months later and guessing at it — see
+    [Reproducibility](../concepts/reproducibility.md).
+
+### Imported data
+
+`dvc import` records the source *and* the revision it resolved to, so a moving branch name
+can't silently change your inputs:
+
+```yaml
+deps:
+- path: data/raw.csv
+  repo:
+    url: https://github.com/example/datasets
+    rev: main            # what was asked for
+    rev_lock: 6a5b7f2c…  # what was pinned
+```
+
+`dvc update data/raw.csv.dvc` re-resolves `rev` and moves `rev_lock` forward — a deliberate
+act, not a side effect of someone else pushing.
+
 ## Git ↔ DVC command mapping
 
 | Git | DVC | Effect |

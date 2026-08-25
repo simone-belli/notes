@@ -56,7 +56,9 @@ dvc pull                      # fetch bytes for the checked-out pointers
 ## Moving through history
 
 `git checkout` swaps the pointer files; the large files on disk are still
-the old ones until DVC is told to follow.
+the old ones until DVC is told to follow. (To find out *which* version you're
+on or which exist, see
+[Reading the data version](versioning.md#reading-the-data-version).)
 
 ```bash
 git checkout v1.2
