@@ -12,5 +12,8 @@
 :material-text-box-outline: **[match / case (Python 3.10+)](match.md)**
 :   match/case: structural pattern matching, type dispatch, destructuring (3.10+)
 
+:material-text-box-outline: **[Running a Function from the Shell](run-function-cli.md)**
+:   `python -c`, `-m` vs a file path, argparse dispatch, Typer/Fire, `runpy`
+
 :material-text-box-outline: **[Scopes and Namespaces](scopes.md)**
 :   LEGB rule, local/global/nonlocal, closures, late-binding gotcha, class scope

@@ -14,6 +14,9 @@ python -c 'import sys'   # run a string
 python -m module          # run a module (no .py extension)
 ```
 
+See [run-function-cli.md](../runtime/run-function-cli.md) for how these differ and how to
+reach a specific function in a module.
+
 ---
 
 ## sys.argv — raw argument list
