@@ -162,6 +162,53 @@ parser = argparse.ArgumentParser(fromfile_prefix_chars="@")
     `FileType` opens the file during parsing and never closes it — including on runs that
     fail later for unrelated reasons. Convert to a `Path` and open it yourself.
 
+### Values from a YAML or JSON file
+
+Given a list in a file, pass the *path* and parse inside `type=` — the program then only
+ever sees a `list[str]`, and a malformed file becomes a clean argparse error:
+
+```python
+from pathlib import Path
+
+import yaml     # pip install pyyaml
+
+def read_symbols(path: str) -> list[str]:
+    return yaml.safe_load(Path(path).read_text())["symbols"]
+
+parser.add_argument("--symbols-file", type=read_symbols, dest="symbols")
+```
+
+Use `yaml.safe_load`, never `yaml.load` — the latter can construct arbitrary Python objects
+from the file.
+
+When the file holds a whole configuration, load it into `set_defaults` with a pre-parser so
+flags still win:
+
+```python
+pre = argparse.ArgumentParser(add_help=False)
+pre.add_argument("--config", type=Path)
+known, remaining = pre.parse_known_args()
+
+parser = argparse.ArgumentParser(parents=[pre])
+parser.add_argument("--window", type=int, default=30)
+
+if known.config:
+    parser.set_defaults(**yaml.safe_load(known.config.read_text()))
+
+args = parser.parse_args(remaining)
+```
+
+Precedence is **`add_argument` defaults < config file < command line**. The file's keys must
+match the argument `dest` names; unmatched keys are silently added to the namespace rather
+than rejected.
+
+!!! tip "Expanding a file's list in the shell instead"
+    For a program you don't control, `yq` (the YAML counterpart to [jq](../../../tools/jq.md))
+    plus word splitting works: `mycli --symbols $(yq -r '.symbols[]' params.yaml)`. The
+    unquoted `$( )` is what splits the lines into tokens — it breaks on values containing
+    spaces or globs, so use a shell array (`symbols=("${(@f)$(...)}")` in
+    [zsh](../../../tools/shell/zsh.md)) when that's possible.
+
 ### Boolean flags
 
 ```python
