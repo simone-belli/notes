@@ -3,7 +3,7 @@
 Practical guides to standard-library modules. Language-concept groupings (e.g. [functional/](../functional/), [concurrency/](../concurrency/)) also cover stdlib modules; this folder holds module guides with no better conceptual home.
 
 :material-card-bulleted-outline: **[Python CLI](cli.md)**
-:   sys.argv, argparse: flags, types, subcommands, testing
+:   sys.argv, argparse: flags, types, lists, structured values, subcommands, testing
 
 :material-text-box-outline: **[Datetime](datetime.md)**
 :   datetime from strings and integer timestamps; timezone awareness; strptime, fromisoformat, fromtimestamp

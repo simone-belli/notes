@@ -107,7 +107,9 @@ if __name__ == "__main__":
     main()
 ```
 
-See [cli.md](../stdlib/cli.md) for the full `argparse` reference.
+See [cli.md](../stdlib/cli.md) for the full `argparse` reference, including
+[lists and structured values](../stdlib/cli.md#lists) (`nargs`, `action="append"`,
+`type=json.loads`).
 
 ### Dispatching to one of several functions
 

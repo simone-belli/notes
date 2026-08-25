@@ -93,6 +93,75 @@ if __name__ == "__main__":
 
 Dashes in long flags become underscores in the namespace: `--output-file` → `args.output_file`.
 
+`type` is any callable taking one string; it runs per token, and anything it raises becomes
+a clean argparse error — so it doubles as validation:
+
+```python
+from datetime import datetime
+from pathlib import Path
+
+parser.add_argument("--out", type=Path)
+parser.add_argument("--since", type=datetime.fromisoformat)
+```
+
+### Lists
+
+Three idioms, in decreasing order of how idiomatic they are:
+
+```python
+parser.add_argument("--symbols", nargs="+")                 # --symbols BTC ETH
+parser.add_argument("--symbol", action="append", default=[]) # --symbol BTC --symbol ETH
+parser.add_argument("--tags", type=lambda s: s.split(","))   # --tags a,b,c
+```
+
+With `nargs`, `type=` applies to **each element** — `nargs="+", type=int` gives `list[int]`,
+and `choices` validates every element. `nargs="*"` allows an empty list; `nargs="+"`
+requires at least one.
+
+!!! warning "A greedy `nargs` flag swallows the next positional"
+    `--symbols BTC ETH output.csv` puts `output.csv` in `args.symbols`. End the list with
+    `--` (`--symbols BTC ETH -- output.csv`), or avoid positionals alongside a variadic
+    flag. `action="append"` never has this problem, which makes it the safer choice for
+    script-generated commands.
+
+`action="append"` mutates the `default=[]` list object itself, so a parser reused twice in
+one process accumulates values — use `default=None` and `args.symbol or []` if that matters.
+
+### Structured values
+
+Take one JSON string for anything non-flat:
+
+```python
+import json
+
+parser.add_argument("--params", type=json.loads, default={})
+# --params '{"lr": 0.01, "layers": [64, 32]}'
+```
+
+Single-quote it in the shell so the double quotes reach Python. For a flat mapping,
+`KEY=VALUE` pairs read better:
+
+```python
+def kv(s: str) -> tuple[str, str]:
+    key, _, value = s.partition("=")
+    return key, value
+
+parser.add_argument("--set", action="append", type=kv, default=[])
+# --set lr=0.01 --set epochs=10  →  dict(args.set)
+```
+
+Long lists belong in a file rather than on the command line — pass `type=Path` and read it,
+or let argparse read the *arguments* from a file:
+
+```python
+parser = argparse.ArgumentParser(fromfile_prefix_chars="@")
+# mycli @args.txt      (one argument per line)
+```
+
+!!! tip "Prefer `type=Path` over `argparse.FileType`"
+    `FileType` opens the file during parsing and never closes it — including on runs that
+    fail later for unrelated reasons. Convert to a `Path` and open it yourself.
+
 ### Boolean flags
 
 ```python
