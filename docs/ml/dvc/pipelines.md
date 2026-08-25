@@ -73,38 +73,73 @@ train:
     up to date. That is the same failure the DAG exists to remove, so a
     tunable belongs in `params.yaml` rather than at the top of `train.py`.
 
-### Custom param files
+### Reading from a file other than `params.yaml`
 
-The list form takes `file: [keys]` mappings for anything that isn't
-`params.yaml`. YAML, JSON, TOML, and Python modules are all supported.
+There is no repo-wide setting that renames the default — an alternative file
+is named at the point of use instead. In `params:`, a bare string means
+`params.yaml`; a `file:` mapping means that file:
 
 ```yaml
     params:
       - train.n_estimators          # implicit: params.yaml
-      - configs/model.json:         # explicit file, selected keys
+      - configs/model.yaml:         # explicit file, selected keys
           - lr
           - epochs
-      - configs/sweep.toml:         # no keys listed → the whole file
+      - configs/sweep.toml:         # no keys listed → every key in the file
 ```
+
+- YAML, JSON, TOML, and Python modules all work; the extension picks the
+  parser, so an alternative file needn't be YAML at all.
+- Paths resolve relative to the `dvc.yaml`, like `deps` and `outs`.
+- The CLI form colon-separates and comma-joins:
+  `dvc stage add -p configs/model.yaml:lr,epochs ...`.
+- `params.yaml` is not implied once a custom file is listed — a stage can read
+  only `configs/model.yaml` and never touch the default.
+- Commands take the path too: `dvc params diff configs/model.yaml`,
+  `dvc exp run -S 'configs/model.yaml:lr=0.1'`.
 
 Splitting per-stage files keeps invalidation tight, but one `params.yaml` is
 usually enough: key-level tracking already means an unrelated edit in the same
-file won't touch a stage that never reads that key.
+file won't touch a stage that never reads that key. The real reasons to
+split are a config a non-DVC tool also consumes, or one file per pipeline in a
+multi-`dvc.yaml` repo.
 
 ### Interpolating them into `cmd`
 
 ```yaml
+vars:
+  - configs/model.yaml           # adds its keys to the substitution scope
+  - configs/model.yaml:train     # or import just one section
+  - seed: 42                     # inline literal, no file
+
 stages:
   train:
-    cmd: python train.py --lr ${train.learning_rate}
+    cmd: python train.py --lr ${lr} --seed ${seed}
 ```
 
-- `${...}` resolves against `params.yaml` by default; a top-level `vars:`
-  block adds other files or inline values to the substitution scope.
+- `${...}` resolves against `params.yaml` implicitly; `vars:` is what brings
+  an alternative file into scope, and accepts a per-stage form as well.
+- Keys land **flat** — a file listed in `vars:` is not namespaced by its path,
+  so `${lr}`, not `${configs/model.yaml:lr}`. Two files defining the same
+  top-level key is an error, not a silent last-one-wins.
 - Interpolated params are tracked automatically — they land in `dvc.lock`
   without appearing under `params`.
 - Inline `vars:` values aren't params, but they change the *resolved* `cmd`,
   which invalidates the stage anyway.
+
+### Reading them back in Python
+
+`dvc.api.params_show()` returns every tracked param as a dict, resolved from
+whichever files the stages declare — the alternative to hard-coding a second
+`open()` in the script.
+
+```python
+from dvc.api import params_show
+
+params_show()                            # all tracked params, merged
+params_show("configs/model.yaml")        # one file
+params_show(stages="train")              # only what `train` declares
+```
 
 ### Changing a value for one run
 
