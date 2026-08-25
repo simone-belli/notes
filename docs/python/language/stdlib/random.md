@@ -22,5 +22,5 @@ numpy equivalent: `numpy.random.default_rng().permutation(arr)` (copy) or `.shuf
 
 For seeding an ML stack end to end — why a global seed isn't enough once
 [scikit-learn](../../../ml/scikit-learn/estimators.md) or
-[Optuna](../../../ml/optuna.md) are involved — see
+[Optuna](../../../ml/experiments/optuna.md) are involved — see
 [Reproducibility and Seeding](../../../ml/concepts/reproducibility.md).

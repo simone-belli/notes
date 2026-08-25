@@ -4,7 +4,7 @@ An experiment-tracking library: log a run's parameters, metrics, and
 artifacts, then query them back later. The payoff is that "how many
 configurations have I searched?" or "what params produced this score?" become
 queries against a stored record, not something reconstructed from memory or
-scrollback — the property [Tuning a Trading Strategy](concepts/strategy-tuning.md)
+scrollback — the property [Tuning a Trading Strategy](../concepts/strategy-tuning.md)
 relies on for logging the trial count `K` before deflating a Sharpe ratio.
 MLflow ships three other components (Projects, Models, Model Registry) for
 packaging and serving; only **Tracking** is covered here.
@@ -187,7 +187,7 @@ separately — see [MLflow — Nested Runs](mlflow-nested-runs.md).
 - [Optuna](optuna.md) — the trial-count deflation warning this note's querying
   section makes concrete; Optuna's own `storage=` solves the same
   durable-record problem, scoped to one study
-- [Tuning a Trading Strategy](concepts/strategy-tuning.md) — Rule 3: log `K`
+- [Tuning a Trading Strategy](../concepts/strategy-tuning.md) — Rule 3: log `K`
   before the search runs, because deflation can't reconstruct it afterwards
-- [Reproducibility and Seeding](concepts/reproducibility.md) — the sampler
+- [Reproducibility and Seeding](../concepts/reproducibility.md) — the sampler
   seed worth logging alongside the trial count

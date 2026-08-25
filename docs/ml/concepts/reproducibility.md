@@ -8,7 +8,7 @@ tags:
 Every layer of an ML stack has its own random number generator (RNG), and
 none of them share state: Python's `random`, NumPy's legacy global generator,
 NumPy's modern `Generator`, [scikit-learn](../scikit-learn/estimators.md)'s
-per-call `random_state`, and [Optuna](../optuna.md)'s sampler `seed` are five
+per-call `random_state`, and [Optuna](../experiments/optuna.md)'s sampler `seed` are five
 independent streams. Missing one breaks reproducibility for the whole run
 even if the other four are pinned.
 
@@ -146,7 +146,7 @@ def make_rng(seed: int = DEFAULT_SEED) -> np.random.Generator:
 
 ## Related
 
-- [Optuna](../optuna.md) — `TPESampler(seed=...)`
+- [Optuna](../experiments/optuna.md) — `TPESampler(seed=...)`
 - [The Estimator API](../scikit-learn/estimators.md) — `random_state` as a hyperparameter
 - [Hyperparameter Search](../scikit-learn/hyperparameter-search.md) — `random_state` on `RandomizedSearchCV`
 - [Train/Test Splitting](../scikit-learn/splitting.md) — `random_state` on splitters

@@ -204,7 +204,7 @@ search = HalvingRandomSearchCV(pipe, dists, factor=3, resource="n_samples")
 
 The enabling import must come first — these are still experimental. Same result
 attributes, typically 3–10× faster, at the risk of cutting a candidate that was
-slow to prove itself. Beyond scikit-learn, [Optuna](../optuna.md) (Tree-structured
+slow to prove itself. Beyond scikit-learn, [Optuna](../experiments/optuna.md) (Tree-structured
 Parzen Estimator plus pruning) is the practical standard for large spaces.
 Sophistication runs grid → random → halving → Bayesian; how often each is the
 right call runs random ≫ everything else.
@@ -223,7 +223,7 @@ right call runs random ≫ everything else.
 
 ## Related
 
-- [Optuna](../optuna.md) — define-by-run spaces, TPE sampling, and pruning when the space is too big for these
+- [Optuna](../experiments/optuna.md) — define-by-run spaces, TPE sampling, and pruning when the space is too big for these
 - [Running Cross-Validation](cross-validation.md) — the inner loop and the `scoring` argument
 - [Train/Test Splitting](splitting.md) — the splitters passed as `cv=`
 - [scikit-learn Pipelines](pipelines.md) — what `step__param` addresses

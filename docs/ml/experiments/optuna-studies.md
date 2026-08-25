@@ -28,7 +28,7 @@ for i in 1 2 3 4; do python tune.py & done
 SQLite locks under contention — use PostgreSQL for a cluster, or `JournalStorage`
 (append-only file) on a shared filesystem. `study.optimize(n_jobs=4)` is
 *thread*-based and mostly useless for CPU-bound Python objectives; prefer the
-process pattern. See [Concurrency](../python/language/concurrency/README.md).
+process pattern. See [Concurrency](../../python/language/concurrency/README.md).
 [MLflow](mlflow.md) solves the same durable-record problem more generally —
 this storage is the *operational* record (resumption, worker coordination),
 MLflow's is the *reporting* one; see
@@ -52,7 +52,7 @@ study.tell(trial, run_somewhere_else(lr))
 
 ## With scikit-learn
 
-Wrap [`cross_val_score`](scikit-learn/cross-validation.md) — the explicit route,
+Wrap [`cross_val_score`](../scikit-learn/cross-validation.md) — the explicit route,
 and the one that keeps every leakage rule intact:
 
 ```python
@@ -64,9 +64,9 @@ def objective(trial):
 
 Optuna replaces the *search strategy*, not the *validation protocol*: explicit
 splitter, `gap` on time series, preprocessing inside the
-[Pipeline](scikit-learn/pipelines.md). For a trading strategy, don't route
+[Pipeline](../scikit-learn/pipelines.md). For a trading strategy, don't route
 through `cross_val_score` at all — pool the out-of-fold predictions and score
-once; see [Tuning a Trading Strategy](concepts/strategy-tuning.md).
+once; see [Tuning a Trading Strategy](../concepts/strategy-tuning.md).
 
 `OptunaSearchCV` (from `optuna-integration`) is the drop-in alternative — same
 `fit`/`best_params_`/`best_estimator_` surface as `RandomizedSearchCV`, so it
@@ -155,7 +155,7 @@ narrow. `optuna-dashboard` renders all of this live against a running study.
     `study.best_value`, and record `len(study.trials)`: the count of
     configurations tried deflates everything you report. In finance this is
     backtest overfitting — see
-    [Tuning a Trading Strategy](concepts/strategy-tuning.md) for how much Sharpe
+    [Tuning a Trading Strategy](../concepts/strategy-tuning.md) for how much Sharpe
     a zero-skill model buys from 20 trials.
 
 
@@ -163,5 +163,5 @@ narrow. `optuna-dashboard` renders all of this live against a running study.
 
 - [Optuna](optuna.md) — define-by-run search spaces, the suggest API, samplers, and pruning
 - [MLflow — Nested Runs](mlflow-nested-runs.md) — mapping study/trial onto parent/child runs
-- [Running Cross-Validation](scikit-learn/cross-validation.md) — the loop the objective usually wraps
-- [Tuning a Trading Strategy](concepts/strategy-tuning.md) — what the objective should return, and what to report instead of `best_value`
+- [Running Cross-Validation](../scikit-learn/cross-validation.md) — the loop the objective usually wraps
+- [Tuning a Trading Strategy](../concepts/strategy-tuning.md) — what the objective should return, and what to report instead of `best_value`

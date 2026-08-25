@@ -6,7 +6,7 @@ tags:
 # Optuna
 
 A framework-agnostic library for hyperparameter optimisation (HPO). Where
-[`RandomizedSearchCV`](scikit-learn/hyperparameter-search.md) is *memoryless* —
+[`RandomizedSearchCV`](../scikit-learn/hyperparameter-search.md) is *memoryless* —
 draw 60 has learned nothing from draws 1–59 — Optuna models the trials it has
 already paid for and samples where that model expects improvement, and kills
 losing evaluations early to reclaim their budget.
@@ -116,7 +116,7 @@ cannot represent "high learning rate works, but only with shallow trees".
 
 `seed=` above reproduces only the sampler's proposals — the objective's own
 randomness (a train/test split, a model's `random_state`) is a separate seed
-you own; see [Reproducibility and Seeding](concepts/reproducibility.md).
+you own; see [Reproducibility and Seeding](../concepts/reproducibility.md).
 
 | Sampler | Use when |
 |---|---|
@@ -174,7 +174,7 @@ scikit-learn, and reading the result back — see
   surface to plot, which beats a winner.
 - **The bottleneck is features, not knobs** — which it usually is. Tuning buys a
   few percent; a better feature or a fixed
-  [leak](concepts/data-leakage.md) buys more.
+  [leak](../concepts/data-leakage.md) buys more.
 
 
 ## Related
@@ -183,8 +183,8 @@ scikit-learn, and reading the result back — see
   the scikit-learn objective, and reading the run
 - [MLflow](mlflow.md) — the general-purpose durable-record library; see
   [MLflow — Nested Runs](mlflow-nested-runs.md) for mapping study/trial onto parent/child runs
-- [Reproducibility and Seeding](concepts/reproducibility.md) — the sampler's `seed` vs the objective's own
-- [Hyperparameter Search](scikit-learn/hyperparameter-search.md) — grid, random, and halving, and why the exhaustive product doesn't scale
-- [Time-Series Validation](concepts/time-series-validation.md) — the protocol tuning must not break
-- [Tuning a Trading Strategy](concepts/strategy-tuning.md) — what the objective should return, and what to report instead of `best_value`
-- [Model Validation](concepts/model-validation.md) — selection bias on the maximum, and nested CV
+- [Reproducibility and Seeding](../concepts/reproducibility.md) — the sampler's `seed` vs the objective's own
+- [Hyperparameter Search](../scikit-learn/hyperparameter-search.md) — grid, random, and halving, and why the exhaustive product doesn't scale
+- [Time-Series Validation](../concepts/time-series-validation.md) — the protocol tuning must not break
+- [Tuning a Trading Strategy](../concepts/strategy-tuning.md) — what the objective should return, and what to report instead of `best_value`
+- [Model Validation](../concepts/model-validation.md) — selection bias on the maximum, and nested CV

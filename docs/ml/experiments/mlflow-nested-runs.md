@@ -165,14 +165,14 @@ another doesn't reset the count for deflating whatever you eventually report.
 A record spanning studies is what makes the honest number recoverable at all.
 Log the sampler seed on the parent while you're there; reproducing a study
 needs the seed and the count together
-([Reproducibility and Seeding](concepts/reproducibility.md)).
+([Reproducibility and Seeding](../concepts/reproducibility.md)).
 
 ## Related
 
 - [MLflow](mlflow.md) — the tracking API, the workflow, backend stores, and
   querying that this note builds on
 - [Optuna](optuna.md) — the search this note wires MLflow to
-- [Tuning a Trading Strategy](concepts/strategy-tuning.md) — Rule 3: log `K`
+- [Tuning a Trading Strategy](../concepts/strategy-tuning.md) — Rule 3: log `K`
   before the search runs, because deflation can't reconstruct it afterwards
-- [Reproducibility and Seeding](concepts/reproducibility.md) — the sampler
+- [Reproducibility and Seeding](../concepts/reproducibility.md) — the sampler
   seed worth logging alongside the trial count

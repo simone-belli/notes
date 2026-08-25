@@ -203,7 +203,7 @@ stage disconnected from the graph instead of erroring.
 
 `dvc metrics diff` / `dvc params diff` compare metrics and hyperparameters
 across Git revisions; this overlaps with what an experiment tracker like
-[MLflow](mlflow.md) does, but DVC's comparisons are anchored to Git commits
+[MLflow](experiments/mlflow.md) does, but DVC's comparisons are anchored to Git commits
 rather than an independent run database.
 
 !!! tip "DVC vs. Git LFS"
