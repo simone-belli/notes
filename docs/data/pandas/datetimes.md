@@ -79,6 +79,33 @@ s.dt.normalize()          # set time to midnight
 
 Naive and aware timestamps cannot be compared or combined — this holds at every layer (Python, NumPy, pandas). Pick one convention (UTC throughout is simplest) and apply it consistently from the moment data is loaded.
 
+## Reading the timezone off an index
+
+`DatetimeIndex.tz` reports which convention an index is actually using:
+
+```python
+df.index.tz        # ZoneInfo('America/New_York'), datetime.timezone.utc, or None
+df.index.tzinfo    # alias, identical
+str(df.index.tz)   # 'America/New_York' — the name, as a string
+
+df['ts'].dt.tz     # same thing for a datetime column
+```
+
+- `None` means **naive**, which is not the same as UTC — pandas simply doesn't know.
+- The value is a `tzinfo` object, not a string. Since pandas 2.0 zone names resolve to `zoneinfo.ZoneInfo` (older versions used `pytz`), so compare on `str(...)` rather than on the class.
+- `df.index.dtype` shows the same fact: `datetime64[ns, UTC]` when aware, plain `datetime64[ns]` when naive.
+- On a MultiIndex, pull the level out first: `df.index.get_level_values('ts').tz`.
+
+!!! warning ".tz only exists on a DatetimeIndex"
+    If the timestamps were never parsed, the index is a `RangeIndex` or `object` dtype and `.tz` raises `AttributeError`. Guard with `isinstance(df.index, pd.DatetimeIndex)`. The terser `getattr(df.index, "tz", None)` conflates "naive index" with "not a datetime index at all" — two different bugs.
+
+Checking first is what makes the localize/convert pair safe — `tz_localize` on an already-aware index raises `TypeError`, and so does `tz_convert` on a naive one:
+
+```python
+df.index = df.index.tz_localize('UTC')        # naive → aware (attach)
+df.index = df.index.tz_convert('Asia/Tokyo')  # aware → aware (shift)
+```
+
 ## Conversions
 
 ```python
@@ -130,6 +157,7 @@ df.shift(3, freq='h')                        # index forward 3 hours
 | Parse strings | `pd.to_datetime(s)` |
 | Parse Unix ms (Binance) | `pd.to_datetime(s, unit='ms', utc=True)` |
 | Extract year/month/day | `s.dt.year` / `.dt.month` / `.dt.day` |
+| Check an index's timezone | `df.index.tz` (`None` = naive) |
 | Attach timezone | `s.dt.tz_localize('UTC')` |
 | Convert timezone | `s.dt.tz_convert('America/New_York')` |
 | Pass to Python lib | `ts.to_pydatetime()` |
