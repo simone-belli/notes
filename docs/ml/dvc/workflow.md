@@ -12,6 +12,10 @@ dvc remote add -d storage s3://my-bucket/dvc-store
 git add .dvc/config .dvcignore && git commit -m "chore: init dvc"
 ```
 
+Credentials for that remote don't go in the committed file — they belong in
+[`.dvc/config.local`](versioning.md#the-local-config-secrets-and-machine-specific-paths),
+which is never staged.
+
 ## Bringing data under version control
 
 ```bash

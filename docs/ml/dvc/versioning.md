@@ -144,6 +144,34 @@ The remote is not Git-aware — it's a flat, hash-keyed blob store DVC talks to
 directly over S3/GCS/SSH, parallel to how a Git remote stores hash-named
 commit objects but reached over the Git smart-protocol instead.
 
+### The local config: secrets and machine-specific paths
+
+`.dvc/config` is committed, so anything secret or machine-specific belongs in
+`.dvc/config.local` instead — same format, same keys, written by adding
+`--local` to the command, and gitignored by `dvc init` from the start.
+
+```bash
+dvc config --local cache.dir /mnt/big-disk/dvc-cache
+dvc remote modify --local storage access_key_id <key>
+dvc remote modify --local storage secret_access_key <secret>
+```
+
+- Four levels, each overriding the previous: `--system` → `--global`
+  (per-user, `~/.config/dvc/config`) → `--project` (the default,
+  `.dvc/config`, committed) → `--local` (`.dvc/config.local`, ignored).
+- The split is what lets the committed config carry the remote's *URL* —
+  the part every clone needs — while each clone supplies its own credentials
+  and cache location for the same remote name.
+- `dvc config --list` prints the merged result; add a level flag to see one
+  layer alone, or `--show-origin` to see which file each value came from.
+
+!!! tip "Reach for `--local` before inventing a workaround"
+    A shared cache on an external drive, a colleague's read-only remote, a
+    different default remote on the training box — these look like they need
+    a config change everyone will inherit, but they're exactly what the local
+    layer is for. Editing `.dvc/config` instead either commits a path that
+    only exists on one machine, or leaks a key into Git history.
+
 !!! tip "DVC vs. Git LFS"
     Git Large File Storage (Git LFS) solves the same problem with a similar
     pointer-file trick, but is tied to a specific Git host's LFS server and

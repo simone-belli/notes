@@ -61,6 +61,42 @@ across Git revisions; this overlaps with what an experiment tracker like
 [MLflow](../experiments/mlflow.md) does, but DVC's comparisons are anchored to
 Git commits rather than an independent run database.
 
+## Where the file goes
+
+At the **repo root**, beside `.git/` and `.dvc/` — the default, and the right
+answer for a project with one pipeline. Write it by hand, or let DVC append a
+stage to the `dvc.yaml` in the current directory:
+
+```bash
+dvc stage add -n prepare \
+  -d prepare.py -d data/raw.csv \
+  -o data/clean.csv \
+  python prepare.py data/raw.csv data/clean.csv
+```
+
+- Every path in the file — `deps`, `outs`, `cmd`'s working directory, and the
+  default `params.yaml` — resolves relative to **the `dvc.yaml`'s own
+  directory**, not the repo root (the same rule `.dvc` pointer files follow).
+  Moving the file into a subdirectory moves the whole coordinate system with
+  it.
+- A stage can override just its command's working directory with `wdir:`,
+  which is usually the better answer than splitting the file when one script
+  insists on being run from elsewhere.
+- Multiple `dvc.yaml` files are allowed, one per subdirectory — for a
+  monorepo holding genuinely separate pipelines. Each gets its own `dvc.lock`
+  beside it.
+- `dvc repro` acts on the `dvc.yaml` in the current directory; from the root,
+  `dvc repro -P` (`--all-pipelines`) runs every pipeline in the repo, and
+  `dvc repro path/to/dvc.yaml:train` targets one stage.
+
+!!! warning "One file until the pipelines are genuinely independent"
+    Splitting early costs the thing that makes `dvc repro` worth using: a
+    single DAG that propagates invalidation end to end. Two files mean two
+    lock files, and a plain `dvc repro` in one directory silently leaves the
+    other pipeline stale — reintroducing the "did I remember to re-run it?"
+    question the DAG exists to answer. Add subdirectories only when no output
+    of one pipeline is an input to the other.
+
 ## Related
 
 - [Versioning](versioning.md) — the pointer files and cache stages are built on
