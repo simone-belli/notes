@@ -1,0 +1,26 @@
+{
+  "$comment": "Encodes the Autonomy section of CLAUDE.md as actual permissions. CLAUDE.md prose only governs whether Claude asks a question in chat; this file governs the tool-permission gate. Keep rules generic - a rule with literal file paths in it can never match twice.",
+  "permissions": {
+    "allow": [
+      "Bash(cat *)",
+      "Bash(find *)",
+      "Bash(grep *)",
+      "Bash(head *)",
+      "Bash(ls *)",
+      "Bash(sed -n *)",
+      "Bash(tail *)",
+      "Bash(wc *)",
+
+      "Bash(mkdir *)",
+      "Bash(sed -i '' *)",
+
+      "Bash(echo *)",
+      "Bash(mkdocs build *)",
+      "Bash(python3 *)"
+    ],
+    "deny": [
+      "Bash(git push *)",
+      "Bash(rm -rf *)"
+    ]
+  }
+}
