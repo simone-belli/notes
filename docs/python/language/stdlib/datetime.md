@@ -4,7 +4,7 @@ quiz: detail
 
 # Datetime
 
-Converting between strings, integer timestamps, and `datetime.datetime` objects.
+Constructing `datetime.datetime` objects and converting between them, strings, and integer timestamps.
 
 ## Three approaches
 
@@ -130,6 +130,46 @@ A **naive** datetime must first be told what timezone it's actually in (via `rep
 dt.strftime("%Y-%m-%d")   # → "2024-06-21"
 dt.isoformat()             # → "2024-06-21T14:30:00"
 ```
+
+---
+
+## Combining a date and a time
+
+`date` has no clock, `time` has no calendar — `datetime.combine()` is the classmethod that glues them together:
+
+```python
+from datetime import date, time, datetime
+
+d = date(2024, 6, 21)
+t = time(14, 30)
+
+dt = datetime.combine(d, t)   # 2024-06-21 14:30:00
+```
+
+Prefer it over unpacking the fields by hand (`datetime(d.year, d.month, ..., t.microsecond)`) — that spelling is verbose and silently drops `t.tzinfo`.
+
+- The result inherits `tzinfo` from the **time** argument; a `date` has none to give.
+- An optional third argument overrides it: `datetime.combine(d, t, tzinfo=timezone.utc)`, or `tzinfo=None` to strip it.
+- The first argument may be a `date` **or** a `datetime` — passing a `datetime` uses only its date part, so `datetime.combine(dt, t)` resets the clock on an existing datetime.
+- `time.min` / `time.max` give day boundaries:
+
+```python
+start = datetime.combine(d, time.min)   # 2024-06-21 00:00:00
+end   = datetime.combine(d, time.max)   # 2024-06-21 23:59:59.999999
+```
+
+!!! warning "The tzinfo= argument relabels, it does not convert"
+    Like `replace(tzinfo=...)`, it keeps the wall-clock digits and changes the instant. Call `.astimezone()` afterwards for a genuine conversion.
+
+### Splitting back apart
+
+```python
+dt.date()    # date(2024, 6, 21)
+dt.time()    # time(14, 30)      — drops tzinfo
+dt.timetz()  # time(14, 30, tzinfo=...) — keeps it
+```
+
+`timetz()` is the round-trip-safe partner to `combine()`; `time()` quietly loses the timezone.
 
 ---
 

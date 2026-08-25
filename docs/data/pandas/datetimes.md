@@ -13,7 +13,7 @@ Pandas      pd.Timestamp         nanosecond, tz-aware or naive
             pd.DatetimeIndex     array of Timestamps (column or index)
 ```
 
-`pd.Timestamp` is both a subclass of `datetime.datetime` and a wrapper around `np.datetime64[ns]`. It inherits all `datetime` methods while storing data as a 64-bit integer (nanoseconds since Unix epoch).
+`pd.Timestamp` is both a subclass of [`datetime.datetime`](../../python/language/stdlib/datetime.md) and a wrapper around `np.datetime64[ns]`. It inherits all `datetime` methods while storing data as a 64-bit integer (nanoseconds since Unix epoch).
 
 **Range limit:** nanosecond int64 restricts representable dates to ~1678–2262 CE. Dates outside this raise `OutOfBoundsDatetime`.
 

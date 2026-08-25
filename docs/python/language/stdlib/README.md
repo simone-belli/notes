@@ -6,7 +6,7 @@ Practical guides to standard-library modules. Language-concept groupings (e.g. [
 :   sys.argv, argparse: flags, types, lists, config files, subcommands, testing
 
 :material-text-box-outline: **[Datetime](datetime.md)**
-:   datetime from strings and integer timestamps; timezone awareness; strptime, fromisoformat, fromtimestamp
+:   datetime from strings, integer timestamps, and date + time pairs; timezone awareness; strptime, fromisoformat, fromtimestamp, combine
 
 :material-text-box-outline: **[Logging (stdlib)](logging.md)**
 :   stdlib logging: pipeline, levels, dictConfig, best practices, structured logging
