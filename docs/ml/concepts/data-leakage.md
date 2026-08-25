@@ -98,4 +98,4 @@ There is no linter for leakage. The practical signals:
 - [Time-Series Validation](time-series-validation.md) — purging and embargo for correlated rows
 - [scikit-learn Pipelines](../scikit-learn/pipelines.md) — the fit boundary, enforced
 - [Custom Transformers](../scikit-learn/custom-transformers.md) — keeping engineered features inside the fold
-- [DVC](../dvc.md) — the same "structure beats vigilance" move applied to file staleness: a pipeline stage declares its deps so re-run-or-skip is computed, not remembered
+- [DVC — Pipelines](../dvc/pipelines.md) — the same "structure beats vigilance" move applied to file staleness: a pipeline stage declares its deps so re-run-or-skip is computed, not remembered

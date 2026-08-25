@@ -8,7 +8,7 @@ quiz: detail
 
 Two families: `@field_validator` (one field) and `@model_validator` (whole model). Each runs in `before` (raw input) or `after` (parsed) mode.
 
-`@field_validator` is a [registering decorator](../../language/functional/functools.md#transforming-vs-registering) — it marks the method for Pydantic's metaclass to collect, rather than replacing it with a wrapper.
+`@field_validator` is a [registering decorator](../../language/functional/decorators.md#transforming-vs-registering) — it marks the method for Pydantic's metaclass to collect, rather than replacing it with a wrapper.
 
 Use `Field(gt=0, min_length=1, ...)` for simple constraints first — write a validator only when the logic exceeds what `Field()` can express.
 

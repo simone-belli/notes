@@ -10,7 +10,7 @@ Modelling workflow — the library-agnostic protocol first, then the library.
 
     Library-agnostic foundations: what makes a validation score honest, and the leakage that quietly makes it a lie
 
--   :material-text-box-outline:{ .lg .middle } __[DVC](dvc.md)__
+-   :material-folder-outline:{ .lg .middle } __[DVC](dvc/)__
 
     ---
 

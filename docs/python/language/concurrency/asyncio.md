@@ -145,7 +145,7 @@ async def fetch(url):
         ...
 ```
 
-Primary use case: preventing `asyncio.gather()` from firing hundreds of requests simultaneously — see [aiohttp.md](../../libraries/aiohttp.md#concurrent-requests).
+Primary use case: preventing `asyncio.gather()` from firing hundreds of requests simultaneously — see [aiohttp.md](../../libraries/aiohttp-concurrency.md#concurrent-requests).
 
 ## asyncio.Lock — mutual exclusion
 

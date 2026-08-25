@@ -62,7 +62,7 @@ def get_trade(trade_id: int, page: int = 1) -> TradeResponse:
     return service.get_trade(trade_id, page)
 ```
 
-Same contract, no boilerplate. FastAPI reads `trade_id: int`, extracts the path segment, coerces it to `int`, returns [`422`](../../tools/web/http-status-codes.md) if it's not valid, and generates OpenAPI docs — all from the annotation.
+Same contract, no boilerplate. FastAPI reads `trade_id: int`, extracts the path segment, coerces it to `int`, returns [`422`](../../../tools/web/http-status-codes.md) if it's not valid, and generates OpenAPI docs — all from the annotation.
 
 ## Path operation decorators: `get`, `post`, … vs `route`
 
@@ -160,18 +160,19 @@ def get_trade(trade_id: int) -> Trade:
 The components underneath (Starlette, Pydantic, `inspect`), the request
 lifecycle, splitting routes across files with `APIRouter`, lifespan startup
 and shutdown, and the server-vs-client boundary are covered on their own
-page: [FastAPI — App Structure](fastapi-app-structure.md).
+page: [FastAPI — App Structure](app-structure.md).
 
 ## What FastAPI doesn't include
 
-No ORM, no migrations, no admin UI, no project layout opinion — and **no server**: a `FastAPI()` app is an ASGI callable that can't receive a request on its own. An ASGI server like [Uvicorn](uvicorn.md) binds the port and calls it. It does one thing: Python functions ↔ HTTP API, with the glue (validation, serialisation, DI, docs) handled from annotations.
+No ORM, no migrations, no admin UI, no project layout opinion — and **no server**: a `FastAPI()` app is an ASGI callable that can't receive a request on its own. An ASGI server like [Uvicorn](../uvicorn.md) binds the port and calls it. It does one thing: Python functions ↔ HTTP API, with the glue (validation, serialisation, DI, docs) handled from annotations.
 
 
 ## Related
 
-- [FastAPI — App Structure](fastapi-app-structure.md) — building blocks, request lifecycle, `APIRouter`, lifespan
-- [FastAPI — Dependency Injection, Testing & Auth](fastapi-dependencies.md) — `Depends()`, `TestClient`, and the API-key guard
-- [pydantic/pydantic.md](pydantic/pydantic.md) — Pydantic is FastAPI's validation and serialisation engine
-- [Uvicorn & Ports](uvicorn.md) — the ASGI server that binds a port and actually serves the app
-- [asyncio.md](../language/concurrency/asyncio.md) — FastAPI is ASGI-native; endpoint functions can be `async def`
-- [aiohttp.md](aiohttp.md) — the HTTP *client* side of the boundary; keep outbound fetches in a pure function and the endpoint thin
+- [FastAPI — App Structure](app-structure.md) — building blocks, request lifecycle, `APIRouter`, lifespan
+- [FastAPI — Dependency Injection](dependencies.md) — `Depends()`, repository providers, and the API-key guard
+- [FastAPI — Testing](testing.md) — `TestClient` and `dependency_overrides`
+- [pydantic/pydantic.md](../pydantic/pydantic.md) — Pydantic is FastAPI's validation and serialisation engine
+- [Uvicorn & Ports](../uvicorn.md) — the ASGI server that binds a port and actually serves the app
+- [asyncio.md](../../language/concurrency/asyncio.md) — FastAPI is ASGI-native; endpoint functions can be `async def`
+- [aiohttp.md](../aiohttp.md) — the HTTP *client* side of the boundary; keep outbound fetches in a pure function and the endpoint thin

@@ -3,8 +3,11 @@
 :material-text-box-outline: **[Comprehensions](comprehensions.md)**
 :   List, dict, set comprehensions — when each is more readable than a loop
 
-:material-text-box-outline: **[Decorators and `functools`](functools.md)**
-:   First-class functions, decorators, `lru_cache`, `partial`, `functools.wraps`
+:material-text-box-outline: **[Decorators](decorators.md)**
+:   First-class functions, closures, transforming vs registering decorators, and the 2- and 3-level nesting shapes
+
+:material-text-box-outline: **[`functools`](functools.md)**
+:   `lru_cache`, `cache`, `cached_property`, and `partial` — with the purity and hashability constraints they impose
 
 :material-text-box-outline: **[Iterators and Generators](iterators-generators.md)**
 :   Iterables, generators, `yield`, `itertools`

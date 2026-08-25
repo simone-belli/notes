@@ -94,5 +94,6 @@ def cap_logs():
 
 ## Related notes
 
-- [`structlog.md`](../../libraries/structlog.md) — configuration, processor pipeline, bound loggers
+- [`structlog.md`](../../libraries/structlog.md) — log methods, bound loggers, `contextvars`
+- [`structlog-config.md`](../../libraries/structlog-config.md) — the processor pipeline and `structlog.configure()`
 - [`pytest.md`](pytest.md) — command quick-reference

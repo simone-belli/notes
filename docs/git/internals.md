@@ -40,7 +40,7 @@ unreferenced, until garbage collected. This is *why* history is tamper-evident �
 consequence of content-addressing, not a feature bolted on top.
 
 "Unreferenced, not deleted" is also the recovery mechanism after a mistaken `reset --hard`: see
-[recovering with reflog](git.md#recovering-with-reflog).
+[recovering with reflog](undoing.md#recovering-with-reflog).
 
 ## Refs: pointers, not objects
 
@@ -120,4 +120,4 @@ throwaway local branches (`git branch -D wip/spike`) are safe to rebase or disca
 Neither approach is "more correct" — merge preserves true topology (useful for audit/bisect context
 around *when* two lines of work joined); rebase produces a clean, linear line (simpler `git
 bisect`, easier to read serially). Which one a team uses is a convention, not a correctness
-question — see the command-level warning in [git.md](git.md#merging-and-rebasing).
+question — see the command-level warning in [rebasing.md](rebasing.md).

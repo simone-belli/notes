@@ -43,4 +43,4 @@ s.to_dict()          # {"a": 1, "b": 2}  — always {index: value}
 ## Related
 
 - [Iteration](iteration.md) — row-by-row access without materialising a whole dict
-- [FastAPI](../../python/libraries/fastapi.md) — `df.to_dict("records")` to serialise rows at the endpoint boundary
+- [FastAPI](../../python/libraries/fastapi/fastapi.md) — `df.to_dict("records")` to serialise rows at the endpoint boundary

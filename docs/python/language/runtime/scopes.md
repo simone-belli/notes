@@ -77,7 +77,7 @@ def make_counter():
 
 ## Closures
 
-A function defined inside another function captures the **enclosing variable**, not its value. Closures are the mechanism behind decorators — see [functools.md](../functional/functools.md#first-class-functions) for how `@decorator` reduces to "a closure, plus `@` sugar for reassignment."
+A function defined inside another function captures the **enclosing variable**, not its value. Closures are the mechanism behind decorators — see [functools.md](../functional/decorators.md#first-class-functions) for how `@decorator` reduces to "a closure, plus `@` sugar for reassignment."
 
 ```python
 def make_multiplier(n):

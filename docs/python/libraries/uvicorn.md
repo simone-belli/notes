@@ -6,7 +6,7 @@ tags:
 
 # Uvicorn & Ports
 
-A `FastAPI()` app is just a callable — it turns a request into a response but has **no way to receive one**. It doesn't open a socket or speak HTTP. An **ASGI server** does that and *calls* your app; the usual choice is **uvicorn**, and the place it listens is a **port**. Uvicorn is the "server" piece [FastAPI](fastapi.md) deliberately leaves out.
+A `FastAPI()` app is just a callable — it turns a request into a response but has **no way to receive one**. It doesn't open a socket or speak HTTP. An **ASGI server** does that and *calls* your app; the usual choice is **uvicorn**, and the place it listens is a **port**. Uvicorn is the "server" piece [FastAPI](fastapi/fastapi.md) deliberately leaves out.
 
 ## Ports
 
@@ -38,7 +38,7 @@ ASGI (Asynchronous Server Gateway Interface) is the contract between an async we
 
 An ASGI app is any callable `async def app(scope, receive, send)`. `FastAPI()` builds exactly that call signature, so `app = FastAPI()` *is* a valid ASGI app — uvicorn just needs pointing at it.
 
-Beyond per-request traffic, uvicorn also drives the ASGI **lifespan** protocol: it sends a startup event before binding the socket to traffic and a shutdown event on `SIGTERM`/`SIGINT`, which is what runs a FastAPI app's [lifespan](fastapi-app-structure.md#lifespan-startup-and-shutdown) setup and teardown. Each `--workers` process runs that lifespan independently.
+Beyond per-request traffic, uvicorn also drives the ASGI **lifespan** protocol: it sends a startup event before binding the socket to traffic and a shutdown event on `SIGTERM`/`SIGINT`, which is what runs a FastAPI app's [lifespan](fastapi/app-structure.md#lifespan-startup-and-shutdown) setup and teardown. Each `--workers` process runs that lifespan independently.
 
 ### Running it
 
@@ -90,6 +90,6 @@ Dev usually skips the proxy and hits uvicorn directly on `http://localhost:8000`
 
 ## Related
 
-- [FastAPI](fastapi.md) — the ASGI app uvicorn serves; uvicorn is the server FastAPI leaves out
+- [FastAPI](fastapi/fastapi.md) — the ASGI app uvicorn serves; uvicorn is the server FastAPI leaves out
 - [asyncio](../language/concurrency/asyncio.md) — the event loop uvicorn runs; why blocking it freezes every request
 - [HTTP Status Codes](../../tools/web/http-status-codes.md) — what the responses uvicorn writes back mean

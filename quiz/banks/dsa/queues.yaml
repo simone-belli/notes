@@ -1,4 +1,4 @@
-note: dsa/queues.md
+note: data/dsa/queues.md
 tier: detail
 questions:
   - id: deque-indexing

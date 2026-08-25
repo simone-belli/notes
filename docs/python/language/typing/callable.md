@@ -90,7 +90,7 @@ Parameter names now matter, since callers can pass them by keyword.
 
 ### `ParamSpec` — forwarding a signature through a decorator
 
-`Callable[..., Any]` erases the wrapped signature of a [decorated function](../functional/functools.md). `ParamSpec` (Python 3.10, PEP 612) captures the whole parameter list as one unit:
+`Callable[..., Any]` erases the wrapped signature of a [decorated function](../functional/decorators.md). `ParamSpec` (Python 3.10, PEP 612) captures the whole parameter list as one unit:
 
 ```python
 from collections.abc import Callable

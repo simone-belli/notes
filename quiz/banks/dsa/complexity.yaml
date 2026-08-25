@@ -1,4 +1,4 @@
-note: dsa/complexity.md
+note: data/dsa/complexity.md
 tier: core
 questions:
   - id: double-n-intuition
