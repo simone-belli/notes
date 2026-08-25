@@ -43,6 +43,76 @@ stages:
   entirely and lets Git track the file directly — sensible for a small,
   human-diffable JSON.
 
+## Where parameters go
+
+`params.yaml`, beside the `dvc.yaml` that references it — the default file DVC
+reads whenever a stage names a bare key. It is Git-tracked like source, not a
+DVC output: small, human-diffable, and the file `dvc params diff` reads across
+revisions.
+
+```yaml
+# params.yaml
+prepare:
+  test_size: 0.2
+train:
+  n_estimators: 300
+  learning_rate: 0.05
+```
+
+- Stages reference **keys**, never the file: `params: [train.n_estimators]`.
+  Naming a group (`params: [train]`) tracks every key under it.
+- Nesting is arbitrary — a dotted path addresses any depth
+  (`train.optimizer.lr`).
+- DVC only *hashes* the values; it injects nothing into the process. The
+  script loads the file itself (`yaml.safe_load`, or `dvc.api.params_show()`).
+- `dvc stage add -p train.n_estimators ...` adds the entry from the CLI.
+
+!!! warning "A hard-coded constant is invisible to invalidation"
+    Anything the script reads but the stage doesn't declare under `params` is
+    outside the hash, so editing it leaves `dvc repro` convinced the stage is
+    up to date. That is the same failure the DAG exists to remove, so a
+    tunable belongs in `params.yaml` rather than at the top of `train.py`.
+
+### Custom param files
+
+The list form takes `file: [keys]` mappings for anything that isn't
+`params.yaml`. YAML, JSON, TOML, and Python modules are all supported.
+
+```yaml
+    params:
+      - train.n_estimators          # implicit: params.yaml
+      - configs/model.json:         # explicit file, selected keys
+          - lr
+          - epochs
+      - configs/sweep.toml:         # no keys listed → the whole file
+```
+
+Splitting per-stage files keeps invalidation tight, but one `params.yaml` is
+usually enough: key-level tracking already means an unrelated edit in the same
+file won't touch a stage that never reads that key.
+
+### Interpolating them into `cmd`
+
+```yaml
+stages:
+  train:
+    cmd: python train.py --lr ${train.learning_rate}
+```
+
+- `${...}` resolves against `params.yaml` by default; a top-level `vars:`
+  block adds other files or inline values to the substitution scope.
+- Interpolated params are tracked automatically — they land in `dvc.lock`
+  without appearing under `params`.
+- Inline `vars:` values aren't params, but they change the *resolved* `cmd`,
+  which invalidates the stage anyway.
+
+### Changing a value for one run
+
+`dvc exp run -S train.learning_rate=0.1` writes the override into
+`params.yaml`, then runs — so the experiment is recorded against a real param
+value rather than an untracked flag. See [Workflow](workflow.md) for where
+`dvc exp` fits.
+
 ## Running the pipeline
 
 ### `dvc repro`
