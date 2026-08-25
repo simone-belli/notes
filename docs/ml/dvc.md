@@ -12,6 +12,28 @@ git init
 dvc init                 # like `git init`, but creates .dvc/
 ```
 
+## Where `dvc init` goes
+
+At the **repo root, beside `.git/`** — one DVC repo per Git repo, always.
+
+- `dvc init` refuses to run outside a Git working tree unless given
+  `--no-scm`, which throws away the entire point.
+- A DVC repo in a separate directory or repo would let the data version and
+  the code version move independently — back to *remembering* which data
+  produced a result, the failure the pointer-file design exists to remove.
+- Co-located, one commit answers both questions at once: which code produced
+  a number, and which bytes it read.
+
+Four different things share the word "where", and only the first is what
+`dvc init` decides:
+
+| Thing | Where it lives | In Git? |
+|---|---|---|
+| `.dvc/` — config and repo metadata | repo root, beside `.git/` | `.dvc/config` yes, `.dvc/cache` no |
+| The cache (`.dvc/cache`) | inside `.dvc/` by default; relocatable via `cache.dir` | no — gitignored |
+| Tracked data + its `.dvc` pointer | wherever it naturally sits in the tree | pointer yes, bytes no |
+| The remote (object store) | outside the repo, necessarily | no — only its URL, in `.dvc/config` |
+
 ## Pointer files: the core trick
 
 `dvc add` moves a file into a hash-addressed cache and replaces it with a
@@ -59,6 +81,12 @@ edit from silently corrupting every other checkout of that hash),
 **symlink**, or a plain **copy** as the always-correct fallback. This choice
 has no Git equivalent because Git's blobs are small enough that copying is
 free; DVC's often aren't. It's configurable via `dvc config cache.type`.
+
+`cache.dir` relocates the cache itself — to an external drive, or a shared
+location several projects reuse. Watch the filesystem boundary when you do:
+reflinks and hardlinks can't cross one, so a cache on another volume silently
+downgrades every checkout to a real byte copy — full disk I/O, and a second
+copy of every version checked out.
 
 !!! warning "A hardlink is not a private copy"
     If the cache type includes `hardlink` and something strips the
