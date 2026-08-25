@@ -14,7 +14,7 @@ Modelling workflow — the library-agnostic protocol first, then the library.
 
     ---
 
-    Data versioning via Git-like pointer files, remote storage, and reproducible pipeline DAGs
+    Data versioning via Git-like pointer files, remote storage, reproducible pipeline DAGs, and the day-to-day command loop
 
 -   :material-folder-outline:{ .lg .middle } __[Experiments](experiments/)__
 

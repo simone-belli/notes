@@ -146,7 +146,7 @@ commit objects but reached over the Git smart-protocol instead.
 
 ## Pipelines (no Git equivalent)
 
-`dvc.yaml` describes a DAG of reproducible stages. Each stage declares its
+`dvc.yaml` describes a directed acyclic graph (DAG) of reproducible stages. Each stage declares its
 dependencies explicitly, which is the idea worth internalising: staleness
 becomes something DVC *computes* by comparing hashes, not something a
 person has to *remember* ("did I retrain after changing the params?"). It's
@@ -212,3 +212,93 @@ rather than an independent run database.
     has no pipeline concept. DVC remotes are storage you already have
     (S3, GCS, SSH, …), and `dvc.yaml` pipelines add reproducibility on top of
     plain file versioning.
+
+## The typical workflow
+
+Every DVC command has a Git command next to it: DVC moves the bytes, Git
+records which bytes. The rhythm is always *DVC first, Git second* on the way
+out, and *Git first, DVC second* on the way in.
+
+### One-time setup
+
+```bash
+git init && dvc init
+dvc remote add -d storage s3://my-bucket/dvc-store
+git add .dvc/config .dvcignore && git commit -m "chore: init dvc"
+```
+
+### Bringing data under version control
+
+```bash
+dvc add data/raw.csv
+git add data/raw.csv.dvc data/.gitignore
+git commit -m "data: add raw dataset v1"
+dvc push                      # bytes to the remote
+git push                      # pointers to the Git remote
+```
+
+### The daily loop (with a pipeline)
+
+Once `dvc.yaml` exists, `dvc add` is no longer part of the loop — pipeline
+outputs are tracked by being declared under `outs:`.
+
+```bash
+vim params.yaml               # or the stage script
+dvc repro                     # re-runs only the invalidated stages
+dvc metrics diff              # working tree vs. HEAD, before committing
+git add dvc.yaml dvc.lock metrics.json
+git commit -m "feat: raise n_estimators to 500"
+dvc push && git push
+```
+
+- `dvc status` before committing tells you whether the outputs on disk still
+  match `dvc.lock`; `dvc status -c` (cloud) tells you whether the remote is
+  missing anything you're about to push.
+- Push DVC **before** Git: a pushed pointer whose bytes aren't in the remote
+  yet gives a teammate a `dvc pull` failure.
+
+### Joining or resuming a project
+
+```bash
+git clone <repo> && cd <repo>
+dvc pull                      # fetch bytes for the checked-out pointers
+```
+
+### Moving through history
+
+`git checkout` swaps the pointer files; the large files on disk are still
+the old ones until DVC is told to follow.
+
+```bash
+git checkout v1.2
+dvc checkout                  # working tree now matches the tag
+dvc pull                      # only if those hashes aren't in the local cache
+```
+
+!!! tip "Let Git run `dvc checkout` for you"
+    `dvc install` writes Git hooks so `post-checkout` runs `dvc checkout`,
+    `pre-push` runs `dvc push`, and `post-merge` fixes up the working tree.
+    Without them the classic failure is silent: branch switched, code new,
+    data still the previous branch's — and every number you produce is wrong
+    with nothing erroring.
+
+### Comparing experiments
+
+```bash
+dvc exp run -S train.n_estimators=500   # run without committing
+dvc exp show                            # table of runs, params, metrics
+dvc exp branch <exp-name>               # promote a keeper to a real branch
+```
+
+`dvc exp run` is `dvc repro` that stashes each result as a lightweight hidden
+commit, so a sweep doesn't litter the branch with commits you'll discard.
+Overlaps with [Optuna](experiments/optuna.md) for the search itself and
+[MLflow](experiments/mlflow.md) for the run record — reach for those when the
+search strategy or the run database matters more than Git-anchored diffs.
+
+!!! warning "The two-remote mental model"
+    A DVC project has two remotes and two histories that must be pushed and
+    pulled in step. `git pull` without `dvc pull` (or a `git checkout` without
+    `dvc checkout`) leaves code and data from different commits — which is
+    exactly the class of bug DVC exists to prevent, reintroduced by skipping
+    half the command pair.
