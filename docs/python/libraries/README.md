@@ -5,11 +5,14 @@ Third-party libraries your program imports at runtime — as opposed to [tooling
 :material-text-box-outline: **[aiohttp](aiohttp.md)**
 :   Async HTTP client: ClientSession, concurrency, streaming, error handling
 
+:material-text-box-outline: **[FastAPI — App Structure](fastapi-app-structure.md)**
+:   Starlette/Pydantic/`inspect` building blocks, request lifecycle, APIRouter, lifespan, server-vs-client boundary
+
 :material-text-box-outline: **[FastAPI — Dependency Injection, Testing & Auth](fastapi-dependencies.md)**
 :   Depends() injection, repository wiring, TestClient + dependency_overrides, API-key guard
 
 :material-text-box-outline: **[FastAPI](fastapi.md)**
-:   FastAPI: annotations as contract, path/query/body params, response_model, APIRouter, request lifecycle, lifespan, server-vs-client boundary
+:   FastAPI: annotations as contract, path/query/body params, response_model
 
 :material-text-box-outline: **[JSON Lines (JSONL)](jsonl.md)**
 :   JSON Lines: append-friendly, streamable records with Pydantic serialisation

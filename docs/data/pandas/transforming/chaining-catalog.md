@@ -52,7 +52,7 @@ size_type = CategoricalDtype(['S', 'M', 'L', 'XL'], ordered=True)
 df.astype({'size': size_type})
 ```
 
-See [dtypes.md](dtypes.md) for full `CategoricalDtype` details.
+See [dtypes.md](../dtypes.md) for full `CategoricalDtype` details.
 
 ## 4. Rename columns — `.rename()`
 
@@ -112,7 +112,7 @@ df.reset_index(drop=True)       # clean 0…n-1 index after filtering/sorting
 df.reset_index()                # move index back to a column
 ```
 
-See [multiindex.md](multiindex.md) for adding, reordering, and flattening index levels.
+See [multiindex.md](../multiindex.md) for adding, reordering, and flattening index levels.
 
 ## 10. Groupby aggregation — `.groupby().agg()`
 

@@ -111,4 +111,4 @@ f(*[1, 2], **{"c": 3, "d": 4})   # f(1, 2, c=3, d=4)
 | `*x` | `__iter__` (or `__getitem__(int)`) | `keys()` |
 | `**x` | `keys()` + `__getitem__` | `__iter__` |
 
-See [iterators-generators.md](iterators-generators.md) for the full iteration protocol and [data-model.md](../objects/data-model.md) for dunder methods.
+See [iterators-generators.md](iterators-generators.md) for the full iteration protocol and [data-model.md](../objects/classes/data-model.md) for dunder methods.

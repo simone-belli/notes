@@ -100,5 +100,5 @@ in_both   = set_a & set_b
 
 ## Related
 
-- [hash.md](hash.md) — why elements must be hashable; the `__eq__`/`__hash__` contract for custom classes
-- [data-model.md](data-model.md) — `__contains__` dunder for custom membership testing
+- [hash.md](classes/hash.md) — why elements must be hashable; the `__eq__`/`__hash__` contract for custom classes
+- [data-model.md](classes/data-model.md) — `__contains__` dunder for custom membership testing

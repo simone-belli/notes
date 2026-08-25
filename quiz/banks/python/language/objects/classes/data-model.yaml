@@ -1,4 +1,4 @@
-note: python/language/objects/data-model.md
+note: python/language/objects/classes/data-model.md
 tier: core
 questions:
   - id: dunder-purpose

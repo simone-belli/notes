@@ -42,7 +42,7 @@ tag("a")     # '1: a'
 tag.count    # 1 — state is a normal attribute
 ```
 
-Equivalent to a [closure](../runtime/scopes.md#closures), but the state is inspectable, picklable, and can be joined by other methods. Closure for throwaway state; callable class when the state is part of the API. See [`__call__` in the data model](../objects/data-model.md).
+Equivalent to a [closure](../runtime/scopes.md#closures), but the state is inspectable, picklable, and can be joined by other methods. Closure for throwaway state; callable class when the state is part of the API. See [`__call__` in the data model](../objects/classes/data-model.md).
 
 !!! warning "A function stored as a class attribute becomes a method"
     Python functions are descriptors, so `callback = log` at class level binds `self` as the first argument on access. Assign it in `__init__` (`self.callback = log`) or wrap it in `staticmethod(log)`.

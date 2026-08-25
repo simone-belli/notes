@@ -1,4 +1,4 @@
-note: data/pandas/chaining.md
+note: data/pandas/transforming/chaining.md
 tier: core
 questions:
   - id: query-at-sign

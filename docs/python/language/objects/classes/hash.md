@@ -71,7 +71,7 @@ class ImmutableTrade:      # __eq__ + __hash__ both generated → hashable
     price: float
 ```
 
-`unsafe_hash=True` forces hash generation for a mutable dataclass — only safe if you guarantee no mutation after hashing. See [dataclasses.md](dataclasses.md) for the full set of decorator parameters.
+`unsafe_hash=True` forces hash generation for a mutable dataclass — only safe if you guarantee no mutation after hashing. See [dataclasses.md](../dataclasses.md) for the full set of decorator parameters.
 
 ## Restoring hashability in subclasses
 
@@ -91,4 +91,4 @@ Since Python 3.3, hash values are salted per session to prevent hash-flooding Do
 
 Returns a value derived from `id(obj)` (roughly memory address). Two distinct objects never collide, and equality is identity.
 
-See also: [data-model.md](data-model.md) for the broader data model and `@dataclass` overview; [functools.md](../functional/functools.md) for `@lru_cache`, which requires hashable arguments as cache keys.
+See also: [data-model.md](data-model.md) for the broader data model and `@dataclass` overview; [functools.md](../../functional/functools.md) for `@lru_cache`, which requires hashable arguments as cache keys.

@@ -34,10 +34,16 @@ Declarative query patterns, with an explicit mapping to pandas equivalents.
 
     Uncorrelated (derived table, scalar) vs correlated (`EXISTS`/`IN`), when a correlated subquery is a JOIN, deep nesting → chained CTEs, and recursive CTEs
 
--   :material-text-box-outline:{ .lg .middle } __[Window functions & CTEs](window-functions.md)__
+-   :material-text-box-outline:{ .lg .middle } __[Window Functions](window-functions.md)__
 
     ---
 
-    `OVER`/`PARTITION BY`/frames mapped to `groupby`/`shift`/`rolling`; ranking (`ROW_NUMBER`/`RANK`/`DENSE_RANK`), top-N per group, gaps-and-islands; CTEs; time-series patterns
+    `OVER`/`PARTITION BY`/frames mapped to `groupby`/`shift`/`rolling`, and staging a window pipeline with a CTE
+
+-   :material-text-box-outline:{ .lg .middle } __[Window Patterns](window-patterns.md)__
+
+    ---
+
+    Applied window shapes: top-N per group, gaps-and-islands, and time-series recipes built on them
 
 </div>

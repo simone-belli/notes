@@ -50,7 +50,7 @@ class Point:
 ```
 
 !!! warning "eq=True sets `__hash__ = None` — instances become unhashable"
-    The default `@dataclass` generates `__eq__`, which per the data model kills the inherited `__hash__`. Use `frozen=True` (generates both `__eq__` and `__hash__`) for value objects you want in sets or as dict keys. `unsafe_hash=True` forces a hash on a mutable class — only safe if you guarantee no mutation after hashing. See [hash.md](hash.md).
+    The default `@dataclass` generates `__eq__`, which per the data model kills the inherited `__hash__`. Use `frozen=True` (generates both `__eq__` and `__hash__`) for value objects you want in sets or as dict keys. `unsafe_hash=True` forces a hash on a mutable class — only safe if you guarantee no mutation after hashing. See [hash.md](classes/hash.md).
 
 ## `field()` — per-field configuration
 
@@ -160,8 +160,8 @@ Fixes: give `b` a default, or use `kw_only=True` (which lifts the ordering restr
 
 ## Related
 
-- [data-model.md](data-model.md) — the dunder methods dataclasses generate for you
-- [hash.md](hash.md) — the `__eq__`/`__hash__` contract behind `frozen=True`
-- [attribute-lookup.md](attribute-lookup.md) — what `__slots__` does to attribute storage
+- [data-model.md](classes/data-model.md) — the dunder methods dataclasses generate for you
+- [hash.md](classes/hash.md) — the `__eq__`/`__hash__` contract behind `frozen=True`
+- [attribute-lookup.md](classes/attribute-lookup.md) — what `__slots__` does to attribute storage
 - [match.md](../runtime/match.md) — `__match_args__` and positional patterns
 - [pydantic.md](../../libraries/pydantic/pydantic.md) — runtime validation at system boundaries vs. dataclasses for internal models

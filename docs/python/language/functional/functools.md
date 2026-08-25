@@ -68,7 +68,7 @@ health_check is routes["/health"]   # True — registering decorator, identity p
 !!! tip "The tell"
     Does the decorator define a nested function and return *that*? Transforming. Does it return its argument unchanged (aside from bookkeeping)? Registering. Check with `decorated is original` or by reading whether the decorator body has a `return wrapper` vs. `return func`.
 
-A registering decorator applied to a method inside a class body fires *during* that body's execution — before the class object exists — so it can only write to something outside the class (a module-level registry, as above). See [class-creation.md](../objects/class-creation.md) for why that ordering holds and how `__init_subclass__`/metaclasses read the result afterward.
+A registering decorator applied to a method inside a class body fires *during* that body's execution — before the class object exists — so it can only write to something outside the class (a module-level registry, as above). See [class-creation.md](../objects/classes/class-creation.md) for why that ordering holds and how `__init_subclass__`/metaclasses read the result afterward.
 
 ### No arguments — 2 levels of nesting
 

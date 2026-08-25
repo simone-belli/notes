@@ -1,4 +1,4 @@
-note: python/language/objects/oop.md
+note: python/language/objects/classes/oop.md
 tier: core
 questions:
   - id: composition-over-inheritance

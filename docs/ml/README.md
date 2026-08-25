@@ -20,13 +20,25 @@ Modelling workflow — the library-agnostic protocol first, then the library.
 
     ---
 
-    Experiment tracking: the setup workflow, params, metrics, and artifacts as a queryable record, the web interface over it, nested runs for a study of trials, and wiring it to Optuna
+    Experiment tracking: the setup workflow, params, metrics, and artifacts as a queryable record, and the web interface over it
+
+-   :material-text-box-outline:{ .lg .middle } __[MLflow — Nested Runs](mlflow-nested-runs.md)__
+
+    ---
+
+    Recording a study of trials as a parent/child run tree, wiring it to an Optuna search, and recovering the trial count
 
 -   :material-text-box-outline:{ .lg .middle } __[Optuna](optuna.md)__
 
     ---
 
-    Hyperparameter optimisation beyond the grid: define-by-run search spaces, TPE sampling, pruning, and resumable distributed studies
+    Hyperparameter optimisation beyond the grid: define-by-run search spaces, the suggest API, TPE sampling, and pruning
+
+-   :material-text-box-outline:{ .lg .middle } __[Optuna — Studies](optuna-studies.md)__
+
+    ---
+
+    Running a study: durable storage and parallelism, ask-and-tell, the scikit-learn objective, and reading the finished run
 
 -   :material-folder-outline:{ .lg .middle } __[scikit-learn](scikit-learn/)__
 

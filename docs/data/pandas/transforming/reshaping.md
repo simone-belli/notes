@@ -18,7 +18,7 @@ Same information, different shape — each is the natural input for a different 
 - **Wide** is for **cross-sectional math** — a returns matrix (dates × assets) is what `.corr()`, `.cov()`, a covariance optimiser, `.dot()`, or per-column arithmetic (`df['AAPL'] - df['MSFT']`) expect.
 
 !!! note "The rule of thumb"
-    Store, group, and filter in **long**; reshape to **wide** the moment you need `.corr()`, matrix math, or column arithmetic — then often go back. `pivot`/`pivot_table`/`unstack` go long→wide; `melt`/`stack` go wide→long. Wide frames commonly carry a [MultiIndex](multiindex.md) once you pivot on more than one key.
+    Store, group, and filter in **long**; reshape to **wide** the moment you need `.corr()`, matrix math, or column arithmetic — then often go back. `pivot`/`pivot_table`/`unstack` go long→wide; `melt`/`stack` go wide→long. Wide frames commonly carry a [MultiIndex](../multiindex.md) once you pivot on more than one key.
 
 ## `stack` / `unstack` — rotate levels between index and columns
 

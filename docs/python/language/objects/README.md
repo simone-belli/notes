@@ -1,13 +1,7 @@
 # Python — Language / Objects
 
-:material-text-box-outline: **[Attribute lookup protocol](attribute-lookup.md)**
-:   `obj.x` lookup order: descriptors, `__getattr__` vs `__getattribute__`, `__slots__`
-
-:material-text-box-outline: **[Class body execution and class creation](class-creation.md)**
-:   Classes vs. metaclasses, class body execution order, `__init_subclass__`
-
-:material-text-box-outline: **[The Data Model and Pythonic Objects](data-model.md)**
-:   Dunder methods, `__new__` vs `__init__`, pythonic objects, `@dataclass`
+:material-folder-outline: **[Classes](classes/)**
+:   How the class and instance machinery works: attribute lookup, class creation, the data model, inheritance
 
 :material-card-bulleted-outline: **[Dataclasses](dataclasses.md)**
 :   `@dataclass` cheat sheet: decorator parameters, `field()`, `__post_init__`, `InitVar`, helpers, inheritance
@@ -15,17 +9,11 @@
 :material-text-box-outline: **[Exceptions](exceptions.md)**
 :   Exception hierarchy, EAFP, raising/chaining, custom exceptions, best practices
 
-:material-text-box-outline: **[`__hash__` — Making Objects Hashable](hash.md)**
-:   `__hash__`: hash contract, `__eq__` coupling, mutability, dataclasses
-
 :material-text-box-outline: **[Mutation of function arguments](mutation.md)**
 :   Rebind vs mutate: when function argument changes are visible to the caller
 
 :material-text-box-outline: **[Numbers](numbers.md)**
 :   Integers: arbitrary precision, floor division, bitwise, bases, rounding. Floats: `math.isclose`, `pytest.approx`, `np.isclose`
-
-:material-text-box-outline: **[Classes: Inheritance and ABCs](oop.md)**
-:   Inheritance, MRO, composition over inheritance, ABCs
 
 :material-text-box-outline: **[Repository Pattern + Dependency Injection](repository-di.md)**
 :   Repository pattern + dependency injection: Protocol interface, in-memory fake, testable services

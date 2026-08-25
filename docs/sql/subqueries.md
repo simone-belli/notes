@@ -106,7 +106,7 @@ SELECT region, avg_order FROM per_region WHERE avg_order > 500;
 
 Each stage is named, single-purpose, reads in execution order, is independently
 inspectable (`SELECT * FROM per_customer`), and a name reused twice is written
-once — the exact instinct behind chaining [`.pipe()`](../data/pandas/chaining.md)
+once — the exact instinct behind chaining [`.pipe()`](../data/pandas/transforming/chaining.md)
 calls in pandas rather than nesting them inside-out. Each `WITH stage AS (...)`
 maps to one `.pipe(f)`: a named, single-purpose step you can inspect on its own.
 

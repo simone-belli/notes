@@ -88,7 +88,7 @@ trade.model_dump(mode="json")                    # coerce to JSON-safe types (e.
 - Current major version is Pydantic v2
 
 
-## When to use Pydantic vs dataclass (see [data-model.md](../../language/objects/data-model.md#dataclass))?
+## When to use Pydantic vs dataclass (see [data-model.md](../../language/objects/classes/data-model.md#dataclass))?
 
 !!! note "Pydantic at boundaries, dataclass for internal models"
     Pydantic validates and coerces untrusted data (API responses, user input, config files) at the edges of your system. Once data is inside, plain dataclasses are lighter and don't impose runtime validation overhead. Using Pydantic everywhere adds cost without benefit for objects that are constructed from already-validated data inside the system.

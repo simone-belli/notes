@@ -5,7 +5,7 @@ tags:
 
 # Custom Transformers
 
-Your real features — [rolling](../../data/pandas/windows.md) stats, regime tags,
+Your real features — [rolling](../../data/pandas/transforming/windows.md) stats, regime tags,
 cross-asset interactions — don't exist in scikit-learn; you write them. Compute
 them in pandas over the full frame before splitting and you
 [leak](../concepts/data-leakage.md): any feature built from a cross-row statistic

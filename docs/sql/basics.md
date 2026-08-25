@@ -130,6 +130,6 @@ JOIN customers c ON c.customer_id = h.customer_id;
 
 `WITH name AS (...)` is sugar over a subquery, but named, composable, and
 independently testable (`SELECT * FROM high_spenders` to debug one stage) —
-the same instinct as chaining [`.assign()`/`.pipe()`](../data/pandas/chaining.md)
+the same instinct as chaining [`.assign()`/`.pipe()`](../data/pandas/transforming/chaining.md)
 over deeply nested pandas calls. See [window functions](window-functions.md)
 for CTEs used in multi-stage time-series pipelines.

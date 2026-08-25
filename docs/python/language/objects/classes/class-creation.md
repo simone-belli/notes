@@ -51,7 +51,7 @@ isinstance(C, type)   # True — Meta is-a type, so C is transitively an instanc
 
 ## Why decorators inside a class body fire at definition time
 
-A `@decorator` on a method inside the body runs the instant that `def` executes — i.e. during class-body execution, before the class object even exists. This is how a [registering decorator](../functional/functools.md#transforming-vs-registering) accumulates entries in one place:
+A `@decorator` on a method inside the body runs the instant that `def` executes — i.e. during class-body execution, before the class object even exists. This is how a [registering decorator](../../functional/functools.md#transforming-vs-registering) accumulates entries in one place:
 
 ```python
 registry = {}

@@ -1,6 +1,6 @@
 # Pandas — MultiIndex
 
-A **MultiIndex** (hierarchical index) is an index whose labels are **tuples**: a row keyed `('AAPL', '2024-01-02')` instead of a single value. Each tuple position is a **level** (optionally named). You don't create them by hand much — [reshaping](reshaping.md) and [grouping](groupby.md) *produce* them — so the goal is just to select from and flatten them without fear.
+A **MultiIndex** (hierarchical index) is an index whose labels are **tuples**: a row keyed `('AAPL', '2024-01-02')` instead of a single value. Each tuple position is a **level** (optionally named). You don't create them by hand much — [reshaping](transforming/reshaping.md) and [grouping](transforming/groupby.md) *produce* them — so the goal is just to select from and flatten them without fear.
 
 ## Where they come from
 
@@ -69,4 +69,4 @@ df.reset_index(level='symbol')            # move just one level back to a column
 ```
 
 !!! tip "`reset_index` is the escape hatch"
-    When a MultiIndex is more trouble than it's worth, `reset_index()` flattens it to ordinary columns (the long shape) and you're back on familiar ground. `set_index`/`reset_index` move labels between the axes and the data body; [`stack`/`unstack`](reshaping.md) move levels between the row and column axes — same operation, different view.
+    When a MultiIndex is more trouble than it's worth, `reset_index()` flattens it to ordinary columns (the long shape) and you're back on familiar ground. `set_index`/`reset_index` move labels between the axes and the data body; [`stack`/`unstack`](transforming/reshaping.md) move levels between the row and column axes — same operation, different view.

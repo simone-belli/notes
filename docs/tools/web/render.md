@@ -14,7 +14,7 @@ Render is a Platform-as-a-Service (PaaS): connect a Git repo, and on every push 
 ## Before deploying
 
 - Merge to the **branch Render deploys from** (usually `main`, behind [green CI](../../git/github-actions.md)) — the deployed branch is the source of truth.
-- Verify a **cold start** locally: from an empty data dir, does the app boot and serve? A [lifespan](../../python/libraries/fastapi.md#lifespan-startup-and-shutdown) that seeds on startup makes this reproducible.
+- Verify a **cold start** locally: from an empty data dir, does the app boot and serve? A [lifespan](../../python/libraries/fastapi-app-structure.md#lifespan-startup-and-shutdown) that seeds on startup makes this reproducible.
 - Decide the **auth story** — if every endpoint is behind an API key, pick the demo key you'll store as a secret.
 
 ## The four settings that matter
@@ -33,7 +33,7 @@ pip install poetry && poetry install --only main
 poetry run uvicorn myapp.main:app --host 0.0.0.0 --port $PORT
 ```
 
-Keep it **one worker** (the default) if startup seeds shared state — a single process makes that [lifespan](../../python/libraries/fastapi.md#lifespan-startup-and-shutdown) seed race-free.
+Keep it **one worker** (the default) if startup seeds shared state — a single process makes that [lifespan](../../python/libraries/fastapi-app-structure.md#lifespan-startup-and-shutdown) seed race-free.
 
 **3. Python version** — set the `PYTHON_VERSION` env var (e.g. `3.12.7`) to match CI and your lockfile's resolution.
 
@@ -54,7 +54,7 @@ See [Environment Variables](../shell/env-vars.md) for the underlying model.
 
 **1. Build succeeded** — read the *Build* log to its end. The classic failure is *Poetry not found* (fixed by the `pip install poetry` build command); the next is a dependency that won't resolve on Render's Python version. A red build never reaches your code.
 
-**2. Startup logs fired** — read the *Deploy/runtime* log. You want the [lifespan](../../python/libraries/fastapi.md#lifespan-startup-and-shutdown) seed/init lines *and* uvicorn's `Uvicorn running on http://0.0.0.0:$PORT`. Common failures: app crashes on boot (missing env var, `pydantic-settings` validation error), or it binds `127.0.0.1`/a hardcoded port so Render's health check never connects and the deploy loops.
+**2. Startup logs fired** — read the *Deploy/runtime* log. You want the [lifespan](../../python/libraries/fastapi-app-structure.md#lifespan-startup-and-shutdown) seed/init lines *and* uvicorn's `Uvicorn running on http://0.0.0.0:$PORT`. Common failures: app crashes on boot (missing env var, `pydantic-settings` validation error), or it binds `127.0.0.1`/a hardcoded port so Render's health check never connects and the deploy loops.
 
 **3. The port answers** — hit the root from your machine, not the browser:
 

@@ -9,7 +9,7 @@ quiz: core
 - The key API of the Python language is the Data Model.
 - It is a class framework in which classes have special methods (dunder methods).
 - The advantage of dunder methods is uniformity and the ability to apply built-in functions to them.
-- Typical examples: `__init__`, `__len__`, [`__getitem__`](../typing/subscriptable.md), `__repr__`, `__hash__` and arithmetic operators.
+- Typical examples: `__init__`, `__len__`, [`__getitem__`](../../typing/subscriptable.md), `__repr__`, `__hash__` and arithmetic operators.
 - Emulating sequences is one of the most common uses.
 
 ## `__new__` vs `__init__`
@@ -41,7 +41,7 @@ A `@classmethod` alternative constructor (below) still goes through the full `__
 
 - String/bytes representation: `__repr__`, `__str__`, `__format__`, `__bytes__`
 - Use `__eq__` and `__hash__` to support equality testing and use in sets/dicts.
-- `__call__` makes an object callable (i.e., `obj(x)`) — see [callable.md](../typing/callable.md).
+- `__call__` makes an object callable (i.e., `obj(x)`) — see [callable.md](../../typing/callable.md).
 - Decorators `@classmethod` (e.g. alternative constructor) and `@staticmethod` (not very useful).
 
 ### @classmethod
@@ -69,7 +69,7 @@ trade = Trade.from_dict({"symbol": "AAPL", "price": 182.5, "side": "BUY"})
 
 The main use is **alternative constructors** — multiple named ways to build an instance from different input formats. Using `cls(...)` instead of `Trade(...)` means subclasses get the right type back.
 
-`@classmethod` is also required by Pydantic for [`@field_validator`](../../libraries/pydantic/pydantic-validators.md).
+`@classmethod` is also required by Pydantic for [`@field_validator`](../../../libraries/pydantic/pydantic-validators.md).
 - Implement `__format__` that parses `format_spec` to use:
   - `format(obj, format_spec)`
   - `'1 BRL = {rate:0.2f} USD'.format(rate=brl)`
@@ -99,6 +99,6 @@ class Trade:
     price: float
 ```
 
-See [dataclasses.md](dataclasses.md) for the full cheat sheet: decorator parameters, `field()`, `InitVar`, and helper functions.
+See [dataclasses.md](../dataclasses.md) for the full cheat sheet: decorator parameters, `field()`, `InitVar`, and helper functions.
 
-See also: [oop.md](oop.md) for inheritance and ABCs; [structural-typing.md](../typing/structural-typing.md) for Protocols.
+See also: [oop.md](oop.md) for inheritance and ABCs; [structural-typing.md](../../typing/structural-typing.md) for Protocols.
