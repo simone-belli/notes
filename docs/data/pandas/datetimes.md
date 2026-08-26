@@ -99,11 +99,62 @@ df['ts'].dt.tz     # same thing for a datetime column
 !!! warning ".tz only exists on a DatetimeIndex"
     If the timestamps were never parsed, the index is a `RangeIndex` or `object` dtype and `.tz` raises `AttributeError`. Guard with `isinstance(df.index, pd.DatetimeIndex)`. The terser `getattr(df.index, "tz", None)` conflates "naive index" with "not a datetime index at all" — two different bugs.
 
-Checking first is what makes the localize/convert pair safe — `tz_localize` on an already-aware index raises `TypeError`, and so does `tz_convert` on a naive one:
+Checking first is what makes the localize/convert pair below safe: pandas refuses to guess which one you meant.
+
+## Localizing and converting an index
+
+Two verbs cover every case. A naive timestamp is a **wall-clock reading**; an aware one is a **point in time**. `tz_localize` moves between those categories, `tz_convert` moves within the aware one.
+
+| Direction | Call | What changes |
+|-----------|------|--------------|
+| naive → aware | `tz_localize(tz)` | Digits stay; the instant becomes defined |
+| aware → naive | `tz_localize(None)` | Digits stay; the instant becomes undefined |
+| aware → aware | `tz_convert(tz)` | Instant stays; digits shift |
+
+Indexes are immutable — there is no `inplace=`, so assign the result back. The DataFrame carries the same methods, which reads better:
 
 ```python
-df.index = df.index.tz_localize('UTC')        # naive → aware (attach)
-df.index = df.index.tz_convert('Asia/Tokyo')  # aware → aware (shift)
+df = df.tz_localize('UTC')        # equivalently: df.index = df.index.tz_localize('UTC')
+df = df.tz_convert('Asia/Tokyo')
+df = df.tz_localize(None)
+
+df['ts'].dt.tz_localize(None)     # for a column rather than the index
+```
+
+Calling the wrong one raises `TypeError` (`Already tz-aware, use tz_convert…` / `Cannot convert tz-naive timestamps…`). To normalize an index of unknown provenance, branch on `.tz`:
+
+```python
+if df.index.tz is None:
+    df.index = df.index.tz_localize('UTC')
+else:
+    df.index = df.index.tz_convert('UTC')
+```
+
+!!! warning "tz_localize(None) keeps *local* wall time, not UTC"
+    Stripping the zone freezes whatever digits the index was displaying. An index shown in `America/New_York` becomes naive New York time, not naive UTC — data quietly rebased by several hours, with nothing that looks wrong. Always spell it `df.index.tz_convert('UTC').tz_localize(None)`.
+
+### Daylight Saving Time (DST) hazards
+
+Localizing *into* a DST zone is not always well defined, and both parameters default to raising:
+
+```python
+idx.tz_localize('Europe/Rome', ambiguous='infer')            # fall-back hour occurs twice
+idx.tz_localize('Europe/Rome', nonexistent='shift_forward')  # spring-forward hour is missing
+```
+
+- `ambiguous` — `'raise'` (default), `'infer'` (from monotonic order; needs dense sorted data), `'NaT'`, or a boolean array where `True` picks the first occurrence.
+- `nonexistent` — `'raise'` (default), `'shift_forward'`, `'shift_backward'`, `'NaT'`, or a `Timedelta`.
+
+!!! tip "UTC has no DST — localize to UTC and both problems vanish"
+    `tz_convert` never hits them either, since it starts from an unambiguous instant. Every DST headache lives in one place: localizing naive data into a zone that observes DST. Localize to UTC at ingest, convert to a display zone at the edges, and these parameters never appear in your code.
+
+### Why go naive at all
+
+Some destinations reject aware timestamps: `df.to_excel()` raises on them, some database drivers and older Parquet/HDF5 paths round-trip them badly, and matplotlib date axes and modelling libraries often prefer naive input. Convert to UTC before stripping, and record the convention somewhere — the timezone is now carried by agreement rather than by the data.
+
+```python
+naive = df.index.tz_convert('UTC').tz_localize(None)   # lossless round trip …
+aware = naive.tz_localize('UTC')                       # … as long as both legs go via UTC
 ```
 
 ## Conversions
@@ -160,6 +211,7 @@ df.shift(3, freq='h')                        # index forward 3 hours
 | Check an index's timezone | `df.index.tz` (`None` = naive) |
 | Attach timezone | `s.dt.tz_localize('UTC')` |
 | Convert timezone | `s.dt.tz_convert('America/New_York')` |
+| Strip timezone (to naive UTC) | `df.index.tz_convert('UTC').tz_localize(None)` |
 | Pass to Python lib | `ts.to_pydatetime()` |
 | Missing value | `pd.NaT` |
 | Time-based groupby | `.resample('1D')` on DatetimeIndex |
