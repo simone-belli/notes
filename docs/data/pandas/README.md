@@ -9,6 +9,9 @@
 :material-text-box-outline: **[dtypes](dtypes.md)**
 :   dtype system — nullable types, categoricals, StringDtype, pd.NA
 
+:material-text-box-outline: **[Filtering](filtering.md)**
+:   Boolean masks, `&`/`|`/`~`, `isin`/`between`, `where`/`mask` vs `np.where`, NA in masks
+
 :material-text-box-outline: **[Indexing, Views and Copies](indexing.md)**
 :   Views vs copies, SettingWithCopyWarning, `.loc` rules, Copy-on-Write
 

@@ -30,6 +30,8 @@ df.query('age > 18 and city == "London"')
 df.query('price > @threshold')   # @ references a Python variable
 ```
 
+A string expression avoids the `&`/parentheses traps of boolean masks — see [filtering](../filtering.md).
+
 ### `.assign(**kwargs)` — add or overwrite columns
 
 ```python

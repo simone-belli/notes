@@ -24,6 +24,8 @@ df.query('status == "active"')
 df.query('date > @cutoff')      # @ = Python variable
 ```
 
+For boolean masks and `where`/`mask`, see [filtering](../filtering.md).
+
 !!! tip "assign() lambdas see columns added earlier in the same call"
     Within one `.assign()` call, `lambda d: ...` receives the DataFrame as it exists at that point — including columns defined by earlier keyword arguments in the same call. This lets you build derived columns in sequence without chaining multiple `.assign()` calls.
 

@@ -6,7 +6,7 @@ quiz: core
 
 ## SettingWithCopyWarning
 
-Triggered by **chained indexing used for assignment**: two `[]` operations where the first may return a copy.
+Triggered by **chained indexing used for assignment**: two `[]` operations where the first may return a copy (see [filtering](filtering.md) for building the mask itself).
 
 ```python
 df[df['age'] > 18]['name'] = 'adult'   # WARNING — assignment likely lost
