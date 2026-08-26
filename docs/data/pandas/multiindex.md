@@ -64,9 +64,35 @@ df.swaplevel('symbol', 'date')            # reorder two levels
 df.reorder_levels(['date', 'symbol'])
 df.droplevel('symbol')                    # delete a level
 df.rename_axis(index={'symbol': 'ticker'})  # rename a level
-df.reset_index()                          # MultiIndex → plain columns (the escape hatch)
-df.reset_index(level='symbol')            # move just one level back to a column
 ```
 
-!!! tip "`reset_index` is the escape hatch"
-    When a MultiIndex is more trouble than it's worth, `reset_index()` flattens it to ordinary columns (the long shape) and you're back on familiar ground. `set_index`/`reset_index` move labels between the axes and the data body; [`stack`/`unstack`](transforming/reshaping.md) move levels between the row and column axes — same operation, different view.
+## reset_index and set_index
+
+The inverse pair: `reset_index` moves index levels **into the body** as columns, `set_index(append=True)` moves columns **back into the index**.
+
+```python
+df.reset_index()                    # all levels → columns, fresh RangeIndex
+df.reset_index(level='symbol')      # just one level → column, rest stays indexed
+df.reset_index(level=['symbol', 'date'])
+df.reset_index(level=0)             # by position
+
+df.set_index('symbol', append=True) # the opposite — column back into the index
+```
+
+A full round trip:
+
+```python
+flat  = mi_df.reset_index(level='symbol')       # symbol becomes a column
+mi_df = flat.set_index('symbol', append=True)   # …and back
+```
+
+- `reset_index(drop=True)` **discards** the level instead of moving it — the same effect as `droplevel` for a MultiIndex, but it also resets a single index to a `RangeIndex`.
+- Unnamed levels become columns called `level_0`, `level_1`, …; name them first with `rename_axis` to control the result.
+- On a Series, `reset_index()` returns a **DataFrame**; pass `name=` to label the value column. `reset_index(drop=True)` keeps it a Series.
+- If the columns are themselves a MultiIndex, `col_level=` picks which column level the new names land on and `col_fill=` fills the others.
+
+!!! warning "The round trip does not preserve level order"
+    `reset_index` inserts the freed levels as the **leftmost columns**, in level order; `set_index(append=True)` puts them back **innermost**. Reordering more than one level at a time needs `reorder_levels` afterwards — and `.sort_index()` before you slice again.
+
+!!! tip "Two axes, two verbs"
+    `set_index`/`reset_index` move labels between the **index and the data body**; [`stack`/`unstack`](transforming/reshaping.md) move levels between the **row and column axes**. When a MultiIndex is more trouble than it's worth, `reset_index()` is the escape hatch back to the long shape and ordinary [column filtering](filtering.md).

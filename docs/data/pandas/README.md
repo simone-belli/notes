@@ -19,7 +19,7 @@
 :   `__iter__` asymmetry, `.items()`, `iterrows()` vs `itertuples()`, scalar access
 
 :material-text-box-outline: **[MultiIndex](multiindex.md)**
-:   Hierarchical index of tuples — selecting with `.loc`/`.xs`/`IndexSlice`, adding/reordering/flattening levels, sort-before-slice
+:   Hierarchical index of tuples — selecting with `.loc`/`.xs`/`IndexSlice`, adding/reordering levels, `reset_index`/`set_index`, sort-before-slice
 
 :material-text-box-outline: **[Parquet](parquet.md)**
 :   Columnar file format — column/predicate pushdown, row groups, `read_parquet`/`to_parquet`, partitioning
