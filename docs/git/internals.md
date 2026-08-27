@@ -6,7 +6,7 @@ plain-text pointer files in `.git/refs/`. Git is a content-addressable key-value
 
 ## The four object types
 
-Each object is addressed by the SHA hash of its own content — its hash *is* its ID.
+Each object is addressed by the [SHA](../tools/sha256.md) hash of its own content — its hash *is* its ID.
 
 | Type | Contains | Identity |
 |------|----------|----------|

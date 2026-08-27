@@ -34,6 +34,12 @@ Language-agnostic tools and notation.
 
     Semantic versioning: MAJOR.MINOR.PATCH, version ranges, pre-release tags
 
+-   :material-text-box-outline:{ .lg .middle } __[SHA-256](sha256.md)__
+
+    ---
+
+    The cryptographic hash function: properties, Merkle–Damgård internals, length extension, HMAC, and when not to use it
+
 -   :material-folder-outline:{ .lg .middle } __[Shell](shell/)__
 
     ---
