@@ -12,23 +12,64 @@ wide.unstack('symbol')                         # moves a level onto the columns 
 
 ## Selecting (the part people fear)
 
-Use `.loc` with **tuples**; use `.xs` to slice a single inner level.
+Two rules remove most of the difficulty:
+
+1. **Use the two-argument form** — `df.loc[rowkey, colkey]`, never `df.loc[key]` on a DataFrame.
+2. **Tuple = one key, list = many keys.** `('AAPL', '2024-01-02')` is a single point in the hierarchy; `['AAPL', 'MSFT']` is two outer-level keys.
 
 ```python
-s.loc[('AAPL', '2024-01-02')]      # full key → scalar
-s.loc['AAPL']                      # partial key on the OUTER level → sub-Series (level dropped)
-s.xs('2024-01-02', level='date')   # slice by an INNER level at any depth
-s.loc[(slice(None), '2024-01-02'), :]   # "all symbols, that date"; slice(None) == ":"
-
 idx = pd.IndexSlice
-df.loc[idx[:, '2024-01-02'], :]         # IndexSlice — the readable form of the line above
+
+# exact
+df.loc[('AAPL', '2024-01-02'), :]        # one full key → the row
+df.loc[('AAPL', '2024-01-02'), 'ret']    # one cell (.at is the faster scalar form)
+df.loc[[('AAPL', '2024-01-02'), ('MSFT', '2024-01-03')], :]   # several full keys
+
+# partial, OUTER level
+df.loc['AAPL']                           # sub-frame, outer level DROPPED
+df.loc[['AAPL', 'MSFT'], :]              # several outer keys, level KEPT
+df.loc['AAPL':'MSFT', :]                 # label range on the outer level
+
+# INNER level
+df.xs('2024-01-02', level='date')        # level dropped; drop_level=False keeps it
+df.xs(('AAPL', '2024-01-02'), level=('symbol', 'date'))   # several levels at once
+
+# combining across levels
+df.loc[idx[:, '2024-01-02'], :]          # all symbols, that date
+df.loc[idx['AAPL':'MSFT', :], ['ret']]
 ```
 
-- Partial indexing on the **outer** level is easy (`s.loc['AAPL']`). Reaching an **inner** level needs `.xs(..., level=)` or an `IndexSlice` — `s.loc['2024-01-02']` would wrongly try the outer level.
-- A **MultiIndex on columns** follows the same rules on the column axis: `df['AAPL']` grabs the outer group; `df.loc[:, ('AAPL', 'ret')]` reaches a leaf.
+- Partial indexing on the **outer** level is easy (`df.loc['AAPL']`). Reaching an **inner** level needs `.xs(..., level=)` or an `IndexSlice` — `df.loc['2024-01-02']` would wrongly try the outer level.
+- `slice(None)` is the literal spelling of `:` inside a tuple: `df.loc[(slice(None), '2024-01-02'), :]`. `pd.IndexSlice` exists purely so you can write `:` instead.
+- `.iloc` is untouched by any of this — it stays purely positional.
+
+!!! warning "A tuple in `.loc` is ambiguous with (row, column)"
+    Pandas tries the tuple as a **full row key** first and falls back to **`(row, column)`** only if that fails — so the meaning depends on your data. With a `ret` column, `df.loc[('AAPL', 'ret')]` returns a *column* slice, while `df.loc[('AAPL', '2024-01-02')]` returns a *row*. Writing `df.loc[('AAPL', 'ret'), :]` states which you meant.
+
+### Masks: the escape hatch
+
+```python
+df[df.index.get_level_values('symbol') == 'AAPL']
+df.query("symbol == 'AAPL' and ret > 0")     # named levels are visible to query
+```
+
+`get_level_values` returns a flat Index of that level's labels, one per row, so any ordinary [boolean mask](filtering.md) works — `.isin`, `.str` methods, comparisons against a column. It needs no sorting and never hits the tuple ambiguity. When `.loc` gymnastics stop being readable, use this.
+
+### Hierarchical columns
+
+The same rules, one axis over:
+
+```python
+c['ret']                                # outer group → sub-frame
+c.loc[:, ('ret', 'AAPL')]               # leaf → Series
+c.loc[:, idx[:, 'AAPL']]                # one inner label across all outer groups
+c.xs('AAPL', axis=1, level='symbol')    # ditto, flattened
+```
 
 !!! warning "Sort before you slice"
-    Range/partial slicing needs the MultiIndex **lexicographically sorted**, else pandas raises `UnsortedIndexError` (or warns on performance). Call `df.sort_index()` right after building one; `df.index.is_monotonic_increasing` tells you if it's ready.
+    Range and `IndexSlice` slicing need the MultiIndex **lexicographically sorted**, else pandas raises `UnsortedIndexError: MultiIndex slicing requires the index to be lexsorted`. Exact-key lookup is unaffected. Call `df.sort_index()` right after building one; `df.index.is_monotonic_increasing` tells you if it's ready.
+
+Assignment addresses the frame identically — `df.loc[idx[:, '2024-01-02'], 'flag'] = True`. Keep the two-argument form here too, since chained assignment (`df.loc['AAPL']['ret'] = ...`) silently fails to write through; see [indexing](indexing.md).
 
 ## Adding a level
 
