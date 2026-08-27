@@ -8,6 +8,9 @@ Practical guides to standard-library modules. Language-concept groupings (e.g. [
 :material-text-box-outline: **[Datetime](datetime.md)**
 :   datetime from strings, integer timestamps, and date + time pairs; timezone awareness; strptime, fromisoformat, fromtimestamp, combine
 
+:material-text-box-outline: **[Canonical JSON](json.md)**
+:   Byte-stable `json.dumps`: sort_keys, separators, ensure_ascii, float and key-type traps, RFC 8785
+
 :material-text-box-outline: **[Logging (stdlib)](logging.md)**
 :   stdlib logging: pipeline, levels, dictConfig, best practices, structured logging
 
