@@ -103,3 +103,5 @@ list(Path("docs").rglob("*.md"))      # recursive
 
 !!! tip "Script-relative paths"
     `Path(__file__).parent / "data"` always resolves relative to the script, regardless of the working directory when you invoke it.
+
+See [project-paths.md](project-paths.md) for where these anchors belong in a project — a single `paths.py`, `importlib.resources` for shipped data, and configured paths for everything else.

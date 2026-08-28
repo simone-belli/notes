@@ -64,6 +64,9 @@ settings.data_dir                    # PosixPath('./data')
 settings.request_timeout             # 30  (int, not "30")
 ```
 
+!!! tip "Resolve path settings once"
+    `Path('./data')` is still relative to the working directory. Default to an absolute path anchored at the project root and call `.resolve()` at startup — see [project-paths.md](../../language/stdlib/os/project-paths.md).
+
 ## Singleton pattern
 
 ```python
