@@ -69,7 +69,7 @@ df.pipe((smf.ols, 'data'), formula='y ~ x')   # df -> data=df
 Also works on `Series` and `GroupBy`, not just DataFrames.
 
 !!! tip "`.pipe` vs `.apply`"
-    `.pipe` passes the **whole** object to your function once; `.apply` calls your function **per row/column/group**. Reach for `.pipe` when the operation is DataFrame-level (a transform stage), `.apply` when it's element-wise.
+    `.pipe` passes the **whole** object to your function once; `.apply` calls your function **per row/column/group**. Reach for `.pipe` when the operation is DataFrame-level (a transform stage), `.apply` when it's element-wise. See [Apply](apply.md) for the `axis` and return-shape rules.
 
 ## Common chain operations
 

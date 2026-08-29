@@ -2,6 +2,9 @@
 
 Operations that reshape or combine a frame, and the chaining idiom that composes them.
 
+:material-text-box-outline: **[Apply](apply.md)**
+:   Running a Series function over a frame — `axis` semantics, return-shape rules, `apply` vs `agg`/`transform`/`pipe`/`map`
+
 :material-text-box-outline: **[Method Chaining](chaining.md)**
 :   Method chaining — `.assign`, `.pipe`, `.query`
 

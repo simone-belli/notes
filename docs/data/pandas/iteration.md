@@ -67,6 +67,6 @@ df.iat[i, j]         # position
 vectorized ops  >  np.where  >  apply(axis=1)  >  itertuples  >  iterrows
 ```
 
-Reach for a vectorized expression first. Use `itertuples` when a Python loop is unavoidable; avoid `iterrows` unless dtype coercion is acceptable.
+Reach for a vectorized expression first. Use `itertuples` when a Python loop is unavoidable; avoid `iterrows` unless dtype coercion is acceptable. For `apply` itself — `axis` semantics and when a plain `f(df)` beats it — see [Apply](transforming/apply.md).
 
 To materialise the whole frame as Python structures at once (rather than loop), see [to_dict()](to-dict.md).

@@ -133,7 +133,7 @@ df[df.groupby('symbol')['close'].transform('mean') > 50]
 
 ## `apply` — general escape hatch
 
-Gets the whole sub-DataFrame and may return a scalar, Series, or DataFrame; pandas guesses how to combine. Flexible but slow (Python call per group) and less predictable — reach for it only when the operation needs the whole group frame.
+Gets the whole sub-DataFrame and may return a scalar, Series, or DataFrame; pandas guesses how to combine. Flexible but slow (Python call per group) and less predictable — reach for it only when the operation needs the whole group frame. The same return-shape-decides-output-shape rule governs [`DataFrame.apply`](apply.md) without a groupby.
 
 ```python
 df.groupby('symbol').apply(lambda gdf: gdf.nlargest(2, 'close'))   # top-2 rows per group
