@@ -42,10 +42,6 @@ Language-agnostic tools and notation.
 
 -   :material-folder-outline:{ .lg .middle } __[Shell](shell/)__
 
-    ---
-
-    The shell environment: scripting, navigation, and per-project variables
-
 -   :material-card-bulleted-outline:{ .lg .middle } __[Vim](vim.md)__
 
     ---
@@ -53,9 +49,5 @@ Language-agnostic tools and notation.
     Modal editing cheat sheet: modes, the operator+motion grammar, text objects, search/substitute, exiting
 
 -   :material-folder-outline:{ .lg .middle } __[Web](web/)__
-
-    ---
-
-    Making HTTP requests and serving web apps: curl, request anatomy, status codes, deployment
 
 </div>

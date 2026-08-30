@@ -6,45 +6,17 @@ Learning notes and references across software engineering, ML, and AI topics.
 
 -   :material-table-large:{ .lg .middle } __[Data](data/README.md)__
 
-    ---
-
-    Data structures and algorithms, NumPy, and Pandas
-
 -   :material-chart-line:{ .lg .middle } __[Finance](finance/README.md)__
-
-    ---
-
-    Trading, exchanges, and market-data APIs
 
 -   :material-source-branch:{ .lg .middle } __[Git](git/README.md)__
 
-    ---
-
-    Git workflows, commands, and CI/CD
-
 -   :material-robot-outline:{ .lg .middle } __[Machine Learning](ml/README.md)__
-
-    ---
-
-    Leakage-safe evaluation, the scikit-learn estimator API and pipelines, and hyperparameter tuning with Optuna
 
 -   :material-language-python:{ .lg .middle } __[Python](python/README.md)__
 
-    ---
-
-    Python language, libraries, and tooling
-
 -   :material-database:{ .lg .middle } __[SQL](sql/README.md)__
 
-    ---
-
-    Declarative query patterns, mapped to pandas equivalents
-
 -   :material-tools:{ .lg .middle } __[Tools](tools/README.md)__
-
-    ---
-
-    Language-agnostic tools and notation
 
 </div>
 

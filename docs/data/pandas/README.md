@@ -28,4 +28,3 @@
 :   Convert DataFrame/Series to dicts: `orient` options, records for JSON, gotchas
 
 :material-folder-outline: **[Transforming](transforming/)**
-:   Reshaping and combining frames: groupby, merge, reshape, window operations, method chaining

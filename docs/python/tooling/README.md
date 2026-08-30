@@ -15,4 +15,3 @@ Development-time tools you run — as opposed to [libraries/](../libraries/), th
 :   Linter and formatter replacing flake8/black/isort
 
 :material-folder-outline: **[Testing](testing/)**
-:   pytest, testing strategy, patterns, mocking

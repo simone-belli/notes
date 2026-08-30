@@ -13,7 +13,6 @@
 :   Iterables, generators, `yield`, `itertools`
 
 :material-folder-outline: **[itertools](itertools/)**
-:   `accumulate`, `chain`, `islice`, `product`, `combinations`, `groupby`
 
 :material-text-box-outline: **[Lazy vs Eager Evaluation](lazy-evaluation.md)**
 :   Lazy vs eager: memory tradeoffs, sinks, when each wins, NumPy comparison

@@ -9,13 +9,11 @@ Third-party libraries your program imports at runtime — as opposed to [tooling
 :   Many requests at once: gather + semaphore, connector limits, streaming bodies, async retry with backoff
 
 :material-folder-outline: **[FastAPI](fastapi/)**
-:   Type-annotated HTTP APIs: the request contract, app structure, `Depends()`, and in-process testing
 
 :material-text-box-outline: **[JSON Lines (JSONL)](jsonl.md)**
 :   JSON Lines: append-friendly, streamable records with Pydantic serialisation
 
 :material-folder-outline: **[Pydantic](pydantic/)**
-:   Data validation, settings, and validators
 
 :material-text-box-outline: **[structlog](structlog.md)**
 :   Structured logging: log methods, context binding, `contextvars` in async code
