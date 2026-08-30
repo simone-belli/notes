@@ -8,12 +8,12 @@ Third-party libraries your program imports at runtime — as opposed to [tooling
 :material-text-box-outline: **[aiohttp — Concurrency](aiohttp-concurrency.md)**
 :   Many requests at once: gather + semaphore, connector limits, streaming bodies, async retry with backoff
 
-:material-folder-outline: **[FastAPI](fastapi/)**
+:material-api: **[FastAPI](fastapi/)**
 
 :material-text-box-outline: **[JSON Lines (JSONL)](jsonl.md)**
 :   JSON Lines: append-friendly, streamable records with Pydantic serialisation
 
-:material-folder-outline: **[Pydantic](pydantic/)**
+:material-clipboard-check-outline: **[Pydantic](pydantic/)**
 
 :material-text-box-outline: **[structlog](structlog.md)**
 :   Structured logging: log methods, context binding, `contextvars` in async code

@@ -27,4 +27,4 @@
 :material-card-bulleted-outline: **[to_dict()](to-dict.md)**
 :   Convert DataFrame/Series to dicts: `orient` options, records for JSON, gotchas
 
-:material-folder-outline: **[Transforming](transforming/)**
+:material-shuffle-variant: **[Transforming](transforming/)**

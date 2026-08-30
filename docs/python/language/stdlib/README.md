@@ -14,7 +14,7 @@ Practical guides to standard-library modules. Language-concept groupings (e.g. [
 :material-text-box-outline: **[Logging (stdlib)](logging.md)**
 :   stdlib logging: pipeline, levels, dictConfig, best practices, structured logging
 
-:material-folder-outline: **[OS](os/)**
+:material-desktop-classic: **[OS](os/)**
 
 :material-card-bulleted-outline: **[Random permutations](random.md)**
 :   Random permutations: shuffle in place vs sample for a new list
@@ -22,4 +22,4 @@ Practical guides to standard-library modules. Language-concept groupings (e.g. [
 :material-text-box-outline: **[sqlite3](sqlite3.md)**
 :   `sqlite3` module: DB-API 2.0, Connection/Cursor, placeholders, transactions, row_factory, pandas bridge
 
-:material-folder-outline: **[Text](text/)**
+:material-format-text: **[Text](text/)**

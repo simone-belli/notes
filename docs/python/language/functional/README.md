@@ -12,7 +12,7 @@
 :material-text-box-outline: **[Iterators and Generators](iterators-generators.md)**
 :   Iterables, generators, `yield`, `itertools`
 
-:material-folder-outline: **[itertools](itertools/)**
+:material-repeat-variant: **[itertools](itertools/)**
 
 :material-text-box-outline: **[Lazy vs Eager Evaluation](lazy-evaluation.md)**
 :   Lazy vs eager: memory tradeoffs, sinks, when each wins, NumPy comparison

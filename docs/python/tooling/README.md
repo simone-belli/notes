@@ -14,4 +14,4 @@ Development-time tools you run — as opposed to [libraries/](../libraries/), th
 :material-card-bulleted-outline: **[Ruff](ruff.md)**
 :   Linter and formatter replacing flake8/black/isort
 
-:material-folder-outline: **[Testing](testing/)**
+:material-test-tube: **[Testing](testing/)**

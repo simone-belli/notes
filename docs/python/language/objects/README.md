@@ -1,6 +1,6 @@
 # Python — Language / Objects
 
-:material-folder-outline: **[Classes](classes/)**
+:material-shape-outline: **[Classes](classes/)**
 
 :material-card-bulleted-outline: **[Dataclasses](dataclasses.md)**
 :   `@dataclass` cheat sheet: decorator parameters, `field()`, `__post_init__`, `InitVar`, helpers, inheritance

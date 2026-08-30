@@ -1,13 +1,13 @@
 # Python — Language
 
-:material-folder-outline: **[Concurrency](concurrency/)**
+:material-call-split: **[Concurrency](concurrency/)**
 
-:material-folder-outline: **[Functional](functional/)**
+:material-function-variant: **[Functional](functional/)**
 
-:material-folder-outline: **[Objects](objects/)**
+:material-cube-outline: **[Objects](objects/)**
 
-:material-folder-outline: **[Runtime](runtime/)**
+:material-cog-outline: **[Runtime](runtime/)**
 
-:material-folder-outline: **[Stdlib](stdlib/)**
+:material-bookshelf: **[Stdlib](stdlib/)**
 
-:material-folder-outline: **[Typing](typing/)**
+:material-shield-check-outline: **[Typing](typing/)**

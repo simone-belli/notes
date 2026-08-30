@@ -40,7 +40,7 @@ Language-agnostic tools and notation.
 
     The cryptographic hash function: properties, Merkle–Damgård internals, length extension, HMAC, and when not to use it
 
--   :material-folder-outline:{ .lg .middle } __[Shell](shell/)__
+-   :material-console:{ .lg .middle } __[Shell](shell/)__
 
 -   :material-card-bulleted-outline:{ .lg .middle } __[Vim](vim.md)__
 
@@ -48,6 +48,6 @@ Language-agnostic tools and notation.
 
     Modal editing cheat sheet: modes, the operator+motion grammar, text objects, search/substitute, exiting
 
--   :material-folder-outline:{ .lg .middle } __[Web](web/)__
+-   :material-web:{ .lg .middle } __[Web](web/)__
 
 </div>

@@ -6,8 +6,8 @@ Data structures and algorithms, plus NumPy and Pandas — arrays, vectorised ope
 
 -   :material-sitemap:{ .lg .middle } __[DSA](dsa/)__
 
--   :material-folder-outline:{ .lg .middle } __[NumPy](numpy/)__
+-   :material-matrix:{ .lg .middle } __[NumPy](numpy/)__
 
--   :material-folder-outline:{ .lg .middle } __[Pandas](pandas/)__
+-   :material-table:{ .lg .middle } __[Pandas](pandas/)__
 
 </div>
