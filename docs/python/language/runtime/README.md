@@ -1,19 +1,19 @@
 # Python — Language / Runtime
 
-:material-text-box-outline: **[Context Managers](context-managers.md)**
+:material-text-box-outline: **[Context Managers](context-managers.md){ .lvl-intermediate }**
 :   `with` statement, class-based and `@contextmanager`
 
-:material-text-box-outline: **[Python Entry Points](entrypoint.md)**
+:material-text-box-outline: **[Python Entry Points](entrypoint.md){ .lvl-basic }**
 :   `__name__`, `if __name__ == "__main__"` guard, `__main__.py`, async `main` with `asyncio.run()`
 
-:material-text-box-outline: **[The Import System](import-system.md)**
+:material-text-box-outline: **[The Import System](import-system.md){ .lvl-basic }**
 :   Modules, packages, `__init__.py`, `sys.path`, public API
 
-:material-text-box-outline: **[match / case (Python 3.10+)](match.md)**
+:material-text-box-outline: **[match / case (Python 3.10+)](match.md){ .lvl-intermediate }**
 :   match/case: structural pattern matching, type dispatch, destructuring (3.10+)
 
-:material-text-box-outline: **[Running a Function from the Shell](run-function-cli.md)**
+:material-text-box-outline: **[Running a Function from the Shell](run-function-cli.md){ .lvl-advanced }**
 :   `python -c`, `-m` vs a file path, argparse dispatch, Typer/Fire, `runpy`
 
-:material-text-box-outline: **[Scopes and Namespaces](scopes.md)**
+:material-text-box-outline: **[Scopes and Namespaces](scopes.md){ .lvl-intermediate }**
 :   LEGB rule, local/global/nonlocal, closures, late-binding gotcha, class scope

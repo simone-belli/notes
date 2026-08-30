@@ -1,3 +1,58 @@
+/* ── Difficulty colour key on README entries ───────────────────────────── */
+
+/* Applied to page links in menu READMEs via attr_list, e.g.
+   **[Filtering](filtering.md){ .lvl-basic }**. Folder entries stay unstyled.
+   Every value below clears WCAG AA (4.5:1) against its own scheme's
+   background — light on #fff, slate on hsl(232, 15%, 14%) = #1e2029. */
+:root {
+  --lvl-basic-color: #1a7f37; /* 5.1:1 on white */
+  --lvl-intermediate-color: #8a5d00; /* 5.8:1 */
+  --lvl-advanced-color: #c62828; /* 5.6:1 */
+}
+
+[data-md-color-scheme="slate"] {
+  --lvl-basic-color: #56d364; /* 8.4:1 on slate */
+  --lvl-intermediate-color: #e3b341; /* 8.3:1 */
+  --lvl-advanced-color: #ff7b72; /* 6.4:1 */
+}
+
+/* Both selectors are needed: `a.lvl-*` to outrank Material's `.md-typeset a`
+   colour, and the bare class for the legend's non-link spans. */
+.md-typeset a.lvl-basic,
+.md-typeset .lvl-basic {
+  color: var(--lvl-basic-color);
+}
+
+.md-typeset a.lvl-intermediate,
+.md-typeset .lvl-intermediate {
+  color: var(--lvl-intermediate-color);
+}
+
+.md-typeset a.lvl-advanced,
+.md-typeset .lvl-advanced {
+  color: var(--lvl-advanced-color);
+}
+
+/* Keep the level colour on hover (Material would swap in the accent colour),
+   and underline instead so the link affordance survives. */
+.md-typeset a.lvl-basic:hover,
+.md-typeset a.lvl-basic:focus {
+  color: var(--lvl-basic-color);
+  text-decoration: underline;
+}
+
+.md-typeset a.lvl-intermediate:hover,
+.md-typeset a.lvl-intermediate:focus {
+  color: var(--lvl-intermediate-color);
+  text-decoration: underline;
+}
+
+.md-typeset a.lvl-advanced:hover,
+.md-typeset a.lvl-advanced:focus {
+  color: var(--lvl-advanced-color);
+  text-decoration: underline;
+}
+
 /* ── "Main menu" button at the top of the sidebar ──────────────────────── */
 
 /* Selectors are .md-nav__link.nav-home (not bare .nav-home) so they match the

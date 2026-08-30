@@ -47,7 +47,15 @@ Two layouts are used, both without a `## Structure` section (the MkDocs sidebar 
 
 Descriptions are for **pages only**. An entry pointing at a subdirectory carries just the icon and linked title — no description, and on a card no `---` divider either. The subdirectory's own README opens with the description of what it holds.
 
-When adding a new file, add an entry to the parent `README.md` in whichever layout that page uses (a card on a section hub, a description-list entry deeper down), keeping entries sorted alphabetically by filename. When adding a new top-level area under `docs/`, add a card to `docs/index.md`.
+Every **page** entry also carries a difficulty class on its link, via `attr_list` — `**[Filtering](filtering.md){ .lvl-basic }**`. Subdirectory entries never get one.
+
+- `.lvl-basic` (green) — introductory; what you need to use the thing at all.
+- `.lvl-intermediate` (amber) — everyday working knowledge.
+- `.lvl-advanced` (red) — internals, edge cases, and niche lookups you'd consult rarely.
+
+The colours are defined in `docs/stylesheets/extra.css` and keyed on `docs/index.md`; both schemes clear WCAG AA contrast, so change the hex values only against a recomputed ratio.
+
+When adding a new file, add an entry to the parent `README.md` in whichever layout that page uses (a card on a section hub, a description-list entry deeper down), keeping entries sorted alphabetically by filename and giving it a difficulty class. When adding a new top-level area under `docs/`, add a card to `docs/index.md`.
 
 ## Cross-linking
 

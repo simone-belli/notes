@@ -25,3 +25,11 @@ Learning notes and references across software engineering, ML, and AI topics.
 Or browse notes by cross-cutting theme on the [tags page](tags.md).
 
 For spaced-repetition review of these notes, open the [quiz app](quiz/index.html).
+
+!!! note "Colour key"
+
+    Page titles in each section are coloured by depth:
+    <span class="lvl-basic">**introductory**</span> — basic functioning;
+    <span class="lvl-intermediate">**intermediate**</span> — everyday usage;
+    <span class="lvl-advanced">**advanced**</span> — detailed or specific, for
+    occasional reference. Folders are not coloured.
