@@ -53,66 +53,18 @@
   text-decoration: underline;
 }
 
-/* ── "Main menu" button at the top of the sidebar ──────────────────────── */
+/* ── "Main menu" button in the header ──────────────────────────────────── */
 
-/* Selectors are .md-nav__link.nav-home (not bare .nav-home) so they match the
-   specificity of Material's own .md-nav--primary .md-nav__link rules, which
-   otherwise reset the padding inside the mobile drawer. The icon deliberately
-   avoids the .md-nav__icon class: in the drawer Material paints a drill-down
-   chevron over any .md-nav__icon it finds in a nav link. */
-.md-nav__link.nav-home {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin: 0 0 0.6rem;
-  padding: 0.4rem 0.6rem;
-  border: 1px solid var(--md-default-fg-color--lightest);
-  border-radius: 0.2rem;
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--md-primary-fg-color);
-  cursor: pointer;
+/* Sits in the header icon row alongside the palette toggle and search. Shown
+   only below 76.25em, which is exactly where Material hides .md-logo — above
+   that width the logo is visible and already links home. */
+.md-header__button.md-header__button--home {
+  display: none;
 }
 
-.md-nav__link.nav-home:hover,
-.md-nav__link.nav-home:focus {
-  background-color: var(--md-accent-fg-color--transparent);
-  color: var(--md-accent-fg-color);
-}
-
-.nav-home__icon {
-  flex-shrink: 0;
-  width: 0.9rem;
-  height: 0.9rem;
-  margin: 0;
-}
-
-.nav-home__icon svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  fill: currentcolor;
-}
-
-/* The drawer is a wider, touch-sized target — scale the button to match. */
 @media screen and (max-width: 76.234375em) {
-  .md-nav__link.nav-home {
-    margin: 0.4rem 0.6rem 0.8rem;
-    padding: 0.6rem 0.8rem;
-    font-size: 0.8rem;
-  }
-
-  .nav-home__icon {
-    width: 1.1rem;
-    height: 1.1rem;
-  }
-}
-
-/* With navigation.tabs, Material hides every root-level nav item on desktop
-   (only the active section is "lifted" into the sidebar). Exempt the button. */
-@media screen and (min-width: 76.25em) {
-  .md-nav--lifted > .md-nav__list > .nav-home-item {
-    display: block;
+  .md-header__button.md-header__button--home {
+    display: inline-block;
   }
 }
 
@@ -133,18 +85,14 @@
 }
 
 /* Leaf page items — slightly smaller and muted */
-.md-nav__item:not(.md-nav__item--nested):not(.md-nav__item--section):not(
-    .nav-home-item
-  )
+.md-nav__item:not(.md-nav__item--nested):not(.md-nav__item--section)
   > .md-nav__link {
   font-size: 0.78rem;
   opacity: 0.75;
 }
 
 /* Active leaf page — restore full opacity */
-.md-nav__item:not(.md-nav__item--nested):not(.md-nav__item--section):not(
-    .nav-home-item
-  )
+.md-nav__item:not(.md-nav__item--nested):not(.md-nav__item--section)
   > .md-nav__link--active {
   opacity: 1;
 }
