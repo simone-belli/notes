@@ -6,7 +6,7 @@ quiz: detail
 
 # aiohttp
 
-Async HTTP client (and server) library for [asyncio](../language/concurrency/asyncio.md). The standard replacement for `requests` in async code — suspends the coroutine during network waits instead of blocking the thread.
+Async HTTP client (and server) library for [asyncio](../language/concurrency/asyncio.md). The standard replacement for `requests` in async code — suspends the coroutine during network waits instead of blocking the thread. [httpx](httpx.md) is the other common choice; it covers sync and async with one API, while aiohttp is async-only but also ships a server.
 
 ---
 
@@ -125,6 +125,7 @@ bodies, and retry with backoff — is covered in
 ## See also
 
 - [aiohttp-concurrency.md](aiohttp-concurrency.md) — many requests at once: semaphores, pooling, streaming, retry
+- [httpx.md](httpx.md) — the sync-and-async alternative, with a side-by-side comparison
 - [asyncio.md](../language/concurrency/asyncio.md) — event loop, gather, create_task
 - [market-data-apis.md](../../finance/market-data-apis.md) — free public endpoints to call with aiohttp
 - [fastapi.md](fastapi/fastapi.md) — the *server* side of the boundary; a client library and a server framework aren't substitutes

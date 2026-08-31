@@ -18,7 +18,7 @@ def test_read_root():
     assert resp.json() == {"message": "hello"}
 ```
 
-- **Wraps `httpx`** — the response is an `httpx.Response` (`.status_code`, `.json()`, `.text`, `.headers`); `httpx` must be installed.
+- **Wraps [`httpx`](../httpx.md)** — the response is an `httpx.Response` (`.status_code`, `.json()`, `.text`, `.headers`); `httpx` must be installed.
 - **Synchronous even for `async def` endpoints** — it runs an event loop internally, so test functions stay plain `def` (no `await`, no `asyncio` marker).
 
 Each parameter source maps to a client argument:

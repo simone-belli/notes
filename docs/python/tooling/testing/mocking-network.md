@@ -11,7 +11,7 @@ Worked example of testing functions that make HTTP calls. The goal: test what yo
 
 Mock the **outermost function that crosses a boundary you don't own**:
 
-- Testing `fetch_price` itself (response parsing)? Mock `httpx.get`.
+- Testing `fetch_price` itself (response parsing)? Mock [`httpx.get`](../../libraries/httpx.md).
 - Testing code that *calls* `fetch_price` (orchestration)? Mock `fetch_price`.
 
 ## `monkeypatch` — simpler, pytest-native
@@ -107,6 +107,7 @@ If the module uses `import httpx` and calls `httpx.get(...)`, patch `"mymodule.h
 | Own repo/gateway interface | in-memory fake behind a `Protocol`, not a mock |
 | Sequential call sequence (first fails, second succeeds) | `side_effect=[...]` list |
 | Async network call | `patch` + [`AsyncMock`](mocking.md#asyncmock) |
+| Whole client under test, not one call | `httpx.MockTransport` — no patching at all |
 
 ## Related notes
 

@@ -5,7 +5,7 @@ tags:
 
 # curl
 
-`curl` ("client URL") makes HTTP requests from the terminal — the universal way to hit an API by hand: test an endpoint, inspect headers, reproduce a bug, script a health check. It's a **client** (sends a request, prints the response), the shell counterpart to a browser or Python `httpx`/`requests`.
+`curl` ("client URL") makes HTTP requests from the terminal — the universal way to hit an API by hand: test an endpoint, inspect headers, reproduce a bug, script a health check. It's a **client** (sends a request, prints the response), the shell counterpart to a browser or Python [`httpx`](../../python/libraries/httpx.md)/`requests`.
 
 ## Mental model
 
