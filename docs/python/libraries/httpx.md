@@ -1,6 +1,7 @@
 ---
 tags:
   - concurrency
+  - errors
   - testing
 ---
 
@@ -111,6 +112,36 @@ returns the response so it chains:
 ```python
 data = client.get(url).raise_for_status().json()
 ```
+
+---
+
+## Diagnosing "`.text` looks fine, `.json()` fails"
+
+Check the **content type before the body** — the header alone identifies three
+of the four usual causes:
+
+```python
+r = httpx.get(url, params=params)
+r.raise_for_status()
+print(r.status_code, r.headers.get("content-type"))
+print(r.text[:300])
+```
+
+| Content type | Cause | Fix |
+|---|---|---|
+| `text/csv`, `text/xml`, … | The API has a format switch you didn't set | Send the format parameter or `Accept` header |
+| `text/html` | An error, login, or rate-limit page returned with `200` | Read the page; usually auth or throttling |
+| any, empty body | `.json()` on `""` raises the same error | Guard on `if not r.content` |
+| `application/json` | A `200` carrying an API-level error envelope | Inspect the parsed body |
+
+Only the last case needs the body read: a wrong content type, an HTML page, and
+an empty response are all visible from `r.headers` and `len(r.content)`.
+
+!!! warning "`raise_for_status()` passing means nothing about the format"
+    Status and content type are independent. An HTML rate-limit page or a JSON
+    error envelope can both arrive as a clean `200`, so a passing
+    `raise_for_status()` is not evidence that `.json()` will work — or that the
+    parsed result is a success payload.
 
 ---
 

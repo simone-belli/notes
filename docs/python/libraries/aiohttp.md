@@ -116,7 +116,7 @@ bodies, and retry with backoff — is covered in
 
 ## Gotchas
 
-- `resp.json()` raises if `Content-Type` is not JSON — use `await resp.json(content_type=None)` to skip the check.
+- `resp.json()` raises if `Content-Type` is not JSON — use `await resp.json(content_type=None)` to skip the check. When it does raise, [check the content type first](httpx.md#diagnosing-text-looks-fine-json-fails) — the same four causes apply.
 - `time.sleep()` and `requests.get()` inside an async function freeze the whole event loop — use `await asyncio.sleep()` and async libraries.
 - Always `async with` the session, or call `await session.close()` manually.
 
