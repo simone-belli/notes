@@ -164,7 +164,7 @@ parser = argparse.ArgumentParser(fromfile_prefix_chars="@")
 
 ### Values from a YAML or JSON file
 
-Given a list in a file, pass the *path* and parse inside `type=` — the program then only
+Given a list in a [YAML](../../../tools/yaml.md) or JSON file, pass the *path* and parse inside `type=` — the program then only
 ever sees a `list[str]`, and a malformed file becomes a clean argparse error:
 
 ```python

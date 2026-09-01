@@ -50,4 +50,10 @@ Language-agnostic tools and notation.
 
 -   :material-web:{ .lg .middle } __[Web](web/)__
 
+-   :material-card-bulleted-outline:{ .lg .middle } __[YAML](yaml.md){ .lvl-intermediate }__
+
+    ---
+
+    YAML syntax: indentation, quoting, block scalars, implicit typing traps, anchors and aliases
+
 </div>

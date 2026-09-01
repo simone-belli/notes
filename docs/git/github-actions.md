@@ -6,7 +6,7 @@ quiz: core
 
 **Continuous Integration (CI)**: automatically run tests, linters, and type checkers on every push. Failures surface immediately while context is fresh.
 
-**GitHub Actions** is GitHub's built-in CI/CD platform. Workflows are YAML files in `.github/workflows/` that GitHub runs on managed VMs called *runners*.
+**GitHub Actions** is GitHub's built-in CI/CD platform. Workflows are [YAML](../tools/yaml.md) files in `.github/workflows/` that GitHub runs on managed VMs called *runners*.
 
 ## Core hierarchy
 
