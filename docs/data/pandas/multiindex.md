@@ -75,6 +75,8 @@ Assignment addresses the frame identically — `df.loc[idx[:, '2024-01-02'], 'fl
 
 Adding a level means every key `k` becomes `(new, k)` or `(k, new)` — the data body is untouched. The tool depends on where the new label comes from.
 
+### On the rows
+
 ```python
 # From an existing column — lands INNERMOST
 df.set_index('symbol', append=True)          # append=True keeps the current index
@@ -87,13 +89,30 @@ pd.concat([base, stress], keys=['base', 'stress'], names=['scenario'])  # the ge
 # From a computed array — rebuild the index
 df.index = pd.MultiIndex.from_arrays([['base'] * len(df), df.index],
                                      names=['scenario', 'date'])
-
-# On the COLUMNS axis — namespace the columns
-df.columns = pd.MultiIndex.from_product([['prices'], df.columns])
 ```
 
 - `from_arrays` (parallel label arrays), `from_tuples` (you already have the tuples), `from_product` (Cartesian grid).
 - `set_index` consumes the column; pass `drop=False` to keep a copy in the body.
+
+### On the columns
+
+Wrapping flat columns under one constant label — `'a'` → `('prices', 'a')` — is how you namespace a frame before gluing it next to another (see [merge](transforming/merge.md) for `concat` vs key-matching joins). Two frames that both have an `AAPL` column can then sit side by side, and `wide['prices']` peels the level back off.
+
+```python
+# General — the only form that also works on already-nested columns
+pd.concat([df], keys=['prices'], axis=1, names=['group'])
+
+# Terse — rebuilds the index from scratch, so restate every level name
+df.columns = pd.MultiIndex.from_product([['prices'], df.columns],
+                                        names=['group', 'field'])
+
+df.columns = pd.MultiIndex.from_product([df.columns, ['base']])  # innermost instead
+df.columns = df.columns.droplevel(0)                             # undo
+```
+
+- `names=['group']` on `concat` names only the **new** level; an existing `df.columns.name` carries through untouched.
+- `from_product` silently breaks on columns that are already a MultiIndex: `[['base'], mi_cols]` yields `('base', ('prices', 'a'))` — a tuple *as a label*, not two levels.
+- Assigning `df.columns = ...` mutates in place; `concat` returns a new frame, so it chains.
 
 !!! warning "Position and sortedness"
     `set_index(append=True)` puts the new level **innermost**, `concat(keys=)` **outermost** — fix with `swaplevel`/`reorder_levels`. Either way the index is usually no longer lexicographically sorted, so follow with `.sort_index()` before slicing. Unnamed levels can only be addressed by integer position, so always pass `names=`.
