@@ -9,7 +9,7 @@ fixtures, prototypes, ad-hoc analysis.
 It implements **DB-API 2.0** (PEP 249), the standard interface nearly every
 Python SQL driver follows — so `connect → cursor → execute → fetch` transfers
 directly to `psycopg2` (PostgreSQL), `mysqlclient`, etc. Same engine and file
-format as the [sqlite3 CLI shell](../../../sql/sqlite3-cli.md).
+format as the [sqlite3 CLI shell](../../../data/sql/sqlite3-cli.md).
 
 ## Core objects
 
@@ -117,7 +117,7 @@ df = pd.read_sql_query("SELECT * FROM users WHERE age > ?", conn, params=(18,))
 df.to_sql("users", conn, if_exists="append", index=False)
 ```
 
-Write heavy filtering/[joins](../../../sql/basics.md) in SQL, hand the result to
+Write heavy filtering/[joins](../../../data/sql/basics.md) in SQL, hand the result to
 pandas for the rest.
 
 ## Sharp edges

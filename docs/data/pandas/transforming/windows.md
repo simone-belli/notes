@@ -1,6 +1,6 @@
 # Pandas — Window Operations
 
-`shift`, `rolling`, and `expanding` are pandas' **window operations**: they compute a value for each row from a set of neighbouring rows **without collapsing** them (N rows in, N rows out) — unlike [`groupby().agg()`](groupby.md), which reduces each group to one row. They are SQL window functions (`OVER (PARTITION BY … ORDER BY …)`) expressed as method calls; see [SQL window functions](../../../sql/window-functions.md) for the declarative side.
+`shift`, `rolling`, and `expanding` are pandas' **window operations**: they compute a value for each row from a set of neighbouring rows **without collapsing** them (N rows in, N rows out) — unlike [`groupby().agg()`](groupby.md), which reduces each group to one row. They are SQL window functions (`OVER (PARTITION BY … ORDER BY …)`) expressed as method calls; see [SQL window functions](../../sql/window-functions.md) for the declarative side.
 
 The three parts of an `OVER` clause map directly:
 

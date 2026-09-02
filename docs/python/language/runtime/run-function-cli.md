@@ -108,8 +108,8 @@ if __name__ == "__main__":
 ```
 
 See [cli.md](../stdlib/cli.md) for the full `argparse` reference, including
-[lists and structured values](../stdlib/cli.md#lists) (`nargs`, `action="append"`,
-`type=json.loads`).
+[lists and structured values](../stdlib/argparse-patterns.md#lists) (`nargs`,
+`action="append"`, `type=json.loads`).
 
 ### Dispatching to one of several functions
 
@@ -186,6 +186,7 @@ command-line entry point, calling `main()` with a patched `sys.argv` is cleaner.
 ## Related
 
 - [entrypoint.md](entrypoint.md) — `__main__` guard, `__main__.py`, console scripts
-- [cli.md](../stdlib/cli.md) — `sys.argv`, argparse, testing entry points
+- [cli.md](../stdlib/cli.md) — `sys.argv`, argparse basics, flags
+- [argparse-patterns.md](../stdlib/argparse-patterns.md) — lists, config files, subcommands, testing entry points
 - [import-system.md](import-system.md) — `sys.path`, packages, relative imports
 - [poetry.md](../../tooling/poetry.md) — `poetry run`, virtual environments

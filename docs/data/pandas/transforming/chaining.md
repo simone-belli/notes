@@ -75,5 +75,5 @@ Also works on `Series` and `GroupBy`, not just DataFrames.
 
 Extracted to [chaining-catalog.md](chaining-catalog.md) — a lookup catalog of the ten most-used chain operations (`.astype`, `.rename`, `.filter`, `.sort_values`, `.groupby().agg()`, …) with a full pipeline example.
 
-The same "named, single-purpose step" argument for chaining over nested calls is why SQL favours [chained CTEs](../../../sql/subqueries.md) over nested subqueries — each `WITH stage AS (...)` is the analogue of one `.pipe(f)`.
+The same "named, single-purpose step" argument for chaining over nested calls is why SQL favours [chained CTEs](../../sql/subqueries.md) over nested subqueries — each `WITH stage AS (...)` is the analogue of one `.pipe(f)`.
 

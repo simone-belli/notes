@@ -8,7 +8,7 @@ tags:
 A **window function** computes a value across a set of rows related to the
 current row *without* collapsing them — unlike `GROUP BY`, which reduces N
 rows to 1 per group. If you think in pandas, window functions are
-[`groupby` + an ordered, row-wise op](../data/pandas/transforming/windows.md) (`shift`,
+[`groupby` + an ordered, row-wise op](../pandas/transforming/windows.md) (`shift`,
 `rank`, `rolling`, `cumsum`, ...) broadcast back onto every row instead of
 aggregated away.
 
@@ -132,4 +132,4 @@ these mechanics are on their own page: [Window Patterns](window-patterns.md).
 
 - [Window Patterns](window-patterns.md) — top-N per group, gaps and islands, time-series recipes
 - [Subqueries & CTEs](subqueries.md) — `WITH`, nesting vs pipelines, recursive CTEs
-- [Window Operations](../data/pandas/transforming/windows.md) — the pandas side of the same mapping
+- [Window Operations](../pandas/transforming/windows.md) — the pandas side of the same mapping

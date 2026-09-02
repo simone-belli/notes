@@ -11,7 +11,10 @@ Third-party libraries your program imports at runtime — as opposed to [tooling
 :material-api: **[FastAPI](fastapi/)**
 
 :material-text-box-outline: **[HTTPX](httpx.md){ .lvl-intermediate }**
-:   One HTTP client for sync and async: Client vs transport, timeouts, error hierarchy, MockTransport/ASGITransport
+:   One HTTP client for sync and async: Client vs transport, sending requests, responses, error hierarchy, timeouts, porting from `requests`
+
+:material-text-box-outline: **[HTTPX — Advanced](httpx-advanced.md){ .lvl-advanced }**
+:   Async fan-out with gather + semaphore, streaming, retries with backoff, `httpx.Auth` flows, MockTransport/ASGITransport, HTTP/2 and TLS
 
 :material-text-box-outline: **[JSON Lines (JSONL)](jsonl.md){ .lvl-basic }**
 :   JSON Lines: append-friendly, streamable records with Pydantic serialisation

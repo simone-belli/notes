@@ -14,8 +14,6 @@ Learning notes and references across software engineering, ML, and AI topics.
 
 -   :material-language-python:{ .lg .middle } __[Python](python/README.md)__
 
--   :material-database:{ .lg .middle } __[SQL](sql/README.md)__
-
 -   :material-tools:{ .lg .middle } __[Tools](tools/README.md)__
 
 </div>

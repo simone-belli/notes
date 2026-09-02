@@ -2,8 +2,11 @@
 
 Practical guides to standard-library modules. Language-concept groupings (e.g. [functional/](../functional/), [concurrency/](../concurrency/)) also cover stdlib modules; this folder holds module guides with no better conceptual home.
 
+:material-card-bulleted-outline: **[Argparse Patterns](argparse-patterns.md){ .lvl-advanced }**
+:   Beyond the basics: list arguments, JSON and `KEY=VALUE` values, YAML/JSON config files, subcommands, mutually exclusive flags, testing the parser and entry point
+
 :material-card-bulleted-outline: **[Python CLI](cli.md){ .lvl-intermediate }**
-:   sys.argv, argparse: flags, types, lists, config files, subcommands, testing
+:   sys.argv, argparse: positional vs optional, `add_argument` parameters, boolean and short/long flags
 
 :material-text-box-outline: **[Datetime](datetime.md){ .lvl-basic }**
 :   datetime from strings, integer timestamps, and date + time pairs; timezone awareness; strptime, fromisoformat, fromtimestamp, combine

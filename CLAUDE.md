@@ -31,7 +31,7 @@ Only pause to ask when the action is genuinely hard to undo or outward-facing: p
 
 ## File organisation
 
-All notes live under `docs/`; the repo root contains only tooling files (`mkdocs.yml`, `CLAUDE.md`, `README.md`, `.gitignore`, `.github/`, `.claude/`). Top-level areas: `data/` (numpy, pandas), `dsa/`, `finance/`, `git/`, `python/` (`language/` and `tooling/`), and `tools/`. Subfolders evolve — consult the `README.md` files for the current layout rather than assuming it.
+All notes live under `docs/`; the repo root contains only tooling files (`mkdocs.yml`, `CLAUDE.md`, `README.md`, `.gitignore`, `.github/`, `.claude/`). Top-level areas: `data/` (`dsa/`, `numpy/`, `pandas/`, `sql/`), `finance/`, `git/`, `ml/`, `python/` (`language/`, `libraries/`, `tooling/`), and `tools/`. Subfolders evolve — consult the `README.md` files for the current layout rather than assuming it.
 
 Each subdirectory has a `README.md` listing its children, sorted alphabetically by filename. Entries carry a **type**:
 
@@ -42,7 +42,7 @@ Every entry links to a child page (or subdirectory) by its **title**, not its fi
 
 Two layouts are used, both without a `## Structure` section (the MkDocs sidebar handles navigation):
 
-- **Section hubs** — `docs/index.md` and the seven top-level area READMEs (`data/`, `dsa/`, `finance/`, `git/`, `python/`, `sql/`, `tools/`) use a Material **grid of cards** (requires the `attr_list`, `md_in_html`, and `pymdownx.emoji` extensions). One card per child: `icon + linked title + one-line description`, separated by a `---` divider.
+- **Section hubs** — `docs/index.md` and the six top-level area READMEs (`data/`, `finance/`, `git/`, `ml/`, `python/`, `tools/`) use a Material **grid of cards** (requires the `attr_list`, `md_in_html`, and `pymdownx.emoji` extensions). One card per child: `icon + linked title + one-line description`, separated by a `---` divider.
 - **Deeper subdirectory READMEs** use a **description list** (requires the `def_list` extension): each entry is a term line `icon + **[title](path)**` followed by a `:   one-line description` line, entries separated by a blank line.
 
 Descriptions are for **pages only**. An entry pointing at a subdirectory carries just the icon and linked title — no description, and on a card no `---` divider either. The subdirectory's own README opens with the description of what it holds.
