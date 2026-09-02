@@ -15,6 +15,7 @@ Lookup catalog of the operations most used in method chains. For the chaining co
 | 9 | `.set_index()` / `.reset_index(drop=True)` | Index management |
 | 10 | `.groupby().agg(...)` | Aggregate by group |
 | 11 | `df[[...]]` / `.reindex(columns=...)` | Reorder columns |
+| 12 | `.to_frame(name)` | Series → one-column DataFrame |
 
 ## 1. Filter rows — `.query()`
 
@@ -153,6 +154,34 @@ df.insert(0, 'close', df.pop('close'))           # in-place: pop then reinsert a
 - Selection (`df[[...]]`) reorders by **listing columns in the wanted order** — a subset that omits names also drops them.
 - `.reindex(columns=...)` is the same reorder but tolerates missing names (adds an all-`NaN` column) — safer when the set is dynamic.
 - `.insert(loc, name, values)` and `.pop(name)` mutate in place; the `pop`+`insert` combo relocates a single column to position `loc`.
+
+## 12. Series → DataFrame — `.to_frame()`
+
+A one-column DataFrame needs a **column name**; a Series carries that name in `.name`. `.to_frame(name)` supplies it inline, which is what keeps a chain going after any step that collapses to a Series (`.sum()`, `.value_counts()`, a single-column select).
+
+```python
+s.to_frame('ret')                # column named 'ret' — the inline form
+s.to_frame()                     # uses s.name; unnamed Series → column 0
+s.rename('ret').to_frame()       # same result; sets .name first
+pd.DataFrame({'ret': s})         # equivalent, less chain-friendly
+
+(df.groupby('symbol')['ret'].mean()
+   .to_frame('avg_ret')
+   .reset_index())
+```
+
+Keeping the index as a column instead of an index:
+
+```python
+s.reset_index(name='ret')                       # index → column, values → 'ret'
+s.rename_axis('symbol').reset_index(name='ret')  # name the index column too
+```
+
+- `to_frame` returns a new object — it does **not** set `.name` on the original Series.
+- `s.rename('x')` with a **scalar** renames the Series; with a **dict or callable** it renames the *index labels* instead. Only the scalar form feeds `.to_frame()`.
+- `reset_index(name=)` is Series-only, and the index column is called `index` unless the index is named — hence `rename_axis` first.
+- `.to_frame().T` gives a one-**row** frame instead (the Series name becomes the row label).
+- Several Series at once: `pd.concat([a, b], axis=1, keys=['a', 'b'])` aligns on the index and names the columns in one call.
 
 ## Full pipeline example
 

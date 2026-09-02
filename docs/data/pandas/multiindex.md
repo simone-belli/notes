@@ -148,7 +148,7 @@ mi_df = flat.set_index('symbol', append=True)   # …and back
 
 - `reset_index(drop=True)` **discards** the level instead of moving it — the same effect as `droplevel` for a MultiIndex, but it also resets a single index to a `RangeIndex`.
 - Unnamed levels become columns called `level_0`, `level_1`, …; name them first with `rename_axis` to control the result.
-- On a Series, `reset_index()` returns a **DataFrame**; pass `name=` to label the value column. `reset_index(drop=True)` keeps it a Series.
+- On a Series, `reset_index()` returns a **DataFrame**; pass `name=` to label the value column (see [Series → DataFrame](transforming/chaining-catalog.md#12-series-dataframe-to_frame)). `reset_index(drop=True)` keeps it a Series.
 - If the columns are themselves a MultiIndex, `col_level=` picks which column level the new names land on and `col_fill=` fills the others.
 
 !!! warning "The round trip does not preserve level order"

@@ -9,7 +9,7 @@ Operations that reshape or combine a frame, and the chaining idiom that composes
 :   Method chaining — `.assign`, `.pipe`, `.query`
 
 :material-card-bulleted-outline: **[Chain Operations — Catalog](chaining-catalog.md){ .lvl-advanced }**
-:   Catalog of common chain operations: astype, rename, filter, sort, groupby-agg
+:   Catalog of common chain operations: astype, rename, filter, sort, groupby-agg, `to_frame`
 
 :material-text-box-outline: **[GroupBy](groupby.md){ .lvl-basic }**
 :   Split-apply-combine — `agg`, `transform`, `filter`, `apply`; multi-key groups, fast paths and keywords
