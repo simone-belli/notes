@@ -113,11 +113,10 @@ math.isclose(0.0, 1e-10)                       # False — rel_tol alone fails n
 ```python
 import pytest
 
-assert 0.1 + 0.2 == pytest.approx(0.3)              # scalar
-assert [0.1, 0.2] == pytest.approx([0.1, 0.2])      # sequence
-assert {'v': 0.1} == pytest.approx({'v': 0.1})      # dict
-# defaults: rel=1e-6, abs=1e-12; override with pytest.approx(x, rel=1e-3)
+assert 0.1 + 0.2 == pytest.approx(0.3)   # defaults: rel=1e-6, abs=1e-12
 ```
+
+Wrap the *expected* value. See [pytest.md](../../tooling/testing/pytest.md#approximate-equality) for what `approx` accepts, `nan` handling, and the array/DataFrame helpers.
 
 ### NumPy arrays
 

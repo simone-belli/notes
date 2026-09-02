@@ -83,6 +83,55 @@ pytest --lf             # re-run only last-failed
 pytest -x               # stop at first failure
 ```
 
+## Approximate equality
+
+Floating-point results carry representation error, so `==` fails on values that are mathematically equal ([why](../../language/objects/numbers.md#float-comparison)). Wrap the **expected** value in `pytest.approx`:
+
+```python
+import pytest
+
+def test_total():
+    assert 0.1 + 0.2 == pytest.approx(0.3)
+```
+
+Two values match when `abs(actual - expected) <= max(rel * abs(expected), abs)` — the relative and absolute bounds are OR'd, so either one passing is enough. Defaults are `rel=1e-6`, `abs=1e-12`.
+
+```python
+pytest.approx(0.3, rel=1e-3)   # within 0.1% of the expected value
+pytest.approx(0.0, abs=1e-9)   # near zero — rel collapses, abs carries it
+```
+
+### What `approx` accepts
+
+| Expected | Behaviour |
+|---|---|
+| scalar | `0.1 + 0.2 == approx(0.3)` |
+| list / tuple | element-wise; lengths must match |
+| dict | value-wise; differing keys compare unequal rather than raising |
+| numpy array | element-wise |
+| set | `TypeError` — `approx` needs an ordered sequence |
+
+!!! warning "`nan` never equals itself, even under `approx`"
+    `float("nan") == pytest.approx(float("nan"))` is `False`. `nan_ok=True` flips that, but it accepts a `nan` *anywhere* in a sequence — usually you want an explicit `math.isnan(x)` assertion instead, so a stray `nan` still fails the test.
+
+### Arrays and DataFrames
+
+`approx` handles both, but the dedicated helpers report *which* elements differ:
+
+```python
+import numpy.testing as npt
+from pandas.testing import assert_frame_equal
+
+npt.assert_allclose(actual, desired, rtol=1e-7, atol=0)   # defaults shown
+assert_frame_equal(left, right, rtol=1e-5, atol=1e-8)     # defaults shown
+```
+
+- `assert_allclose` defaults to `atol=0`, so it fails on expected values of exactly zero — pass `atol` explicitly there.
+- `assert_frame_equal` compares float columns with tolerance by default, and also checks dtype, column order, and index; `check_exact=True` forces exact comparison.
+
+!!! tip "Pick the tolerance from the computation, not from the failure"
+    A tolerance widened until the test goes green no longer detects a regression. Derive it from accumulated rounding over the operations involved, or from the precision the code under test documents.
+
 ## Coverage
 
 Install `pytest-cov`, then use `--cov-report=term-missing` to see which line numbers are uncovered:

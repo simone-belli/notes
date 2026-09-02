@@ -19,7 +19,7 @@
 :   Mock vs MagicMock, patch, autospec, AsyncMock, when to mock
 
 :material-card-bulleted-outline: **[pytest](pytest.md){ .lvl-basic }**
-:   Test discovery and command quick-reference
+:   Test discovery and command quick-reference, `pytest.raises(match=)`, node IDs, approximate float equality with `pytest.approx`, coverage
 
 :material-text-box-outline: **[structlog Logs](structlog-testing.md){ .lvl-advanced }**
 :   Asserting on structlog output: capture_logs, patterns, caplog comparison
