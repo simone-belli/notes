@@ -53,16 +53,19 @@
   text-decoration: underline;
 }
 
-/* ── "Main menu" button in the header ──────────────────────────────────── */
+/* ── "Back" and "Main menu" buttons in the header ──────────────────────── */
 
-/* Sits in the header icon row alongside the palette toggle and search. Shown
-   only below 76.25em, which is exactly where Material hides .md-logo — above
-   that width the logo is visible and already links home. */
+/* Both sit in the header icon row alongside the palette toggle and search.
+   Shown only below 76.25em, which is exactly where Material hides .md-logo
+   and collapses the sidebar into the drawer — above that width the logo
+   already links home and the nav tree shows the way up. */
+.md-header__button.md-header__button--up,
 .md-header__button.md-header__button--home {
   display: none;
 }
 
 @media screen and (max-width: 76.234375em) {
+  .md-header__button.md-header__button--up,
   .md-header__button.md-header__button--home {
     display: inline-block;
   }

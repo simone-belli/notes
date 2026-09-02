@@ -1,7 +1,8 @@
 {#-
-  Overrides mkdocs-material's partials/header.html to add a "Main menu" button
-  to the header icon row, just before the palette toggle and search. CSS shows
-  it only below 76.25em, where Material hides the home-linking logo.
+  Overrides mkdocs-material's partials/header.html to add "Back" (up one level)
+  and "Main menu" buttons to the header icon row, just before the palette
+  toggle and search. CSS shows them only below 76.25em, where Material hides
+  the home-linking logo and the sidebar tree.
   Everything else is copied verbatim from the theme — keep it in sync when
   mkdocs-material is upgraded.
 -#}
@@ -38,6 +39,24 @@
         </div>
       </div>
     </div>
+    {#-
+      "Back" — up one level in the page hierarchy. With use_directory_urls the
+      parent is just page.url minus its last segment: "data/sql/basics/" → the
+      SQL section "data/sql/", and a section index "data/sql/" → "data/". A
+      top-level page has no slash left, so it falls back to the homepage.
+      Not rendered on the homepage itself, where page.url is empty.
+    -#}
+    {% if page and page.url %}
+      {% set up_path = page.url.rstrip("/") %}
+      {% if "/" in up_path %}
+        {% set up_url = up_path.rsplit("/", 1)[0] ~ "/" %}
+      {% else %}
+        {% set up_url = nav.homepage.url %}
+      {% endif %}
+      <a href="{{ up_url | url }}" title="Back — up one level" class="md-header__button md-icon md-header__button--up" aria-label="Back — up one level">
+        {% include ".icons/material/arrow-up-left.svg" %}
+      </a>
+    {% endif %}
     <a href="{{ config.extra.homepage | d(nav.homepage.url, true) | url }}" title="Main menu" class="md-header__button md-icon md-header__button--home" aria-label="Main menu">
       {% include ".icons/material/home-outline.svg" %}
     </a>
