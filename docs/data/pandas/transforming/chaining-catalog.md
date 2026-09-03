@@ -7,7 +7,7 @@ Lookup catalog of the operations most used in method chains. For the chaining co
 | 1 | `.query(expr)` | Filter rows |
 | 2 | `.assign(**kwargs)` | Add or transform columns |
 | 3 | `.astype(dict)` | Cast dtypes |
-| 4 | `.rename(columns=...)` | Rename columns |
+| 4 | `.rename(columns=...)` / `.rename(name)` | Rename columns, or name a Series |
 | 5 | `.drop(columns=[...])` / `.filter(...)` | Remove or select columns |
 | 6 | `.sort_values(by=...)` | Sort rows |
 | 7 | `.dropna()` / `.fillna(...)` | Handle missing values |
@@ -57,13 +57,38 @@ df.astype({'size': size_type})
 
 See [dtypes.md](../dtypes.md) for full `CategoricalDtype` details.
 
-## 4. Rename columns — `.rename()`
+## 4. Rename labels — `.rename()`
+
+### Columns of a frame
 
 ```python
 df.rename(columns={'open_time': 'date', 'quote_vol': 'quote_volume'})
 df.rename(columns=str.lower)                        # apply function to all names
 df.rename(columns=lambda c: c.replace(' ', '_'))
 ```
+
+### Naming a Series
+
+`.rename(scalar)` is the inline way to set `s.name` — it returns a renamed copy, so it drops into a chain where `s.name = 'ret'` (a mutating statement) cannot.
+
+```python
+s.rename('ret')                     # scalar → renames the SERIES
+pd.Series(values, name='ret')       # or at construction
+
+s.rename({'a': 'A'})                # dict/callable → renames the INDEX LABELS
+s.rename_axis('symbol')             # names the INDEX itself, not the Series
+```
+
+The name is what downstream operations use as the **column label**, so setting it early saves a rename later:
+
+```python
+pd.concat([a.rename('p'), b.rename('q')], axis=1)   # → columns ['p', 'q']
+df.join(s.rename('ret'))                            # unnamed Series → ValueError
+df.assign(ret=s)                                    # assign supplies the name itself
+```
+
+!!! warning "One method, three targets"
+    On a Series, `.rename()` switches behaviour on the **argument type**: a scalar sets the Series name, a dict or callable rewrites index labels. On a DataFrame it never touches a name — it only rewrites labels, and needs `index=`/`columns=` to say which axis. `rename_axis` is the separate verb for naming an axis.
 
 ## 5. Select or drop columns
 
@@ -178,7 +203,7 @@ s.rename_axis('symbol').reset_index(name='ret')  # name the index column too
 ```
 
 - `to_frame` returns a new object — it does **not** set `.name` on the original Series.
-- `s.rename('x')` with a **scalar** renames the Series; with a **dict or callable** it renames the *index labels* instead. Only the scalar form feeds `.to_frame()`.
+- `s.rename('x')` sets the name that `to_frame()` then uses as the column label — see [naming a Series](#naming-a-series) for the scalar-vs-dict split.
 - `reset_index(name=)` is Series-only, and the index column is called `index` unless the index is named — hence `rename_axis` first.
 - `.to_frame().T` gives a one-**row** frame instead (the Series name becomes the row label).
 - Several Series at once: `pd.concat([a, b], axis=1, keys=['a', 'b'])` aligns on the index and names the columns in one call.
