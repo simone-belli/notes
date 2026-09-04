@@ -9,6 +9,9 @@
 :material-text-box-outline: **[Reproducibility and Seeding](reproducibility.md){ .lvl-intermediate }**
 :   Why every RNG in the stack needs its own seed, global seeding vs explicit generators, `random_state` semantics, Optuna's sampler seed vs the objective's own, and a central seeding module
 
+:material-text-box-outline: **[Purged Cross-Validation](purged-cross-validation.md){ .lvl-advanced }**
+:   De Prado's combinatorial splits — many backtest paths instead of one, why giving up train-before-test is what makes an embargo necessary, and sizing purge by label horizon against embargo by feature memory
+
 :material-text-box-outline: **[Tuning a Trading Strategy](strategy-tuning.md){ .lvl-advanced }**
 :   Three rules for hyperparameter search on a strategy — score once on the pooled out-of-sample series, pin position scale in the position map before selecting on mean return, and log the trial count before you start
 

@@ -88,12 +88,14 @@ claim about **timestamps**, not about **information** — and the two come apart
   the score on it is inflated.
 
 The fixes are **purging** (drop training rows whose label horizon overlaps the
-test period) and **embargo** (drop a buffer of test rows after the boundary so
-feature windows don't reach back). Neither is the same as a
+test period) and **embargo** (drop training rows *after* a test block, whose
+feature windows still reach back into it) — see
+[Purged Cross-Validation](purged-cross-validation.md). Here only purging bites:
+with train always preceding test there are no training rows after the test block
+for an embargo to cut. Neither is the same as a
 [burn-in buffer](../scikit-learn/custom-transformers.md#carrying-a-burn-in-buffer):
-these drop rows from training and scoring to stop an *optimistic score*, while
-burn-in feeds the transformer prior raw `X` to stop a *wrong feature*. `gap` is
-a crude version of both:
+these drop rows to stop an *optimistic score*, while burn-in feeds the
+transformer prior raw `X` to stop a *wrong feature*. `gap` implements purging:
 
 ```python
 TimeSeriesSplit(n_splits=5, gap=max(label_horizon, feature_lookback))
@@ -107,10 +109,10 @@ TimeSeriesSplit(n_splits=5, gap=max(label_horizon, feature_lookback))
 
 - **One path.** Five chronological folds aren't five independent estimates; they
   are one history cut five times, same regimes in the same order. Fold variance
-  understates uncertainty badly. **Combinatorial Purged Cross-Validation**
-  (test on all combinations of `k` time blocks, purged at every internal
-  boundary) reassembles many backtest paths and yields a *distribution* of
-  Sharpe ratios instead of a point estimate.
+  understates uncertainty badly.
+  [Combinatorial Purged Cross-Validation](purged-cross-validation.md) gives up
+  the strict ordering to reassemble many backtest paths — a *distribution* of
+  Sharpe ratios instead of a point estimate, at the price of an embargo.
 - **Selection bias survives every splitter.** Try 400 configurations and report
   the best, and you get a Sharpe of 2 on pure noise. No cross-validation scheme
   fixes this — record the trial count, deflate the Sharpe ratio for it, and keep
@@ -139,6 +141,7 @@ scores = cross_val_score(search, X, y, cv=TimeSeriesSplit(n_splits=5))   # outer
 
 ## Related
 
+- [Purged Cross-Validation](purged-cross-validation.md) — CPCV, and why the embargo only exists once train can follow test
 - [Model Validation](model-validation.md) — the k-fold premise this note is the exception to
 - [Data Leakage](data-leakage.md) — the full taxonomy; purging and embargo close two entries in it
 - [Tuning a Trading Strategy](strategy-tuning.md) — pooled out-of-sample scoring and the selection channel these folds don't close

@@ -167,10 +167,10 @@ statistic — rolling windows, diffs, ranks.
 ## Burn-in vs embargo
 
 Not the same knob, and easy to conflate. Burn-in fixes a *feature* that is wrong
-at the fold start (an artifact of the split); purging and embargo fix a *score*
-that is optimistic (overlapping labels, near-duplicate rows) by dropping rows
-from training and scoring. Use both: the gap rows' raw `X` is legitimate burn-in
-— those prices are known in production — you just never train or score on them.
+at the fold start (an artifact of the split); [purging and embargo](../concepts/purged-cross-validation.md)
+fix a *score* that is optimistic (overlapping labels, near-duplicate rows) by
+dropping rows. Use both: the dropped rows' raw `X` is still legitimate burn-in —
+those prices are known in production — you just never train or score on them.
 
 Fold 1 has no prior data at all. Reserve a **global burn-in prefix** so every
 fold is comparable, sized for the longest half-life in the grid:
@@ -178,6 +178,67 @@ fold is comparable, sized for the longest half-life in the grid:
 ```python
 X_model, y_model = X.iloc[k:], y.iloc[k:]   # first k rows are buffer-only
 ```
+
+## Non-contiguous folds
+
+Both `iloc[-k:]` and `index < X.index[0]` assume the training block ends just
+before one contiguous test block. Under a combinatorial splitter
+([CPCV](../concepts/purged-cross-validation.md)) neither holds, and the
+transformer above fails *silently* — max absolute error across four splits of the
+same data:
+
+| test groups | max abs err | burn-in rows used |
+|---|---|---|
+| `{1,3}` | **11.12** | 0 |
+| `{4,5}` | 0.002 | 100 |
+| `{0,1}` | 0.000 | 0 |
+| `{2,5}` | **3.37** | 0 |
+
+Two independent bugs, and fixing the first leaves the second:
+
+- **The buffer empties.** With test in the middle, the training tail is the *end*
+  of the series, so `index <` correctly discards all of it — the guard that made
+  the forward-chaining version safe silently yields a cold start.
+- **Runs get spliced.** `pd.concat` glues the last row of one test run to the
+  first of the next and runs the recursion across the time gap. Worse than a cold
+  start: the values are smooth and converged, so nothing looks wrong.
+
+Fix: source burn-in from the raw series, not the partition — then a lookup
+replaces the buffer entirely and is *exact* (measured 0.0) for any row subset.
+
+```python
+class LookupEWMA(BaseEstimator, TransformerMixin):
+    def __init__(self, source=None, halflife=10):
+        self.source, self.halflife = source, halflife       # source = full raw series
+
+    def fit(self, X, y=None):
+        self.values_ = self.source.ewm(halflife=self.halflife, adjust=False).mean()
+        return self
+
+    def transform(self, X):
+        return self.values_.loc[pd.DataFrame(X).index]
+```
+
+Legitimate only for a **causal, statistically stateless** transform. Anything
+that *estimates* a parameter — scaler, quantile, PCA — must still fit on training
+rows only; those statistics are order-invariant, so a scattered training set
+costs them nothing. Compose the two:
+
+```python
+make_pipeline(LookupEWMA(source=raw, halflife=10),   # causal, reads full series
+              StandardScaler(),                      # fitted, per-fold
+              Ridge())
+```
+
+!!! warning "You just gave up the Pipeline's guarantee"
+    Fold isolation made leakage structurally impossible — you couldn't reach
+    across the boundary because you couldn't see across it. Handing the
+    transformer the full series removes that, and a stray `center=True` now leaks
+    globally with nothing to stop it. Replace the guarantee with a test:
+    truncate `source` after the transformed rows and assert the output is
+    unchanged. Also give the source holder a `__deepcopy__` — `clone` deep-copies
+    non-estimator params, so every `GridSearchCV` candidate otherwise copies the
+    whole series.
 
 ## Keeping the index alive
 
