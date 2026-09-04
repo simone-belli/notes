@@ -89,7 +89,11 @@ claim about **timestamps**, not about **information** — and the two come apart
 
 The fixes are **purging** (drop training rows whose label horizon overlaps the
 test period) and **embargo** (drop a buffer of test rows after the boundary so
-feature windows don't reach back). `gap` is a crude version of both:
+feature windows don't reach back). Neither is the same as a
+[burn-in buffer](../scikit-learn/custom-transformers.md#carrying-a-burn-in-buffer):
+these drop rows from training and scoring to stop an *optimistic score*, while
+burn-in feeds the transformer prior raw `X` to stop a *wrong feature*. `gap` is
+a crude version of both:
 
 ```python
 TimeSeriesSplit(n_splits=5, gap=max(label_horizon, feature_lookback))
@@ -142,4 +146,4 @@ scores = cross_val_score(search, X, y, cv=TimeSeriesSplit(n_splits=5))   # outer
 - [Hyperparameter Search](../scikit-learn/hyperparameter-search.md) — why `cv=5` leaks even without shuffling
 - [Train/Test Splitting](../scikit-learn/splitting.md) — the splitter catalogue and stratification
 - [scikit-learn Pipelines](../scikit-learn/pipelines.md) — keeping preprocessing inside the fold
-- [Custom Transformers](../scikit-learn/custom-transformers.md) — causal windows and warm-up gaps
+- [Custom Transformers](../scikit-learn/custom-transformers.md) — causal windows, warm-up gaps, and the burn-in buffer that closes them
