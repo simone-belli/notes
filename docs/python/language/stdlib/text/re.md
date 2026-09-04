@@ -5,6 +5,38 @@ against strings (or `bytes`). It's a **backtracking** engine, so everything
 about catastrophic backtracking applies directly — `re` has no built-in
 match timeout.
 
+## Is a regex the right tool?
+
+To check whether a string matches a pattern, reach *down* this list, not up —
+`re` costs escaping bugs and backtracking risk; the others cost nothing.
+
+| Pattern is… | Use |
+|---|---|
+| a literal prefix/suffix/substring | `str.startswith` / `endswith` / `in` |
+| a shell glob (`*.txt`) from a user or config | `fnmatch.fnmatchcase` |
+| a glob over file paths | [`pathlib.Path.match`](../os/pathlib.md) |
+| a real grammar — digits, groups, alternation | `re.fullmatch` |
+
+```python
+import fnmatch
+
+"a.tar.gz".endswith((".gz", ".zip"))          # tuple arg — the most-missed idiom
+fnmatch.fnmatchcase("report.txt", "*.txt")    # True
+fnmatch.filter(["a.txt", "b.md"], "*.txt")    # ['a.txt']
+```
+
+- **`fnmatch` is platform-dependent; `fnmatchcase` is not.** `fnmatch` normalises
+  both arguments with `os.path.normcase`, which lowercases on Windows but is the
+  identity on macOS/Linux — so `fnmatch("A.TXT", "*.txt")` is `False` on a Mac
+  and `True` on Windows.
+- **`fnmatch` is not path-aware** — `fnmatch("a/b.txt", "*.txt")` is `True`,
+  because it compiles to a plain `.*` (see `fnmatch.translate`). Use `pathlib`
+  when separators matter.
+- **`Path.match` is right-anchored** — a relative pattern matches only the
+  trailing components (`PurePosixPath("/x/y/z.py").match("*.py")` is `True`); an
+  absolute pattern must match the whole path. Python 3.13 adds `full_match`,
+  which anchors the whole path and supports `**`.
+
 ## Core functions
 
 ```python
