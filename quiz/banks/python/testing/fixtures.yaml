@@ -1,4 +1,4 @@
-note: python/tooling/testing/fixtures.md
+note: python/testing/fixtures.md
 tier: core
 questions:
   - id: fixture-injection

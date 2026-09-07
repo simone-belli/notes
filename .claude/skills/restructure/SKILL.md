@@ -12,7 +12,7 @@ There are two survey modes. The default mode (below) is bottom-up: it finds loca
 ## Phase 1 — Survey and propose
 
 1. **Survey cheaply**: read only the `README.md` files in each directory and run `wc -l` on every `.md` file. Do **not** open individual note files unless their line count exceeds ~200 and you need their section headings (`grep '^## '`) to propose a sensible split.
-2. **Identify problems**: flag any file >200 lines and any folder with >10 files (excluding `README.md`).
+2. **Identify problems**: flag any file >200 lines, any folder with >10 files (excluding `README.md`), and any folder holding more files than its own parent.
 3. **Propose a new structure** that resolves the problems:
    - Group topics by logical criteria (language feature area, tool category) — never by arbitrary criteria like alphabetical order or file size alone.
    - Only introduce a subfolder when it will contain at least 3 files; keep new folders minimal.
@@ -26,7 +26,7 @@ There are two survey modes. The default mode (below) is bottom-up: it finds loca
 Replaces steps 1–3 of Phase 1; steps 4–6 and Phase 2 apply unchanged.
 
 1. **Survey the taxonomy cheaply**: read `docs/index.md` and every `README.md` (file descriptions). Open individual notes only where a file's right category is genuinely ambiguous from its description.
-2. **Evaluate top-down**, in order: (a) are the top-level areas right? (b) is each subcategory boundary principled — grouped consistently by concept, by library, or by activity, not a mix? (c) does each nesting level earn its depth? (d) do sibling names form a coherent, non-overlapping set?
+2. **Evaluate top-down**, in order: (a) are the top-level areas right? (b) is each subcategory boundary principled — grouped consistently by concept, by library, or by activity, not a mix? (c) does each nesting level earn its depth? (d) do sibling names form a coherent, non-overlapping set? (e) **has a subject outgrown its shelf?** A folder holding more files than its own parent, or ≥8 files while nested below the top level, has usually stopped being a sub-topic and become an area in its own right. Check whether its contents span several categories (a concept *and* a tool *and* a library); if so, promote it one level up rather than leaving it as an oversized leaf.
 3. **Design the ideal tree from a blank slate** for the current content, then diff it against the actual tree. Propose only moves whose clarity benefit outweighs the churn (link updates, quiz-history resets). Explicitly list structures you considered and deliberately left alone, with reasons.
 4. In the proposal output, additionally **list the quiz banks that would move** — each move resets that note's review-scheduling history, so the user must be able to veto individual moves.
 

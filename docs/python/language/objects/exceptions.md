@@ -92,7 +92,7 @@ raise ValueError("price missing for %s", symbol)   # BUG — nothing interpolate
 - Exceptions have no such mechanism — `BaseException.__init__` just stores its arguments as `e.args`. The "bug" line above raises `ValueError('price missing for %s', 'AAPL')`: a two-element tuple, never interpolated.
 
 !!! warning "Logging-style formatting in an exception is not lazy — it is silently broken"
-    The lazy-evaluation benefit that justifies `%`-style args for `logger.info` does not exist for exceptions, so you get the downside (a garbled message) with none of the upside. Build the full message before raising — `str(e)` needs it the moment the exception is displayed. A [`pytest.raises(..., match=)`](../../tooling/testing/pytest.md) test makes this class of bug loud: the un-interpolated `%s` fails the message match.
+    The lazy-evaluation benefit that justifies `%`-style args for `logger.info` does not exist for exceptions, so you get the downside (a garbled message) with none of the upside. Build the full message before raising — `str(e)` needs it the moment the exception is displayed. A [`pytest.raises(..., match=)`](../../testing/pytest.md) test makes this class of bug loud: the un-interpolated `%s` fails the message match.
 
 ### Exception chaining
 
@@ -186,6 +186,6 @@ except* ValueError as eg:    # except* filters by type
 ## Related notes
 
 - [context-managers.md](../runtime/context-managers.md) — context managers (`__exit__` protocol, `@contextmanager`)
-- [testing-strategy.md](../../tooling/testing/testing-strategy.md) — `pytest.raises` to assert exceptions in tests
+- [testing-strategy.md](../../testing/testing-strategy.md) — `pytest.raises` to assert exceptions in tests
 - [pydantic.md](../../libraries/pydantic/pydantic.md) — `ValidationError` is the canonical custom exception pattern at application boundaries
 - [warnings.md](warnings.md) — `warnings.warn()`: downgrade a caught exception to a non-fatal advisory

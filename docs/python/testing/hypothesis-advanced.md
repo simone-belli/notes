@@ -35,7 +35,7 @@ Filtering is fine for cheap, rarely-triggered exclusions (`.filter(lambda x: x !
 
 ## Generating valid Pydantic models with `st.builds`
 
-`st.builds(cls, **kwargs)` calls `cls(**kwargs)` with each keyword drawn from its strategy — works for any callable, including a [Pydantic](../../libraries/pydantic/pydantic.md) `BaseModel`:
+`st.builds(cls, **kwargs)` calls `cls(**kwargs)` with each keyword drawn from its strategy — works for any callable, including a [Pydantic](../libraries/pydantic/pydantic.md) `BaseModel`:
 
 ```python
 trades = st.builds(

@@ -17,7 +17,7 @@ transport in tests.
 
 `AsyncClient` is the same API with `await`, `async with`, and `aiter_*` in place
 of `iter_*`; the `Response` class is literally shared. Fan out with
-[`asyncio.gather`](../language/concurrency/asyncio.md) over one client, capped
+[`asyncio.gather`](../../language/concurrency/asyncio.md) over one client, capped
 by a semaphore:
 
 ```python
@@ -136,7 +136,7 @@ async with httpx.AsyncClient(transport=transport,
     r = await client.get("/items")
 ```
 
-This is what [FastAPI's `TestClient`](fastapi/testing.md) wraps behind a sync
+This is what [FastAPI's `TestClient`](../fastapi/testing.md) wraps behind a sync
 facade; reach for `AsyncClient` directly only when the test body must `await`.
 
 !!! warning "`AsyncClient(app=app)` was removed in 0.28"
@@ -169,6 +169,6 @@ store — the usual cause of failures behind a TLS-inspecting corporate proxy.
 
 - [httpx.md](httpx.md) — the client, requests, responses, exceptions, timeouts
 - [aiohttp-concurrency.md](aiohttp-concurrency.md) — the same fan-out and retry patterns in aiohttp
-- [asyncio.md](../language/concurrency/asyncio.md) — the event loop, `gather`, `create_task`
-- [testing.md](fastapi/testing.md) — `TestClient`, the HTTPX client FastAPI ships
-- [mocking-network.md](../tooling/testing/mocking-network.md) — mocking HTTP at each layer
+- [asyncio.md](../../language/concurrency/asyncio.md) — the event loop, `gather`, `create_task`
+- [testing.md](../fastapi/testing.md) — `TestClient`, the HTTPX client FastAPI ships
+- [mocking-network.md](../../testing/mocking-network.md) — mocking HTTP at each layer

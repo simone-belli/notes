@@ -18,7 +18,7 @@ def test_read_root():
     assert resp.json() == {"message": "hello"}
 ```
 
-- **Wraps [`httpx`](../httpx.md)** — the response is an `httpx.Response` (`.status_code`, `.json()`, `.text`, `.headers`); `httpx` must be installed.
+- **Wraps [`httpx`](../http-clients/httpx.md)** — the response is an `httpx.Response` (`.status_code`, `.json()`, `.text`, `.headers`); `httpx` must be installed.
 - **Synchronous even for `async def` endpoints** — it runs an event loop internally, so test functions stay plain `def` (no `await`, no `asyncio` marker).
 
 Each parameter source maps to a client argument:
@@ -57,7 +57,7 @@ def test_get_trade():
     app.dependency_overrides.clear()   # dict lives on app — clear or it leaks
 ```
 
-Both implementations satisfy the same `TradeRepository` Protocol, so nothing else changes. Prefer a [fake over a mock](../../language/objects/repository-di.md) — it exercises the endpoint against correct behaviour. `dependency_overrides` is a plain dict on the `app`, so wrap client + reset in a [pytest fixture](../../tooling/testing/fixtures.md) to keep tests isolated:
+Both implementations satisfy the same `TradeRepository` Protocol, so nothing else changes. Prefer a [fake over a mock](../../language/objects/repository-di.md) — it exercises the endpoint against correct behaviour. `dependency_overrides` is a plain dict on the `app`, so wrap client + reset in a [pytest fixture](../../testing/fixtures.md) to keep tests isolated:
 
 ```python
 @pytest.fixture
@@ -72,5 +72,5 @@ For a test that must `await` itself, use `httpx.AsyncClient` with an Asynchronou
 ## Related
 
 - [Dependency Injection](dependencies.md) — the `Depends()` providers these tests override
-- [fixtures.md](../../tooling/testing/fixtures.md) — pytest fixtures for wrapping `TestClient` and resetting overrides
-- [testing-strategy.md](../../tooling/testing/testing-strategy.md) — where in-process endpoint tests sit relative to unit and contract tests
+- [fixtures.md](../../testing/fixtures.md) — pytest fixtures for wrapping `TestClient` and resetting overrides
+- [testing-strategy.md](../../testing/testing-strategy.md) — where in-process endpoint tests sit relative to unit and contract tests

@@ -116,7 +116,7 @@ import pytest
 assert 0.1 + 0.2 == pytest.approx(0.3)   # defaults: rel=1e-6, abs=1e-12
 ```
 
-Wrap the *expected* value. See [pytest.md](../../tooling/testing/pytest.md#approximate-equality) for what `approx` accepts, `nan` handling, and the array/DataFrame helpers.
+Wrap the *expected* value. See [pytest.md](../../testing/pytest.md#approximate-equality) for what `approx` accepts, `nan` handling, and the array/DataFrame helpers.
 
 ### NumPy arrays
 

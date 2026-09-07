@@ -55,4 +55,4 @@ Every HTTP response carries a three-digit **status code** + reason phrase (`200 
 
 - **4xx** — don't retry unchanged; fix the request. Exception: `429` (back off, then retry after the delay).
 - **5xx** — often transient (`502`/`503`/`504`); retry with exponential backoff. `500` is ambiguous — retry cautiously.
-- The [aiohttp](../../python/libraries/aiohttp.md) retry helper encodes exactly this: retry on `status >= 500`, give up on `4xx`.
+- The [aiohttp](../../python/libraries/http-clients/aiohttp.md) retry helper encodes exactly this: retry on `status >= 500`, give up on `4xx`.

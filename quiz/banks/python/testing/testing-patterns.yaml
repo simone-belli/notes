@@ -1,4 +1,4 @@
-note: python/tooling/testing/testing-patterns.md
+note: python/testing/testing-patterns.md
 tier: core
 questions:
   - id: seam-concept

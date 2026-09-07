@@ -76,7 +76,7 @@ parser = argparse.ArgumentParser(fromfile_prefix_chars="@")
 
 ## Values from a YAML or JSON file
 
-Given a list in a [YAML](../../../tools/yaml.md) or JSON file, pass the *path* and parse inside `type=` — the program then only
+Given a list in a [YAML](../../../../tools/yaml.md) or JSON file, pass the *path* and parse inside `type=` — the program then only
 ever sees a `list[str]`, and a malformed file becomes a clean argparse error:
 
 ```python
@@ -115,11 +115,11 @@ match the argument `dest` names; unmatched keys are silently added to the namesp
 than rejected.
 
 !!! tip "Expanding a file's list in the shell instead"
-    For a program you don't control, `yq` (the YAML counterpart to [jq](../../../tools/jq.md))
+    For a program you don't control, `yq` (the YAML counterpart to [jq](../../../../tools/jq.md))
     plus word splitting works: `mycli --symbols $(yq -r '.symbols[]' params.yaml)`. The
     unquoted `$( )` is what splits the lines into tokens — it breaks on values containing
     spaces or globs, so use a shell array (`symbols=("${(@f)$(...)}")` in
-    [zsh](../../../tools/shell/zsh.md)) when that's possible.
+    [zsh](../../../../tools/shell/zsh.md)) when that's possible.
 
 ---
 
@@ -226,5 +226,5 @@ def test_missing_required_arg():
 ## See also
 
 - [cli.md](cli.md) — `sys.argv`, the argparse basics, boolean and short/long flags
-- [entrypoint.md](../runtime/entrypoint.md) — the `__name__ == "__main__"` guard
-- [mocking.md](../../tooling/testing/mocking.md) — `patch`, `patch.object`, `monkeypatch`
+- [entrypoint.md](../../runtime/entrypoint.md) — the `__name__ == "__main__"` guard
+- [mocking.md](../../../testing/mocking.md) — `patch`, `patch.object`, `monkeypatch`

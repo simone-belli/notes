@@ -1,4 +1,4 @@
-note: python/tooling/testing/structlog-testing.md
+note: python/testing/structlog-testing.md
 tier: detail
 questions:
   - id: capture-logs-mechanism

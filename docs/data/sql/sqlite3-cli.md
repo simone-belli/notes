@@ -50,7 +50,7 @@ sqlite3 mydata.db < setup.sql                      # pipe a script in
 sqlite3 -csv -header mydata.db "SELECT * FROM users;"
 ```
 
-Reach for this in scripts/cron/CI — same [CLI flag conventions](../../python/language/stdlib/cli.md)
+Reach for this in scripts/cron/CI — same [CLI flag conventions](../../python/language/stdlib/cli/cli.md)
 as most Unix tools (`-csv`, `-json`, `-header`, `-readonly`).
 
 ## Persisting settings

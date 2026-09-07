@@ -63,7 +63,7 @@ with httpx.Client(
 
 The client is a context manager; long-lived services create it at startup and
 call `client.close()` / `await client.aclose()` at shutdown (in
-[FastAPI](fastapi/app-structure.md), the `lifespan` handler).
+[FastAPI](../fastapi/app-structure.md), the `lifespan` handler).
 
 ---
 
@@ -170,7 +170,7 @@ except httpx.RequestError as e:                 # everything else network-y
     log.error("failed %s: %r", e.request.url, e)
 ```
 
-Don't retry [4xx](../../tools/web/http-status-codes.md) except `429` — see
+Don't retry [4xx](../../../tools/web/http-status-codes.md) except `429` — see
 [retries with backoff](httpx-advanced.md#retries) for the `429`/5xx case.
 
 ---
@@ -233,7 +233,7 @@ very high request volume is the measured bottleneck.
 
 - [httpx-advanced.md](httpx-advanced.md) — async fan-out, streaming, retries, auth flows, transport-swap testing, HTTP/2
 - [aiohttp.md](aiohttp.md) — the async-only alternative; sessions, timeouts, errors
-- [asyncio.md](../language/concurrency/asyncio.md) — the event loop, `gather`, `create_task`
-- [testing.md](fastapi/testing.md) — `TestClient`, the HTTPX client FastAPI ships
-- [http-request.md](../../tools/web/http-request.md) — what the request being built actually looks like
-- [curl.md](../../tools/web/curl.md) — the same operations from the command line
+- [asyncio.md](../../language/concurrency/asyncio.md) — the event loop, `gather`, `create_task`
+- [testing.md](../fastapi/testing.md) — `TestClient`, the HTTPX client FastAPI ships
+- [http-request.md](../../../tools/web/http-request.md) — what the request being built actually looks like
+- [curl.md](../../../tools/web/curl.md) — the same operations from the command line

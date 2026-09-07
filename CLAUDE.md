@@ -31,7 +31,7 @@ Only pause to ask when the action is genuinely hard to undo or outward-facing: p
 
 ## File organisation
 
-All notes live under `docs/`; the repo root contains only tooling files (`mkdocs.yml`, `CLAUDE.md`, `README.md`, `.gitignore`, `.github/`, `.claude/`). Top-level areas: `data/` (`dsa/`, `numpy/`, `pandas/`, `sql/`), `finance/`, `git/`, `ml/`, `python/` (`language/`, `libraries/`, `tooling/`), and `tools/`. Subfolders evolve — consult the `README.md` files for the current layout rather than assuming it.
+All notes live under `docs/`; the repo root contains only tooling files (`mkdocs.yml`, `CLAUDE.md`, `README.md`, `.gitignore`, `.github/`, `.claude/`). Top-level areas: `data/` (`dsa/`, `numpy/`, `pandas/`, `sql/`), `finance/`, `git/`, `ml/`, `python/` (`language/`, `libraries/`, `testing/`, `tooling/`), and `tools/`. Subfolders evolve — consult the `README.md` files for the current layout rather than assuming it.
 
 Each subdirectory has a `README.md` listing its children, sorted alphabetically by filename. Entries carry a **type**:
 

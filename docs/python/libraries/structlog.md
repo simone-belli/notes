@@ -115,4 +115,4 @@ pip install structlog
 ## See also
 
 - [structlog-config.md](structlog-config.md) — the processor pipeline and `structlog.configure()`
-- [structlog-testing.md](../tooling/testing/structlog-testing.md) — `capture_logs()`, assertion patterns, pytest fixture, comparison with `caplog`
+- [structlog-testing.md](../testing/structlog-testing.md) — `capture_logs()`, assertion patterns, pytest fixture, comparison with `caplog`

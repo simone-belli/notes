@@ -23,7 +23,7 @@ experience). No Anki or paid apps involved.
 ## Bank format
 
 ```yaml
-note: python/tooling/testing/fixtures.md   # source note, relative to docs/
+note: python/testing/fixtures.md           # source note, relative to docs/
 tier: core                                 # core | detail
 questions:
   - id: fixture-scope-module               # stable slug — NEVER rename once created

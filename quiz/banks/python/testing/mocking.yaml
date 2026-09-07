@@ -1,4 +1,4 @@
-note: python/tooling/testing/mocking.md
+note: python/testing/mocking.md
 tier: core
 questions:
   - id: patch-where-used

@@ -27,7 +27,7 @@ Without the guard, every `import` would execute the top-level code as a side eff
 
 `main` is purely conventional — Python enforces nothing about the name.
 
-See [cli.md](../stdlib/cli.md#full-script-pattern) for this guard combined with `argparse`.
+See [cli.md](../stdlib/cli/cli.md#full-script-pattern) for this guard combined with `argparse`.
 
 ## `__main__.py` — runnable packages
 
@@ -87,7 +87,7 @@ finlib-pipeline = "finlib.pipeline.cli:main"
 
 The value is `"dotted.module.path:callable"`. Pip generates a wrapper at
 `.venv/bin/finlib-pipeline` that imports the module and calls `main()` with no
-arguments — so `main()` must read `sys.argv` itself (e.g. via [argparse](../stdlib/cli.md)).
+arguments — so `main()` must read `sys.argv` itself (e.g. via [argparse](../stdlib/cli/cli.md)).
 
 ```python
 # finlib/pipeline/cli.py
@@ -139,5 +139,5 @@ finlib-pipeline       # now available directly on PATH
 ## Related
 
 - [asyncio.md](../concurrency/asyncio.md) — event loop, `await`, `gather`, `create_task`
-- [cli.md](../stdlib/cli.md) — CLI flags for running Python (`-c`, `-m`)
-- [run-function-cli.md](run-function-cli.md) — calling a module's function from the shell
+- [cli.md](../stdlib/cli/cli.md) — CLI flags for running Python (`-c`, `-m`)
+- [run-function-cli.md](../stdlib/cli/run-function-cli.md) — calling a module's function from the shell

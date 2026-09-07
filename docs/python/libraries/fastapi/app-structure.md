@@ -100,7 +100,7 @@ Routers nest — a router can `include_router` another before the app includes i
 
 ## Lifespan: startup and shutdown
 
-Some work happens **once per process**, not per request: open a DB connection pool, create a shared [aiohttp](../aiohttp.md) `ClientSession`, load an ML model, warm a cache — and tear each down cleanly on exit. **Lifespan** is an async context manager passed to `FastAPI(lifespan=...)`; everything before `yield` is startup, everything after is shutdown.
+Some work happens **once per process**, not per request: open a DB connection pool, create a shared [aiohttp](../http-clients/aiohttp.md) `ClientSession`, load an ML model, warm a cache — and tear each down cleanly on exit. **Lifespan** is an async context manager passed to `FastAPI(lifespan=...)`; everything before `yield` is startup, everything after is shutdown.
 
 ```python
 from contextlib import asynccontextmanager
@@ -136,7 +136,7 @@ Lifespan is part of the [ASGI](../uvicorn.md) spec and **driven by the server**:
 
 ## Server vs client — FastAPI is not an HTTP client
 
-FastAPI is a **server**: it answers inbound requests (`caller → you`). An HTTP **client** — [aiohttp](../aiohttp.md), `httpx`, `requests` — does the opposite: it makes outbound requests (`you → some API`). They sit on opposite sides of the HTTP boundary and are **not substitutes**. "Call FastAPI to fetch data" is incoherent: inside a fetch there is no inbound request to serve.
+FastAPI is a **server**: it answers inbound requests (`caller → you`). An HTTP **client** — [aiohttp](../http-clients/aiohttp.md), `httpx`, `requests` — does the opposite: it makes outbound requests (`you → some API`). They sit on opposite sides of the HTTP boundary and are **not substitutes**. "Call FastAPI to fetch data" is incoherent: inside a fetch there is no inbound request to serve.
 
 When code both fetches upstream data *and* exposes its own API, keep the two in separate layers:
 
@@ -162,4 +162,4 @@ The core never imports FastAPI; the boundary holds no fetch logic. This keeps th
 - [Dependency Injection](dependencies.md) — `Depends()`, repository providers, and the API-key guard
 - [Testing](testing.md) — `TestClient` and `dependency_overrides`
 - [Uvicorn & Ports](../uvicorn.md) — the ASGI server that binds a port and calls the app
-- [aiohttp.md](../aiohttp.md) — the HTTP *client* side of the server/client boundary
+- [aiohttp.md](../http-clients/aiohttp.md) — the HTTP *client* side of the server/client boundary

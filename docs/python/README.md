@@ -1,13 +1,15 @@
 # Python
 
-Python language, libraries, and tooling.
+The language itself, the packages a program imports, how that code is verified, and the tools run alongside it.
 
 <div class="grid cards" markdown>
 
--   :material-code-braces:{ .lg .middle } __[Python — Language](language/)__
+-   :material-code-braces:{ .lg .middle } __[Language](language/)__
 
--   :material-package-variant-closed:{ .lg .middle } __[Python — Libraries](libraries/)__
+-   :material-package-variant-closed:{ .lg .middle } __[Libraries](libraries/)__
 
--   :material-hammer-wrench:{ .lg .middle } __[Python — Tooling](tooling/)__
+-   :material-test-tube:{ .lg .middle } __[Testing](testing/)__
+
+-   :material-hammer-wrench:{ .lg .middle } __[Tooling](tooling/)__
 
 </div>

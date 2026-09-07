@@ -68,7 +68,7 @@ Use it when the directory must outlive the function that created it; otherwise p
 `tempfile.gettempdir()` resolves `$TMPDIR`, `$TEMP`, `$TMP`, then platform defaults (`/tmp` on POSIX). Set `TMPDIR` to redirect everything — useful when `/tmp` is a small tmpfs.
 
 !!! tip "In tests, use `tmp_path`"
-    pytest's [`tmp_path` fixture](../../../tooling/testing/fixtures.md) hands each test a fresh `Path` and retains the last three runs' directories for post-mortem inspection.
+    pytest's [`tmp_path` fixture](../../../testing/fixtures.md) hands each test a fresh `Path` and retains the last three runs' directories for post-mortem inspection.
 
     ```python
     def test_writes_output(tmp_path):

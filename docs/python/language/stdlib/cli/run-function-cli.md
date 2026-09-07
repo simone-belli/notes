@@ -17,7 +17,7 @@ permanent the invocation is.
 | `python -m pkg` | a `__main__.py` | the package has one obvious action |
 | `mytool` (console script) | `[project.scripts]` entry | a command end users run |
 
-The last three are covered in [entrypoint.md](entrypoint.md); this page covers the ad-hoc
+The last three are covered in [entrypoint.md](../../runtime/entrypoint.md); this page covers the ad-hoc
 ones and the mechanics that decide which works.
 
 ## `python -c` — no cooperation needed
@@ -76,7 +76,7 @@ python -m mypkg.report     # works
 !!! warning "Run package modules with `-m`, always"
     `python pkg/mod.py` executes the file as if it were loose on disk, so `from .x import y`
     has no parent package to resolve against. See
-    [import-system.md](import-system.md#absolute-vs-relative-imports).
+    [import-system.md](../../runtime/import-system.md#absolute-vs-relative-imports).
 
 `-m` requires the module to be *importable*: either the working directory is the project
 root, or the package is installed (`poetry install`, `pip install -e .`). A
@@ -107,8 +107,8 @@ if __name__ == "__main__":
     main()
 ```
 
-See [cli.md](../stdlib/cli.md) for the full `argparse` reference, including
-[lists and structured values](../stdlib/argparse-patterns.md#lists) (`nargs`,
+See [cli.md](cli.md) for the full `argparse` reference, including
+[lists and structured values](argparse-patterns.md#lists) (`nargs`,
 `action="append"`, `type=json.loads`).
 
 ### Dispatching to one of several functions
@@ -185,8 +185,8 @@ command-line entry point, calling `main()` with a patched `sys.argv` is cleaner.
 
 ## Related
 
-- [entrypoint.md](entrypoint.md) — `__main__` guard, `__main__.py`, console scripts
-- [cli.md](../stdlib/cli.md) — `sys.argv`, argparse basics, flags
-- [argparse-patterns.md](../stdlib/argparse-patterns.md) — lists, config files, subcommands, testing entry points
-- [import-system.md](import-system.md) — `sys.path`, packages, relative imports
-- [poetry.md](../../tooling/poetry.md) — `poetry run`, virtual environments
+- [entrypoint.md](../../runtime/entrypoint.md) — `__main__` guard, `__main__.py`, console scripts
+- [cli.md](cli.md) — `sys.argv`, argparse basics, flags
+- [argparse-patterns.md](argparse-patterns.md) — lists, config files, subcommands, testing entry points
+- [import-system.md](../../runtime/import-system.md) — `sys.path`, packages, relative imports
+- [poetry.md](../../../tooling/poetry.md) — `poetry run`, virtual environments

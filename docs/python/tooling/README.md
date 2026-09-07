@@ -1,6 +1,6 @@
 # Python — Tooling
 
-Development-time tools you run — as opposed to [libraries/](../libraries/), the third-party packages your program imports.
+Development-time tools you run — as opposed to [libraries/](../libraries/), the third-party packages your program imports. The test runner and its ecosystem have their own area, [testing/](../testing/).
 
 :material-text-box-outline: **[Mypy](mypy.md){ .lvl-intermediate }**
 :   Static type checking: concepts, configuration, mental model
@@ -13,5 +13,3 @@ Development-time tools you run — as opposed to [libraries/](../libraries/), th
 
 :material-card-bulleted-outline: **[Ruff](ruff.md){ .lvl-intermediate }**
 :   Linter and formatter replacing flake8/black/isort
-
-:material-test-tube: **[Testing](testing/)**

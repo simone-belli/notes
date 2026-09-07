@@ -76,7 +76,7 @@ async for line in resp.content:
     process(line.strip())
 ```
 
-See [jsonl.md](jsonl.md) for the on-disk side of the same format.
+See [jsonl.md](../jsonl.md) for the on-disk side of the same format.
 
 ---
 
@@ -111,7 +111,7 @@ def async_retry(max_attempts=3, base_delay=1.0):
 | `aiohttp.ClientError` | Base class: DNS, connection refused, bad response |
 | `asyncio.TimeoutError` | Timeout exceeded |
 
-Don't retry [4xx](../../tools/web/http-status-codes.md) — check `e.status >= 500` on `ClientResponseError` first.
+Don't retry [4xx](../../../tools/web/http-status-codes.md) — check `e.status >= 500` on `ClientResponseError` first.
 
 **Timeout inside the retried function** — use `asyncio.timeout(n)` (Python 3.11+) to cover the whole block, or `asyncio.wait_for(coro, timeout=n)` for older versions:
 
@@ -131,5 +131,5 @@ For a batteries-included version, `tenacity.AsyncRetrying` supports the same pat
 ## See also
 
 - [aiohttp.md](aiohttp.md) — sessions, requests, timeouts, error handling
-- [asyncio.md](../language/concurrency/asyncio.md) — `gather`, `create_task`, and the event loop underneath
-- [decorators.md](../language/functional/decorators.md) — why the retry wrapper needs three levels of nesting
+- [asyncio.md](../../language/concurrency/asyncio.md) — `gather`, `create_task`, and the event loop underneath
+- [decorators.md](../../language/functional/decorators.md) — why the retry wrapper needs three levels of nesting

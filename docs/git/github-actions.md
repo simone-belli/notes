@@ -198,7 +198,7 @@ Share files between jobs or download after a run (kept 90 days):
 
 - [github-repo-governance.md](github-repo-governance.md) — branch protection makes a status check from this workflow a required merge gate
 - [git.md](git.md) — branching model that CI enforces
-- [testing-strategy.md](../python/tooling/testing/testing-strategy.md) — what CI runs: pytest, coverage
+- [testing-strategy.md](../python/testing/testing-strategy.md) — what CI runs: pytest, coverage
 - [ruff.md](../python/tooling/ruff.md) — linter CI runs on every push
 - [mypy.md](../python/tooling/mypy.md) — type checker CI runs on every push
 - [poetry.md](../python/tooling/poetry.md) — dependency management; `poetry install` in CI

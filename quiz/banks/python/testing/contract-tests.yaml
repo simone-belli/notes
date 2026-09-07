@@ -1,4 +1,4 @@
-note: python/tooling/testing/contract-tests.md
+note: python/testing/contract-tests.md
 tier: core
 questions:
   - id: contract-test-idea

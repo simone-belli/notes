@@ -1,4 +1,6 @@
-# Python — Tooling / Testing
+# Python — Testing
+
+Verifying Python code: the runner and its fixtures, property-based testing, the isolation techniques that make a unit testable, and the strategy that decides what deserves a test at all.
 
 :material-text-box-outline: **[Contract Tests](contract-tests.md){ .lvl-advanced }**
 :   One Protocol, many implementations: parametrized fixtures, contract vs implementation tests

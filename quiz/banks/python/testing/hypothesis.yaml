@@ -1,4 +1,4 @@
-note: python/tooling/testing/hypothesis.md
+note: python/testing/hypothesis.md
 tier: detail
 questions:
   - id: property-vs-example

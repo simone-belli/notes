@@ -11,7 +11,7 @@ Worked example of testing functions that make HTTP calls. The goal: test what yo
 
 Mock the **outermost function that crosses a boundary you don't own**:
 
-- Testing `fetch_price` itself (response parsing)? Mock [`httpx.get`](../../libraries/httpx.md).
+- Testing `fetch_price` itself (response parsing)? Mock [`httpx.get`](../libraries/http-clients/httpx.md).
 - Testing code that *calls* `fetch_price` (orchestration)? Mock `fetch_price`.
 
 ## `monkeypatch` — simpler, pytest-native

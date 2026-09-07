@@ -13,7 +13,7 @@ python -c 'import sys'   # run a string
 python -m module          # run a module (no .py extension)
 ```
 
-See [run-function-cli.md](../runtime/run-function-cli.md) for how these differ and how to
+See [run-function-cli.md](run-function-cli.md) for how these differ and how to
 reach a specific function in a module.
 
 ---
@@ -54,7 +54,7 @@ args = parser.parse_args()  # reads sys.argv[1:] by default
 
 ### Full script pattern
 
-Wrap parsing in `main()` behind the [`__name__ == "__main__"` guard](../runtime/entrypoint.md) so the file works both as a script and as an importable module:
+Wrap parsing in `main()` behind the [`__name__ == "__main__"` guard](../../runtime/entrypoint.md) so the file works both as a script and as an importable module:
 
 ```python
 import argparse
@@ -156,5 +156,5 @@ scripts.
 ## See also
 
 - [argparse-patterns.md](argparse-patterns.md) — lists, structured values, config files, subcommands, testing
-- [run-function-cli.md](../runtime/run-function-cli.md) — `python -m`, console scripts, reaching a function
-- [entrypoint.md](../runtime/entrypoint.md) — the `__name__ == "__main__"` guard
+- [run-function-cli.md](run-function-cli.md) — `python -m`, console scripts, reaching a function
+- [entrypoint.md](../../runtime/entrypoint.md) — the `__name__ == "__main__"` guard

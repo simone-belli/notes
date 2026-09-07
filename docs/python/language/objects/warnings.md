@@ -112,4 +112,4 @@ filterwarnings = ["error"]
 ## Related notes
 
 - [exceptions.md](exceptions.md) — exception hierarchy, raising, chaining, custom exceptions
-- [testing-strategy.md](../../tooling/testing/testing-strategy.md) — `pytest.warns` alongside `pytest.raises`
+- [testing-strategy.md](../../testing/testing-strategy.md) — `pytest.warns` alongside `pytest.raises`

@@ -23,11 +23,11 @@ def test_rejects_negative_quantity():
         Trade(symbol='BHP', quantity=-10, price=45.5, side='BUY')
 ```
 
-The `Trade` model used here follows the pattern in [`pydantic.md`](../../libraries/pydantic/pydantic.md).
+The `Trade` model used here follows the pattern in [`pydantic.md`](../libraries/pydantic/pydantic.md).
 
 ### `pytest.raises(..., match=)`
 
-`match=` checks the exception message against a [regex](../../../tools/regexp.md), so the test verifies both the error type *and* that the message is actually useful:
+`match=` checks the exception message against a [regex](../../tools/regexp.md), so the test verifies both the error type *and* that the message is actually useful:
 
 ```python
 def test_rejects_negative_quantity():
@@ -85,7 +85,7 @@ pytest -x               # stop at first failure
 
 ## Approximate equality
 
-Floating-point results carry representation error, so `==` fails on values that are mathematically equal ([why](../../language/objects/numbers.md#float-comparison)). Wrap the **expected** value in `pytest.approx`:
+Floating-point results carry representation error, so `==` fails on values that are mathematically equal ([why](../language/objects/numbers.md#float-comparison)). Wrap the **expected** value in `pytest.approx`:
 
 ```python
 import pytest

@@ -145,7 +145,7 @@ Reaching *up* the tree to import is the same mistake as reaching up to read a fi
 
 ## Testing
 
-Anchoring pays off because tests then never touch the real layout — inject a [`tmp_path`](../../../tooling/testing/fixtures.md):
+Anchoring pays off because tests then never touch the real layout — inject a [`tmp_path`](../../../testing/fixtures.md):
 
 ```python
 def test_writes_report(tmp_path):
@@ -160,4 +160,4 @@ def test_writes_report(tmp_path):
 - [pathlib.md](pathlib.md) — the `Path` API itself
 - [tempfile.md](tempfile.md) — scratch directories outside tests
 - [pydantic-settings.md](../../../libraries/pydantic/pydantic-settings.md) — typed configuration
-- [testing-patterns.md](../../../tooling/testing/testing-patterns.md) — seams and file-I/O isolation
+- [testing-patterns.md](../../../testing/testing-patterns.md) — seams and file-I/O isolation

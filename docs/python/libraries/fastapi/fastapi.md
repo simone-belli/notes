@@ -175,4 +175,4 @@ No ORM, no migrations, no admin UI, no project layout opinion — and **no serve
 - [pydantic/pydantic.md](../pydantic/pydantic.md) — Pydantic is FastAPI's validation and serialisation engine
 - [Uvicorn & Ports](../uvicorn.md) — the ASGI server that binds a port and actually serves the app
 - [asyncio.md](../../language/concurrency/asyncio.md) — FastAPI is ASGI-native; endpoint functions can be `async def`
-- [aiohttp.md](../aiohttp.md) — the HTTP *client* side of the boundary; keep outbound fetches in a pure function and the endpoint thin
+- [aiohttp.md](../http-clients/aiohttp.md) — the HTTP *client* side of the boundary; keep outbound fetches in a pure function and the endpoint thin

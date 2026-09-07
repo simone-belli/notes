@@ -7,7 +7,7 @@ quiz: core
 
 # Testing — Contract Tests
 
-When you have two or more concrete classes that share an interface ([`Protocol`](../../language/typing/structural-typing.md)), run the same test suite against all of them with a **parametrized [fixture](fixtures.md)** — no test duplication, no `isinstance`.
+When you have two or more concrete classes that share an interface ([`Protocol`](../language/typing/structural-typing.md)), run the same test suite against all of them with a **parametrized [fixture](fixtures.md)** — no test duplication, no `isinstance`.
 
 ## The fixture
 
@@ -71,5 +71,5 @@ Add one string to `params` and one branch to the fixture. All existing tests gai
 ## Related notes
 
 - [`testing-patterns.md`](testing-patterns.md) — dependency seams, `tmp_path`, capturing stdout
-- [`repository-di.md`](../../language/objects/repository-di.md) — the Protocol + fake pattern these tests exercise
+- [`repository-di.md`](../language/objects/repository-di.md) — the Protocol + fake pattern these tests exercise
 - [`pytest.md`](pytest.md) — command quick-reference
