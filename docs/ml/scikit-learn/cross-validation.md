@@ -96,7 +96,9 @@ metric you care about. Valid strings come from
 
 ### Adding your own scorer
 
-Two callables are easy to conflate, and `scoring=` wants the second:
+A scorer decides which fitted candidate wins; it never changes how any of them
+were fitted — see [Custom Loss Functions](custom-loss.md) for the training
+objective. Two callables are easy to conflate, and `scoring=` wants the second:
 
 - **Metric** — `(y_true, y_pred) -> float`; everything in `sklearn.metrics`.
 - **Scorer** — `(estimator, X, y) -> float`; receives the *fitted* estimator and

@@ -6,6 +6,9 @@
 :material-text-box-outline: **[Running Cross-Validation](cross-validation.md){ .lvl-intermediate }**
 :   `cross_val_score` vs `cross_validate` vs `cross_val_predict` — what the loop returns, multi-metric scoring, writing custom scorers, the `neg_` sign convention, and per-fold diagnostics
 
+:material-text-box-outline: **[Custom Loss Functions](custom-loss.md){ .lvl-advanced }**
+:   Why `scoring=` never changes how a model is fitted, the built-in `loss=` menu, `sample_weight` as the cheap custom objective, and the two routes to a genuinely novel one — a `scipy.optimize` estimator or a boosting `objective=` callable
+
 :material-text-box-outline: **[Custom Transformers](custom-transformers.md){ .lvl-advanced }**
 :   Writing your own feature-engineering steps (rolling stats, regime tags) as `fit`/`transform` classes so they live inside the Pipeline and stay leak-free — plus the burn-in buffer that keeps a recursive feature like an EWMA continuous across a fold boundary
 
