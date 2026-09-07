@@ -109,7 +109,9 @@ SE(SR_ann) ≈ sqrt(q / n)
 
 Three years of daily data: `sqrt(252/756) ≈ 0.58`. So a reported 1.0 is really
 "1.0 ± 0.6" — *before* correcting for having searched. Quote the interval, not
-the point. (Autocorrelated returns inflate it further.)
+the point. (Autocorrelated returns inflate it further; see
+[Metric Standard Errors](../../finance/metric-standard-errors.md) for the HAC
+correction and the standard errors of the other metrics you might report.)
 
 ## Rule 3 — pre-register and log the trial count K
 

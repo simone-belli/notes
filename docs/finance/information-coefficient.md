@@ -43,6 +43,8 @@ ic.mean() / ic.std(ddof=1) * np.sqrt(252)    # annualised, daily rebalance
 
 `ICIR` (information ratio of the IC) matters more than mean IC alone: a signal
 with IC 0.03 every day beats one averaging 0.05 by alternating +0.30 and −0.24.
+Being a ratio of means it takes the same delta-method
+[standard error](metric-standard-errors.md) as a Sharpe ratio.
 
 ## Why rank rather than Pearson
 

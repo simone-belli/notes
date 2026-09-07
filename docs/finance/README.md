@@ -28,4 +28,10 @@ Domain-specific notes on trading, exchanges, and market data APIs.
 
     Free public APIs for FX rates and stock/crypto OHLCV
 
+-   :material-text-box-outline:{ .lg .middle } __[Metric Standard Errors](metric-standard-errors.md){ .lvl-advanced }__
+
+    ---
+
+    Mean, MSE, QLIKE, and Sharpe as sample means with standard errors — HAC corrections and the paired Diebold–Mariano comparison
+
 </div>
