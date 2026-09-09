@@ -104,6 +104,59 @@ git log --oneline --graph --all   # visualize branches and merges
 git blame file.py          # who last touched each line, and in which commit
 ```
 
+### Machine-readable status
+
+`git status` output is human-facing: reworded between releases and translated into the
+user's locale. `--porcelain` switches to a stable, never-localized format safe to parse
+in scripts.
+
+```bash
+git status --porcelain
+```
+
+One line per path, `XY path`, where **`X`** is the status in the index (staged) and
+**`Y`** the status in the working tree (unstaged):
+
+```
+M  file.py          # staged modification, working tree clean
+ M file.py          # modified on disk, not staged
+MM file.py          # staged, then modified again
+A  new.py           # newly added, staged
+ D gone.py          # deleted on disk, deletion not staged
+R  a.py -> b.py     # renamed
+?? scratch.py       # untracked
+UU merged.py        # both sides modified — conflict
+```
+
+Codes: ` ` unmodified, `M` modified, `A` added, `D` deleted, `R` renamed, `C` copied,
+`T` type changed, `U` unmerged, `??` untracked, `!!` ignored (with `--ignored`).
+
+!!! warning "The leading space is data, not indentation"
+    ` M file.py` and `M  file.py` mean opposite things — unstaged vs staged. A script
+    that strips the line before parsing throws that distinction away.
+
+Empty output means a clean tree, which is the idiomatic dirty check in CI and hooks:
+
+```bash
+if [ -n "$(git status --porcelain)" ]; then
+  echo "working tree dirty"; exit 1
+fi
+```
+
+Common companions:
+
+```bash
+git status --porcelain -z                     # NUL-separated, unquoted — safest to parse
+git status --porcelain --branch               # adds a "## main...origin/main [ahead 1]" line
+git status --porcelain --untracked-files=no   # ignore untracked files
+git status --porcelain=v2                     # verbose: file modes, object IDs, rename scores
+```
+
+!!! tip "Use `-z` for anything real"
+    In the default format, paths containing spaces or non-ASCII bytes are C-quoted
+    (`"my file.py"`), which breaks naive `cut -c4-` parsing. `-z` drops the quoting and
+    separates records with NUL — a byte no filename can contain.
+
 ### Finding a bug with bisect
 
 `git bisect` binary-searches the commit Directed Acyclic Graph (DAG) for the commit that introduced a regression — O(log n)

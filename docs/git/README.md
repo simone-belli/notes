@@ -8,7 +8,7 @@ Git workflows, commands, internals, and CI/CD.
 
     ---
 
-    Setup, revision syntax, staging/diff, bisect, branching, .gitignore
+    Setup, revision syntax, staging/diff, porcelain status, bisect, branching, .gitignore
 
 -   :material-text-box-outline:{ .lg .middle } __[GitHub Actions & CI](github-actions.md){ .lvl-intermediate }__
 

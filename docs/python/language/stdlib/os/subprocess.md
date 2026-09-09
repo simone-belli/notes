@@ -102,9 +102,9 @@ to change between versions. When scripting, prefer:
   **porcelain** ones (`git log`, `git status`, `git diff`) — plumbing output
   is a stable, documented interface; porcelain output isn't guaranteed to
   stay the same across git versions.
-- **`--porcelain` flags** on porcelain commands that offer one (`git status
-  --porcelain`) for a stable, script-friendly format without giving up the
-  more convenient command.
+- **`--porcelain` flags** on porcelain commands that offer one ([`git status
+  --porcelain`](../../../../git/git.md#machine-readable-status)) for a stable,
+  script-friendly format without giving up the more convenient command.
 - **`--no-pager` and `--no-color`** — `git --no-pager log ...` — a pager or
   ANSI color codes in captured output will break naive parsing, even though
   `subprocess` pipes (not a terminal) usually suppress both by default.
