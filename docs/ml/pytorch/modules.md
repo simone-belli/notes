@@ -244,6 +244,19 @@ model(torch.randn(4, 784, device=DEVICE)).shape     # (4, 10)
 Run one fake batch the moment the model is written. Every shape bug surfaces in
 a millisecond, before a data loader, a loss, or an optimizer is involved.
 
+## Checklist
+
+1. `super().__init__()` first.
+2. Submodules assigned as attributes, or wrapped in `ModuleList`/`ModuleDict`.
+3. Non-learned tensors via `register_buffer`.
+4. Shapes as `__init__` arguments; shape comments in `forward`.
+5. Batch axis first and untouched.
+6. Raw logits out.
+7. No device logic in `forward`.
+8. One fake batch through it before anything else.
+9. Parameter count checked against expectation.
+10. Save the `state_dict`.
+
 ## Related
 
 - [The Training Loop](training-loop.md) — what consumes `parameters()` and
