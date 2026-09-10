@@ -102,9 +102,9 @@ for epoch in range(n_epochs):
   a plain mean of batch means is subtly wrong.
 - `.item()` is not optional here — accumulating the tensor keeps every graph
   alive ([the leak](autograd.md#item-and-the-accidental-graph-leak)).
-- A learning-rate scheduler steps **once per epoch** and **after**
-  `optimizer.step()`. Stepping it per batch silently decays the rate an
-  epoch-length times too fast.
+- A [learning-rate scheduler](lr-schedulers.md) steps **once per epoch** and
+  **after** `optimizer.step()`. Stepping it per batch silently decays the rate
+  an epoch-length times too fast.
 
 ## Between backward and step
 
