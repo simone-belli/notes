@@ -10,6 +10,8 @@ Modelling workflow — the library-agnostic protocol first, then the library.
 
 -   :material-flask-outline:{ .lg .middle } __[Experiments](experiments/)__
 
+-   :material-fire:{ .lg .middle } __[PyTorch](pytorch/)__
+
 -   :material-chart-scatter-plot:{ .lg .middle } __[scikit-learn](scikit-learn/)__
 
 </div>

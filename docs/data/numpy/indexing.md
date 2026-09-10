@@ -168,3 +168,5 @@ would be ambiguous.
 - [dtypes](dtypes.md) — the itemsize that strides are counted in
 - [Pandas — Indexing, Views and Copies](../pandas/indexing.md) — the same
   view/copy problem one layer up
+- [PyTorch — Tensors](../../ml/pytorch/tensors.md) — the same strides model,
+  where an in-place write through a view corrupts a gradient
