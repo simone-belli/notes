@@ -162,6 +162,8 @@ backward op to produce one.
 
 ## Related
 
+- [The Training Loop](training-loop.md) — where `zero_grad`/`backward`/`step`
+  sit, and what else has to be right around them
 - [Tensors](tensors.md) — `requires_grad`, and the view/copy rules that turn
   into gradient errors
 - [Reproducibility and Seeding](../concepts/reproducibility.md) — the other

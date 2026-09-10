@@ -270,6 +270,8 @@ in code someone else reads.
 
 - [Autograd](autograd.md) — `.backward()`, gradient accumulation, and the
   switches that stop the graph being recorded
+- [The Training Loop](training-loop.md) — the five statements all of this
+  exists to support
 - [NumPy — Indexing and Slicing](../../data/numpy/indexing.md) — strides, and
   the view/copy rules this layer inherits
 - [NumPy — Broadcasting](../../data/numpy/broadcasting.md) — identical rules

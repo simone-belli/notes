@@ -7,3 +7,6 @@ The tensor library underneath deep learning — arrays that also know which devi
 
 :material-text-box-outline: **[Tensors](tensors.md){ .lvl-basic }**
 :   What transfers from NumPy (creation, indexing, broadcasting, reductions, the reshape vocabulary) and what doesn't — `dtype`/`device`, `requires_grad`, the view-vs-copy rules that autograd turns into gradient errors, and writing device-agnostic code from the start
+
+:material-text-box-outline: **[The Training Loop](training-loop.md){ .lvl-basic }**
+:   The five statements and what each one mutates, the model/criterion/optimizer trio and the live parameter references binding them, logits-not-probabilities losses, `train()`/`eval()` vs `no_grad()`, where clipping and the scheduler go, and a checklist of the failures that produce no error
