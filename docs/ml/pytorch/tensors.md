@@ -270,6 +270,8 @@ in code someone else reads.
 
 - [Autograd](autograd.md) — `.backward()`, gradient accumulation, and the
   switches that stop the graph being recorded
+- [Modules](modules.md) — the registry that decides which tensors get moved,
+  saved, and trained
 - [The Training Loop](training-loop.md) — the five statements all of this
   exists to support
 - [NumPy — Indexing and Slicing](../../data/numpy/indexing.md) — strides, and

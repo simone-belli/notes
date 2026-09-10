@@ -38,7 +38,8 @@ criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3)
 ```
 
-- `model.parameters()` is a **generator of live references**. The optimizer
+- `model` is an [`nn.Module`](modules.md), and `model.parameters()` is a
+  **generator of live references**. The optimizer
   holds those same tensors, which is how `step()` can update the model without
   ever being handed it. Construct the optimizer *after* moving the model to its
   device, and re-create it if you replace a layer.
@@ -147,6 +148,7 @@ optimizer.step()
 
 - [Autograd](autograd.md) — what `backward()` builds and frees, and why
   `zero_grad()` exists
+- [Modules](modules.md) — building the `model` this loop consumes
 - [Tensors](tensors.md) — dtype and device rules the loop assumes
 - [Reproducibility and Seeding](../concepts/reproducibility.md) — making two
   runs of this loop comparable
