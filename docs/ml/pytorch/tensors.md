@@ -171,23 +171,14 @@ x.grad           # tensor([4.])
 - `x.requires_grad_(True)` flips the flag in place; setting it `False` over
   `model.parameters()` is how a backbone gets frozen.
 
-Three ways to switch recording off, for different jobs:
-
-```python
-with torch.no_grad():         # don't build a graph — validation, manual updates
-    val = criterion(model(xb), yb)
-
-with torch.inference_mode():  # stronger and faster; outputs can never re-enter autograd
-    preds = model(xb)
-
-z = y.detach()                # one tensor out of the graph — but SHARING y's storage
-```
-
 !!! note "Mental model"
     `requires_grad` is a *recording switch*, not a property of the numbers. The
     floats are identical either way; what changes is whether PyTorch keeps every
     intermediate alive to replay backwards. That memory cost is why `no_grad` at
     validation time can double the usable batch size.
+
+[Autograd](autograd.md) covers the rest: what `.backward()` frees, why `.grad`
+accumulates, and `no_grad` vs `detach` vs `inference_mode`.
 
 ## View vs copy
 
@@ -277,6 +268,8 @@ in code someone else reads.
 
 ## Related
 
+- [Autograd](autograd.md) — `.backward()`, gradient accumulation, and the
+  switches that stop the graph being recorded
 - [NumPy — Indexing and Slicing](../../data/numpy/indexing.md) — strides, and
   the view/copy rules this layer inherits
 - [NumPy — Broadcasting](../../data/numpy/broadcasting.md) — identical rules
