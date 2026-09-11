@@ -14,6 +14,8 @@ Three options in increasing power:
 | Colours, borders, styles | `rich` |
 | Already using pandas | `df.to_string()` or `tabulate(df, headers="keys")` |
 
+For charts rather than tables, see [plotext](plotext.md).
+
 ---
 
 ## 1. f-strings (no deps)
