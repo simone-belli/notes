@@ -43,6 +43,8 @@ optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3)
   holds those same tensors, which is how `step()` can update the model without
   ever being handed it. Construct the optimizer *after* moving the model to its
   device, and re-create it if you replace a layer.
+- The `loader` is a [`DataLoader`](data-loading.md) over a `Dataset` — it decides
+  which rows are batched together, and nothing else here checks that decision.
 - The criterion is just a function object; it holds no state (except a
   `weight=` you passed it) and takes part in no updates.
 - [`optimizer.step()`](optimisers.md) reads `p.grad` and writes `p` under
@@ -149,6 +151,8 @@ optimizer.step()
 
 - [Autograd](autograd.md) — what `backward()` builds and frees, and why
   `zero_grad()` exists
+- [Data Loading](data-loading.md) — where `train_loader` comes from, and the
+  split rules it will not enforce for you
 - [Modules](modules.md) — building the `model` this loop consumes
 - [Optimisers](optimisers.md) — what `step()` walks, and SGD vs Adam vs AdamW
 - [Tensors](tensors.md) — dtype and device rules the loop assumes

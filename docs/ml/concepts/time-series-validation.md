@@ -150,3 +150,4 @@ scores = cross_val_score(search, X, y, cv=TimeSeriesSplit(n_splits=5))   # outer
 - [Train/Test Splitting](../scikit-learn/splitting.md) — the splitter catalogue and stratification
 - [scikit-learn Pipelines](../scikit-learn/pipelines.md) — keeping preprocessing inside the fold
 - [Custom Transformers](../scikit-learn/custom-transformers.md) — causal windows, warm-up gaps, and the burn-in buffer that closes them
+- [PyTorch — Data Loading](../pytorch/data-loading.md) — feeding these folds to a `DataLoader`, and why `random_split` undoes all of it

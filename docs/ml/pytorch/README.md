@@ -5,6 +5,9 @@ The tensor library underneath deep learning — arrays that also know which devi
 :material-text-box-outline: **[Autograd](autograd.md){ .lvl-intermediate }**
 :   The graph recorded by the forward pass — what `.backward()` computes and frees, why `.grad` accumulates and `zero_grad()` is not optional, `no_grad` vs `detach` vs `inference_mode`, the `.item()` that stops a logging line leaking every graph, and what each autograd error message means
 
+:material-text-box-outline: **[Data Loading](data-loading.md){ .lvl-intermediate }**
+:   `Dataset` as `__len__` + `__getitem__` and `DataLoader` as sampler → batch → fetch → collate — plus the boundary PyTorch refuses to draw: why `random_split` is wrong for time series, overlapping windows and grouped rows, where normalisation statistics must come from, `Subset` as the join between a domain-aware splitter and an index space, custom `collate_fn`, samplers, and the worker-process gotchas
+
 :material-text-box-outline: **[Learning Rate Schedulers](lr-schedulers.md){ .lvl-intermediate }**
 :   The object that rewrites `lr` and nothing else — why decay and warmup both help, the base-rate-and-multiplier mechanics, the per-epoch vs per-batch bug that silently zeroes the rate, cosine/one-cycle/plateau and when each fits, composing warmup with decay, and checkpointing the state
 
