@@ -183,6 +183,71 @@ That axis then accepts date strings, UNIX timestamps, or `datetime` / [pandas
 `Timestamp`](../../data/pandas/datetimes.md) objects. Helpers: `f.date().today()`,
 `f.date().convert(t, output="timestamp")`.
 
+!!! warning "`f.clear()` deactivates the date axis"
+    `activate()` doesn't survive a clear, so a streaming plot must re-activate dates on every
+    frame. Miss it and the first frame renders fine while the second dies with
+    `TypeError: must be real number, not Timestamp`.
+
+## pandas
+
+There is no integration layer — no `.plot.plotext()` accessor, no `data=`/`x=`/`y=` column
+arguments. plotext is duck-typed: anything that iterates into numbers plots, and `Series`,
+`Index`, and NumPy arrays all qualify. So you pass **columns, never the frame**.
+
+```python
+import pandas as pd
+import plotext as plt
+
+f = plt.figure
+f.draw(f.signal(df["t"], df["v"], marker="braille").lines())
+f.show()
+```
+
+| Input | Result |
+|---|---|
+| `f.signal(df["v"])` | Series as y |
+| `f.signal(df["t"], df["v"])` | Series as x and y |
+| `f.signal(df.index, df["v"])` | `Index` works as x |
+| `f.bar(g.index, g.values)` | e.g. a `groupby().sum()` result |
+| `f.hist(df["v"], bins=20)` | fine |
+| `f.signal(df)` | **`ArgumentError: must be real number, not str`** |
+
+Multiple columns are an explicit loop, which is also how each series gets a legend label:
+
+```python
+for col in df.columns:
+    f.draw(f.signal(df.index, df[col], marker="braille").lines().label(col))
+f.legend()
+```
+
+A [`DatetimeIndex`](../../data/pandas/datetimes.md) needs `f.date(axis="x").activate(form=…)`
+first — without it, `TypeError: must be real number, not Timestamp`.
+
+!!! warning "`pd.NA` raises; `np.nan` doesn't"
+    Float `NaN` is skipped and leaves a gap in the connecting line. pandas **nullable** dtypes
+    (`Float64`, `boolean`) carry `pd.NA` instead and blow up with `TypeError: must be real
+    number, not NAType`. Convert first: `f.signal(s.astype("float64"))`. Nullable dtypes
+    arrive silently from `convert_dtypes()`, Arrow-backed frames, and
+    `read_csv(dtype_backend="numpy_nullable")`.
+
+`f.candlestick()` wants **lowercase** keys — `date`, `open`, `high`, `low`, `close` — while
+market data conventionally capitalises them, giving a bare `KeyError: 'open'`:
+
+```python
+f.date(axis="x").activate(form="%Y-%m-%d")
+f.draw(f.candlestick({"date": ohlc.index, **ohlc.rename(columns=str.lower).to_dict("list")}))
+```
+
+The escape hatch is the matplotlib bridge — `df.plot()` returns matplotlib axes, so you can
+build the plot the pandas way and render it in the terminal, at the cost of a matplotlib
+dependency:
+
+```python
+ax = df.plot(x="t", y="v")
+plt.matplotlib(ax.get_figure())
+f.show()
+```
+
 ## Streaming
 
 Clear → draw → show → sleep:

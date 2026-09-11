@@ -10,7 +10,7 @@ Third-party libraries your program imports at runtime — as opposed to [tooling
 :   JSON Lines: append-friendly, streamable records with Pydantic serialisation
 
 :material-text-box-outline: **[plotext](plotext.md){ .lvl-basic }**
-:   Charts as coloured text in the terminal: the figure/signal/draw model, plot types, subplots, CLI
+:   Charts as coloured text in the terminal: the figure/signal/draw model, plot types, subplots, pandas input, CLI
 
 :material-clipboard-check-outline: **[Pydantic](pydantic/)**
 
