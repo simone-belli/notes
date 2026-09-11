@@ -3,6 +3,9 @@
 :material-text-box-outline: **[Data Leakage](data-leakage.md){ .lvl-intermediate }**
 :   The taxonomy — preprocessing, look-ahead, target, feature-selection, group, and selection bias — plus the one question that catches most of it and the signals that betray the rest
 
+:material-text-box-outline: **[Gradient Descent](gradient-descent.md){ .lvl-intermediate }**
+:   The textbook account of SGD and Adam — the descent bound that sets the usable step size, why conditioning makes plain descent slow, why constant-rate SGD never converges, momentum as a filter, the AdaGrad→RMSProp→Adam lineage, bias correction, and why $L^2$ is not weight decay
+
 :material-text-box-outline: **[Model Validation](model-validation.md){ .lvl-basic }**
 :   Why training error lies, the train/validation/test roles, hold-out vs k-fold and its i.i.d. premise, stratified and group-aware splits, and nested CV for honest post-tuning scores
 

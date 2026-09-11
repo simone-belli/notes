@@ -20,8 +20,9 @@ for epoch in range(n_epochs):
 
 - **Early** — large steps cross the flat, badly-scaled regions fast, and the
   step noise keeps the optimizer out of sharp minima.
-- **Late** — stochastic gradient descent (SGD) doesn't converge to a point; it
-  orbits the minimum in a ball whose radius scales with the learning rate. To
+- **Late** — stochastic gradient descent (SGD)
+  [doesn't converge to a point](../concepts/gradient-descent.md#why-the-rate-must-decay);
+  it orbits the minimum in a ball whose radius scales with the learning rate. To
   settle, the radius must shrink.
 - **Warmup** is the mirror image: Adam's second-moment estimate is meaningless
   for the first few hundred steps, so full-size updates then can wreck a model

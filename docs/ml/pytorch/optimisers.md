@@ -65,7 +65,8 @@ need it.
 torch.optim.SGD(params, lr, momentum=0, weight_decay=0, nesterov=False)
 ```
 
-With `momentum=0`, SGD is genuinely stateless — `optimizer.state` stays `{}`. The recurrence:
+With `momentum=0`, SGD is genuinely stateless — `optimizer.state` stays `{}`. The recurrence (the
+maths is in [Gradient Descent](../concepts/gradient-descent.md)):
 
 ```
 g   ← grad + weight_decay · p        # L2 folded into the gradient
@@ -256,6 +257,8 @@ parameters, then load the optimiser state.
 
 ## Related
 
+- [Gradient Descent](../concepts/gradient-descent.md) — the library-agnostic derivations behind
+  these update rules
 - [The Training Loop](training-loop.md) — where `zero_grad()` and `step()` sit
 - [Learning Rate Schedulers](lr-schedulers.md) — the object that rewrites `group["lr"]`
 - [Autograd](autograd.md) — what fills the `.grad` that `step()` reads
