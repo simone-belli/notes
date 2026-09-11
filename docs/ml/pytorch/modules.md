@@ -185,8 +185,9 @@ sum(p.numel() for p in model.parameters() if p.requires_grad)
 - `module.register_forward_hook(fn)` extracts intermediates without editing
   `forward`.
 
-Freezing is per-parameter, and worth filtering out of the optimizer so Adam
-doesn't carry state for tensors that never move:
+Freezing is per-parameter, and worth filtering out of the
+[optimizer](optimisers.md) so Adam doesn't carry state for tensors that never
+move:
 
 ```python
 for p in model.backbone.parameters():

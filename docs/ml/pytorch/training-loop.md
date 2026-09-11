@@ -45,8 +45,9 @@ optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3)
   device, and re-create it if you replace a layer.
 - The criterion is just a function object; it holds no state (except a
   `weight=` you passed it) and takes part in no updates.
-- `optimizer.step()` reads `p.grad` and writes `p` under `no_grad`. It has no
-  idea where the gradients came from — anything that filled `.grad` works.
+- [`optimizer.step()`](optimisers.md) reads `p.grad` and writes `p` under
+  `no_grad`. It has no idea where the gradients came from — anything that filled
+  `.grad` works.
 
 ## Loss functions
 
@@ -149,6 +150,7 @@ optimizer.step()
 - [Autograd](autograd.md) — what `backward()` builds and frees, and why
   `zero_grad()` exists
 - [Modules](modules.md) — building the `model` this loop consumes
+- [Optimisers](optimisers.md) — what `step()` walks, and SGD vs Adam vs AdamW
 - [Tensors](tensors.md) — dtype and device rules the loop assumes
 - [Reproducibility and Seeding](../concepts/reproducibility.md) — making two
   runs of this loop comparable

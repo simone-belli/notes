@@ -42,8 +42,9 @@ one float per parameter group from `base_lrs`, and writes them in.
 
 - `last_epoch` is a misnomer — it counts `step()` calls, nothing more. The
   class has no idea what an epoch is.
-- With several [parameter groups](modules.md), the schedule scales each group's
-  own base, so discriminative learning rates keep their ratio for free.
+- With several [parameter groups](optimisers.md#parameter-groups), the schedule
+  scales each group's own base, so discriminative learning rates keep their
+  ratio for free.
 - Read the current value with `scheduler.get_last_lr()` (a list) — not
   `get_lr()`, which is the internal hook and warns.
 
@@ -160,6 +161,7 @@ wrong base.
 
 - [The Training Loop](training-loop.md) — where `scheduler.step()` sits among
   the five statements
+- [Optimisers](optimisers.md) — the object whose `lr` a schedule rewrites
 - [Modules](modules.md) — `model.parameters()` and the parameter groups a
   schedule scales
 - [Optuna](../experiments/optuna.md) — searching over the base learning rate

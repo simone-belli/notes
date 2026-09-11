@@ -11,6 +11,9 @@ The tensor library underneath deep learning — arrays that also know which devi
 :material-text-box-outline: **[Modules](modules.md){ .lvl-intermediate }**
 :   Building a model — the registry behind `nn.Module`, parameters vs buffers vs plain attributes, the plain-list trap that silently drops layers, `Sequential` vs a custom block, module vs functional layers, `forward` discipline, and saving the `state_dict`
 
+:material-text-box-outline: **[Optimisers](optimisers.md){ .lvl-intermediate }**
+:   The list of live parameter references behind `step()` — what the update loop walks and skips, the SGD and Adam recurrences, why AdamW's decay differs from Adam's, parameter groups, the rebinding that silently orphans a layer, and the positional matching in `state_dict`
+
 :material-text-box-outline: **[Tensors](tensors.md){ .lvl-basic }**
 :   What transfers from NumPy (creation, indexing, broadcasting, reductions, the reshape vocabulary) and what doesn't — `dtype`/`device`, `requires_grad`, the view-vs-copy rules that autograd turns into gradient errors, and writing device-agnostic code from the start
 
