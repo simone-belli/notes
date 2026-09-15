@@ -187,6 +187,7 @@ CPU even when the data is on GPU.
 
 ## Related
 
+- [Building an LSTM](lstm-model.md) — the model class around the layer: arguments, initialisation, head, clipping
 - [Long Short-Term Memory](../concepts/lstm.md) — what the cell state and gates actually do
 - [Modules](modules.md) — where the `assert`s go in `forward`
 - [Data Loading](data-loading.md) — building the windows, and why `random_split` is wrong here
