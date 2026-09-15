@@ -20,8 +20,8 @@ theme:
         name: Switch to dark mode
   features:
     - content.code.copy
-    - navigation.sections
     - navigation.indexes
+    - navigation.prune
     - navigation.tabs
     - navigation.path
     - search.suggest
