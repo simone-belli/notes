@@ -109,7 +109,8 @@ independent observation. It is silently wrong when:
 - **Windows overlap** — index `i` and `i+1` of a `WindowDataset(length=20)` share
   19 of 20 observations, so both sides of the split hold near-duplicates. Needs a
   purge and embargo at least as wide as the window; see
-  [Purged Cross-Validation](../concepts/purged-cross-validation.md).
+  [Purged Cross-Validation](../concepts/purged-cross-validation.md) for the splitting
+  and [LSTM Shapes](lstm.md) for the window arithmetic itself.
 - **Rows are grouped** — several rows per patient, user, session, or augmented
   copy. Every group belongs entirely on one side.
 

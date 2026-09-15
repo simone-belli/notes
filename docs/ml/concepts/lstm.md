@@ -149,6 +149,7 @@ that is what keeps both the memory and the learning signal alive.
 
 ## Related
 
+- [LSTM Shapes](../pytorch/lstm.md) — `nn.LSTM` in practice, and the shape conventions that fail silently
 - [Gradient Descent](gradient-descent.md) — what clipping and the update rule are doing
 - [Autograd](../pytorch/autograd.md) — the graph BPTT unrolls and why detaching matters
 - [Data Leakage](data-leakage.md) — the look-ahead trap a bidirectional LSTM walks into

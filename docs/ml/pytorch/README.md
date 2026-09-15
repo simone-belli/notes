@@ -11,6 +11,9 @@ The tensor library underneath deep learning — arrays that also know which devi
 :material-text-box-outline: **[Learning Rate Schedulers](lr-schedulers.md){ .lvl-intermediate }**
 :   The object that rewrites `lr` and nothing else — why decay and warmup both help, the base-rate-and-multiplier mechanics, the per-epoch vs per-batch bug that silently zeroes the rate, cosine/one-cycle/plateau and when each fits, composing warmup with decay, and checkpointing the state
 
+:material-text-box-outline: **[LSTM Shapes](lstm.md){ .lvl-intermediate }**
+:   The layer that accepts a transposed batch without complaint — `batch_first` and the square-batch case with no tell, why the state tensors ignore the flag, `output` vs `h_n` vs `c_n` and which one a prediction head wants, `(h_0, c_0)` and detached state across chunks, lookback vs `seq_len`, and the window arithmetic that shifts every label
+
 :material-text-box-outline: **[Modules](modules.md){ .lvl-intermediate }**
 :   Building a model — the registry behind `nn.Module`, parameters vs buffers vs plain attributes, the plain-list trap that silently drops layers, `Sequential` vs a custom block, module vs functional layers, `forward` discipline, and saving the `state_dict`
 
