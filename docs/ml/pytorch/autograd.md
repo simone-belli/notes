@@ -98,7 +98,7 @@ for i, (xb, yb) in enumerate(loader):
 |---|---|---|
 | `torch.no_grad()` | a block | validation, manual parameter updates |
 | `torch.inference_mode()` | a block | pure inference — faster, outputs can never re-enter autograd |
-| `.detach()` | one tensor | logging, metrics, cutting a recurrent history |
+| `.detach()` | one tensor | logging, metrics, cutting a [recurrent history](../concepts/lstm.md) |
 | `requires_grad_(False)` | a parameter | freezing layers |
 
 ```python

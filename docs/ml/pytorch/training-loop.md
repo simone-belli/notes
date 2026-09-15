@@ -121,6 +121,8 @@ optimizer.step()
 ```
 
 - Clipping before `backward()` clips nothing; after `step()` it's too late.
+- Standard practice for [recurrent models](../concepts/lstm.md), where a single batch
+  can produce a gradient orders of magnitude off the usual scale.
 - Gradient norms logged here are the first diagnostic when a loss goes to `nan`:
   a norm exploding one step earlier localises the problem.
 

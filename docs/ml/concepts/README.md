@@ -6,6 +6,9 @@
 :material-text-box-outline: **[Gradient Descent](gradient-descent.md){ .lvl-intermediate }**
 :   The textbook account of SGD and Adam — the descent bound that sets the usable step size, why conditioning makes plain descent slow, why constant-rate SGD never converges, momentum as a filter, the AdaGrad→RMSProp→Adam lineage, bias correction, and why $L^2$ is not weight decay
 
+:material-text-box-outline: **[Long Short-Term Memory](lstm.md){ .lvl-intermediate }**
+:   Why a plain RNN's gradient dies over a product of Jacobians, the constant error carousel that replaces it, the three gates and two states, why $\prod f_k$ is a gradient highway the network opens for itself, GRU and bidirectional variants, and what transformers do better
+
 :material-text-box-outline: **[Model Validation](model-validation.md){ .lvl-basic }**
 :   Why training error lies, the train/validation/test roles, hold-out vs k-fold and its i.i.d. premise, stratified and group-aware splits, and nested CV for honest post-tuning scores
 
