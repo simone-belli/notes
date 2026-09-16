@@ -21,6 +21,10 @@ of `iter_*`; the `Response` class is literally shared. Fan out with
 by a semaphore:
 
 ```python
+import asyncio
+
+import httpx
+
 async def fetch_all(urls, concurrency=10):
     sem = asyncio.Semaphore(concurrency)          # created once, shared
 
@@ -75,6 +79,8 @@ Domain Name System (DNS) errors, connection refused. It never retries a 500, a
 status-based backoff, use `tenacity`:
 
 ```python
+from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
+
 @retry(retry=retry_if_exception_type((httpx.TimeoutException, httpx.HTTPStatusError)),
        wait=wait_exponential(multiplier=0.5, max=20),
        stop=stop_after_attempt(4), reraise=True)

@@ -20,6 +20,8 @@ A dtype is the contract that makes NumPy arrays fast: every element occupies exa
 ## Specifying and inspecting
 
 ```python
+import numpy as np
+
 a = np.array([1, 2, 3], dtype=np.float32)
 a.dtype            # dtype('float32')
 a.dtype.itemsize   # 4 bytes

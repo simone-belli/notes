@@ -60,9 +60,11 @@ and "impute then one-hot" for categoricals — the whole recipe as one leak-safe
 `fit` boundary:
 
 ```python
+from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 pre = ColumnTransformer([
     ("num", Pipeline([("impute", SimpleImputer(strategy="median")),

@@ -94,6 +94,8 @@ See [asyncio.md](asyncio.md) for a deep dive into `async def`, `await`, `asyncio
 Key primitives:
 
 ```python
+import asyncio
+
 await asyncio.gather(*coros)                         # run coroutines concurrently, collect results
 asyncio.create_task(coro())                          # schedule without waiting
 await asyncio.sleep(n)                               # non-blocking sleep

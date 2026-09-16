@@ -23,6 +23,8 @@ from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 ## The interface
 
 ```python
+from sklearn.model_selection import GridSearchCV, TimeSeriesSplit
+
 search = GridSearchCV(
     estimator=pipe,
     param_grid={"model__alpha": [0.01, 0.1, 1.0, 10.0]},
@@ -77,6 +79,8 @@ composite estimator.
 ### Reading results
 
 ```python
+import pandas as pd
+
 search.best_params_, search.best_score_, search.best_estimator_, search.best_index_
 pd.DataFrame(search.cv_results_).sort_values("rank_test_score")
 ```
@@ -128,6 +132,7 @@ the number of hyperparameters.
 
 ```python
 from scipy.stats import loguniform, randint, uniform
+from sklearn.model_selection import RandomizedSearchCV, TimeSeriesSplit
 
 search = RandomizedSearchCV(
     pipe,
@@ -181,6 +186,8 @@ Nest the searcher to get an honest number — legitimate precisely because it is
 estimator:
 
 ```python
+from sklearn.model_selection import RandomizedSearchCV, TimeSeriesSplit, cross_val_score
+
 search = RandomizedSearchCV(pipe, dists, n_iter=40, cv=TimeSeriesSplit(n_splits=3))
 scores = cross_val_score(search, X, y, cv=TimeSeriesSplit(n_splits=5))   # 5×40×3 fits
 ```

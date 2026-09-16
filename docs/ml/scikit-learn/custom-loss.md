@@ -85,6 +85,8 @@ prediction, so LightGBM and XGBoost accept an objective function — and their
 scikit-learn wrappers keep it inside the usual Pipeline and CV machinery.
 
 ```python
+from lightgbm import LGBMRegressor
+
 def asymmetric(y_true, y_pred):
     r = y_pred - y_true
     grad = np.where(r > 0, 2 * 5.0 * r, 2 * r)

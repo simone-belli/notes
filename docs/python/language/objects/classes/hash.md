@@ -60,6 +60,8 @@ This is why `list`, `dict`, and `set` are unhashable by design. Only hash **immu
 ## `@dataclass`
 
 ```python
+from dataclasses import dataclass
+
 @dataclass
 class Trade:               # __eq__ generated, __hash__ = None → unhashable
     symbol: str

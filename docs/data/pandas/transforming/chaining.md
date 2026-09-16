@@ -9,6 +9,8 @@ quiz: core
 Instead of reassigning `df` repeatedly, chain operations that each return a new DataFrame:
 
 ```python
+import numpy as np
+
 result = (
     raw
     .query('price > 0')
@@ -63,6 +65,8 @@ result = (
 If the target function takes the DataFrame under a keyword other than its first argument (e.g. statsmodels' `data=`), pass a `(callable, keyword)` tuple — `.pipe` routes `df` there:
 
 ```python
+import statsmodels.formula.api as smf
+
 df.pipe((smf.ols, 'data'), formula='y ~ x')   # df -> data=df
 ```
 

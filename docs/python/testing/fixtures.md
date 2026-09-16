@@ -29,6 +29,8 @@ def sample_trades():
 ## Setup and teardown with `yield`
 
 ```python
+import psycopg2
+
 @pytest.fixture
 def db_conn():
     conn = psycopg2.connect(dsn="postgresql://localhost/testdb")
@@ -85,6 +87,8 @@ def db_with_schema(db_conn):
 Multiplies every test that uses the fixture — one run per parameter:
 
 ```python
+import sqlite3
+
 @pytest.fixture(params=["sqlite", "postgres"])
 def db(request):
     if request.param == "sqlite":

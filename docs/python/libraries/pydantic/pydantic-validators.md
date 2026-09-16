@@ -102,6 +102,8 @@ model_validator(before) → field coercion → field_validator(before)
 All failures are collected before raising — Pydantic reports every broken field, not just the first:
 
 ```python
+from pydantic import ValidationError
+
 try:
     Trade(symbol="", price=-1)
 except ValidationError as e:

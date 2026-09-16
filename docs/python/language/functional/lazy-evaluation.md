@@ -93,6 +93,8 @@ Each stage hands one element at a time to the next. Memory = sum of stage state,
 NumPy and Pandas are always eager — they allocate upfront and run vectorised C operations. That tradeoff (memory for speed) is correct when the data fits in RAM and you're doing numerical work.
 
 ```python
+import numpy as np
+
 # NumPy — eager, but vectorised and much faster
 nav = np.cumprod(1 + returns)
 

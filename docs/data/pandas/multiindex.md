@@ -18,6 +18,8 @@ Two rules remove most of the difficulty:
 2. **Tuple = one key, list = many keys.** `('AAPL', '2024-01-02')` is a single point in the hierarchy; `['AAPL', 'MSFT']` is two outer-level keys.
 
 ```python
+import pandas as pd
+
 idx = pd.IndexSlice
 
 # exact

@@ -43,6 +43,8 @@ structlog.configure(
 structlog writes to stdout directly. Use when you don't need to share a pipeline with stdlib libraries.
 
 ```python
+import logging
+
 structlog.configure(
     processors=[
         structlog.contextvars.merge_contextvars,   # must be first

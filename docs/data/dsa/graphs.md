@@ -64,6 +64,8 @@ def bfs(graph: dict[int, list[int]], start: int) -> list[int]:
 Shortest path variant — carry distance in the queue:
 
 ```python
+from collections import deque
+
 def bfs_shortest(graph, start, end):
     visited = {start}
     queue = deque([(start, 0)])

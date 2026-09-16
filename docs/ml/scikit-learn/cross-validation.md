@@ -43,6 +43,8 @@ raises. No timings, no train scores, no estimators.
 ## cross_validate — the full result
 
 ```python
+import pandas as pd
+
 cv_results = cross_validate(
     pipe, X, y, cv=5,
     scoring=["accuracy", "roc_auc", "f1"],   # multiple metrics in one pass
@@ -73,6 +75,8 @@ A dict of arrays, each of length `n_splits`:
 - **`return_estimator`** exposes what was actually learned per fold:
 
 ```python
+import numpy as np
+
 coefs = np.array([est[-1].coef_ for est in cv_results["estimator"]])
 coefs.std(axis=0)      # do coefficients flip sign across folds?
 ```

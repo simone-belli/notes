@@ -51,6 +51,8 @@ async def process(url):
 Bridges synchronous code into the async world. Creates an event loop, runs one top-level coroutine to completion, then closes the loop:
 
 ```python
+import asyncio
+
 value = asyncio.run(main())   # blocks until main() returns
 ```
 
@@ -109,6 +111,11 @@ Single-threaded scheduler: runs one coroutine at a time, switches at every `awai
 Consequence: **any blocking call freezes all other coroutines**:
 
 ```python
+import time
+
+import aiohttp
+import requests
+
 # BAD — blocks the whole event loop
 async def bad():
     time.sleep(5)

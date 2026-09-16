@@ -35,6 +35,8 @@ Output shape = element-wise max of the aligned shapes.
 ## Common patterns
 
 ```python
+import numpy as np
+
 # subtract column mean from every row
 A - A.mean(axis=1, keepdims=True)     # (M, N) - (M, 1)  →  (M, N)
 

@@ -60,6 +60,8 @@ def test_get_trade():
 Both implementations satisfy the same `TradeRepository` Protocol, so nothing else changes. Prefer a [fake over a mock](../../language/objects/repository-di.md) — it exercises the endpoint against correct behaviour. `dependency_overrides` is a plain dict on the `app`, so wrap client + reset in a [pytest fixture](../../testing/fixtures.md) to keep tests isolated:
 
 ```python
+import pytest
+
 @pytest.fixture
 def client():
     with TestClient(app) as c:        # lifespan runs

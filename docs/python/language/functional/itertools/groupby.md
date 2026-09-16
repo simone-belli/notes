@@ -53,6 +53,8 @@ groups = {k: list(g) for k, g in groupby([1, 1, 2, 2, 3])}
 ## Canonical sort → groupby pattern
 
 ```python
+from operator import itemgetter
+
 records = [
     {"name": "alice", "dept": "eng"},
     {"name": "bob",   "dept": "hr"},

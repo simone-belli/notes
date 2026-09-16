@@ -76,6 +76,8 @@ app.include_router(users.router)
 **Options set once on the router** apply to all its routes, and `include_router` can add another layer on top:
 
 ```python
+from fastapi import APIRouter, Depends
+
 router = APIRouter(
     prefix="/admin",
     tags=["admin"],
@@ -145,6 +147,8 @@ When code both fetches upstream data *and* exposes its own API, keep the two in 
 
 ```python
 # data/binance.py — pure, framework-free
+import pandas as pd
+
 async def fetch_binance(symbol: str) -> pd.DataFrame: ...
 
 # api/routes.py — FastAPI boundary

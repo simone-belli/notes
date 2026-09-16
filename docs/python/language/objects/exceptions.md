@@ -99,6 +99,8 @@ raise ValueError("price missing for %s", symbol)   # BUG — nothing interpolate
 Link exceptions to preserve cause when translating between layers:
 
 ```python
+import json
+
 try:
     data = json.loads(raw)
 except json.JSONDecodeError as e:
@@ -161,6 +163,7 @@ except Exception:
 `__exit__(exc_type, exc_val, exc_tb)` returning `True` suppresses the exception. Use `contextlib.suppress` for this pattern:
 
 ```python
+import os
 from contextlib import suppress
 
 with suppress(FileNotFoundError):
@@ -174,6 +177,8 @@ See [context-managers.md](../runtime/context-managers.md) for the full context m
 For concurrent tasks where multiple exceptions can occur simultaneously:
 
 ```python
+import asyncio
+
 try:
     async with asyncio.TaskGroup() as tg:
         tg.create_task(task_a())

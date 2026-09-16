@@ -13,6 +13,9 @@ Techniques beyond the [core `@given`/strategies pattern](hypothesis.md): shaping
 `assume(condition)` and `.filter(predicate)` both generate a candidate and discard it if false — same cost, different timing. Every discarded example still counts against the example budget; too high a discard rate raises `FailedHealthCheck` (`HealthCheck.filter_too_much`) instead of silently retrying forever.
 
 ```python
+from hypothesis import assume, given
+from hypothesis import strategies as st
+
 # Wastes ~50% of draws
 @given(st.integers(), st.integers())
 def test_range(low, high):

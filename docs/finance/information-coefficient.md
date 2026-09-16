@@ -32,6 +32,8 @@ spearmanr(pred, fwd_ret).statistic          # a single rank IC
 Panel, one IC per date, then the summary statistics:
 
 ```python
+import numpy as np
+
 ic = df.groupby("date").apply(
     lambda g: g["pred"].corr(g["fwd_ret"], method="spearman")
 )

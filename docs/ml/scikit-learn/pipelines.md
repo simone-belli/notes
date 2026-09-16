@@ -32,6 +32,8 @@ volatility regime.
 The manual fix is **split first, fit on train only, transform the test set**:
 
 ```python
+from sklearn.preprocessing import StandardScaler
+
 X_train, X_test = X[:split], X[split:]
 
 scaler = StandardScaler()

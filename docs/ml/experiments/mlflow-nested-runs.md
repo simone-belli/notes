@@ -9,6 +9,8 @@ count `K` recoverable for deflating a reported metric.
 ## Nested runs — study and trial
 
 ```python
+import mlflow
+
 with mlflow.start_run(run_name="study") as parent:
     mlflow.log_param("search_space", "lr:[1e-4,1e-1], depth:[2,12]")
 
@@ -64,6 +66,7 @@ pip install optuna-integration[mlflow]
 ```
 
 ```python
+import optuna
 from optuna.integration.mlflow import MLflowCallback
 
 mlflc = MLflowCallback(tracking_uri="sqlite:///mlflow.db", metric_name="rmse")

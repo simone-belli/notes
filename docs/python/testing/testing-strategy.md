@@ -32,6 +32,9 @@ Test **behaviour, not implementation**. The rule of thumb: risk × value.
 Every test has three acts:
 
 ```python
+import pytest
+from pydantic import ValidationError
+
 def test_trade_rejects_negative_quantity():
     # Arrange
     data = {"symbol": "BHP", "quantity": -10, "price": 45.5, "side": "BUY"}
@@ -107,7 +110,9 @@ Most useful when fixing bugs (write a test that reproduces the bug, then fix it)
 ### hypothesis example
 
 ```python
+import pytest
 from hypothesis import given, strategies as st
+from pydantic import ValidationError
 
 @given(st.integers(max_value=-1))
 def test_rejects_any_negative_quantity(qty):

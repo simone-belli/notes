@@ -11,6 +11,8 @@ Without a storage URL the study dies with the process. With one it is durable,
 resumable, and shared:
 
 ```python
+import optuna
+
 study = optuna.create_study(
     study_name="gbdt", storage="sqlite:///optuna.db", load_if_exists=True)
 ```
@@ -56,6 +58,9 @@ Wrap [`cross_val_score`](../scikit-learn/cross-validation.md) — the explicit r
 and the one that keeps every leakage rule intact:
 
 ```python
+from sklearn.model_selection import TimeSeriesSplit, cross_val_score
+from sklearn.pipeline import Pipeline
+
 def objective(trial):
     pipe = Pipeline([...])       # a Pipeline, never a bare estimator
     return -cross_val_score(pipe, X, y, cv=TimeSeriesSplit(5, gap=10),

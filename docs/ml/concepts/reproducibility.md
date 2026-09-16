@@ -43,6 +43,8 @@ reading a global seed.
 ## scikit-learn's `random_state`
 
 ```python
+from sklearn.ensemble import RandomForestClassifier
+
 RandomForestClassifier(random_state=None)   # draws from the global legacy RNG — not reproducible
 RandomForestClassifier(random_state=42)     # int → fresh, independent RandomState(42) every call
 RandomForestClassifier(random_state=rs)     # RandomState/Generator instance → consumed and mutated,
@@ -64,6 +66,8 @@ in a [custom estimator](../scikit-learn/custom-transformers.md) that needs
 the same convention.
 
 ```python
+from sklearn.model_selection import KFold, RandomizedSearchCV, train_test_split
+
 train_test_split(X, y, random_state=42)
 KFold(n_splits=5, shuffle=True, random_state=42)          # ignored (and warns) if shuffle=False
 RandomizedSearchCV(estimator, param_distributions, random_state=42)
@@ -84,6 +88,9 @@ RandomizedSearchCV(estimator, param_distributions, random_state=42)
 no visibility into what the objective does with them:
 
 ```python
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+
 def objective(trial):
     lr = trial.suggest_float("lr", 1e-4, 1e-1, log=True)        # seeded by TPESampler
     X_tr, X_va, y_tr, y_va = train_test_split(X, y, random_state=42)  # separate seed, own responsibility

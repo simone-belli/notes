@@ -14,6 +14,9 @@ yourself, keep the out-of-fold (OOF) predictions, concatenate them into one
 out-of-sample (OOS) return series, and compute the Sharpe ratio **once** on that.
 
 ```python
+import numpy as np
+import pandas as pd
+
 oos = []
 for tr, te in splitter.split(X):
     pipe.fit(X.iloc[tr], y.iloc[tr])

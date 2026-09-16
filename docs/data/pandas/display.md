@@ -5,6 +5,8 @@ Two axes: **display options** (how many rows/columns, float precision) and **val
 ## Global options — `pd.set_option`
 
 ```python
+import pandas as pd
+
 pd.set_option("display.max_rows", 100)         # None = all
 pd.set_option("display.max_columns", None)
 pd.set_option("display.float_format", "{:,.2f}".format)  # all floats

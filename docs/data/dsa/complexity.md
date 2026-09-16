@@ -18,6 +18,8 @@ Big-O describes how work *scales* with input size — not raw speed. The questio
 | O(n²) | quadruples | every pair — a loop inside a loop |
 
 ```python
+import bisect
+
 d["key"]        # O(1) — hash → slot → done
 x in my_set     # O(1) — set is a hash table
 bisect.bisect_left(sorted_lst, x)  # O(log n)

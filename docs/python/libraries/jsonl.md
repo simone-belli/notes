@@ -93,6 +93,8 @@ with path.open(encoding="utf-8") as f:
 ## Streaming large files
 
 ```python
+from pathlib import Path
+
 def iter_trades(path: Path):
     if not path.exists():
         return

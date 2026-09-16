@@ -11,6 +11,8 @@ tuple giving the byte step along each axis. Element `a[i, j]` lives at
 `offset + i*s0 + j*s1` — that formula is the whole indexing engine.
 
 ```python
+import numpy as np
+
 a = np.arange(12).reshape(3, 4)
 a.strides     # (32, 8) — 8 bytes per int64, so a 4-element row is 32 bytes
 ```

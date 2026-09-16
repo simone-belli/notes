@@ -99,6 +99,10 @@ OUTPUT_DIR = ROOT / "output"
 Better still, take paths as parameters and let only the entry point know real locations — [dependency injection](../../objects/repository-di.md) applied to the filesystem:
 
 ```python
+from pathlib import Path
+
+from mypkg.config import settings      # your Settings instance
+
 class PriceLoader:
     def __init__(self, raw_dir: Path) -> None:
         self._raw_dir = raw_dir

@@ -15,6 +15,10 @@ single shared session, as in [aiohttp.md](aiohttp.md).
 ## Concurrent requests
 
 ```python
+import asyncio
+
+import aiohttp
+
 async def fetch_one(session, url):
     async with session.get(url) as resp:
         resp.raise_for_status()

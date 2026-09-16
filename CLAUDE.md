@@ -80,7 +80,10 @@ tags:
 
 - Lead with what the thing is and why it matters, then how to use it.
 - Short code examples are preferred over long ones.
-- When documenting a module, class, or function, always show how it's imported before describing how it's used (e.g. `from fastapi import FastAPI` before the first `FastAPI()` example).
+- When documenting a module, class, or function, always show how it's imported before describing how it's used (e.g. `from fastapi import FastAPI` before the first `FastAPI()` example). Never name a non-builtin object — in prose or in a snippet — without its import being visible on the page:
+    - The page's **baseline imports** (`import pandas as pd` on a pandas page, `import torch` / `from torch import nn` on a PyTorch one) appear once, in the page's first snippet, and are assumed from there on.
+    - Any object that is **not the page's own subject** carries its import in the snippet that uses it — `from torch.nn.utils import clip_grad_norm_`, `from operator import itemgetter`, `from sklearn.model_selection import TimeSeriesSplit`, `from tenacity import retry`. Repeat it in each such snippet; don't make the reader scroll up to another section.
+    - A bare name in prose (`clip_grad_norm_(...)`) is not enough — either fully qualify it (`torch.nn.utils.clip_grad_norm_`) or show the call in a snippet with its import.
 - Use bullet points for lists of facts; use prose only for conceptual explanations.
 - No multi-paragraph docstrings or wall-of-text sections. Concretely: never
   leave three consecutive prose paragraphs with no heading, code block, list,

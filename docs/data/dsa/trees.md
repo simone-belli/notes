@@ -40,6 +40,8 @@ class TreeNode:
 ## Inorder — recursive
 
 ```python
+from typing import Optional
+
 def inorder(node: Optional[TreeNode], result: list[int] | None = None) -> list[int]:
     if result is None:
         result = []

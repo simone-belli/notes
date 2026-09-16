@@ -80,6 +80,7 @@ The load-bearing words are **same shape**. Variable-length samples raise
 `RuntimeError: stack expects each tensor to be equal size`:
 
 ```python
+import torch
 from torch.nn.utils.rnn import pad_sequence
 
 def pad_collate(batch):

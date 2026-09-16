@@ -72,6 +72,8 @@ df.rename(columns=lambda c: c.replace(' ', '_'))
 `.rename(scalar)` is the inline way to set `s.name` — it returns a renamed copy, so it drops into a chain where `s.name = 'ret'` (a mutating statement) cannot.
 
 ```python
+import pandas as pd
+
 s.rename('ret')                     # scalar → renames the SERIES
 pd.Series(values, name='ret')       # or at construction
 

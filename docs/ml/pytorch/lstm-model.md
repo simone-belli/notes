@@ -187,9 +187,17 @@ self.head = nn.Sequential(
 Most of the [training loop](training-loop.md) is unchanged. Three things are recurrent-specific:
 
 - **Clip gradients.** The constant error carousel protects the cell-state path, not the
-  gate weights; one outlier batch with Adam can destroy a converged model.
-  `clip_grad_norm_(model.parameters(), max_norm=1.0)` goes between `backward()` and
-  `step()`, with 1.0–5.0 the usual range.
+  gate weights; one outlier batch with Adam can destroy a converged model. The call goes
+  between `backward()` and `step()`, with `max_norm` of 1.0–5.0 the usual range:
+
+    ```python
+    from torch.nn.utils import clip_grad_norm_
+
+    loss.backward()
+    clip_grad_norm_(model.parameters(), max_norm=1.0)
+    optimizer.step()
+    ```
+
 - **Scale the inputs.** The gates are sigmoids, and a saturated sigmoid passes no gradient.
   Unscaled features pin gates at 0 or 1 and the model stalls without erroring. Compute the
   statistics on the training split only — fitting a scaler on the whole series before
@@ -232,7 +240,7 @@ a transformer fits the problem instead.
 6. Raw output from the head; no softmax, no activation.
 7. Forget-gate bias at 1.0 when sequences are long.
 8. Inputs scaled with training-split statistics only.
-9. `clip_grad_norm_` between `backward()` and `step()`.
+9. `torch.nn.utils.clip_grad_norm_` between `backward()` and `step()`.
 10. `.to(DEVICE)` before constructing the optimiser.
 11. Parameter count compared against the training-set size.
 12. One batch overfitted to near-zero loss before any long run.

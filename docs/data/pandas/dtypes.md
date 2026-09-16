@@ -33,6 +33,8 @@ df['name'].dtype    # StringDtype()
 Plain NumPy `int64` cannot hold `NaN`. Any integer column with a missing value silently becomes `float64` in old pandas. The nullable extension integers fix this — capital I:
 
 ```python
+import pandas as pd
+
 pd.array([1, 2, None], dtype='Int64')   # Int64 — nullable, missing = pd.NA
 pd.array([1, 2, None], dtype='int64')   # float64 — lowercase = NumPy, None→NaN
 ```
@@ -95,6 +97,8 @@ arr = df['price'].to_numpy()   # no copy for NumPy-backed columns
 Extension type columns (Int64, StringDtype, Categorical) are **not** backed by plain NumPy arrays. `.to_numpy()` allocates a new array, often `dtype=object`. Be explicit:
 
 ```python
+import numpy as np
+
 df['count'].to_numpy(dtype=float, na_value=np.nan)   # converts pd.NA → np.nan
 ```
 

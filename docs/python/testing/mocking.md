@@ -57,6 +57,8 @@ m.send_alert.call_args_list      # all calls in order
 `unittest.mock.ANY` is an equality wildcard that matches anything:
 
 ```python
+from unittest.mock import ANY
+
 m.send.assert_called_once_with(to="ops@example.com", body=ANY)
 ```
 
@@ -134,6 +136,8 @@ asyncio_mode = "auto"
 Without `asyncio_mode = "auto"`, decorate each async test individually:
 
 ```python
+import pytest
+
 @pytest.mark.asyncio
 async def test_fetch():
     result = await fetch(url)
@@ -167,6 +171,8 @@ mock_resp.__aexit__ = AsyncMock(return_value=False)
 Async [fixtures](fixtures.md) work the same way — no extra decorator needed with `asyncio_mode = "auto"`:
 
 ```python
+import aiohttp
+
 @pytest.fixture
 async def session():
     async with aiohttp.ClientSession() as s:

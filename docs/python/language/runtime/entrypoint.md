@@ -91,6 +91,8 @@ arguments — so `main()` must read `sys.argv` itself (e.g. via [argparse](../st
 
 ```python
 # finlib/pipeline/cli.py
+import argparse
+
 def main() -> None:          # no arguments — pip calls it bare
     parser = argparse.ArgumentParser(...)
     args = parser.parse_args()

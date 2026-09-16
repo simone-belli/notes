@@ -33,6 +33,8 @@ Columnar layout buys two mechanical wins:
 ## From pandas
 
 ```python
+import pandas as pd
+
 df.to_parquet('trades.parquet', compression='zstd', index=False)
 df = pd.read_parquet('trades.parquet')                       # whole file
 

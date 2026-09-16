@@ -35,6 +35,8 @@ Warning  (subclass of Exception)
 Catch the exception, downgrade it to a warning when the program can still proceed:
 
 ```python
+import json
+
 def load_config(path):
     try:
         with open(path) as f:
@@ -97,6 +99,8 @@ Lets callers filter by type: `warnings.filterwarnings("error", category=Precisio
 ## In tests (pytest)
 
 ```python
+import pytest
+
 # Assert a warning is emitted:
 with pytest.warns(DeprecationWarning, match="use new_fn"):
     old_fn()

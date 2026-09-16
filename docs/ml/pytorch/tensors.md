@@ -122,6 +122,8 @@ the memory, and what GPUs are built for. The consequence is that data arriving
 from NumPy is float64 and won't join in:
 
 ```python
+import numpy as np
+
 w = torch.randn(3, 4)                        # float32
 x = torch.from_numpy(np.random.rand(4))      # float64
 x @ w.T   # RuntimeError: expected scalar type Double but found Float

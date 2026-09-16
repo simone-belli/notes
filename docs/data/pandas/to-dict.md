@@ -4,6 +4,8 @@ Convert a `DataFrame`/`Series` to native Python dicts/lists — e.g. before JSON
 serialisation at an API boundary. Shape is chosen by `orient=`.
 
 ```python
+import pandas as pd
+
 df = pd.DataFrame({"x": [1, 2], "y": [3, 4]}, index=["a", "b"])
 ```
 

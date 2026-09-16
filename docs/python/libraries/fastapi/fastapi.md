@@ -102,6 +102,10 @@ The same decorators (`get`, `post`, …, `api_route`, `route`) also live on `API
 A **path operation** is the pair *(method, path)* bound to a function (`@app.get`, `@app.post`, …). The function signature *is* the request schema — FastAPI decides each parameter's source from its annotation:
 
 ```python
+from typing import Annotated
+
+from fastapi import Query
+
 @app.get("/trades/{trade_id}")
 def get_trade(trade_id: int) -> Trade: ...          # path param
 

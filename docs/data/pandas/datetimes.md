@@ -20,6 +20,10 @@ Pandas      pd.Timestamp         nanosecond, tz-aware or naive
 ## `pd.Timestamp` — scalar
 
 ```python
+import datetime
+
+import pandas as pd
+
 ts = pd.Timestamp('2024-01-15 09:30:00')
 ts.year, ts.month, ts.day    # 2024, 1, 15
 ts.value                     # int64 nanoseconds since epoch
@@ -160,6 +164,8 @@ aware = naive.tz_localize('UTC')                       # … as long as both leg
 ## Conversions
 
 ```python
+import numpy as np
+
 ts.to_pydatetime()                   # pd.Timestamp → datetime.datetime
 pd.Timestamp(datetime_obj)           # datetime.datetime → pd.Timestamp
 ts.to_datetime64()                   # pd.Timestamp → np.datetime64[ns]

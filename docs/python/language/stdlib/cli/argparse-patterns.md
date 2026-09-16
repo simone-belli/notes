@@ -64,6 +64,8 @@ Long lists belong in a file rather than on the command line — pass `type=Path`
 or let argparse read the *arguments* from a file:
 
 ```python
+import argparse
+
 parser = argparse.ArgumentParser(fromfile_prefix_chars="@")
 # mycli @args.txt      (one argument per line)
 ```
@@ -97,6 +99,10 @@ When the file holds a whole configuration, load it into `set_defaults` with a pr
 flags still win:
 
 ```python
+from pathlib import Path
+
+import yaml
+
 pre = argparse.ArgumentParser(add_help=False)
 pre.add_argument("--config", type=Path)
 known, remaining = pre.parse_known_args()
@@ -196,6 +202,8 @@ def test_main_smoke(monkeypatch):
 **Asserting a clean exit** — if `main()` calls `sys.exit(0)`, that raises `SystemExit`:
 
 ```python
+from unittest.mock import patch
+
 import pytest
 
 def test_main_exits_cleanly():

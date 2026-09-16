@@ -15,6 +15,8 @@ The problem: a function that opens a CSV or queries a database makes tests slow,
 ### Root cause: hidden coupling
 
 ```python
+from pathlib import Path
+
 # BAD — dependency is invisible from the outside
 def load_prices(symbol: str) -> list[float]:
     with open("/data/prices.csv") as f:   # impossible to swap in tests
@@ -82,6 +84,9 @@ Limitation: SQLite dialect differs from Postgres/MySQL. Use Testcontainers for f
 Wrap each test in a transaction rolled back on teardown. State never leaks between tests.
 
 ```python
+import psycopg2
+import pytest
+
 @pytest.fixture
 def db_conn():
     conn = psycopg2.connect(dsn="postgresql://localhost/testdb")

@@ -189,6 +189,9 @@ precision. Move first, then train.
 ### Rebinding a layer breaks it, invisibly
 
 ```python
+import torch
+from torch import nn
+
 optimizer = torch.optim.SGD(model.parameters(), lr=0.5)
 model[1] = nn.Linear(3, 2)      # replaced after construction
 optimizer.step()                # the new layer never moves

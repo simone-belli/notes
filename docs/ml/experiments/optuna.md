@@ -37,6 +37,9 @@ it is a call returning an actual float, chosen now from all history so far.
     TensorFlow 1 → PyTorch for computation graphs.
 
 ```python
+from sklearn.ensemble import HistGradientBoostingRegressor
+from sklearn.linear_model import Ridge
+
 def objective(trial):
     name = trial.suggest_categorical("model", ["ridge", "gbdt"])
     if name == "ridge":

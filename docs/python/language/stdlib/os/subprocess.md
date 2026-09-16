@@ -80,6 +80,8 @@ with subprocess.Popen(["ping", "-c", "5", "8.8.8.8"], stdout=subprocess.PIPE, te
 ## Quick patterns
 
 ```python
+import os
+
 # Capture a single value
 sha = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, check=True).stdout.strip()
 

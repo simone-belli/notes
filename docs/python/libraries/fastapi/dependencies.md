@@ -19,7 +19,10 @@ Path/query/body params all come from the HTTP request directly. Some inputs can'
 `Depends(f)` is a deferred call token: "call `f` at request time and inject its return value here."
 
 ```python
+from collections.abc import Generator
+
 from fastapi import Depends, Request
+from sqlmodel import Session
 
 def get_db() -> Generator[Session, None, None]:
     with Session(engine) as session:

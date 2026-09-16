@@ -225,6 +225,10 @@ rows only; those statistics are order-invariant, so a scattered training set
 costs them nothing. Compose the two:
 
 ```python
+from sklearn.linear_model import Ridge
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+
 make_pipeline(LookupEWMA(source=raw, halflife=10),   # causal, reads full series
               StandardScaler(),                      # fitted, per-fold
               Ridge())
