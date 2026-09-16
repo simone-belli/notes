@@ -3,7 +3,7 @@
 Giving Python code a command-line interface: parsing arguments with `argparse`, and the invocation forms that reach a function from the shell in the first place.
 
 :material-card-bulleted-outline: **[Argparse Patterns](argparse-patterns.md){ .lvl-advanced }**
-:   Beyond the basics: list arguments, JSON and `KEY=VALUE` values, YAML/JSON config files, subcommands, mutually exclusive flags, testing the parser and entry point
+:   Beyond the basics: list arguments, `KEY=VALUE` values, config files, subcommands, mutually exclusive flags, and testing the parser
 
 :material-card-bulleted-outline: **[Python CLI](cli.md){ .lvl-intermediate }**
 :   sys.argv, argparse: positional vs optional, `add_argument` parameters, boolean and short/long flags

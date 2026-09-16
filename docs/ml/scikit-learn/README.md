@@ -4,22 +4,22 @@
 :   Different preprocessing per column group — scale the numerics, encode the categoricals — concatenated into one leak-safe preprocessing step
 
 :material-text-box-outline: **[Running Cross-Validation](cross-validation.md){ .lvl-intermediate }**
-:   `cross_val_score` vs `cross_validate` vs `cross_val_predict` — what the loop returns, multi-metric scoring, writing custom scorers, the `neg_` sign convention, and per-fold diagnostics
+:   `cross_val_score` vs `cross_validate` vs `cross_val_predict` — multi-metric scoring, custom scorers, the `neg_` sign convention, and per-fold diagnostics
 
 :material-text-box-outline: **[Custom Loss Functions](custom-loss.md){ .lvl-advanced }**
-:   Why `scoring=` never changes how a model is fitted, the built-in `loss=` menu, `sample_weight` as the cheap custom objective, and the two routes to a genuinely novel one — a `scipy.optimize` estimator or a boosting `objective=` callable
+:   Why `scoring=` never changes fitting, the built-in `loss=` menu, `sample_weight` as the cheap option, and two custom-objective routes
 
 :material-text-box-outline: **[Custom Transformers](custom-transformers.md){ .lvl-advanced }**
-:   Writing your own feature-engineering steps (rolling stats, regime tags) as `fit`/`transform` classes so they live inside the Pipeline and stay leak-free — plus the burn-in buffer that keeps a recursive feature like an EWMA continuous across a fold boundary
+:   Feature-engineering steps as `fit`/`transform` classes that live inside the Pipeline and stay leak-free, plus the burn-in buffer for recursive features
 
 :material-text-box-outline: **[The Estimator API](estimators.md){ .lvl-basic }**
-:   The one interface every model shares — construct with hyperparameters, `fit` to learn, then `predict` or `transform`; hyperparameters vs `trailing_underscore_` learned attributes
+:   The one interface every model shares — construct, `fit`, then `predict` or `transform`; hyperparameters vs `trailing_underscore_` learned attributes
 
 :material-text-box-outline: **[Hyperparameter Search](hyperparameter-search.md){ .lvl-intermediate }**
-:   Tuning with `GridSearchCV` and `RandomizedSearchCV` — the `step__param` grid, `refit` semantics, reading `cv_results_`, why the exhaustive product doesn't scale, and nesting for an honest score
+:   Tuning with `GridSearchCV` and `RandomizedSearchCV` — the `step__param` grid, `refit` semantics, `cv_results_`, and nesting for an honest score
 
 :material-text-box-outline: **[Imputation](imputation.md){ .lvl-intermediate }**
-:   Filling missing values (`NaN`) that would otherwise crash downstream estimators — SimpleImputer strategies, KNN/iterative imputers, and doing it leak-safe inside a Pipeline
+:   Filling `NaN` values that would crash downstream estimators — `SimpleImputer` strategies, KNN and iterative imputers, leak-safe inside a Pipeline
 
 :material-text-box-outline: **[scikit-learn Pipelines](pipelines.md){ .lvl-intermediate }**
 :   Chaining preprocessing and an estimator so `fit` touches only the training fold — how it makes `scale-then-split` data leakage structurally impossible

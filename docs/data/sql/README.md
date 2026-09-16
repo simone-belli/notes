@@ -15,7 +15,7 @@ Declarative query patterns, with an explicit mapping to pandas equivalents.
 :   `sqlite3` shell: dot-commands, output modes, non-interactive use, `.sqliterc`
 
 :material-text-box-outline: **[Subqueries & CTEs](subqueries.md){ .lvl-intermediate }**
-:   Uncorrelated (derived table, scalar) vs correlated (`EXISTS`/`IN`), when a correlated subquery is a JOIN, deep nesting → chained CTEs, and recursive CTEs
+:   Uncorrelated (derived table, scalar) vs correlated (`EXISTS`/`IN`), when a correlated subquery is a JOIN, and recursive CTEs
 
 :material-text-box-outline: **[Window Functions](window-functions.md){ .lvl-intermediate }**
 :   `OVER`/`PARTITION BY`/frames mapped to `groupby`/`shift`/`rolling`, and staging a window pipeline with a CTE
