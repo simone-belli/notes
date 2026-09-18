@@ -35,6 +35,7 @@ extra_javascript:
   - assets/katex/katex.min.js
   - assets/katex/auto-render.min.js
   - javascripts/katex-init.js
+  - javascripts/collapsible-sections.js
 
 markdown_extensions:
   - admonition

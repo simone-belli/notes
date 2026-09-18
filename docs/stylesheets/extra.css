@@ -71,6 +71,62 @@
   }
 }
 
+/* ── Collapsible sections on the mobile layout ─────────────────────────── */
+
+/* javascripts/collapsible-sections.js wraps each `##` section's content in a
+   .collapsible-section div and, below the width where Material collapses the
+   sidebar into the drawer, marks the heading .is-collapsible and hides the
+   body. The collapsed state lives in the DOM, so only the affordance is
+   styled here — above the breakpoint these rules simply stop applying. */
+
+@media screen and (max-width: 76.234375em) {
+  .md-typeset h2.is-collapsible {
+    position: relative;
+    min-height: 2.2rem; /* comfortable tap target */
+    margin-bottom: 0.4em;
+    padding-top: 0.5rem;
+    padding-right: 1.2rem; /* room for the chevron */
+    border-top: 1px solid var(--md-default-fg-color--lightest);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Chevron: a square keeping only two borders, rotated. `currentColor` keeps
+     it in step with the heading in both palettes. Absolutely positioned rather
+     than a flex item so a long heading still wraps normally. */
+  .md-typeset h2.is-collapsible::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0.15rem;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    opacity: 0.6;
+    transform: translateY(-50%) rotate(-45deg); /* points right: collapsed */
+    transition: transform 150ms;
+  }
+
+  .md-typeset h2.is-collapsible[aria-expanded="true"]::after {
+    transform: translateY(-50%) rotate(45deg); /* points down: expanded */
+  }
+
+  .md-typeset h2.is-collapsible:focus-visible {
+    outline: 2px solid var(--md-accent-fg-color);
+    outline-offset: 2px;
+  }
+}
+
+/* `hidden="until-found"` hides via content-visibility, which a display
+   override alone would not undo — printing from a phone needs both. */
+@media print {
+  .collapsible-section[hidden] {
+    display: block !important;
+    content-visibility: visible !important;
+  }
+}
+
 /* ── Sidebar hierarchy ─────────────────────────────────────────────────── */
 
 /* Left border lines on every nested nav block to show depth */
