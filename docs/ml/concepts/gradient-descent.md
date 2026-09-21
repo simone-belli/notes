@@ -231,3 +231,5 @@ This is why AdamW, not Adam, is the default for any regularised model.
   convergence argument demands
 - [The Training Loop](../pytorch/training-loop.md) — where the update sits among the five
   statements
+- [Training Diagnostics](training-diagnostics.md) — the per-step quantities that reveal
+  when $\alpha$ has left the stable region

@@ -124,7 +124,9 @@ optimizer.step()
 - Standard practice for [recurrent models](../concepts/lstm.md), where a single batch
   can produce a gradient orders of magnitude off the usual scale.
 - Gradient norms logged here are the first diagnostic when a loss goes to `nan`:
-  a norm exploding one step earlier localises the problem.
+  a norm exploding one step earlier localises the problem. `clip_grad_norm_`
+  returns the pre-clip total norm, so logging its return value costs nothing —
+  see [Training Diagnostics](../concepts/training-diagnostics.md).
 
 ## Sanity checks before a long run
 
@@ -158,5 +160,7 @@ optimizer.step()
 - [Modules](modules.md) — building the `model` this loop consumes
 - [Optimisers](optimisers.md) — what `step()` walks, and SGD vs Adam vs AdamW
 - [Tensors](tensors.md) — dtype and device rules the loop assumes
+- [Training Diagnostics](../concepts/training-diagnostics.md) — Karpathy's recipe,
+  and the per-layer probes that explain *why* a run is failing
 - [Reproducibility and Seeding](../concepts/reproducibility.md) — making two
   runs of this loop comparable

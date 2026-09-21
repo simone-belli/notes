@@ -23,3 +23,6 @@
 
 :material-text-box-outline: **[Time-Series Validation](time-series-validation.md){ .lvl-advanced }**
 :   Honest model selection on financial data — how a shuffled KFold lies, expanding-window splits as the floor, and the overlapping-label leak
+
+:material-text-box-outline: **[Training Diagnostics](training-diagnostics.md){ .lvl-intermediate }**
+:   Karpathy's recipe and the per-layer, per-step quantities a loss curve hides — gradient norms, update:param ratio, activation statistics, and telling a high learning rate from no signal
