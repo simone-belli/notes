@@ -183,7 +183,7 @@ sum(p.numel() for p in model.parameters() if p.requires_grad)
   rates possible.
 - `torchinfo.summary(model, input_size=(1, 784))` adds per-layer output shapes.
 - `module.register_forward_hook(fn)` extracts intermediates without editing
-  `forward`.
+  `forward` — see [Forward hooks](#forward-hooks) below.
 
 Freezing is per-parameter, and worth filtering out of the
 [optimizer](optimisers.md) so Adam doesn't carry state for tensors that never
@@ -194,6 +194,86 @@ for p in model.backbone.parameters():
     p.requires_grad_(False)
 optimizer = torch.optim.AdamW(
     (p for p in model.parameters() if p.requires_grad), lr=1e-3)
+```
+
+## Forward hooks
+
+A hook is a [callback](../../python/language/functional/callbacks.md) attached
+to a module, so PyTorch runs it on every forward pass — reading a layer's input
+or output **without editing `forward`**, which matters when the layer lives
+inside a pretrained model you don't own.
+
+```python
+def fn(module, args, output):
+    print(module.__class__.__name__, output.shape, output.std().item())
+
+handle = model[0].register_forward_hook(fn)
+model(x)            # fn fires here
+handle.remove()
+```
+
+- `args` is a **tuple** of positional inputs; `args[0]` is the usual tensor.
+- `output` is whatever `forward` returned — for `nn.LSTM` that's the
+  `(output, (h_n, c_n))` tuple, so don't assume a bare tensor.
+- `register_forward_pre_hook(fn)` takes `fn(module, args)` and fires *before*
+  `forward`; `register_full_backward_hook(fn)` takes
+  `fn(module, grad_input, grad_output)` and fires during `backward()`. The older
+  `register_backward_hook` is deprecated.
+
+!!! warning "Returning a value rewrites the forward pass"
+    A forward hook that returns non-`None` **replaces the module's output** (a
+    pre-hook replaces its input). For observation, return nothing. A stray
+    `return output` works by accident; `return output.detach()` silently severs
+    the graph downstream.
+
+Hooks only run via `__call__`. `model.forward(x)` skips them entirely — the
+usual reason a hook "doesn't fire".
+
+### The handle, and when to remove it
+
+`register_forward_hook` returns a `RemovableHandle`. The module keeps its hooks
+in an `OrderedDict` keyed by an integer id; the handle holds that id, and
+`handle.remove()` deletes the entry, so the hook stops firing and the module's
+reference to your function is dropped.
+
+Removal is the only way to undo a registration — hooks are not in `state_dict()`
+and survive `eval()` and `.to(device)`. The rule is that **a hook should live as
+long as the measurement, not as long as the model**:
+
+- **It fires forever otherwise** — including in validation and production
+  inference, not just the debug run you wrote it for.
+- **Registering in a loop stacks hooks.** Ten epochs of
+  `layer.register_forward_hook(fn)` means ten calls per forward pass; nothing
+  deduplicates.
+- **Storing outputs leaks memory.** `acts.append(output)` pins the whole
+  [autograd](autograd.md) graph for every batch recorded. Append
+  `output.detach().cpu()`, or a scalar like `output.std().item()`.
+
+Because `remove()` must run even if the forward pass raises, tie it to a
+[context manager](../../python/language/runtime/context-managers.md):
+
+```python
+from contextlib import contextmanager
+
+@contextmanager
+def capture(module, fn):
+    handle = module.register_forward_hook(fn)
+    try:
+        yield
+    finally:
+        handle.remove()
+
+with capture(model[0], fn):
+    model(x)
+```
+
+For several layers, keep the handles in a list and remove them together:
+
+```python
+handles = [m.register_forward_hook(fn)
+           for m in model.modules() if isinstance(m, nn.ReLU)]
+for h in handles:
+    h.remove()
 ```
 
 ## Initialisation
@@ -265,3 +345,5 @@ a millisecond, before a data loader, a loss, or an optimizer is involved.
 - [Autograd](autograd.md) — why `requires_grad` on a parameter is what makes it
   trainable
 - [Tensors](tensors.md) — `.to()` on a module mutates, on a tensor it returns
+- [Training Diagnostics](../concepts/training-diagnostics.md) — the per-layer
+  statistics worth reading out through a forward hook

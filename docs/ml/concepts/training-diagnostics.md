@@ -129,8 +129,8 @@ Being scale-free, it compares across layers and models where a raw norm can't.
 
 ### Activation statistics
 
-A forward hook reads any module's output without editing the model (see
-[Modules](../pytorch/modules.md)):
+A forward hook reads any module's output without editing the model (mechanics
+and handle lifetime in [Modules](../pytorch/modules.md#forward-hooks)):
 
 ```python
 def stats_hook(module, inputs, output):
