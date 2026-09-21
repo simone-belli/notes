@@ -1,5 +1,8 @@
 # Python — Language / Functional
 
+:material-text-box-outline: **[Callbacks](callbacks.md){ .lvl-intermediate }**
+:   Inversion of control — where the callee owns the timing, carrying state with `partial`/closures/callable objects, late binding, and when a generator is better
+
 :material-text-box-outline: **[Comprehensions](comprehensions.md){ .lvl-basic }**
 :   List, dict, set comprehensions — when each is more readable than a loop
 

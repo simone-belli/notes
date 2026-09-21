@@ -127,4 +127,5 @@ add("x", 2)   # mypy error — signature survived the decorator
 
 Typical uses: callbacks (`on_error: Callable[[Exception], None]`), strategy injection, sort keys, `default_factory: Callable[[], T]`, and command registries (`dict[str, Callable[..., Command]]`).
 
-Related: [structural typing](structural-typing.md) for Protocols; [typing module](typing.md) for `Literal`, `overload`, `cast`; [subscriptable types](subscriptable.md) for how `Callable[...]` is built; [mypy](../../tooling/mypy.md) for enforcement.
+Related: [callbacks](../functional/callbacks.md) for the pattern these annotate;
+[structural typing](structural-typing.md) for Protocols; [typing module](typing.md) for `Literal`, `overload`, `cast`; [subscriptable types](subscriptable.md) for how `Callable[...]` is built; [mypy](../../tooling/mypy.md) for enforcement.

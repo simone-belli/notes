@@ -102,3 +102,5 @@ Drop a level and you lose one of the three.
 - [functools.md](functools.md) — the stdlib decorators built on this shape: `lru_cache`, `cache`, `cached_property`, `partial`
 - [scopes.md](../runtime/scopes.md#closures) — what a closure captures and when
 - [callable.md](../typing/callable.md) — typing a decorator with `ParamSpec`
+- [callbacks.md](callbacks.md) — the same first-class functions used for inversion
+  of control, without the `@` sugar
