@@ -18,7 +18,7 @@ The tensor library underneath deep learning — arrays that also know which devi
 :   `batch_first` and the tensor shapes it does and doesn't affect — `output` vs `h_n` vs `c_n`, and window arithmetic
 
 :material-text-box-outline: **[Modules](modules.md){ .lvl-intermediate }**
-:   The registry behind `nn.Module` — parameters vs buffers, the plain-list trap, `Sequential` vs custom blocks, `state_dict`, and forward hooks
+:   The registry behind `nn.Module` — parameters vs buffers, the plain-list trap, `Sequential` vs custom blocks, walking the tree by dotted path, `state_dict`, and forward hooks
 
 :material-text-box-outline: **[Optimisers](optimisers.md){ .lvl-intermediate }**
 :   The live parameter references behind `step()` — the SGD and Adam updates, AdamW's decay, parameter groups, and `state_dict` matching

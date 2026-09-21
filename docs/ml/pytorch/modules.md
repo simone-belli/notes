@@ -171,19 +171,66 @@ the second number of the first shape against the first of the second.
 
 ## Inspecting
 
+Assigning a submodule registers it under its attribute name, so a model is a
+tree in which every node has a **dotted path** — `head.0.weight`. That single
+naming scheme is shared by `named_modules()`, `named_parameters()`,
+`state_dict()` and `get_submodule()`, which is what lets discovery feed straight
+into action.
+
+### Finding submodules
+
+Take a model with two named parts, `self.lstm` and `self.head`:
+
 ```python
-print(model)                                    # the module tree
+print(model)                      # the repr: the whole tree, indented — start here
+
+model.lstm                        # attribute access
+model.head[0]                     # Sequential indexes
+model.get_submodule("head.0")     # by dotted path, when the path is data
+
+for name, child in model.named_children():    # one level deep
+    print(name, type(child).__name__)         # lstm LSTM / head Sequential
+
+for name, m in model.named_modules():         # recursive, depth-first
+    print(repr(name), type(m).__name__)       # '' Net / 'lstm' LSTM / 'head.0' Linear
+```
+
+- `named_modules()` **includes the root itself** under the empty name `''`, and
+  yields containers alongside real layers — filter both out when acting on
+  leaves. `children()`/`modules()` are the unnamed equivalents.
+- Select by type rather than by depth:
+
+```python
+for name, m in model.named_modules():
+    if isinstance(m, nn.LSTM):
+        print(name)               # 'lstm'
+```
+
+- `get_submodule(path)` raises `AttributeError` on a bad path — better than a
+  `getattr` chain when the name comes from a config. Siblings are
+  `get_parameter("head.0.weight")` and `get_buffer(...)`.
+- Inside containers the key is the index or dict key — `layers.0`,
+  `heads.price` — and `model.heads["price"]` works on a `ModuleDict`.
+
+### Parameters
+
+```python
 for name, p in model.named_parameters():
     print(name, tuple(p.shape), p.requires_grad)     # 'stem.0.weight' (256, 784) True
 sum(p.numel() for p in model.parameters() if p.requires_grad)
 ```
 
-- `named_parameters()` keys are the dotted attribute path — the same keys as
+- `named_parameters()` keys are those same dotted paths — the keys in
   `state_dict()`, which is what makes partial loading and per-layer learning
   rates possible.
 - `torchinfo.summary(model, input_size=(1, 784))` adds per-layer output shapes.
 - `module.register_forward_hook(fn)` extracts intermediates without editing
   `forward` — see [Forward hooks](#forward-hooks) below.
+
+!!! warning "Renaming an attribute breaks old checkpoints"
+    Rename `self.head` to `self.classifier` and every `head.*` key in a saved
+    `state_dict` stops matching. `load_state_dict(..., strict=True)` reports it;
+    `strict=False` silently leaves those layers randomly initialised.
 
 Freezing is per-parameter, and worth filtering out of the
 [optimizer](optimisers.md) so Adam doesn't carry state for tensors that never

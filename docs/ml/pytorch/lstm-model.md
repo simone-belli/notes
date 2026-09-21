@@ -249,5 +249,7 @@ a transformer fits the problem instead.
 
 - [LSTM Shapes](lstm.md) — the axis conventions that fail silently, and which state tensor the head wants
 - [Long Short-Term Memory](../concepts/lstm.md) — what the gates and cell state do, and why the gradient survives
-- [Modules](modules.md) — the `nn.Module` registry this model class relies on
+- [Modules](modules.md) — the `nn.Module` registry this model class relies on,
+  and [how to walk to](modules.md#finding-submodules) the `lstm` and `head`
+  subtrees by name
 - [Optimisers](optimisers.md) — why the optimiser must be built after `.to()`
