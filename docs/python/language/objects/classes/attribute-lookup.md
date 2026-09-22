@@ -40,7 +40,7 @@ class C:
 - `__set_name__` (3.6+) removes the old need to pass the attribute's name into the descriptor's `__init__` manually — the class-creation machinery calls it once per descriptor right after the class body runs.
 - A single descriptor instance is **shared by every instance of the owning class** (it lives in `type(obj).__dict__`, not per-instance) — so a descriptor must store per-instance state via `setattr(obj, ...)` inside `__get__`/`__set__`, never as `self.something` on the descriptor itself, or state leaks across instances.
 
-Functions are the canonical non-data descriptor: `f.__get__(instance, cls)` produces a bound method, which is why `instance.method()` implicitly passes `self`. `staticmethod`/`classmethod` are thin wrappers customizing that same `__get__` — `classmethod` binds to `owner` (the class) instead of `obj`; `staticmethod` returns the raw function with no binding at all.
+Functions are the canonical non-data descriptor: `f.__get__(instance, cls)` produces a bound method, which is why `instance.method()` implicitly passes `self`. [`staticmethod`/`classmethod`](data-model.md#method-types) are thin wrappers customizing that same `__get__` — `classmethod` binds to `owner` (the class) instead of `obj`; `staticmethod` returns the raw function with no binding at all.
 
 This is also the mechanism behind reusable validated/typed fields — a "validator descriptor" using `__set_name__` plus `__set__` to enforce a constraint (type, range) once, reusable across any class attribute, instead of writing a `@property` getter/setter pair per field. See the standard library's descriptor how-to guide for the canonical recipe.
 

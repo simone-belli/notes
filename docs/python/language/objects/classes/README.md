@@ -9,7 +9,7 @@ How the class and instance machinery works underneath — the protocols your own
 :   Classes vs. metaclasses, class body execution order, `__init_subclass__`
 
 :material-text-box-outline: **[The Data Model and Pythonic Objects](data-model.md){ .lvl-intermediate }**
-:   Dunder methods, `__new__` vs `__init__`, pythonic objects, `@dataclass`
+:   Dunder methods, `__new__` vs `__init__`, pythonic objects, instance/class/static methods, `@dataclass`
 
 :material-text-box-outline: **[`__hash__` — Making Objects Hashable](hash.md){ .lvl-intermediate }**
 :   `__hash__`: hash contract, `__eq__` coupling, mutability, dataclasses

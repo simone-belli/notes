@@ -99,7 +99,8 @@ mutable default — and it is far easier to inspect and test.
   loop may die. Catch what you care about inside the callback.
 - **Bound methods at class level.** `callback = some_function` in a class body
   makes it a method that receives `self` — Python functions are descriptors.
-  Assign in `__init__` (`self.callback = fn`) or wrap in `staticmethod`.
+  Assign in `__init__` (`self.callback = fn`) or wrap in
+  [`staticmethod`](../objects/classes/data-model.md#method-types).
 - **Callback hell.** In async code, `async`/`await` exists to flatten nested
   callbacks back into straight-line code — prefer it to `add_done_callback`
   chains. See [asyncio](../concurrency/asyncio.md).
