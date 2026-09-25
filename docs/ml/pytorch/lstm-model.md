@@ -33,7 +33,7 @@ class LSTMForecaster(nn.Module):
 ```
 
 Run a fake batch the moment it's written — `model(torch.randn(8, 30, 3)).shape` — before a
-dataset or loss exists. The [shapes note](lstm.md) covers why `nn.LSTM` won't catch a
+dataset or loss exists. The [shapes note](lstm-shapes.md) covers why `nn.LSTM` won't catch a
 transposed input for you.
 
 ## Constructor arguments
@@ -247,9 +247,9 @@ a transformer fits the problem instead.
 
 ## Related
 
-- [LSTM Shapes](lstm.md) — the axis conventions that fail silently, and which state tensor the head wants
+- [LSTM Shapes](lstm-shapes.md) — the axis conventions that fail silently, and which state tensor the head wants
 - [Long Short-Term Memory](../concepts/lstm.md) — what the gates and cell state do, and why the gradient survives
 - [Modules](modules.md) — the `nn.Module` registry this model class relies on,
-  and [how to walk to](modules.md#finding-submodules) the `lstm` and `head`
+  and [how to walk to](module-inspection.md#finding-submodules) the `lstm` and `head`
   subtrees by name
 - [Optimisers](optimisers.md) — why the optimiser must be built after `.to()`

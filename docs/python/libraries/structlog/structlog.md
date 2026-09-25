@@ -6,7 +6,7 @@ quiz: detail
 
 # structlog
 
-Third-party logging library that makes structured (key=value) logging the natural default. Every log call produces a dictionary; renderers output it as JSON, coloured console text, or anything else. Sits on top of (or beside) stdlib [`logging`](../language/stdlib/logging.md).
+Third-party logging library that makes structured (key=value) logging the natural default. Every log call produces a dictionary; renderers output it as JSON, coloured console text, or anything else. Sits on top of (or beside) stdlib [`logging`](../../language/stdlib/logging.md).
 
 ## Why over stdlib
 
@@ -41,7 +41,7 @@ log.info("order_placed", order_id=123, user="alice")
 | Simple test assertions on log output | structlog (`capture_logs()`) |
 | Need `RotatingFileHandler`, `SMTPHandler`, external `dictConfig` file | stdlib |
 
-They also compose: structlog can sit on top of stdlib ([stdlib mode](structlog-config.md#stdlib-mode-shared-pipeline-with-third-party-libraries)), so third-party libs using `logging.getLogger` route through the same handler as your structlog calls.
+They also compose: structlog can sit on top of stdlib ([stdlib mode](config.md#stdlib-mode-shared-pipeline-with-third-party-libraries)), so third-party libs using `logging.getLogger` route through the same handler as your structlog calls.
 
 ## Log methods
 
@@ -114,5 +114,5 @@ pip install structlog
 
 ## See also
 
-- [structlog-config.md](structlog-config.md) — the processor pipeline and `structlog.configure()`
-- [structlog-testing.md](../testing/structlog-testing.md) — `capture_logs()`, assertion patterns, pytest fixture, comparison with `caplog`
+- [Configuration](config.md) — the processor pipeline and `structlog.configure()`
+- [Testing](testing.md) — `capture_logs()`, assertion patterns, pytest fixture, comparison with `caplog`

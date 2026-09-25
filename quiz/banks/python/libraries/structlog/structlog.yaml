@@ -1,4 +1,4 @@
-note: python/libraries/structlog.md
+note: python/libraries/structlog/structlog.md
 tier: detail
 questions:
   - id: bind

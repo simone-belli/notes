@@ -93,7 +93,7 @@ logging.getLogger().setLevel(logging.INFO)
 
 ### Switching renderer via Settings
 
-The renderer is just the last item in the `processors` list — pick it with a plain conditional on a [pydantic Settings](pydantic/pydantic-settings.md) field:
+The renderer is just the last item in the `processors` list — pick it with a plain conditional on a [pydantic Settings](../pydantic/pydantic-settings.md) field:
 
 ```python
 shared_processors = [
@@ -133,4 +133,4 @@ Keeping `shared_processors` common to both branches means only the *encoding* ch
 ## See also
 
 - [structlog.md](structlog.md) — log calls, bound loggers, `contextvars`
-- [logging.md](../language/stdlib/logging.md) — the stdlib pipeline stdlib mode plugs into
+- [logging.md](../../language/stdlib/logging.md) — the stdlib pipeline stdlib mode plugs into

@@ -58,7 +58,7 @@ the contamination survives gives, for an exponentially weighted moving average
 | residual contamination | 0.62 | 0.47 | 0.23 | 0.03 | 0.001 |
 
 It tracks `2^(-d/halflife)` — the same constant that sizes a
-[burn-in buffer](../scikit-learn/custom-transformers.md#carrying-a-burn-in-buffer).
+[burn-in buffer](../scikit-learn/fold-safe-transformers.md#carrying-a-burn-in-buffer).
 
 !!! tip "One quantity, two sides"
     Burn-in and embargo are both the transform's memory. Burn-in is how many
@@ -91,7 +91,7 @@ anything order-sensitive breaks in two independent ways — a buffer keyed to th
 training block goes empty, and a recursion runs straight across the time gap
 between two test runs. Both fail silently, and both are correct for exactly the
 splits that resemble `TimeSeriesSplit`. See
-[Custom Transformers](../scikit-learn/custom-transformers.md#non-contiguous-folds)
+[Fold-Safe Transformers](../scikit-learn/fold-safe-transformers.md#non-contiguous-folds)
 for the failure table and the fix.
 
 The underlying correction is one line of principle:
@@ -106,6 +106,6 @@ The underlying correction is one line of principle:
 
 - [Time-Series Validation](time-series-validation.md) — expanding-window CV, the protocol this one generalises
 - [Data Leakage](data-leakage.md) — the taxonomy purging and embargo close two entries in
-- [Custom Transformers](../scikit-learn/custom-transformers.md) — burn-in buffers and the non-contiguous case
+- [Fold-Safe Transformers](../scikit-learn/fold-safe-transformers.md) — burn-in buffers and the non-contiguous case
 - [Tuning a Trading Strategy](strategy-tuning.md) — the selection channel no splitter closes
 - [Train/Test Splitting](../scikit-learn/splitting.md) — the splitter catalogue

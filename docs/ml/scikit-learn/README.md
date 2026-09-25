@@ -10,10 +10,13 @@
 :   Why `scoring=` never changes fitting, the built-in `loss=` menu, `sample_weight` as the cheap option, and two custom-objective routes
 
 :material-text-box-outline: **[Custom Transformers](custom-transformers.md){ .lvl-advanced }**
-:   Feature-engineering steps as `fit`/`transform` classes that live inside the Pipeline and stay leak-free, plus the burn-in buffer for recursive features
+:   Feature-engineering steps as `fit`/`transform` classes that live inside the Pipeline and stay leak-free, plus `FunctionTransformer` for the stateless case
 
 :material-text-box-outline: **[The Estimator API](estimators.md){ .lvl-basic }**
 :   The one interface every model shares — construct, `fit`, then `predict` or `transform`; hyperparameters vs `trailing_underscore_` learned attributes
+
+:material-text-box-outline: **[Fold-Safe Transformers](fold-safe-transformers.md){ .lvl-advanced }**
+:   Rolling and recursive features across a fold boundary — causal windows, the burn-in buffer, burn-in vs embargo, and why non-contiguous splits fail silently
 
 :material-text-box-outline: **[Hyperparameter Search](hyperparameter-search.md){ .lvl-intermediate }**
 :   Tuning with `GridSearchCV` and `RandomizedSearchCV` — the `step__param` grid, `refit` semantics, `cv_results_`, and nesting for an honest score

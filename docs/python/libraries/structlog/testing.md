@@ -5,9 +5,9 @@ tags:
 quiz: detail
 ---
 
-# Testing structlog Logs
+# structlog — Testing
 
-How to assert on log output from [structlog](../libraries/structlog.md) in tests.
+How to assert on log output from [structlog](structlog.md) in tests.
 
 !!! tip "capture_logs() makes log assertions trivially easy — no patching needed"
     `capture_logs()` is a context manager that temporarily replaces the processor chain and collects events as plain dicts. You can assert on event names, log levels, and structured fields directly. Compare this to stdlib `logging` tests, which require `logging.handlers.MemoryHandler` or `caplog` fixtures and string parsing.
@@ -94,6 +94,6 @@ def cap_logs():
 
 ## Related notes
 
-- [`structlog.md`](../libraries/structlog.md) — log methods, bound loggers, `contextvars`
-- [`structlog-config.md`](../libraries/structlog-config.md) — the processor pipeline and `structlog.configure()`
-- [`pytest.md`](pytest.md) — command quick-reference
+- [`structlog.md`](structlog.md) — log methods, bound loggers, `contextvars`
+- [Configuration](config.md) — the processor pipeline and `structlog.configure()`
+- [pytest](../../testing/pytest.md) — command quick-reference

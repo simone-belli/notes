@@ -14,11 +14,14 @@ The tensor library underneath deep learning — arrays that also know which devi
 :material-text-box-outline: **[Building an LSTM](lstm-model.md){ .lvl-intermediate }**
 :   `nn.LSTM` as a feature extractor and the model around it — constructor arguments, gate weights, initialisation, and choosing a head
 
-:material-text-box-outline: **[LSTM Shapes](lstm.md){ .lvl-intermediate }**
+:material-text-box-outline: **[LSTM Shapes](lstm-shapes.md){ .lvl-intermediate }**
 :   `batch_first` and the tensor shapes it does and doesn't affect — `output` vs `h_n` vs `c_n`, and window arithmetic
 
+:material-text-box-outline: **[Module Inspection](module-inspection.md){ .lvl-advanced }**
+:   Reaching into a built model — dotted-path traversal, `named_modules`/`named_parameters`, freezing, and forward hooks with the handle you must remove
+
 :material-text-box-outline: **[Modules](modules.md){ .lvl-intermediate }**
-:   The registry behind `nn.Module` — parameters vs buffers, the plain-list trap, `Sequential` vs custom blocks, walking the tree by dotted path, `state_dict`, and forward hooks
+:   The registry behind `nn.Module` — parameters vs buffers, the plain-list trap, `Sequential` vs custom blocks, `forward`, initialisation, and `state_dict`
 
 :material-text-box-outline: **[Optimisers](optimisers.md){ .lvl-intermediate }**
 :   The live parameter references behind `step()` — the SGD and Adam updates, AdamW's decay, parameter groups, and `state_dict` matching

@@ -93,7 +93,7 @@ feature windows still reach back into it) — see
 [Purged Cross-Validation](purged-cross-validation.md). Here only purging bites:
 with train always preceding test there are no training rows after the test block
 for an embargo to cut. Neither is the same as a
-[burn-in buffer](../scikit-learn/custom-transformers.md#carrying-a-burn-in-buffer):
+[burn-in buffer](../scikit-learn/fold-safe-transformers.md#carrying-a-burn-in-buffer):
 these drop rows to stop an *optimistic score*, while burn-in feeds the
 transformer prior raw `X` to stop a *wrong feature*. `gap` implements purging:
 
@@ -149,5 +149,5 @@ scores = cross_val_score(search, X, y, cv=TimeSeriesSplit(n_splits=5))   # outer
 - [Hyperparameter Search](../scikit-learn/hyperparameter-search.md) — why `cv=5` leaks even without shuffling
 - [Train/Test Splitting](../scikit-learn/splitting.md) — the splitter catalogue and stratification
 - [scikit-learn Pipelines](../scikit-learn/pipelines.md) — keeping preprocessing inside the fold
-- [Custom Transformers](../scikit-learn/custom-transformers.md) — causal windows, warm-up gaps, and the burn-in buffer that closes them
+- [Fold-Safe Transformers](../scikit-learn/fold-safe-transformers.md) — causal windows, warm-up gaps, and the burn-in buffer that closes them
 - [PyTorch — Data Loading](../pytorch/data-loading.md) — feeding these folds to a `DataLoader`, and why `random_split` undoes all of it

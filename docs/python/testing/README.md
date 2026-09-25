@@ -23,9 +23,6 @@ Verifying Python code: the runner and its fixtures, property-based testing, the 
 :material-card-bulleted-outline: **[pytest](pytest.md){ .lvl-basic }**
 :   Test discovery and command quick-reference, `pytest.raises(match=)`, node IDs, approximate float equality with `pytest.approx`, coverage
 
-:material-text-box-outline: **[structlog Logs](structlog-testing.md){ .lvl-advanced }**
-:   Asserting on structlog output: capture_logs, patterns, caplog comparison
-
 :material-text-box-outline: **[Patterns](testing-patterns.md){ .lvl-intermediate }**
 :   Seam-based isolation: file/DB deps, tmp_path, StringIO, stdout
 
