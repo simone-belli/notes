@@ -10,7 +10,8 @@ quiz: core
 - It is a class framework in which classes have special methods (dunder methods).
 - The advantage of dunder methods is uniformity and the ability to apply built-in functions to them.
 - Typical examples: `__init__`, `__len__`, [`__getitem__`](../../typing/subscriptable.md), `__repr__`, `__hash__` and arithmetic operators.
-- Emulating sequences is one of the most common uses.
+- Emulating sequences is one of the most common uses — see [Slicing](slicing.md) for a
+  `__getitem__` that handles both indices and `slice` objects.
 
 ## `__new__` vs `__init__`
 

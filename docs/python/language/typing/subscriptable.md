@@ -30,6 +30,9 @@ class TimeSeries:
     def __getitem__(self, key): return self._data[key]  # slices arrive as slice objects
 ```
 
+Slices arrive as `slice` objects and a comma makes the key a tuple — see
+[Slicing](../objects/classes/slicing.md) for dispatching on them.
+
 ## Type / class subscripting — `__class_getitem__`
 
 There's a second kind of subscripting: applying `[]` to a *class object*, used for generic type annotations:

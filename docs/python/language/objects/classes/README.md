@@ -16,3 +16,6 @@ How the class and instance machinery works underneath — the protocols your own
 
 :material-text-box-outline: **[Classes: Inheritance and ABCs](oop.md){ .lvl-basic }**
 :   Inheritance, MRO, composition over inheritance, ABCs
+
+:material-text-box-outline: **[Slicing](slicing.md){ .lvl-intermediate }**
+:   The `slice` object behind `obj[a:b:c]`, `.indices()`, tuple and `Ellipsis` keys, and a generic `__getitem__` that dispatches int vs slice
