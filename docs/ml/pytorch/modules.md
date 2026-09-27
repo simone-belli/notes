@@ -49,9 +49,10 @@ self.eps = 1e-5                                        # config
 
 - `nn.Parameter` is a Tensor subclass whose job is to be recognised by the
   registry; it defaults to `requires_grad=True`.
-- Buffers are model-owned tensors that aren't learned — batch-norm running
-  statistics, a causal mask, a positional table. Registering them is what makes
-  them move device and get saved.
+- Buffers are model-owned tensors that aren't learned —
+  [batch-norm running statistics](../concepts/normalisation.md#batchnorms-two-modes),
+  a causal mask, a positional table. Registering them is what makes them move
+  device and get saved.
 - A plain tensor attribute stays on the CPU forever, and the first GPU forward
   raises *"Expected all tensors to be on the same device"* from inside your own
   module.

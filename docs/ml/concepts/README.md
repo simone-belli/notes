@@ -12,6 +12,9 @@
 :material-text-box-outline: **[Model Validation](model-validation.md){ .lvl-basic }**
 :   Why training error lies, the train/validation/test roles, hold-out vs k-fold, stratified and group-aware splits, and nested cross-validation
 
+:material-text-box-outline: **[Normalisation Layers](normalisation.md){ .lvl-intermediate }**
+:   Standardise then re-scale — which axes each variant reduces over, why it buys a larger learning rate, BatchNorm's train/eval buffers, and pre-norm vs post-norm
+
 :material-text-box-outline: **[Reproducibility and Seeding](reproducibility.md){ .lvl-intermediate }**
 :   Why every random number generator needs its own seed — global seeding vs explicit generators, `random_state`, and a central seeding module
 

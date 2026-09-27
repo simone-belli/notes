@@ -163,8 +163,8 @@ optimizer = torch.optim.AdamW([
 ], weight_decay=0.01)                        # applies to both
 ```
 
-This drives discriminative fine-tuning and the standard "no weight decay on biases and norm
-parameters" recipe. `add_param_group({...})` appends later; unspecified keys inherit from
+This drives discriminative fine-tuning and the standard "no weight decay on biases and
+[norm parameters](../concepts/normalisation.md)" recipe. `add_param_group({...})` appends later; unspecified keys inherit from
 `defaults`, not from any existing group.
 
 A parameter may appear in **at most one** group — duplicates raise `ValueError: some parameters

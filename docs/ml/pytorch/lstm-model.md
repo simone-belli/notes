@@ -206,7 +206,8 @@ Most of the [training loop](training-loop.md) is unchanged. Three things are rec
   state carried forward but `detach()`ed. Forgetting the detach grows the graph across the
   whole epoch until the process runs out of memory.
 
-There is **no layer normalisation** in `nn.LSTM`, and no flag to add one — it needs
+There is **no [layer normalisation](../concepts/normalisation.md)** in `nn.LSTM`, and no
+flag to add one — it needs
 `nn.LSTMCell` and a hand-written time loop. Wanting it is usually a signal to check whether
 a transformer fits the problem instead.
 
