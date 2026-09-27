@@ -144,6 +144,8 @@ handle.remove()
 - **Std shrinking layer by layer** — signal dying forward; gradient will vanish
   backward.
 - **Std growing layer by layer** — activations inflating; usually ends in `nan`.
+  The layer where it starts is where a
+  [normalisation layer](normalisation.md#renormalising-a-sick-layer) belongs.
 - **Saturation** — for `tanh`, std near 1.0 with the mean pinned at ±1 means the
   units sit in the flat region. For a Rectified Linear Unit (ReLU), track the
   **dead fraction** (activations at exactly 0); a layer 95%+ dead has stopped
@@ -155,29 +157,118 @@ handle.remove()
 
 ## Cheat sheet
 
-Every probe on this page, with the reading that clears it and the reading that
-doesn't. "Bad" values are orders of magnitude, not thresholds — compare layers
-against each other before comparing against the number.
+Every probe on this page, grouped by the quantity you are reading. "Bad" values
+are orders of magnitude, not thresholds — compare layers against each other
+before comparing against the number.
 
-| Quantity | Healthy | Unhealthy | What the bad reading implies |
-|---|---|---|---|
-| Loss at init (softmax, `C` classes) | ≈ `ln(C)` | anything else | Head, reduction, or labels are wrong — fix before spending a run |
-| Loss trajectory | falls steadily, mild noise | rises on many steps | Learning rate above the stable region — a dynamics failure |
-| Loss trajectory | falls steadily, mild noise | smooth and pinned just under `ln(C)` | No signal reaching the loss — features, pipeline, or leak-free-by-accident inputs |
-| Gradient norm, per layer | same order of magnitude across layers | monotone decay from output back to input | Vanishing gradient — depth, activation choice, or init; early layers aren't training |
-| Gradient norm, per layer | same order of magnitude across layers | spike confined to one layer | Localised explosion — that layer's init or normalisation, or an outlier batch |
-| Gradient norm, step to step | steady, slowly decaying | large and erratic | Learning rate too high; loudest in the *variance*, not the mean |
-| `total_norm` from `clip_grad_norm_` | near `max_norm`, occasionally clipped | far below `max_norm` every step | Clipping is inert — it is not protecting you from anything |
-| `total_norm` from `clip_grad_norm_` | near `max_norm`, occasionally clipped | above `max_norm` on most steps | The threshold, not the optimiser, sets your effective step size |
-| Update:param ratio | ~`1e-3` | ≥ `1e-2` | The step overwrites the weight — learning rate too high for that layer |
-| Update:param ratio | ~`1e-3` | ≤ `1e-4` | Layer effectively frozen — rate too low, or gradient isn't reaching it |
-| Activation std, per layer | roughly constant with depth | shrinking layer by layer | Signal dying forward; the gradient will vanish backward |
-| Activation std, per layer | roughly constant with depth | growing layer by layer | Activations inflating — usually ends in `nan` |
-| `tanh` saturation | mean well inside ±1 | mean pinned at ±1, std ≈ 1 | Units sit in the flat region; local gradient ≈ 0 |
-| ReLU dead fraction | modest and stable | 95%+ of activations exactly 0 | Layer has stopped contributing — often the residue of an earlier rate spike |
-| Zeroed-input baseline | performance degrades badly | performance barely changes | The model isn't using the input — see [Data Leakage](data-leakage.md) |
-| Overfit 2–8 examples | loss → ~0 | plateaus well above 0 | Bug in model, loss, or label alignment — capacity is not the problem |
-| Per-example gradient isolation | non-zero only on example *i* | non-zero on other examples | Batch-dimension mixing or a backwards-in-time leak |
+### Triage
+
+The symptom you notice first is the loss curve; it only tells you which probe to
+open next.
+
+```text
+Loss curve looks wrong
+│
+├─ already wrong at step 0 (≠ ln(C))
+│    └──► head, reduction, or label bug — not a training problem yet
+│
+├─ rises or spikes on many steps
+│    └─ gradient norm, step to step
+│         └─ large and erratic ──► learning rate too high
+│
+├─ flat, pinned just under ln(C)
+│    └─ update:param ratio + activation std
+│         ├─ ratio ≥ 1e-2, std inflating ──► learning rate too high
+│         └─ ratio ~1e-3, std healthy ────► no signal in the data
+│
+├─ falls, then plateaus well above 0
+│    └─ overfit 2–8 examples
+│         ├─ reaches ~0 ──► capacity is fine; the gap is stage 4's problem
+│         └─ plateaus ───► bug in model, loss, or label alignment
+│
+└─ goes to nan
+     └─ activation std with depth
+          └─ growing layer by layer ──► activations inflating
+```
+
+Once a per-layer sweep shows one layer out of line with its neighbours, the
+question changes from *what* is wrong to *where*:
+
+```text
+Reading is localised to one layer
+│
+├─ gradient norm ≫ neighbours ──► its init or normalisation, or an
+│                                 outlier batch
+├─ gradient norm ≪ neighbours, and the layer is early
+│    └──► vanishing chain upstream — read activation std above it
+├─ update:param ratio ≤ 1e-4 here only ──► frozen: dead ReLU or
+│                                          saturated tanh
+└─ activation std ≫ neighbours ──► inflation starts here; clip or
+                                   renormalise at this layer
+```
+
+### Loss
+
+**Healthy:** starts at ≈ `ln(C)` for a softmax over `C` classes, then falls
+steadily with mild noise.
+
+| Reading | What it implies |
+|---|---|
+| Value at init ≠ `ln(C)` | Head, reduction, or labels are wrong — known before you waste a run |
+| Rises on many steps | Learning rate above the stable region — a dynamics failure |
+| Smooth and pinned just under `ln(C)` | No signal reaching the loss — features, pipeline, or leak-free-by-accident inputs |
+
+### Gradient norm
+
+**Healthy:** same order of magnitude across layers; steady and slowly decaying
+step to step.
+
+| Reading | What it implies |
+|---|---|
+| Monotone decay from output back to input | Vanishing gradient — depth, activation choice, or init; early layers aren't training |
+| Spike confined to one layer | Localised explosion — that layer's init or normalisation, or an outlier batch |
+| Large and erratic step to step | Learning rate too high; loudest in the *variance*, not the mean |
+
+### `total_norm` from `clip_grad_norm_`
+
+**Healthy:** near `max_norm`, occasionally clipped.
+
+| Reading | What it implies |
+|---|---|
+| Far below `max_norm` every step | Clipping is inert — it is not protecting you from anything |
+| Above `max_norm` on most steps | The threshold, not the optimiser, sets your effective step size |
+
+### Update:param ratio
+
+**Healthy:** ~`1e-3`, at every layer.
+
+| Reading | What it implies |
+|---|---|
+| ≥ `1e-2` | The step overwrites the weight — learning rate too high for that layer |
+| ≤ `1e-4` | Layer effectively frozen — rate too low, or gradient isn't reaching it |
+
+### Activation statistics
+
+**Healthy:** std roughly constant with depth, `tanh` mean well inside ±1, ReLU
+dead fraction modest and stable.
+
+| Reading | What it implies |
+|---|---|
+| Std shrinking layer by layer | Signal dying forward; the gradient will vanish backward |
+| Std growing layer by layer | Activations inflating — usually ends in `nan` |
+| `tanh` mean pinned at ±1, std ≈ 1 | Units sit in the flat region; local gradient ≈ 0 |
+| 95%+ of ReLU activations exactly 0 | Layer has stopped contributing — often the residue of an earlier rate spike |
+
+### One-shot structural tests
+
+These pass or fail rather than trend, so run them once at stage 2 instead of
+logging them every step.
+
+| Test | Pass | Fail means |
+|---|---|---|
+| Zero the inputs and train | Performance degrades badly | The model isn't using the input — see [Data Leakage](data-leakage.md) |
+| Overfit 2–8 examples | Loss → ~0 | Bug in model, loss, or label alignment — capacity is not the problem |
+| Per-example gradient isolation | Non-zero only on example *i* | Batch-dimension mixing or a backwards-in-time leak |
 
 !!! warning "Read the pair, not the cell"
     No single row is diagnostic. A small gradient norm is healthy next to a
