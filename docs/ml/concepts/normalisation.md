@@ -39,7 +39,12 @@ layer.weight, layer.bias           # gamma, beta
 Step 2 is what makes the layer harmless. Standardising alone would forbid a
 layer from emitting a large or offset output — a real loss of expressiveness.
 With $\gamma$ and $\beta$ the layer can reproduce any mean and scale, including
-undoing the normalisation entirely.
+recovering the identity:
+
+$$
+\gamma = \sqrt{\sigma^2 + \epsilon}, \quad \beta = \mu
+\;\Longrightarrow\; y = x
+$$
 
 !!! note "A reparameterisation, not a restriction"
     Normalisation does not change which functions the network can represent. It
@@ -48,9 +53,25 @@ undoing the normalisation entirely.
 
 ## Which axes — the only real difference
 
-For activations of shape `(N, T, D)` (batch, time, features) or `(N, C, H, W)`
-(batch, channels, height, width), variants differ only in what counts as a
-population:
+Write activations as $x_{n,c,i}$ — example $n$ of $N$, channel or feature $c$ of
+$C$, spatial-or-time position $i$ of $I$. Every variant is the formula above with
+the sum taken over different indices ($\sigma^2$ follows the same indices as
+$\mu$):
+
+$$
+\begin{aligned}
+\text{BatchNorm} &: &\mu_{c} &= \frac{1}{NI}\sum_{n}\sum_{i} x_{n,c,i} \\
+\text{InstanceNorm} &: &\mu_{n,c} &= \frac{1}{I}\sum_{i} x_{n,c,i} \\
+\text{GroupNorm} &: &\mu_{n,g} &= \frac{1}{|g|\,I}\sum_{c \in g}\sum_{i} x_{n,c,i} \\
+\text{LayerNorm} &: &\mu_{n,i} &= \frac{1}{C}\sum_{c} x_{n,c,i}
+\end{aligned}
+$$
+
+**Only BatchNorm's mean has lost the index $n$.** That is the whole story: its
+statistics are shared across examples, so one example's output depends on its
+batch-mates. Every other variant is a per-example function — which is why
+transformers use LayerNorm, and why GroupNorm exists for small-batch regimes
+(≤ 8, where batch statistics are too noisy).
 
 | Variant | Reduces over | Depends on other examples? |
 |---|---|---|
@@ -60,15 +81,23 @@ population:
 | `nn.GroupNorm` | channel groups, per example | no |
 | `nn.RMSNorm` | feature axis, **no mean subtraction** | no |
 
-The first row against all the others is the consequential split: BatchNorm's
-output for one example depends on its batch-mates. Every other variant is a
-per-example function — which is why transformers use LayerNorm and why GroupNorm
-exists for small-batch regimes (≤ 8, where batch statistics are too noisy).
+The two non-batch extremes are transposes of each other — LayerNorm reduces over
+channels at fixed position, InstanceNorm over positions at fixed channel — and
+GroupNorm interpolates: `nn.GroupNorm(1, C)` reduces over all of `C, H, W` per
+example, `nn.GroupNorm(C, C)` is InstanceNorm. `nn.LayerNorm` reduces over
+whatever trailing axes `normalized_shape` names, so `nn.LayerNorm(D)` on
+`(N, T, D)` gives the $\mu_{n,i}$ above while `nn.LayerNorm((C, H, W))` gives
+$\mu_n$.
 
-Root Mean Square normalisation (`nn.RMSNorm`) keeps only
-$x/\sqrt{\mathrm{mean}(x^2) + \epsilon}$ times $\gamma$ — one reduction instead
-of two, no $\beta$, about as good in practice, and the default in recent large
-language models.
+Root Mean Square normalisation (`nn.RMSNorm`) drops the mean subtraction and the
+shift entirely:
+
+$$
+y = \gamma \odot \frac{x}{\sqrt{\dfrac{1}{C}\sum_{c} x_c^2 + \epsilon}}
+$$
+
+One reduction instead of two, no $\beta$, about as good in practice, and the
+default in recent large language models.
 
 ## Why it helps
 
@@ -80,9 +109,18 @@ shift after a BatchNorm layer and training was unaffected. What holds up:
   loss and its gradient, so a larger step stays in the stable region — see
   [Gradient Descent](gradient-descent.md).
 - **Weight-scale invariance.** Multiply the preceding layer's weights by $c$ and
-  the normalised output is unchanged; the gradient with respect to those weights
-  scales as $1/c$. A layer whose weights have grown automatically takes smaller
-  steps, so the effective rate self-adjusts per layer.
+  both $\mu$ and $\sigma$ scale by $c$, so the ratio — and therefore the output —
+  is unchanged, while the gradient shrinks:
+
+    $$
+    \mathrm{Norm}\big((cW)x\big) = \mathrm{Norm}(Wx),
+    \qquad
+    \nabla_{cW}\,\mathcal{L} = \frac{1}{c}\,\nabla_{W}\,\mathcal{L}
+    $$
+
+    A layer whose weights have grown automatically takes smaller steps, so the
+    effective rate self-adjusts per layer — which is the quantity the
+    update-to-parameter ratio measures.
 - **Less reliance on initialisation.** Kaiming/Xavier init exists to keep
   activation variance roughly constant with depth; a norm layer enforces it at
   every step instead of hoping it holds.
@@ -96,10 +134,22 @@ A BatchNorm layer holds four tensors: the parameters $\gamma, \beta$ and two
 **buffers**, `running_mean` and `running_var` — state that travels in the
 `state_dict` but gets no gradient (see [Modules](../pytorch/modules.md)).
 
-- **`train()`** — normalises with the *current batch's* statistics and updates
-  the buffers as an exponential moving average, `momentum=0.1` by default.
-- **`eval()`** — ignores the batch and uses the stored running statistics, so
-  inference is deterministic and independent of batch composition.
+- **`train()`** — normalises with the *current batch's* $\mu_B, \sigma_B^2$, and
+  updates the buffers $\hat\mu, \hat\sigma^2$ as an exponential moving average
+  with rate $m$ (`momentum=0.1` by default):
+
+    $$
+    \hat\mu \leftarrow (1-m)\,\hat\mu + m\,\mu_B,
+    \qquad
+    \hat\sigma^2 \leftarrow (1-m)\,\hat\sigma^2 + m\,\sigma_B^2
+    $$
+
+- **`eval()`** — ignores the batch and substitutes the buffers, so inference is
+  deterministic and independent of batch composition:
+
+    $$
+    y = \gamma\,\frac{x - \hat\mu}{\sqrt{\hat\sigma^2 + \epsilon}} + \beta
+    $$
 
 Every failure mode follows from that asymmetry, and all of them are silent:
 
@@ -118,7 +168,11 @@ Every failure mode follows from that asymmetry, and all of them are silent:
 ## Where the layer goes
 
 **Drop the preceding bias.** A `Linear` bias adds a constant that the very next
-mean subtraction removes; $\beta$ plays its role anyway.
+mean subtraction removes, and $\beta$ plays its role anyway:
+
+$$
+\mathrm{Norm}(Wx + b) = \mathrm{Norm}(Wx)
+$$
 
 ```python
 from torch import nn
@@ -138,16 +192,27 @@ decaying $\gamma$ toward 0 just shrinks the layer's output scale.
 **Pre-norm versus post-norm** is the placement choice that matters in a residual
 block:
 
-```python
-x = norm(x + sublayer(x))      # post-norm: a norm layer sits ON the skip path
-x = x + sublayer(norm(x))      # pre-norm: identity path stays clean
-```
+$$
+\underbrace{x_{\ell+1} = \mathrm{Norm}\big(x_\ell + F_\ell(x_\ell)\big)}_{\text{post-norm}}
+\qquad
+\underbrace{x_{\ell+1} = x_\ell + F_\ell\big(\mathrm{Norm}(x_\ell)\big)}_{\text{pre-norm}}
+$$
 
-Post-norm attenuates the residual signal at every block, which is why the
-original transformer needed learning-rate warmup to train at all. Pre-norm
-leaves an unobstructed identity path so gradients reach early layers, trains deep
-stacks without warmup, and needs one final norm before the output head because
-activations grow along the residual stream.
+Post-norm puts a norm layer *on* the skip path; pre-norm leaves it untouched, so
+the gradient from layer $L$ back to layer $\ell$ is a product in which every
+factor contains the identity:
+
+$$
+\frac{\partial x_L}{\partial x_\ell}
+= \prod_{k=\ell}^{L-1}\left(I + \frac{\partial F_k}{\partial x_k}\right)
+$$
+
+No product of small branch Jacobians can kill it. Post-norm instead folds the
+norm layer's Jacobian into each factor, attenuating the signal at every block,
+which is why the original transformer needed learning-rate warmup to train at
+all. Pre-norm trains deep stacks without warmup; the cost is that activations
+grow along the residual stream, so a final norm before the output head is
+required.
 
 ## Renormalising a sick layer
 
