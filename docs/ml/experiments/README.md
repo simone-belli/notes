@@ -9,7 +9,7 @@ Running hyperparameter searches and keeping a durable record of what was tried â
 :   Recording a study as a parent/child run tree, wiring it to an Optuna search, and recovering the trial count
 
 :material-text-box-outline: **[Optuna](optuna.md){ .lvl-intermediate }**
-:   Hyperparameter optimisation beyond the grid: define-by-run search spaces, the suggest API, TPE sampling, and pruning
+:   Hyperparameter optimisation beyond the grid: define-by-run search spaces, the suggest API, TPE and grid sampling, and pruning
 
 :material-text-box-outline: **[Optuna â€” Studies](optuna-studies.md){ .lvl-advanced }**
 :   Running a study: durable storage and parallelism, ask-and-tell, the scikit-learn objective, and reading the finished run

@@ -130,6 +130,56 @@ you own; see [Reproducibility and Seeding](../concepts/reproducibility.md).
 | `NSGAIISampler` | multi-objective (default when you pass `directions=[...]`) |
 | `GridSampler` | you genuinely want exhaustive |
 
+## Feeding a grid to the objective
+
+`GridSampler` is the one sampler people expect to take an argument, and it
+doesn't: **the objective is unchanged**. It still calls `trial.suggest_*`, and the
+sampler intercepts each call to return the value the current grid combination
+assigns to that parameter *name*. The name is the only wiring.
+
+```python
+search_space = {"learning_rate": [0.01, 0.05, 0.1], "max_depth": [3, 5, 7]}
+
+def objective(trial):
+    lr = trial.suggest_float("learning_rate", 1e-3, 1.0, log=True)  # bounds ignored
+    depth = trial.suggest_int("max_depth", 2, 12)                   # bounds ignored
+    return evaluate(lr, depth)
+
+study = optuna.create_study(
+    sampler=optuna.samplers.GridSampler(search_space), direction="minimize")
+study.optimize(objective)        # stops itself after all 9 combinations
+```
+
+The declared distribution is still *recorded* — plots and
+`trials_dataframe()` know `learning_rate` is log-scaled — it just no longer
+decides the value. Trial 1 gets a real `0.01` from the grid.
+
+- Omit `n_trials`: the sampler calls `study.stop()` once the
+  $\prod_i |S_i|$ combinations are exhausted. A smaller `n_trials` truncates the
+  grid; `GridSampler(search_space, seed=0)` shuffles the order so an early stop
+  still gives coverage rather than a prefix.
+- A name suggested but absent from the grid **raises** `ValueError`. A name in
+  the grid that the objective never suggests does **not** — the product still
+  enumerates it, so you silently run duplicate trials.
+- A grid value outside the declared bounds only **warns** and is used anyway.
+- Conditional spaces don't fit: the product is static, so combinations are
+  generated for `if` branches that never execute.
+
+!!! tip "Derive the suggest calls from the grid"
+    ```python
+    def objective(trial):
+        params = {k: trial.suggest_categorical(k, v)
+                  for k, v in search_space.items()}
+        return evaluate(**params)
+    ```
+    One source of truth, so names can't drift and no value can be out of range.
+    The cost is that every axis becomes unordered — fine while you are
+    deliberately exhaustive, lossy if you later swap in TPE.
+
+To force *specific* configurations without giving up TPE, skip the grid sampler
+and use [`study.enqueue_trial`](optuna-studies.md#storage-and-parallelism) — the
+same interception, for one point.
+
 ## Pruning
 
 Sampling picks *where* to evaluate; pruning decides *how long*. For any objective
