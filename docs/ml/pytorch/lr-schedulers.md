@@ -82,6 +82,7 @@ LinearLR(optimizer, start_factor=0.01, total_iters=500) # warmup ramp
 | `ExponentialLR` | `lr *= gamma` each step | short runs only — `gamma` and length interact badly |
 | `CosineAnnealingLR` | smooth half-cosine | the modern default, given a known budget |
 | `OneCycleLR` | up 30%, then cosine to ~0 | fixed budget, want fewest epochs; step **per batch** |
+| `CyclicLR` | triangular, up and down | rate cycles between two measured bounds; step **per batch** |
 | `LambdaLR` | any function of step count | anything the library lacks |
 | `ReduceLROnPlateau` | reactive | budget unknown, or with early stopping |
 
@@ -90,6 +91,8 @@ LinearLR(optimizer, start_factor=0.01, total_iters=500) # warmup ramp
   long and you never reach the bottom.
 - `OneCycleLR` starts at `max_lr / div_factor` (default 25), not `max_lr`, and
   cycles momentum inversely. `total_steps` must be exact — overshoot raises.
+- `CyclicLR`'s `base_lr`/`max_lr` are meant to be *measured*, not guessed — see
+  the [Learning Rate Range Test](../concepts/lr-range-test.md).
 - `LambdaLR`'s function returns a **multiplier** on the base rate. The original
   Transformer schedule is one line:
   `lambda s: min((s+1)**-0.5, (s+1) * 4000**-1.5)`.
@@ -156,10 +159,13 @@ wrong base.
 !!! tip "Second-order gains"
     A good schedule is worth roughly a point of accuracy or a 2× cut in epochs.
     Getting the *base* learning rate right is worth far more — no schedule
-    rescues a base rate two orders of magnitude off.
+    rescues a base rate two orders of magnitude off. One
+    [range test](../concepts/lr-range-test.md) settles it in a few epochs.
 
 ## Related
 
+- [Learning Rate Range Test](../concepts/lr-range-test.md) — how to measure the
+  base rate and the bounds a cyclical schedule needs
 - [The Training Loop](training-loop.md) — where `scheduler.step()` sits among
   the five statements
 - [Optimisers](optimisers.md) — the object whose `lr` a schedule rewrites

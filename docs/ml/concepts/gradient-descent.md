@@ -229,6 +229,8 @@ This is why AdamW, not Adam, is the default for any regularised model.
   object that holds the state
 - [Learning Rate Schedulers](../pytorch/lr-schedulers.md) — the decaying $\alpha_t$ the
   convergence argument demands
+- [Learning Rate Range Test](lr-range-test.md) — measuring the band of $\alpha$ that
+  trains the model at all
 - [The Training Loop](../pytorch/training-loop.md) — where the update sits among the five
   statements
 - [Training Diagnostics](training-diagnostics.md) — the per-step quantities that reveal

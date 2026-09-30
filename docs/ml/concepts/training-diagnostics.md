@@ -51,7 +51,9 @@ Stage-3 rules worth keeping: copy the simplest architecture from a related paper
 ("don't be a hero"), Adam at `3e-4` is the forgiving default, add one feature at
 a time, and **do not trust learning-rate decay defaults** — a schedule tuned to
 another dataset's epoch count can drive the rate to ~0 early. See
-[Learning Rate Schedulers](../pytorch/lr-schedulers.md).
+[Learning Rate Schedulers](../pytorch/lr-schedulers.md), and the
+[Learning Rate Range Test](lr-range-test.md) for measuring the base rate rather
+than inheriting one.
 
 Stage-4 order of reliability: more data ≫ augmentation > pretraining > smaller
 input dimensionality > smaller model > dropout / weight decay / early stopping.
@@ -306,5 +308,7 @@ hypothesis space:
 
 - [Gradient Descent](gradient-descent.md) — why the learning rate has a stable
   region at all
+- [Learning Rate Range Test](lr-range-test.md) — locating the edges of that
+  region in one run
 - [Model Validation](model-validation.md) — what stages 4–5 tune against
 - [The Training Loop](../pytorch/training-loop.md) — where these probes attach

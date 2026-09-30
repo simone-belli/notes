@@ -6,6 +6,9 @@
 :material-text-box-outline: **[Gradient Descent](gradient-descent.md){ .lvl-intermediate }**
 :   SGD and Adam — step size and conditioning, momentum as a filter, the AdaGrad→RMSProp→Adam lineage, and bias correction
 
+:material-text-box-outline: **[Learning Rate Range Test](lr-range-test.md){ .lvl-intermediate }**
+:   Smith's one-run measurement of the usable band of rates — the linear ramp, reading the two bounds off the curve, and the cyclical schedule they feed
+
 :material-text-box-outline: **[Long Short-Term Memory](lstm.md){ .lvl-intermediate }**
 :   Why a plain RNN's gradient dies, the constant error carousel that replaces it, and the three gates and two states
 
