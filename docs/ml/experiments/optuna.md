@@ -76,6 +76,10 @@ trial.suggest_categorical("kernel", ["linear", "rbf"])
   `[16, 32, 64]` as `suggest_int(..., log=True)` and let the sampler interpolate.
 - No `neg_` convention: set `direction="minimize"` and return the error itself.
 
+Each call builds a distribution object and records it under the parameter name —
+see [Optuna — Distributions](optuna-distributions.md) for reading that space back
+off a trial and serialising it.
+
 ## Samplers
 
 **TPE** (Tree-structured Parzen Estimator) is the default. It inverts classic
@@ -234,6 +238,8 @@ scikit-learn, and reading the result back — see
 
 - [Optuna — Studies](optuna-studies.md) — storage, parallelism, ask-and-tell,
   the scikit-learn objective, and reading the run
+- [Optuna — Distributions](optuna-distributions.md) — the recorded space as data:
+  serialisation, compatibility, and hand-built trials
 - [MLflow](mlflow.md) — the general-purpose durable-record library; see
   [MLflow — Nested Runs](mlflow-nested-runs.md) for mapping study/trial onto parent/child runs
 - [Reproducibility and Seeding](../concepts/reproducibility.md) — the sampler's `seed` vs the objective's own
