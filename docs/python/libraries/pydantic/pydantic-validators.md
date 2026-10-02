@@ -128,4 +128,8 @@ except ValidationError as e:
 !!! warning "Field order in field_validator(after)"
     `info.data` inside a `mode='after'` field validator only contains fields declared *before* the current one. For logic that needs all fields simultaneously, use `@model_validator(mode='after')`.
 
+`info.context` is the companion channel: it is empty unless the caller passes
+`context=` to [`model_validate`](pydantic.md#parsing), which is how a validator
+receives a value it cannot import.
+
 See [pydantic.md](pydantic.md) for the full model overview.
