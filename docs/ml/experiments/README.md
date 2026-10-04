@@ -14,5 +14,8 @@ Running hyperparameter searches and keeping a durable record of what was tried �
 :material-text-box-outline: **[Optuna — Distributions](optuna-distributions.md){ .lvl-advanced }**
 :   The objects behind `suggest_*`: the three distribution classes, the JSON round-trip, compatibility checks, and injecting trials you already know
 
+:material-text-box-outline: **[Optuna — Pruning](optuna-pruning.md){ .lvl-advanced }**
+:   Stopping a trial early and scoring one that blew up — the pruners, what `PRUNED` costs the sampler, capping at the constant-predictor loss, and the divergence detectors
+
 :material-text-box-outline: **[Optuna — Studies](optuna-studies.md){ .lvl-advanced }**
 :   Running a study: durable storage and parallelism, ask-and-tell, the scikit-learn objective, and reading the finished run

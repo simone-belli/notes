@@ -162,3 +162,6 @@ scheduler = CyclicLR(optimizer, base_lr=1e-3, max_lr=6e-3,
   distinguish a too-high rate from no signal
 - [Optuna](../experiments/optuna.md) — the search the test replaces for this one
   hyperparameter
+- [Optuna — Pruning](../experiments/optuna-pruning.md#loss-relative-to-its-own-best-the-workhorse)
+  — the same $4\times$-best-loss rule, reused as a divergence detector inside a
+  search

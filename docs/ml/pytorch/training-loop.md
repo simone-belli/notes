@@ -145,7 +145,7 @@ optimizer.step()
 | Symptom | Usual cause |
 |---|---|
 | Loss flat from step 1 | no `optimizer.step()`, or `lr` far too small |
-| Loss diverges / `nan` | missing `zero_grad()`, `lr` too high, softmax before `CrossEntropyLoss` |
+| Loss diverges / `nan` | missing `zero_grad()`, `lr` too high, softmax before `CrossEntropyLoss` — [detect it before `step()`](../experiments/optuna-pruning.md#non-finite-loss-the-backstop) |
 | Train loss good, val loss wild | forgot `model.eval()` |
 | Validation runs out of memory | forgot `torch.no_grad()` |
 | Memory climbs across epochs | accumulating a loss tensor without `.item()` |

@@ -152,5 +152,6 @@ Write **K** down before the study runs, with the search space. Not after, and no
 - [Model Validation](model-validation.md) — selection bias on the maximum, and nested CV
 - [Information Coefficient](../../finance/information-coefficient.md) — how rank IC is defined, and what magnitudes are believable
 - [Optuna](../experiments/optuna.md) — where the objective function and trial count live
+- [Optuna — Pruning](../experiments/optuna-pruning.md#the-score-a-diverging-trial-deserves) — what the objective should return when a configuration blows up rather than merely losing
 - [MLflow](../experiments/mlflow.md) — a durable, queryable record of the trial count and every trial's config
 - [Hyperparameter Search](../scikit-learn/hyperparameter-search.md) — the searchers this replaces the scoring of

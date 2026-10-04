@@ -312,3 +312,6 @@ hypothesis space:
   region in one run
 - [Model Validation](model-validation.md) — what stages 4–5 tune against
 - [The Training Loop](../pytorch/training-loop.md) — where these probes attach
+- [Optuna — Pruning](../experiments/optuna-pruning.md#measuring-divergence) —
+  turning these readings into an automatic stop, and the score a blown-up trial
+  should return

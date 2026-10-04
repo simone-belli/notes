@@ -169,6 +169,7 @@ narrow. `optuna-dashboard` renders all of this live against a running study.
 
 - [Optuna](optuna.md) — define-by-run search spaces, the suggest API, samplers, and pruning
 - [Optuna — Distributions](optuna-distributions.md) — `ask(fixed_distributions=...)`, and `add_trial` for results you already have
+- [Optuna — Pruning](optuna-pruning.md) — the pruners that read this storage, and `COMPLETE` vs `PRUNED` vs `FAIL`
 - [MLflow — Nested Runs](mlflow-nested-runs.md) — mapping study/trial onto parent/child runs
 - [Running Cross-Validation](../scikit-learn/cross-validation.md) — the loop the objective usually wraps
 - [Tuning a Trading Strategy](../concepts/strategy-tuning.md) — what the objective should return, and what to report instead of `best_value`

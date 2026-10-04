@@ -198,16 +198,10 @@ for epoch in range(100):
         raise optuna.TrialPruned()      # state PRUNED, not FAIL — curve is kept
 ```
 
-- **`MedianPruner`** (default) — cut if worse than the median of completed trials
-  at the same step. `n_startup_trials` and `n_warmup_steps` stop it being
-  trigger-happy.
-- **`SuccessiveHalvingPruner`** / **`HyperbandPruner`** — the asynchronous
-  cousins of `HalvingRandomSearchCV`; Hyperband hedges the "how early is too
-  early" question across brackets and pairs well with TPE.
-- **`WilcoxonPruner`** — for objectives that average over many instances (folds,
-  assets); prunes when a signed-rank test says the gap is real.
-- **`ThresholdPruner`**, **`PatientPruner`**, **`NopPruner`** — absolute bounds,
-  patience for noisy curves, and an A/B control.
+`MedianPruner` is the default — cut if worse than the median of completed trials
+at the same step. `SuccessiveHalvingPruner` and `HyperbandPruner` are the
+asynchronous cousins of `HalvingRandomSearchCV`, and `ThresholdPruner` cuts on an
+absolute bound rather than a ranking.
 
 !!! warning "Pruning punishes slow starters"
     It is a bandit strategy: a low learning rate that would have won at epoch 200
@@ -216,6 +210,10 @@ for epoch in range(100):
 The `optuna-integration` package ships ready-made callbacks
 (`LightGBMPruningCallback`, `XGBoostPruningCallback`,
 `PyTorchLightningPruningCallback`) so you don't write the loop.
+
+Every pruner's settings, what a `PRUNED` trial costs the sampler, and the score a
+*diverging* trial should return — see
+[Optuna — Pruning](optuna-pruning.md).
 
 ## Running and reading a study
 
@@ -236,6 +234,8 @@ scikit-learn, and reading the result back — see
 
 ## Related
 
+- [Optuna — Pruning](optuna-pruning.md) — the pruners in detail, and what to
+  return when a trial diverges
 - [Optuna — Studies](optuna-studies.md) — storage, parallelism, ask-and-tell,
   the scikit-learn objective, and reading the run
 - [Optuna — Distributions](optuna-distributions.md) — the recorded space as data:
