@@ -204,5 +204,6 @@ predictions are exactly the leak-free features a meta-learner needs.
 - [scikit-learn Pipelines](pipelines.md) — what must be inside the fold
 - [The Estimator API](estimators.md) — the `fit`/`score` contract being cloned
 - [Hyperparameter Search](hyperparameter-search.md) — the tuning loop wrapped around this one
+- [Optuna — Pruning](../experiments/optuna-pruning.md#what-step-should-count) — pruning a search on the running mean over folds, when there are no epochs to prune on
 - [Model Validation](../concepts/model-validation.md) — what the number this loop returns actually estimates
 - [Time-Series Validation](../concepts/time-series-validation.md) — when the int default is wrong

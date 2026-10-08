@@ -108,4 +108,5 @@ The underlying correction is one line of principle:
 - [Data Leakage](data-leakage.md) — the taxonomy purging and embargo close two entries in
 - [Fold-Safe Transformers](../scikit-learn/fold-safe-transformers.md) — burn-in buffers and the non-contiguous case
 - [Tuning a Trading Strategy](strategy-tuning.md) — the selection channel no splitter closes
+- [Optuna — Pruning](../experiments/optuna-pruning.md#what-step-should-count) — pruning across these paths rather than inside a fit
 - [Train/Test Splitting](../scikit-learn/splitting.md) — the splitter catalogue

@@ -111,6 +111,73 @@ optuna.pruners.MedianPruner(
 - **`NopPruner`** — prunes nothing. Run the search with it once as a control;
   otherwise you cannot know whether pruning cost you the winner.
 
+## What `step` should count
+
+`step` is just a monotone integer resource counter — nothing ties it to epochs.
+The two useful axes buy different things:
+
+- **Epochs** — resource is *training time within one fit*. Pruning asks "will
+  this curve get there?"
+- **Folds** — resource is *evidence about generalisation*. One report per
+  completed fold of a [cross-validation](../scikit-learn/cross-validation.md),
+  and pruning asks "is this configuration's mean score going to beat the others?"
+
+Score at the fold level when:
+
+- **There are no epochs.** A `RandomForestRegressor`, a `Ridge`, a support
+  vector machine, or any whole `Pipeline` fit has no intermediate curve to
+  report. The only partial information that exists is $k$ of $K$ folds done.
+- **Fold variance dominates training variance.** On financial series the
+  dispersion of Sharpe ratio or information coefficient *across* folds dwarfs
+  epoch-to-epoch movement within one. Pruning on epochs there prunes on noise
+  while the real uncertainty sits on the axis you aren't measuring.
+- **The fits are cheap and the folds are many.** Combinatorial purged
+  cross-validation generates $\binom{N}{k}$ paths; that is where the budget
+  goes, not inside any one fit.
+
+```python
+import numpy as np
+import optuna
+from sklearn.model_selection import TimeSeriesSplit
+
+def objective(trial: optuna.Trial) -> float:
+    model = build(trial)
+    scores = []
+    for k, (tr, va) in enumerate(TimeSeriesSplit(n_splits=10).split(X)):
+        scores.append(fit_and_score(model, X, y, tr, va))
+        trial.report(float(np.mean(scores)), k)   # step = fold, running mean
+        if trial.should_prune():
+            raise optuna.TrialPruned()
+    return float(np.mean(scores))
+```
+
+- Report the **running mean**, not the individual fold score — the mean is the
+  estimator of what you finally return, so it is on the same scale as other
+  trials' reports at the same step.
+- The running mean after $k$ folds has standard error
+  $\operatorname{SE}_k = \sigma_{\text{fold}} / \sqrt{k}$, so early steps are
+  genuinely noisy. With $K = 5$ you only get five decision points and cutting at
+  $k = 1$ is cutting on one fold; set `n_warmup_steps` to roughly
+  $\lfloor K/3 \rfloor$.
+
+!!! warning "Fold $k$ must be the same data in every trial"
+    Cross-trial comparison at step $k$ is only meaningful because the splitter is
+    deterministic — folds are *not* exchangeable, and in a time-series split the
+    early ones are a specific regime, not a random sample. Shuffle the fold order
+    per trial and the pruner is comparing different quantities. See
+    [Reproducibility and Seeding](../concepts/reproducibility.md).
+
+`WilcoxonPruner` is built for this axis: report per-fold values and it runs a
+paired signed-rank test against the best trial. Pairing is what exploits
+fold-is-the-same-data, removing fold difficulty as a nuisance term, which makes
+it strictly more powerful than comparing running means.
+
+!!! tip "Don't try to nest both axes"
+    `step` is one integer, so `(fold, epoch)` has no representation. Either
+    flatten it as $k E + e$, or — cleaner — handle epochs with a plain
+    early-stopping callback *inside* the fit and let Optuna prune on folds only.
+    Early stopping is a within-fit concern and does not need the study.
+
 ## The score a diverging trial deserves
 
 A trial whose training blew up has no meaningful final metric, but the objective
@@ -360,6 +427,10 @@ exactly as worthless as one that exploded.
   pruning has to cooperate with
 - [Optuna — Studies](optuna-studies.md) — the storage backend the pruner reads,
   and `catch=` in context
+- [Running Cross-Validation](../scikit-learn/cross-validation.md) — the per-fold
+  scores the fold-level axis reports
+- [Purged Cross-Validation](../concepts/purged-cross-validation.md) — the
+  combinatorial path count that makes folds the expensive axis
 - [Training Diagnostics](../concepts/training-diagnostics.md) — the per-layer
   probes behind the divergence detectors
 - [Learning Rate Range Test](../concepts/lr-range-test.md) — the
