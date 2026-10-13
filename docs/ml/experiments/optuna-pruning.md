@@ -174,8 +174,9 @@ it strictly more powerful than comparing running means.
 !!! tip "Don't try to nest both axes"
     `step` is one integer, so `(fold, epoch)` has no representation. Either
     flatten it as $k E + e$, or — cleaner — handle epochs with a plain
-    early-stopping callback *inside* the fit and let Optuna prune on folds only.
-    Early stopping is a within-fit concern and does not need the study.
+    [early-stopping](../concepts/early-stopping.md) callback *inside* the fit and
+    let Optuna prune on folds only. Early stopping is a within-fit concern and
+    does not need the study.
 
 ## When the trial blew up instead
 

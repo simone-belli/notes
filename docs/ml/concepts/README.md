@@ -6,6 +6,9 @@
 :material-card-bulleted-outline: **[Training Diagnostics — Cheat Sheet](diagnostics-cheat-sheet.md){ .lvl-intermediate }**
 :   Every probe as a lookup table — healthy value, abnormal readings, and what each implies, plus the triage tree from the loss curve to the right probe
 
+:material-text-box-outline: **[Early Stopping](early-stopping.md){ .lvl-intermediate }**
+:   Stopping time and model selection as two separate jobs — the ridge equivalence that makes it a regulariser, patience against a scheduler's, and why the best epoch is a fitted hyperparameter
+
 :material-text-box-outline: **[Gradient Descent](gradient-descent.md){ .lvl-intermediate }**
 :   SGD and Adam — step size and conditioning, momentum as a filter, the AdaGrad→RMSProp→Adam lineage, and bias correction
 

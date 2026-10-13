@@ -56,7 +56,8 @@ another dataset's epoch count can drive the rate to ~0 early. See
 than inheriting one.
 
 Stage-4 order of reliability: more data ≫ augmentation > pretraining > smaller
-input dimensionality > smaller model > dropout / weight decay / early stopping.
+input dimensionality > smaller model > dropout / weight decay /
+[early stopping](early-stopping.md).
 
 ## The stage-2 checks
 

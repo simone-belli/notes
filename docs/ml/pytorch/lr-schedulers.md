@@ -84,7 +84,7 @@ LinearLR(optimizer, start_factor=0.01, total_iters=500) # warmup ramp
 | `OneCycleLR` | up 30%, then cosine to ~0 | fixed budget, want fewest epochs; step **per batch** |
 | `CyclicLR` | triangular, up and down | rate cycles between two measured bounds; step **per batch** |
 | `LambdaLR` | any function of step count | anything the library lacks |
-| `ReduceLROnPlateau` | reactive | budget unknown, or with early stopping |
+| `ReduceLROnPlateau` | reactive | budget unknown, or with [early stopping](../concepts/early-stopping.md) |
 
 - `CosineAnnealingLR`'s `T_max` **must** be the total run length in whatever
   unit you step. Too short and the cosine turns around and climbs back up; too
@@ -125,7 +125,9 @@ scheduler.step(val_loss)     # after validation, with the METRIC
 - Get `mode` right: `"min"` for loss, `"max"` for accuracy. `mode="min"` on
   accuracy decays the rate every time the model improves.
 - It needs no total run length, which is why it pairs with early stopping — but
-  it only reacts *after* a plateau has already been wasted.
+  it only reacts *after* a plateau has already been wasted. Keep the
+  early-stopping patience larger than this one, or the run quits before the drop
+  can help.
 
 ## Checkpointing
 

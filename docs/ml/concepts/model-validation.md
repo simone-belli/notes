@@ -109,6 +109,7 @@ majority class, the mean, or yesterday's value.
 ## Related
 
 - [Data Leakage](data-leakage.md) — the failure modes this protocol exists to prevent
+- [Early Stopping](early-stopping.md) — the epoch count as one more hyperparameter fitted on the validation split
 - [Time-Series Validation](time-series-validation.md) — what to do when i.i.d. fails
 - [Running Cross-Validation](../scikit-learn/cross-validation.md) — executing the loop in scikit-learn
 - [Train/Test Splitting](../scikit-learn/splitting.md) — the splitter catalogue
