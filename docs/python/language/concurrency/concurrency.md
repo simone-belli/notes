@@ -81,6 +81,10 @@ Costs:
 
 For large arrays: use `multiprocessing.shared_memory` to avoid copying.
 
+For embarrassingly parallel loops, [joblib](../../libraries/joblib.md) wraps this
+with reusable workers, ordered results, and automatic memory-mapping of large
+arrays.
+
 **numpy exception**: numpy/scipy release the GIL during C operations — threads *can* parallelise numpy work. Profile before using `ProcessPoolExecutor` for numerical code.
 
 ---

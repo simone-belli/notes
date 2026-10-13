@@ -6,6 +6,9 @@ Third-party libraries your program imports at runtime — as opposed to [tooling
 
 :material-swap-horizontal: **[HTTP Clients](http-clients/)**
 
+:material-text-box-outline: **[joblib](joblib.md){ .lvl-intermediate }**
+:   Parallel/delayed loops, the loky backend, oversubscription, Memory caching, dump/load
+
 :material-text-box-outline: **[JSON Lines (JSONL)](jsonl.md){ .lvl-basic }**
 :   JSON Lines: append-friendly, streamable records with Pydantic serialisation
 

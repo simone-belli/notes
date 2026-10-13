@@ -154,7 +154,8 @@ into `nan` by the default `error_score`, so develop new scorers with
   Pass a splitter explicitly for anything time-ordered; see
   [Time-Series Validation](../concepts/time-series-validation.md).
 - **`n_jobs=-1`** — folds are embarrassingly parallel. Watch for
-  oversubscription when the estimator has its own `n_jobs`.
+  oversubscription when the estimator has its own `n_jobs`; see
+  [joblib](../../python/libraries/joblib.md), which runs these loops.
 - **`error_score=np.nan`** — the default silently turns a failing fold into
   `NaN`, so `scores.mean()` becomes `nan`. Set `error_score="raise"` to debug.
 

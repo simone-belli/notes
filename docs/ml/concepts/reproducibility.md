@@ -80,7 +80,8 @@ RandomizedSearchCV(estimator, param_distributions, random_state=42)
     Reproducible means the same *sequence of draws*, not necessarily
     bit-identical floating point: parallel workers can sum partial results in
     a nondeterministic completion order, shifting the last bits of a
-    float-associativity-sensitive computation.
+    float-associativity-sensitive computation. The worker pool is
+    [joblib](../../python/libraries/joblib.md).
 
 ## Optuna: two seeds, not one
 
