@@ -211,9 +211,9 @@ The `optuna-integration` package ships ready-made callbacks
 (`LightGBMPruningCallback`, `XGBoostPruningCallback`,
 `PyTorchLightningPruningCallback`) so you don't write the loop.
 
-Every pruner's settings, what a `PRUNED` trial costs the sampler, and the score a
-*diverging* trial should return — see
-[Optuna — Pruning](optuna-pruning.md).
+Every pruner's settings and what a `PRUNED` trial costs the sampler are in
+[Optuna — Pruning](optuna-pruning.md); the score a *diverging* trial should
+return is in [Optuna — Diverged Trials](optuna-divergence.md).
 
 ## Running and reading a study
 
@@ -234,8 +234,10 @@ scikit-learn, and reading the result back — see
 
 ## Related
 
-- [Optuna — Pruning](optuna-pruning.md) — the pruners in detail, and what to
-  return when a trial diverges
+- [Optuna — Pruning](optuna-pruning.md) — the pruners in detail, what a `PRUNED`
+  trial costs the sampler, and what `step` should count
+- [Optuna — Diverged Trials](optuna-divergence.md) — what to return when a trial
+  blows up instead of merely losing, and how to detect it early
 - [Optuna — Studies](optuna-studies.md) — storage, parallelism, ask-and-tell,
   the scikit-learn objective, and reading the run
 - [Optuna — Distributions](optuna-distributions.md) — the recorded space as data:
