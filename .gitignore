@@ -3,3 +3,4 @@ _explain.md
 site/
 .claude/settings.local.json
 docs/quiz/data.json
+__pycache__/

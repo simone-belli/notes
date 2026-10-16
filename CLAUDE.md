@@ -31,7 +31,7 @@ Only pause to ask when the action is genuinely hard to undo or outward-facing: p
 
 ## File organisation
 
-All notes live under `docs/`; the repo root contains only tooling files (`mkdocs.yml`, `CLAUDE.md`, `README.md`, `.gitignore`, `.github/`, `.claude/`). Top-level areas: `data/` (`dsa/`, `numpy/`, `pandas/`, `sql/`), `finance/`, `git/`, `ml/`, `python/` (`language/`, `libraries/`, `testing/`, `tooling/`), and `tools/`. Subfolders evolve — consult the `README.md` files for the current layout rather than assuming it.
+All notes live under `docs/`; the repo root contains only tooling files (`mkdocs.yml`, `CLAUDE.md`, `README.md`, `.gitignore`, `.github/`, `.claude/`, `overrides/`, `quiz/`, `tests/`). Top-level areas: `data/` (`dsa/`, `numpy/`, `pandas/`, `sql/`), `finance/`, `git/`, `ml/`, `python/` (`language/`, `libraries/`, `testing/`, `tooling/`), and `tools/`. Subfolders evolve — consult the `README.md` files for the current layout rather than assuming it.
 
 Each subdirectory has a `README.md` listing its children, sorted alphabetically by filename. Entries carry a **type**:
 
@@ -56,6 +56,15 @@ Every **page** entry also carries a difficulty class on its link, via `attr_list
 The colours are defined in `docs/stylesheets/extra.css` and keyed on `docs/index.md`; both schemes clear WCAG AA contrast, so change the hex values only against a recomputed ratio.
 
 When adding a new file, add an entry to the parent `README.md` in whichever layout that page uses (a card on a section hub, a description-list entry deeper down), keeping entries sorted alphabetically by filename and giving it a difficulty class. When adding a new top-level area under `docs/`, add a card to `docs/index.md`.
+
+## Read Along player
+
+Every content page has a headphones button that reads the page aloud while highlighting the words being spoken, using the engine from [Read Along](https://github.com/simone-belli/read-along).
+
+- **Files:** `overrides/main.html` marks content pages (not `index.md`/`README.md` hubs or `tags.md`) and supplies the icons. `docs/javascripts/read-along.js` builds the button and player bar and tells the engine about Material's markup. `docs/stylesheets/read-along.css` styles them with Material's colour variables.
+- **The engine is a pinned copy.** `docs/assets/read-along/engine.js` comes from read-along's `engine.js`, and its first line names the commit. Never edit it here. To update it, copy the file over from read-along, update that commit line, and rerun the test.
+- **Test:** `python3 tests/read_along_e2e.py` builds the site and plays a real note against a simulated ElevenLabs. It needs `pip install playwright` and Chromium. Run it after touching any of the files above or `collapsible-sections.js`.
+- The ElevenLabs key and cached audio live in the browser (`readalong.*` in localStorage). They are shared with the Read Along site because both are on `simone-belli.github.io`. Never put a key in the repo.
 
 ## Cross-linking
 
