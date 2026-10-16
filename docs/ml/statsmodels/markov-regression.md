@@ -1,8 +1,7 @@
 # MarkovRegression
 
-`statsmodels` implements Hamilton's Markov-switching regression — regime-dependent
-coefficients driven by a latent chain — as
-`sm.tsa.MarkovRegression`:
+[`statsmodels`](statsmodels.md) implements Hamilton's Markov-switching regression —
+regime-dependent coefficients driven by a latent chain — as `sm.tsa.MarkovRegression`:
 
 $$
 y_t = x_t^{\top}\beta_{s_t} + \varepsilon_t,
@@ -235,6 +234,7 @@ filtering carries over unchanged.
 
 ## Related
 
+- [statsmodels](statsmodels.md) — the library around it: Model→Results, formulas, `cov_type`, and the rest of the catalogue
 - [Markov Processes](../concepts/markov-models.md) — the theory this class implements
 - [Data Leakage](../concepts/data-leakage.md) — why the smoothed defaults matter
 - [Time-Series Validation](../concepts/time-series-validation.md) — the walk-forward protocol the refit cadence sits inside

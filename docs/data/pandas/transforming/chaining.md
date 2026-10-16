@@ -62,7 +62,7 @@ result = (
 
 `df.pipe(f, ...)` calls `f(df, ...)` — a fluency adapter for functions that don't natively chain. It flips inside-out nesting into top-to-bottom order: `trim_outliers(add_returns(clean(raw)))` (read right-to-left) becomes `raw.pipe(clean).pipe(add_returns).pipe(trim_outliers)` (read top-down, matching execution). Debug mid-chain: `.pipe(lambda d: (print(d.shape), d)[1])`.
 
-If the target function takes the DataFrame under a keyword other than its first argument (e.g. statsmodels' `data=`), pass a `(callable, keyword)` tuple — `.pipe` routes `df` there:
+If the target function takes the DataFrame under a keyword other than its first argument (e.g. [statsmodels](../../../ml/statsmodels/statsmodels.md)' `data=`), pass a `(callable, keyword)` tuple — `.pipe` routes `df` there:
 
 ```python
 import statsmodels.formula.api as smf

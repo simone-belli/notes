@@ -140,7 +140,8 @@ SE² = (1/n) [ γ₀ + 2 Σ_{k=1..L} (1 − k/(L+1)) γ_k ]      γ_k = lag-k au
 ```
 
 Regressing the contributions on a constant is the tidiest way to get it — the
-coefficient *is* the metric, and the reported SE is the HAC one:
+coefficient *is* the metric, and the reported SE is the HAC one
+([statsmodels](../ml/statsmodels/statsmodels.md)):
 
 ```python
 import numpy as np

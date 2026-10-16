@@ -4,7 +4,11 @@
 learning — linear/logistic regression, SVMs, trees, forests, gradient boosting,
 k-means, PCA — built on NumPy and SciPy. Its defining feature is not any one
 algorithm but that **every model wears the same interface**: learn it once and
-you can swap one estimator for another by changing a single line.
+you can swap one estimator for another by changing a single line. It targets
+*prediction*; for coefficient-level inference — standard errors, $p$-values,
+diagnostics — the companion library is
+[statsmodels](../statsmodels/statsmodels.md), whose conventions differ on almost
+every point below.
 
 ## The estimator
 
