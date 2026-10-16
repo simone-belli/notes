@@ -96,6 +96,7 @@ There is no linter for leakage. The practical signals:
 
 - [Model Validation](model-validation.md) — the protocol leakage corrupts
 - [Time-Series Validation](time-series-validation.md) — purging and embargo for correlated rows
+- [Markov Processes](markov-models.md) — look-ahead leakage in its purest form: a smoothed state estimate conditions on the whole sample
 - [scikit-learn Pipelines](../scikit-learn/pipelines.md) — the fit boundary, enforced
 - [Custom Transformers](../scikit-learn/custom-transformers.md) — keeping engineered features inside the fold
 - [PyTorch — Data Loading](../pytorch/data-loading.md) — the same boundary in a library that enforces none of it: `random_split`, `Subset`, and where normalisation statistics come from

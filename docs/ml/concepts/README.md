@@ -18,6 +18,9 @@
 :material-text-box-outline: **[Long Short-Term Memory](lstm.md){ .lvl-intermediate }**
 :   Why a plain RNN's gradient dies, the constant error carousel that replaces it, and the three gates and two states
 
+:material-text-box-outline: **[Markov Processes](markov-models.md){ .lvl-advanced }**
+:   State sufficiency and the chain's long-run structure, hidden states and exogenous variables, Baum–Welch, and why only the filtered probabilities may become a feature
+
 :material-text-box-outline: **[Model Validation](model-validation.md){ .lvl-basic }**
 :   Why training error lies, the train/validation/test roles, hold-out vs k-fold, stratified and group-aware splits, and nested cross-validation
 
