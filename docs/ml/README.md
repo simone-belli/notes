@@ -14,4 +14,6 @@ Modelling workflow — the library-agnostic protocol first, then the library.
 
 -   :material-chart-scatter-plot:{ .lg .middle } __[scikit-learn](scikit-learn/)__
 
+-   :material-chart-bell-curve:{ .lg .middle } __[statsmodels](statsmodels/)__
+
 </div>

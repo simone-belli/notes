@@ -320,7 +320,8 @@ content. The specific traps, on top of the general ones in
 
 ## In practice
 
-`statsmodels` covers the econometric form, `hmmlearn` the general HMM:
+[`statsmodels`](../statsmodels/markov-regression.md) covers the econometric form,
+`hmmlearn` the general HMM:
 
 ```python
 import statsmodels.api as sm
@@ -362,6 +363,7 @@ The order of operations that keeps you honest:
 
 ## Related
 
+- [MarkovRegression](../statsmodels/markov-regression.md) — the `statsmodels` implementation: constructor defaults, restarts, and frozen-parameter filtering
 - [Data Leakage](data-leakage.md) — the general taxonomy these traps instantiate
 - [Time-Series Validation](time-series-validation.md) — the chronological protocol a walk-forward refit sits inside
 - [Fold-Safe Transformers](../scikit-learn/fold-safe-transformers.md) — the same burn-in problem for rolling and recursive features
