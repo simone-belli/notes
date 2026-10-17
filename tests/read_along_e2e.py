@@ -128,25 +128,44 @@ def test_desktop(browser, base):
     check("sentences" in status(page) and "credits" in status(page), "the player shows the sentence count and cost")
     check(page.is_hidden('[data-ra="settings"]'), "settings stay closed when a key is already saved")
 
+    table_style = "(() => { const t = document.querySelector('article table'), cs = getComputedStyle(t);" \
+                  " return [t.getAttribute('class'), cs.display, cs.fontSize, cs.borderRadius]; })()"
+    table_before = page.evaluate(table_style)
+
     page.check('[data-ra="pauseBlocks"]')
     first_stop = play_until_paused(page)
     spoken = " ".join(fake.texts)
     check(spoken.startswith("Normalisation Layers"), "reading starts at the page title")
     check("Feature scaling" in spoken, "list items are read")
     check("feature-scaling" not in spoken.lower() and "#" not in spoken, "no link targets or markup are read")
-    at_first_formula = page.evaluate("document.querySelector('div.arithmatex').classList.contains('stop-here')")
+    at_first_formula = page.evaluate("document.querySelector('div.arithmatex').hasAttribute('data-ra-stop')")
     check(first_stop.startswith("Paused at a formula") and at_first_formula,
           "Pause at blocks stops at the first display formula")
 
     stops = [first_stop]
-    while not stops[-1].startswith("Paused at a code block") and len(stops) < 5:
+    while not stops[-1].startswith("Paused at a table") and len(stops) < 12:
         stops.append(play_until_paused(page))
-    check(stops[-1].startswith("Paused at a code block"), "it goes on to stop before the code block")
+    check(any("code block" in s for s in stops), "it stops at the code block on the way")
+    check(stops[-1].startswith("Paused at a table"), "it stops at the table")
+    check(page.evaluate("document.querySelector('article table').hasAttribute('data-ra-stop')")
+          and page.evaluate(table_style) == table_before,
+          "the paused table keeps Material's table styling")
     spoken = " ".join(fake.texts)
-    check("square root of" in spoken and "epsilon" in spoken, "KaTeX formulas are spoken from their TeX source")
-    check("LayerNorm" not in spoken, "code blocks are not read")
+    check("Reduces over" not in spoken, "table cells are skipped, not read")
+    check("square root" not in spoken, "display formulas are skipped, not read")
+    check("layer.weight" not in spoken, "code blocks are not read")
     check(page.evaluate("document.querySelector('article').classList.contains('active')"),
           "the article is in reading mode")
+
+    page.click('[data-ra="stop"]')
+    page.uncheck('[data-ra="pauseBlocks"]')
+    page.click('[data-ra="play"]')
+    for _ in range(100):
+        if "square root of" in " ".join(fake.texts):
+            break
+        page.wait_for_timeout(200)
+    check("square root of" in " ".join(fake.texts), "unticked, display formulas are read, spoken from their TeX source")
+    page.click('[data-ra="play"]')  # pause
 
     page.click('[data-ra="close"]')
     check(page.is_hidden(".ra-player"), "Close hides the player")

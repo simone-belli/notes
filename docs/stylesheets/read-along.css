@@ -58,11 +58,16 @@
   border-radius: 0.2rem;
 }
 
-.md-content__inner .stop-here {
+.md-content__inner [data-ra-stop] {
   outline: 2px solid var(--md-accent-fg-color);
   outline-offset: 0.25rem;
   border-radius: 0.2rem;
   opacity: 1 !important;
+}
+
+/* A table sits in a scroll wrapper that clips anything drawn outside it. */
+.md-content__inner table[data-ra-stop] {
+  outline-offset: -2px;
 }
 
 /* Browsers without the CSS Custom Highlight API tint the current block. */
@@ -75,7 +80,7 @@
   opacity: 1;
 }
 
-.md-content__inner .current-block {
+.md-content__inner [data-ra-current] {
   background: var(--ra-tint);
   box-shadow: 0 0 0 0.2rem var(--ra-tint);
   border-radius: 0.1rem;
