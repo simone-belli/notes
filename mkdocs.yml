@@ -30,12 +30,15 @@ theme:
 extra_css:
   - stylesheets/extra.css
   - assets/katex/katex.min.css
+  - stylesheets/read-along.css
 
 extra_javascript:
   - assets/katex/katex.min.js
   - assets/katex/auto-render.min.js
   - javascripts/katex-init.js
   - javascripts/collapsible-sections.js
+  - assets/read-along/engine.js
+  - javascripts/read-along.js
 
 markdown_extensions:
   - admonition

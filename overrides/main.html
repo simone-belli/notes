@@ -1,0 +1,21 @@
+{#-
+  Marks content pages for the Read Along player (docs/javascripts/read-along.js)
+  and hands it the theme's own icons. Section hubs (index.md / README.md) and
+  the tags index get no player.
+-#}
+{% extends "base.html" %}
+
+{% block extrahead %}
+  {{ super() }}
+  {% if page and not page.is_index and page.file.src_path != "tags.md" %}
+    <meta name="read-along" content="on">
+    <template id="read-along-icons">
+      <span data-icon="listen">{% include ".icons/material/headphones.svg" %}</span>
+      <span data-icon="prev">{% include ".icons/material/skip-previous.svg" %}</span>
+      <span data-icon="next">{% include ".icons/material/skip-next.svg" %}</span>
+      <span data-icon="stop">{% include ".icons/material/stop.svg" %}</span>
+      <span data-icon="settings">{% include ".icons/material/cog-outline.svg" %}</span>
+      <span data-icon="close">{% include ".icons/material/close.svg" %}</span>
+    </template>
+  {% endif %}
+{% endblock %}
