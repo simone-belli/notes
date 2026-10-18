@@ -1,0 +1,10 @@
+nav:
+  - README.md
+  - classes
+  - exceptions.md
+  - numbers.md
+  - sets.md
+  - dataclasses.md
+  - mutation.md
+  - repository-di.md
+  - warnings.md

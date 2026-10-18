@@ -1,1 +1,13 @@
 title: scikit-learn
+nav:
+  - README.md
+  - estimators.md
+  - splitting.md
+  - column-transformer.md
+  - cross-validation.md
+  - hyperparameter-search.md
+  - imputation.md
+  - pipelines.md
+  - custom-loss.md
+  - custom-transformers.md
+  - fold-safe-transformers.md

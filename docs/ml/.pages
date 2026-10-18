@@ -1,1 +1,9 @@
 title: ML
+nav:
+  - README.md
+  - concepts
+  - dvc
+  - experiments
+  - pytorch
+  - scikit-learn
+  - statsmodels

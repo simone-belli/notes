@@ -1,0 +1,6 @@
+nav:
+  - README.md
+  - statsmodels.md
+  - frozen-parameters.md
+  - markov-autoregression.md
+  - markov-regression.md

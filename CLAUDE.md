@@ -33,7 +33,7 @@ Only pause to ask when the action is genuinely hard to undo or outward-facing: p
 
 All notes live under `docs/`; the repo root contains only tooling files (`mkdocs.yml`, `CLAUDE.md`, `README.md`, `.gitignore`, `.github/`, `.claude/`, `overrides/`, `quiz/`, `tests/`). Top-level areas: `data/` (`dsa/`, `numpy/`, `pandas/`, `sql/`), `finance/`, `git/`, `ml/`, `python/` (`language/`, `libraries/`, `testing/`, `tooling/`), and `tools/`. Subfolders evolve — consult the `README.md` files for the current layout rather than assuming it.
 
-Each subdirectory has a `README.md` listing its children, sorted alphabetically by filename. Entries carry a **type**:
+Each subdirectory has a `README.md` listing its children, grouped by difficulty and sorted alphabetically by filename within each group (see **Grouping** below). Entries carry a **type**:
 
 - `note` — narrative explanation of a concept (the "why" and "how")
 - `ref` — command/syntax quick-reference meant for lookup
@@ -53,9 +53,13 @@ Every **page** entry also carries a difficulty class on its link, via `attr_list
 - `.lvl-intermediate` (amber) — everyday working knowledge.
 - `.lvl-advanced` (red) — internals, edge cases, and niche lookups you'd consult rarely.
 
-The colours are defined in `docs/stylesheets/extra.css` and keyed on `docs/index.md`; both schemes clear WCAG AA contrast, so change the hex values only against a recomputed ratio.
+The colours are defined in `docs/stylesheets/extra.css`; both schemes clear WCAG AA contrast, so change the hex values only against a recomputed ratio.
 
-When adding a new file, add an entry to the parent `README.md` in whichever layout that page uses (a card on a section hub, a description-list entry deeper down), keeping entries sorted alphabetically by filename and giving it a difficulty class. When adding a new top-level area under `docs/`, add a card to `docs/index.md`.
+**Grouping.** A README's entries are ordered in blocks by difficulty — subdirectories first (they carry no class), then `.lvl-basic`, `.lvl-intermediate`, `.lvl-advanced` — with entries sorted alphabetically by filename *inside* each block. The blocks carry no headings; a `---` thematic break separates them, and the colours alone label them. On a description-list README that break sits between two entries, splitting the page into one `<dl>` per block. On a card hub each block is its own `<div class="grid cards" markdown>`, since `---` already means "divider" inside a card. Omit a block entirely when no child falls in it.
+
+**The sidebar mirrors the README.** MkDocs would otherwise sort the nav alphabetically and ignore the grouping, so every directory carries a `.pages` file (the `awesome-pages` plugin) whose `nav:` lists `README.md` first and then the children in the exact order the README shows them. Some also carry a `title:` that overrides the sidebar label (`title: ML`, `title: scikit-learn`); keep it when rewriting the file. The `nav:` list is exhaustive — a page missing from it still builds but vanishes from the sidebar.
+
+When adding a new file, add an entry to the parent `README.md` in whichever layout that page uses (a card on a section hub, a description-list entry deeper down), giving it a difficulty class and placing it alphabetically within that class's block — then add it at the matching position in that directory's `.pages` `nav:`. When adding a new top-level area under `docs/`, add a card to `docs/index.md`.
 
 ## Read Along player
 

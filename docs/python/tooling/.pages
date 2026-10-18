@@ -1,0 +1,6 @@
+nav:
+  - README.md
+  - poetry.md
+  - pyenv.md
+  - mypy.md
+  - ruff.md

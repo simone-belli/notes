@@ -1,0 +1,12 @@
+nav:
+  - README.md
+  - tensors.md
+  - training-loop.md
+  - autograd.md
+  - data-loading.md
+  - lr-schedulers.md
+  - lstm-model.md
+  - lstm-shapes.md
+  - modules.md
+  - optimisers.md
+  - module-inspection.md

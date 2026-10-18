@@ -1,0 +1,7 @@
+nav:
+  - README.md
+  - market-data-apis.md
+  - binance.md
+  - kelly-criterion.md
+  - information-coefficient.md
+  - metric-standard-errors.md

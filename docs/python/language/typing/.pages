@@ -1,0 +1,6 @@
+nav:
+  - README.md
+  - typing.md
+  - structural-typing.md
+  - callable.md
+  - subscriptable.md

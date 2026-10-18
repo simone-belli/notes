@@ -1,0 +1,12 @@
+nav:
+  - README.md
+  - transforming
+  - filtering.md
+  - datetimes.md
+  - display.md
+  - dtypes.md
+  - indexing.md
+  - iteration.md
+  - multiindex.md
+  - parquet.md
+  - to-dict.md

@@ -1,1 +1,10 @@
 title: SQL
+nav:
+  - README.md
+  - basics.md
+  - aggregation.md
+  - modifying-data.md
+  - subqueries.md
+  - window-functions.md
+  - sqlite3-cli.md
+  - window-patterns.md

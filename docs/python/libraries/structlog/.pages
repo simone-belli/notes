@@ -1,0 +1,5 @@
+nav:
+  - README.md
+  - structlog.md
+  - config.md
+  - testing.md

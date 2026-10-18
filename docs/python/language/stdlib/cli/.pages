@@ -1,0 +1,5 @@
+nav:
+  - README.md
+  - cli.md
+  - argparse-patterns.md
+  - run-function-cli.md

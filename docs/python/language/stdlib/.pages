@@ -1,0 +1,10 @@
+nav:
+  - README.md
+  - cli
+  - os
+  - text
+  - datetime.md
+  - logging.md
+  - sqlite3.md
+  - json.md
+  - random.md

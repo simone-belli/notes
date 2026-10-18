@@ -1,0 +1,8 @@
+nav:
+  - README.md
+  - oop.md
+  - data-model.md
+  - hash.md
+  - slicing.md
+  - attribute-lookup.md
+  - class-creation.md

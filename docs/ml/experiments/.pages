@@ -1,0 +1,9 @@
+nav:
+  - README.md
+  - mlflow.md
+  - optuna.md
+  - mlflow-nested-runs.md
+  - optuna-distributions.md
+  - optuna-divergence.md
+  - optuna-pruning.md
+  - optuna-studies.md

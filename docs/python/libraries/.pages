@@ -1,0 +1,11 @@
+nav:
+  - README.md
+  - fastapi
+  - http-clients
+  - pydantic
+  - structlog
+  - jsonl.md
+  - plotext.md
+  - terminal-tables.md
+  - joblib.md
+  - uvicorn.md

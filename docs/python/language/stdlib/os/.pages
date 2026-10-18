@@ -1,1 +1,8 @@
 title: OS
+nav:
+  - README.md
+  - file-io.md
+  - pathlib.md
+  - project-paths.md
+  - subprocess.md
+  - tempfile.md

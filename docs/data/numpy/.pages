@@ -1,1 +1,6 @@
 title: NumPy
+nav:
+  - README.md
+  - broadcasting.md
+  - indexing.md
+  - dtypes.md

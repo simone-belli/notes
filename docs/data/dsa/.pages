@@ -1,1 +1,7 @@
 title: DSA
+nav:
+  - README.md
+  - complexity.md
+  - queues.md
+  - graphs.md
+  - trees.md

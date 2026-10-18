@@ -1,0 +1,7 @@
+nav:
+  - README.md
+  - env-vars.md
+  - zsh.md
+  - bash-scripting.md
+  - history.md
+  - direnv.md

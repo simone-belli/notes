@@ -1,10 +1,19 @@
 # Python — Language / Functional
 
-:material-text-box-outline: **[Callbacks](callbacks.md){ .lvl-intermediate }**
-:   Inversion of control — where the callee owns the timing, carrying state with `partial`/closures/callable objects, late binding, and when a generator is better
+:material-repeat-variant: **[itertools](itertools/)**
+
+---
 
 :material-text-box-outline: **[Comprehensions](comprehensions.md){ .lvl-basic }**
 :   List, dict, set comprehensions — when each is more readable than a loop
+
+:material-text-box-outline: **[Iterators and Generators](iterators-generators.md){ .lvl-basic }**
+:   Iterables, generators, `yield`, `itertools`
+
+---
+
+:material-text-box-outline: **[Callbacks](callbacks.md){ .lvl-intermediate }**
+:   Inversion of control — where the callee owns the timing, carrying state with `partial`/closures/callable objects, late binding, and when a generator is better
 
 :material-text-box-outline: **[Decorators](decorators.md){ .lvl-intermediate }**
 :   First-class functions, closures, transforming vs registering decorators, and the 2- and 3-level nesting shapes
@@ -12,16 +21,13 @@
 :material-text-box-outline: **[`functools`](functools.md){ .lvl-intermediate }**
 :   `lru_cache`, `cache`, `cached_property`, and `partial` — with the purity and hashability constraints they impose
 
-:material-text-box-outline: **[Iterators and Generators](iterators-generators.md){ .lvl-basic }**
-:   Iterables, generators, `yield`, `itertools`
+:material-text-box-outline: **[Unpacking Operators: `*x` and `**x`](unpacking.md){ .lvl-intermediate }**
+:   `*x` and `**x` operators: protocols, contexts (calls, literals, assignment)
 
-:material-repeat-variant: **[itertools](itertools/)**
+---
 
 :material-text-box-outline: **[Lazy vs Eager Evaluation](lazy-evaluation.md){ .lvl-advanced }**
 :   Lazy vs eager: memory tradeoffs, sinks, when each wins, NumPy comparison
 
 :material-text-box-outline: **[`operator`](operator.md){ .lvl-advanced }**
 :   attrgetter, itemgetter, methodcaller — faster and clearer than lambdas in sort keys
-
-:material-text-box-outline: **[Unpacking Operators: `*x` and `**x`](unpacking.md){ .lvl-intermediate }**
-:   `*x` and `**x` operators: protocols, contexts (calls, literals, assignment)

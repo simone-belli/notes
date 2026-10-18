@@ -1,0 +1,11 @@
+nav:
+  - README.md
+  - itertools
+  - comprehensions.md
+  - iterators-generators.md
+  - callbacks.md
+  - decorators.md
+  - functools.md
+  - unpacking.md
+  - lazy-evaluation.md
+  - operator.md

@@ -1,0 +1,9 @@
+nav:
+  - README.md
+  - git.md
+  - github-actions.md
+  - rebasing.md
+  - tags-releases.md
+  - undoing.md
+  - github-repo-governance.md
+  - internals.md

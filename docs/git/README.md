@@ -10,23 +10,17 @@ Git workflows, commands, internals, and CI/CD.
 
     Setup, revision syntax, staging/diff, porcelain status, bisect, branching, .gitignore
 
+</div>
+
+---
+
+<div class="grid cards" markdown>
+
 -   :material-text-box-outline:{ .lg .middle } __[GitHub Actions & CI](github-actions.md){ .lvl-intermediate }__
 
     ---
 
     CI/CD with GitHub Actions: workflows, jobs, triggers, matrix, caching, concurrency
-
--   :material-text-box-outline:{ .lg .middle } __[GitHub repo governance](github-repo-governance.md){ .lvl-advanced }__
-
-    ---
-
-    Branch protection, PR templates, CODEOWNERS, issue templates, labels
-
--   :material-text-box-outline:{ .lg .middle } __[Internals: The Object Model](internals.md){ .lvl-advanced }__
-
-    ---
-
-    Object model: blobs, trees, commits, tags; refs; the commit DAG; rebase vs merge
 
 -   :material-card-bulleted-outline:{ .lg .middle } __[Rebasing](rebasing.md){ .lvl-intermediate }__
 
@@ -45,5 +39,23 @@ Git workflows, commands, internals, and CI/CD.
     ---
 
     `restore`, `reset` vs `revert`, reflog recovery, stashing
+
+</div>
+
+---
+
+<div class="grid cards" markdown>
+
+-   :material-text-box-outline:{ .lg .middle } __[GitHub repo governance](github-repo-governance.md){ .lvl-advanced }__
+
+    ---
+
+    Branch protection, PR templates, CODEOWNERS, issue templates, labels
+
+-   :material-text-box-outline:{ .lg .middle } __[Internals: The Object Model](internals.md){ .lvl-advanced }__
+
+    ---
+
+    Object model: blobs, trees, commits, tags; refs; the commit DAG; rebase vs merge
 
 </div>

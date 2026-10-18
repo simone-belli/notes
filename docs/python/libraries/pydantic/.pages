@@ -1,0 +1,5 @@
+nav:
+  - README.md
+  - pydantic.md
+  - pydantic-settings.md
+  - pydantic-validators.md

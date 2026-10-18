@@ -1,0 +1,9 @@
+nav:
+  - README.md
+  - groupby.md
+  - merge.md
+  - apply.md
+  - chaining.md
+  - reshaping.md
+  - chaining-catalog.md
+  - windows.md
