@@ -30,8 +30,8 @@ res.summary()
 ```
 
 Keeping the two separate is what lets you call `mod.fit(cov_type="HC3")` twice and compare,
-evaluate `mod.loglike(params)` at parameters of your choosing, or run a recursion at frozen
-parameters without re-estimating.
+evaluate `mod.loglike(params)` at parameters of your choosing, or
+[run a recursion at frozen parameters](frozen-parameters.md) without re-estimating.
 
 The arguments are named for econometrics: **`endog`** (endogenous — the thing being
 modelled, scikit-learn's `y`) and **`exog`** (exogenous — the regressors, scikit-learn's
@@ -150,7 +150,7 @@ scikit-learn equivalent:
 
 Time-series results add `res.forecast(steps)`, `res.get_forecast(steps)` (with intervals),
 `res.simulate()`, and — for state space models —
-[`res.append()` / `res.extend()` / `res.apply()`](extending-results.md), which carry
+[`res.append()` / `res.extend()` / `res.apply()`](frozen-parameters.md), which carry
 fitted parameters onto new observations without re-estimating.
 
 **Tests and diagnostics** — `statsmodels.stats`:
@@ -214,7 +214,7 @@ then test and predict. That loop is what you are buying.
 
 ## Related
 
-- [Extending results](extending-results.md) — `append` / `extend` / `apply`, for re-running a fit on new data
+- [Frozen parameters](frozen-parameters.md) — `filter` / `smooth` and `append` / `extend` / `apply`, for re-running a fit without estimating
 - [MarkovRegression](markov-regression.md) — the regime-switching models, in detail
 - [The Estimator API](../scikit-learn/estimators.md) — the other convention, and the one the argument order is reversed from
 - [Metric Standard Errors](../../finance/metric-standard-errors.md) — `OLS` on a constant as the tidiest route to a HAC standard error

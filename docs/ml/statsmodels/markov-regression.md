@@ -162,7 +162,7 @@ $\hat{y}_t = \sum_i \Pr(S_t = i \mid \cdot)\, x_t^{\top}\hat\beta_i$.
 
 ## Out-of-sample with frozen parameters
 
-There is no [`append`/`apply`](extending-results.md) here — those belong to the
+There is no [`append`/`apply`](frozen-parameters.md) here — those belong to the
 state-space classes. The
 walk-forward pattern goes through the **model's** `filter`, which evaluates the recursions
 at parameters you supply without re-estimating (`mod.smooth(params)` adds the backward
