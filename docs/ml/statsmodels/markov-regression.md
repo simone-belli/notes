@@ -23,8 +23,9 @@ res = mod.fit(search_reps=25)
 ```
 
 Observations are conditionally independent given the state: no lagged $y$ on the
-right-hand side. Autoregressive terms need `sm.tsa.MarkovAutoregression`, a separate
-class, because a lagged dependent variable breaks that structure.
+right-hand side. Autoregressive terms in Hamilton's mean-adjusted form need
+[`sm.tsa.MarkovAutoregression`](markov-autoregression.md), a separate class, because
+the lagged means break that structure.
 
 ## Constructor arguments
 
@@ -221,20 +222,19 @@ mod = sm.tsa.MarkovAutoregression(
 )
 ```
 
-Adds `order` (autoregressive lag length) and `switching_ar`. Hamilton's (1989) model of US
-GNP growth is the canonical use: `order=4`, `switching_ar=False`, so the dynamics are common
-across regimes and only the mean switches — both the economic hypothesis and a large cut in
-parameters.
+[`MarkovAutoregression`](markov-autoregression.md) subclasses this one, adding `order`
+(the autoregressive lag length) and `switching_ar`. Everything above — restarts,
+probability attributes, label canonicalisation, frozen-parameter filtering — carries over
+unchanged. What differs is the parameterisation: it fits Hamilton's *mean-adjusted* form,
+which makes the likelihood depend on the regime path $s_{t-p:t}$ rather than on $s_t$
+alone, costs $K^{p+1}$ states per step, and drops the first `order` observations.
 
-Mechanically, switching autoregressive terms make the likelihood at $t$ depend on the path
-$s_{t-r:t}$, so the effective state space is $K^{r+1}$; the class uses Kim's collapsing
-filter to keep it tractable, but cost still grows quickly in `order`. Note that
-`switching_exog` defaults to `False` here — the opposite of `MarkovRegression`. Everything
-above about restarts, probability attributes, label canonicalisation, and frozen-parameter
-filtering carries over unchanged.
+Putting lagged $y$ into this class's `exog` instead gives the *intercept*-switching
+autoregression — a different model, and a much cheaper one.
 
 ## Related
 
+- [MarkovAutoregression](markov-autoregression.md) — the autoregressive sibling, and the mean- vs intercept-switching choice
 - [statsmodels](statsmodels.md) — the library around it: Model→Results, formulas, `cov_type`, and the rest of the catalogue
 - [Markov Processes](../concepts/markov-models.md) — the theory this class implements
 - [Data Leakage](../concepts/data-leakage.md) — why the smoothed defaults matter

@@ -363,6 +363,7 @@ The order of operations that keeps you honest:
 
 ## Related
 
+- [MarkovAutoregression](../statsmodels/markov-autoregression.md) — the switching-autoregression sibling, where the regime path enters the likelihood
 - [MarkovRegression](../statsmodels/markov-regression.md) — the `statsmodels` implementation: constructor defaults, restarts, and frozen-parameter filtering
 - [Data Leakage](data-leakage.md) — the general taxonomy these traps instantiate
 - [Time-Series Validation](time-series-validation.md) — the chronological protocol a walk-forward refit sits inside
