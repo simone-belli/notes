@@ -149,8 +149,9 @@ scikit-learn equivalent:
   a custom linear-Gaussian state space model by maximum likelihood. Underused.
 
 Time-series results add `res.forecast(steps)`, `res.get_forecast(steps)` (with intervals),
-`res.simulate()`, and — for state space models — `res.append()` / `res.apply()`, which
-carry fitted parameters onto new observations without re-estimating.
+`res.simulate()`, and — for state space models —
+[`res.append()` / `res.extend()` / `res.apply()`](extending-results.md), which carry
+fitted parameters onto new observations without re-estimating.
 
 **Tests and diagnostics** — `statsmodels.stats`:
 
@@ -213,6 +214,7 @@ then test and predict. That loop is what you are buying.
 
 ## Related
 
+- [Extending results](extending-results.md) — `append` / `extend` / `apply`, for re-running a fit on new data
 - [MarkovRegression](markov-regression.md) — the regime-switching models, in detail
 - [The Estimator API](../scikit-learn/estimators.md) — the other convention, and the one the argument order is reversed from
 - [Metric Standard Errors](../../finance/metric-standard-errors.md) — `OLS` on a constant as the tidiest route to a HAC standard error
