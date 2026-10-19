@@ -152,7 +152,8 @@ parameter-space boundary.
 
 ### `predict`
 
-There is no `fittedvalues`; `res.predict(start, end, probabilities, conditional)` is it.
+There is no `fittedvalues`; [`res.predict(start, end, probabilities, conditional)`](predict.md)
+is it.
 `conditional=True` returns one column per regime; the default averages them,
 $\hat{y}_t = \sum_i \Pr(S_t = i \mid \cdot)\, x_t^{\top}\hat\beta_i$.
 

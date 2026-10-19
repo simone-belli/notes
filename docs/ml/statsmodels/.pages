@@ -2,5 +2,6 @@ nav:
   - README.md
   - statsmodels.md
   - frozen-parameters.md
+  - predict.md
   - markov-autoregression.md
   - markov-regression.md

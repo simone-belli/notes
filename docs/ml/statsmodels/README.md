@@ -11,6 +11,9 @@ objects they return.
 :material-text-box-outline: **[Frozen parameters](frozen-parameters.md){ .lvl-intermediate }**
 :   Re-running a model at parameters you already have — `mod.filter` / `mod.smooth`, the `append` / `extend` / `apply` trio on a results object, and the causal walk-forward loop they enable
 
+:material-text-box-outline: **[predict](predict.md){ .lvl-intermediate }**
+:   One method name, four signatures — formula transforms and `add_constant`, `which=` on the response scale, `dynamic` on time series, and the in-sample default behind each
+
 ---
 
 :material-text-box-outline: **[MarkovAutoregression](markov-autoregression.md){ .lvl-advanced }**

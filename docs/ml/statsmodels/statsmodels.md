@@ -102,7 +102,7 @@ individually unstable even when prediction is fine), and a Durbin–Watson far f
 autocorrelated residuals, which invalidates the default standard errors.
 
 !!! tip "`get_prediction`, not just `predict`"
-    `res.predict(new_df)` gives point predictions. `res.get_prediction(new_df)` returns an
+    [`res.predict(new_df)`](predict.md) gives point predictions. `res.get_prediction(new_df)` returns an
     object whose `.summary_frame()` separates the **confidence interval for the mean**
     (uncertainty about $\mathbb{E}[y \mid x]$, narrow) from the **prediction interval for
     an observation** (adds residual variance, much wider). Reporting the first when you
@@ -215,6 +215,7 @@ then test and predict. That loop is what you are buying.
 ## Related
 
 - [Frozen parameters](frozen-parameters.md) — `filter` / `smooth` and `append` / `extend` / `apply`, for re-running a fit without estimating
+- [predict](predict.md) — one method name per model family, and the in-sample default each of them ships with
 - [MarkovRegression](markov-regression.md) — the regime-switching models, in detail
 - [The Estimator API](../scikit-learn/estimators.md) — the other convention, and the one the argument order is reversed from
 - [Metric Standard Errors](../../finance/metric-standard-errors.md) — `OLS` on a constant as the tidiest route to a HAC standard error
