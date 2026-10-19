@@ -106,8 +106,9 @@ refers to: `True` means the `start_params` *you* pass are in natural units.
   parameters. `disp=True` while developing.
 - **`cov_type`** — `'approx'` (numerical Hessian, default), `'opg'`, `'robust'`. None is
   trustworthy for a transition probability estimated near 0 or 1, which is the normal case
-  for a persistent regime: the parameter sits at the edge of its space and the asymptotics
-  fail. Judge persistence by expected duration, not by the standard error on `p[0->0]`.
+  for a persistent regime: the parameter sits at the edge of its space and
+  [the asymptotics fail](../concepts/bayesian-markov-models.md). Judge persistence by
+  expected duration, not by the standard error on `p[0->0]`.
 
 ## Reading the results
 
@@ -238,6 +239,7 @@ autoregression — a different model, and a much cheaper one.
 - [MarkovAutoregression](markov-autoregression.md) — the autoregressive sibling, and the mean- vs intercept-switching choice
 - [statsmodels](statsmodels.md) — the library around it: Model→Results, formulas, `cov_type`, and the rest of the catalogue
 - [Markov Processes](../concepts/markov-models.md) — the theory this class implements
+- [Bayesian Markov Models](../concepts/bayesian-markov-models.md) — what the plug-in point estimate leaves out, and the priors that replace the awkward defaults
 - [Data Leakage](../concepts/data-leakage.md) — why the smoothed defaults matter
 - [Time-Series Validation](../concepts/time-series-validation.md) — the walk-forward protocol the refit cadence sits inside
 - [Metric Standard Errors](../../finance/metric-standard-errors.md) — `statsmodels` for HAC-corrected inference on the resulting signal

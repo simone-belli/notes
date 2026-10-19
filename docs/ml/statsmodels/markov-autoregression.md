@@ -129,8 +129,9 @@ duration is near 1 is a degenerate fit, not a bubble.
 
 These are not state space results: there is no `forecast(h)` or `get_forecast` with
 intervals, and no [`append` / `extend` / `apply`](frozen-parameters.md). More
-fundamentally, the $h$-step predictive density is a mixture over $K^h$ regime paths, so
-it is multimodal whenever the regimes separate and a point forecast can sit in a trough
+fundamentally, the $h$-step predictive density is
+[a mixture](../concepts/bayesian-markov-models.md) over $K^h$ regime paths, so it is
+multimodal whenever the regimes separate and a point forecast can sit in a trough
 between two modes.
 
 Simulate instead: draw regime paths from $\hat{P}$ starting at

@@ -269,8 +269,9 @@ only needs to *increase* $Q$, and keeps monotone ascent.
   state labels. Harmless within a run, fatal across restarts and refits — impose a
   fixed ordering afterwards (ascending emission variance, say).
 - **Degeneracy.** A Gaussian state can collapse onto one observation, sending
-  $\sigma^2_i \to 0$ and the likelihood to $+\infty$. Floor the variance or fit MAP-EM
-  with a prior.
+  $\sigma^2_i \to 0$ and the likelihood to $+\infty$. Floor the variance or
+  [fit MAP-EM with a prior](bayesian-markov-models.md), which removes the spike rather
+  than clipping it.
 - **Slow tail convergence.** The rate is governed by the fraction of missing
   information. Stop on relative log-likelihood change ($\approx 10^{-6}$) and cap
   iterations.
@@ -292,8 +293,9 @@ content. The specific traps, on top of the general ones in
 
 - **Smoothed probabilities as features.** $\Pr(S_t = i \mid y_{1:T})$ conditions on
   data through $T$. Use filtered probabilities — or, when the target is $y_t$ itself,
-  the one-step predicted $\Pr(S_t = i \mid y_{1:t-1}) = \sum_j \Pr(S_{t-1} = j \mid
-  y_{1:t-1}) P_{ji}$, since the filtered value at $t$ has already consumed $y_t$.
+  the one-step predicted
+  $\Pr(S_t = i \mid y_{1:t-1}) = \sum_j \Pr(S_{t-1} = j \mid y_{1:t-1}) P_{ji}$, since the
+  filtered value at $t$ has already consumed $y_t$.
 - **Full-sample fitting.** Even with a filtered recursion, $\hat{\theta}$ was
   estimated on data including the test period. Fit on $y_{1:t_0}$, freeze
   $\hat{\theta}$, carry the filter state across the boundary, refit on a cadence.
@@ -363,6 +365,7 @@ The order of operations that keeps you honest:
 
 ## Related
 
+- [Bayesian Markov Models](bayesian-markov-models.md) — the same structure as one joint distribution: filtering as iterated Bayes, sticky priors, FFBS, and the evidence as a model-selection criterion
 - [MarkovAutoregression](../statsmodels/markov-autoregression.md) — the switching-autoregression sibling, where the regime path enters the likelihood
 - [MarkovRegression](../statsmodels/markov-regression.md) — the `statsmodels` implementation: constructor defaults, restarts, and frozen-parameter filtering
 - [Data Leakage](data-leakage.md) — the general taxonomy these traps instantiate

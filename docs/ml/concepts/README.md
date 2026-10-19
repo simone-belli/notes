@@ -34,6 +34,9 @@
 
 ---
 
+:material-text-box-outline: **[Bayesian Markov Models](bayesian-markov-models.md){ .lvl-advanced }**
+:   The same models as one joint distribution — filtering as iterated Bayes, why state uncertainty never shrinks, the priors that kill each pathology, FFBS, and choosing $K$ by evidence
+
 :material-text-box-outline: **[Markov Processes](markov-models.md){ .lvl-advanced }**
 :   State sufficiency and the chain's long-run structure, hidden states and exogenous variables, Baum–Welch, and why only the filtered probabilities may become a feature
 

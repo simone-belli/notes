@@ -11,6 +11,7 @@ nav:
   - normalisation.md
   - reproducibility.md
   - training-diagnostics.md
+  - bayesian-markov-models.md
   - markov-models.md
   - purged-cross-validation.md
   - strategy-tuning.md
