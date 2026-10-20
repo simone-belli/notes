@@ -22,5 +22,8 @@ objects they return.
 :material-text-box-outline: **[MarkovRegression](markov-regression.md){ .lvl-advanced }**
 :   Markov-switching regression in `statsmodels` — the constructor defaults that change the model, random restarts, reading the results object, and filtering out-of-sample with frozen parameters
 
+:material-text-box-outline: **[Switching distributions](switching-distributions.md){ .lvl-advanced }**
+:   One-to-one map from a fitted `MarkovRegression` to the probability model — which attribute is the transition kernel, the emission density, each of the three state posteriors, and the predictive density behind `llf`
+
 :material-text-box-outline: **[Switching parameters](switching-parameters.md){ .lvl-advanced }**
 :   Computing with a fitted switching model's parameter vector — the `mod.parameters` index map, `predict_conditional` and the other model methods that take params directly, and the transformed/natural round-trip

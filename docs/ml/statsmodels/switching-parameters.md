@@ -204,6 +204,7 @@ Judge persistence by `res.expected_durations` instead.
 ## Related
 
 - [MarkovRegression](markov-regression.md) — the class whose output this unpacks, and the constructor defaults that determine the layout
+- [Switching distributions](switching-distributions.md) — what each extracted number *is* probabilistically, where this page is the mechanics
 - [MarkovAutoregression](markov-autoregression.md) — the extra `autoregressive` block and the regime-path axes
 - [Frozen parameters](frozen-parameters.md) — `mod.filter` / `mod.smooth`, the consumers of an extracted vector
 - [statsmodels](statsmodels.md) — the Model→Results split this exploits

@@ -5,4 +5,5 @@ nav:
   - predict.md
   - markov-autoregression.md
   - markov-regression.md
+  - switching-distributions.md
   - switching-parameters.md

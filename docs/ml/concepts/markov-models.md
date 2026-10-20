@@ -368,6 +368,7 @@ The order of operations that keeps you honest:
 - [Bayesian Markov Models](bayesian-markov-models.md) — the same structure as one joint distribution: filtering as iterated Bayes, sticky priors, FFBS, and the evidence as a model-selection criterion
 - [MarkovAutoregression](../statsmodels/markov-autoregression.md) — the switching-autoregression sibling, where the regime path enters the likelihood
 - [MarkovRegression](../statsmodels/markov-regression.md) — the `statsmodels` implementation: constructor defaults, restarts, and frozen-parameter filtering
+- [Switching distributions](../statsmodels/switching-distributions.md) — each distribution on this page matched to the `statsmodels` attribute that estimates it
 - [Data Leakage](data-leakage.md) — the general taxonomy these traps instantiate
 - [Time-Series Validation](time-series-validation.md) — the chronological protocol a walk-forward refit sits inside
 - [Fold-Safe Transformers](../scikit-learn/fold-safe-transformers.md) — the same burn-in problem for rolling and recursive features

@@ -112,6 +112,9 @@ refers to: `True` means the `start_params` *you* pass are in natural units.
 
 ## Reading the results
 
+Which attribute is which distribution — kernel, emission, the three state posteriors — is
+tabulated in [Switching distributions](switching-distributions.md).
+
 `res.params` is a `Series` with structured names — `p[i->j]` for transitions (only
 $K(K-1)$ of them; the rest are implied), a `[regime]` suffix on switching parameters, no
 suffix on the rest:
@@ -241,6 +244,7 @@ autoregression — a different model, and a much cheaper one.
 ## Related
 
 - [MarkovAutoregression](markov-autoregression.md) — the autoregressive sibling, and the mean- vs intercept-switching choice
+- [Switching distributions](switching-distributions.md) — every results attribute matched to the distribution it estimates
 - [Switching parameters](switching-parameters.md) — unpacking `res.params` for computation, and the model methods that take a params vector
 - [statsmodels](statsmodels.md) — the library around it: Model→Results, formulas, `cov_type`, and the rest of the catalogue
 - [Markov Processes](../concepts/markov-models.md) — the theory this class implements
