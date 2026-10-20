@@ -157,3 +157,4 @@ Forecast first, reveal second — that ordering is what makes the backtest causa
 
 - [statsmodels](statsmodels.md) — the Model→Results split all of this exploits
 - [MarkovRegression](markov-regression.md) — the Hamilton filter in a walk-forward loop
+- [Switching parameters](switching-parameters.md) — getting the vector a switching model's `filter` wants out of a previous fit

@@ -121,6 +121,10 @@ p[0->0]    0.9712     const[0]    0.0831     sigma2[0]   0.4455
 p[1->0]    0.0405     const[1]   -0.1502     sigma2[1]   3.8821
 ```
 
+Those names are for reading; to slice the vector in code — especially when a parameter
+does not switch and several regimes share one slot — go through the
+[`mod.parameters` index map](switching-parameters.md).
+
 `res.summary()` prints this as a block per regime plus a transition block. Three
 probability attributes, each `(nobs, k_regimes)` and a DataFrame when `endog` had a pandas
 index:
@@ -237,6 +241,7 @@ autoregression — a different model, and a much cheaper one.
 ## Related
 
 - [MarkovAutoregression](markov-autoregression.md) — the autoregressive sibling, and the mean- vs intercept-switching choice
+- [Switching parameters](switching-parameters.md) — unpacking `res.params` for computation, and the model methods that take a params vector
 - [statsmodels](statsmodels.md) — the library around it: Model→Results, formulas, `cov_type`, and the rest of the catalogue
 - [Markov Processes](../concepts/markov-models.md) — the theory this class implements
 - [Bayesian Markov Models](../concepts/bayesian-markov-models.md) — what the plug-in point estimate leaves out, and the priors that replace the awkward defaults

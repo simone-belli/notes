@@ -120,6 +120,10 @@ sigma2                  # one variance unless switching_variance=True
     mean-adjusted parameterisation `const[k]` **is** $\mu_k$ already. Dividing is a common
     and badly wrong reading of the output.
 
+That display is `summary()`'s; the underlying vector gains an `autoregressive` block after
+the variance, so slice it through the
+[`mod.parameters` index map](switching-parameters.md) rather than by position or name.
+
 `switching_ar=True` adds `[0]` / `[1]` suffixes to the AR names. A single regime's AR
 polynomial may legitimately be explosive — regime-switching models of bubbles rely on it,
 and the overall process can still be stationary — but an explosive regime whose expected
@@ -156,6 +160,7 @@ and preferring filtered over smoothed probabilities all carry over unchanged fro
 ## Related
 
 - [MarkovRegression](markov-regression.md) — the shared API, in detail
+- [Switching parameters](switching-parameters.md) — unpacking the parameter vector for computation
 - [Markov Processes](../concepts/markov-models.md) — the theory this class implements
 - [Frozen parameters](frozen-parameters.md) — `mod.filter(params)` for the walk-forward loop
 - [Data Leakage](../concepts/data-leakage.md) — why the presample offset matters
