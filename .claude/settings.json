@@ -8,10 +8,11 @@
       "Bash(mkdir *)",
 
       "Bash(mkdocs build *)",
-      "Bash(python3 *)"
+      "Bash(python3 *)",
+
+      "Bash(git push *)"
     ],
     "deny": [
-      "Bash(git push *)",
       "Bash(rm -rf *)",
       "Bash(open *)"
     ]

@@ -26,8 +26,9 @@ This repo is a personal knowledge base, not production code — reading and writ
 - Read, search, or list any file in the repo.
 - Create, write, or edit notes, `README.md` tables, and `_explain.md` files.
 - Run read-only commands (`mkdocs build --strict`, `git status`, `git diff`, etc.).
+- Commit and push straight to `main`, for changes of any size. This is a standing agreement with the owner (October 2026); open a pull request only when the owner asks for one.
 
-Only pause to ask when the action is genuinely hard to undo or outward-facing: pushing to the remote, deleting many files at once, or a structural change (`RESTRUCTURE`, large `AUDIT` fix) where the skill calls for approval before executing. Commit when a skill says to. Before any commit that touches `docs/`, run `mkdocs build --strict` — it must exit 0.
+Only pause to ask when the action is genuinely hard to undo: deleting many files at once, or a structural change (`RESTRUCTURE`, large `AUDIT` fix) where the skill calls for approval before executing. Commit when a skill says to. Before any commit that touches `docs/`, run `mkdocs build --strict` — it must exit 0.
 
 ## File organisation
 
