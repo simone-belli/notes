@@ -100,10 +100,16 @@ res.predict(start, end, probabilities="predicted", conditional=False)
 `probabilities`, whose default `"smoothed"` conditions on the **entire sample** and is a
 lookahead in any evaluation loop.
 
+Underneath both sits
+[`mod.predict_conditional(params)`](switching-parameters.md#predict_conditional) — the
+unweighted $x_t^{\top}\beta_i$ for every regime and every $t$, which is what the weighting
+step above consumes.
+
 ## Related
 
 - [statsmodels](statsmodels.md) — the Model→Results split these signatures hang off, and `get_prediction` intervals
 - [Frozen parameters](frozen-parameters.md) — `mod.predict(params, …)` in a walk-forward loop
 - [MarkovRegression](markov-regression.md) — the `probabilities` / `conditional` variant in context
+- [Switching parameters](switching-parameters.md) — `predict_conditional`, the unweighted building block behind it
 - [Data Leakage](../concepts/data-leakage.md) — why every default here is the wrong one for a backtest
 - [Time-Series Validation](../concepts/time-series-validation.md) — where a `dynamic=True` evaluation belongs

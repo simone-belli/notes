@@ -83,17 +83,95 @@ llf = mod.loglike(theta)                    # scalar, no results object construc
   *logit coefficients*, not probabilities. `regime_transition_matrix` is the only correct
   route to $p_{ij}$, and it needs `exog_tvtp=` passed in to evaluate them at specific
   covariates.
-- `predict_conditional` on `MarkovAutoregression` returns shape
-  $(K, \ldots, K, \text{nobs})$ with $p + 1$ regime axes, not $(K, \text{nobs})$, because
-  the mean-adjusted form conditions on the regime path $s_{t-p:t}$.
 - `mod.initial_probabilities` is the ergodic distribution $\pi$ solving $\pi = P\pi$ under
   the default steady-state initialisation — the prior the Hamilton filter starts from.
+- `predict_conditional` is the regime-conditional mean, detailed below.
 
 !!! tip "A params argument is a frozen-parameter hook"
     Because these take `theta` and not `res`, the same calls evaluate a model at
     parameters estimated on an *earlier* sample — the walk-forward pattern in
     [Frozen parameters](frozen-parameters.md). `mod.loglike(theta)` in particular is the
     cheap way to check whether a random restart actually found a better optimum.
+
+## `predict_conditional`
+
+The model's deterministic part evaluated under **every regime hypothesis at every $t$**,
+with no probability weighting anywhere in it:
+
+$$
+\hat y_t^{(i)} = x_t^{\top}\beta_i,
+\qquad i = 0, \ldots, K-1, \qquad t = 1, \ldots, T
+$$
+
+```python
+mu = mod.predict_conditional(theta)   # (k_regimes, nobs) ndarray
+mu[1] - mu[0]                         # distance between the two regimes' means at each t
+```
+
+- **Signature is `(params)` and nothing else** — no `start`/`end`, no `transformed`, no
+  `exog`. The vector must already be in natural units, and the result always spans the
+  full in-sample period, so column $t$ is observation $t$.
+- **Returns a bare ndarray**, with no pandas index attached even when `endog` had one.
+- **All zeros when there is nothing to predict from.** With `trend="n"` and `exog=None`
+  every $\beta_i$ is absent, so the conditional mean is $0$ in all regimes — the model is
+  then pure switching variance, and all of its content sits in $\sigma^2_i$ and the
+  regime probabilities.
+
+### Relation to `res.predict`
+
+[`res.predict`](predict.md) *is* this function plus a weighting step:
+
+$$
+\hat y_t = \sum_{i} \Pr(S_t = i \mid \cdot)\, \hat y_t^{(i)}
+$$
+
+`conditional=True` returns the rows unweighted, one column per regime over
+`start`…`end`; the default collapses them under `probabilities`, whose
+`"smoothed"` default conditions on the whole sample. `predict_conditional` is therefore
+the one variant that cannot leak — it contains no probabilities to be smoothed, only
+$\beta$.
+
+### The likelihood's inner loop
+
+The Hamilton filter needs the regime-conditional densities, and for a Gaussian switching
+regression those are a function of exactly this quantity and the regime variance:
+
+$$
+\log f(y_t \mid S_t = i, y_{1:t-1}) =
+-\frac{1}{2}\left[\log\left(2\pi\sigma_i^2\right)
++ \frac{\bigl(y_t - \hat y_t^{(i)}\bigr)^2}{\sigma_i^2}\right]
+$$
+
+So `predict_conditional` is the inner loop of `loglike`, exposed. That makes it the
+starting point for regime-conditional residual diagnostics, which `res.resid` does not
+give you:
+
+```python
+k = mod.k_regimes
+sigma2 = np.array([theta[mod.parameters[i, "variance"]][0] for i in range(k)])
+resid = np.asarray(mod.endog).squeeze() - mu       # (k, nobs)
+z = resid / np.sqrt(sigma2)[:, None]               # standardised within each regime
+```
+
+Use `mod.endog`, not your original `y` — `MarkovAutoregression` trims the presample, so
+the two differ in length there.
+
+### `MarkovAutoregression`
+
+The override returns shape $(K, \ldots, K, \text{nobs})$ with $p + 1$ regime axes instead
+of $(K, \text{nobs})$, because the mean-adjusted form makes the conditional mean depend on
+the whole regime path $s_{t-p:t}$:
+
+$$
+\hat y_t^{(i_0, i_1, \ldots, i_p)} = x_t^{\top}\beta_{i_0}
++ \sum_{r=1}^{p} \phi_r^{(i_0)}\left(y_{t-r} - x_{t-r}^{\top}\beta_{i_r}\right)
+$$
+
+!!! note "Axis 0 is the current regime"
+    Axes run $s_t, s_{t-1}, \ldots, s_{t-p}$ left to right, and $K^{p+1}$ grows fast —
+    $K = 2$, $p = 4$ is already 32 surfaces per observation. `mu[i, i, i, i, i]` is the
+    never-switched path, not the model's prediction for regime $i$; the prediction weights
+    all $K^{p+1}$ of them by the joint path probability.
 
 ## Round-tripping
 
