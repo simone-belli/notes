@@ -166,3 +166,4 @@ man ls            # manual page
 ## See also
 
 - [env-vars.md](env-vars.md) — environment variables, .env files, scope
+- [starship.md](starship.md) — replacing `PROMPT` with a configured cross-shell prompt

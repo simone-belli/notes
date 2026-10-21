@@ -4,4 +4,5 @@ nav:
   - zsh.md
   - bash-scripting.md
   - history.md
+  - starship.md
   - direnv.md

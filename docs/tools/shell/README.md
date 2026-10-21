@@ -16,6 +16,9 @@ The shell environment: scripting, navigation, and per-project variables.
 :material-card-bulleted-outline: **[Shell history](history.md){ .lvl-intermediate }**
 :   Reusing past commands: `Ctrl+R`, prefix search, `Alt+.`, `!`-expansion, fzf, config
 
+:material-card-bulleted-outline: **[starship](starship.md){ .lvl-intermediate }**
+:   Cross-shell prompt: `starship.toml`, the `format` string, module/style syntax, palettes, custom modules
+
 ---
 
 :material-text-box-outline: **[direnv — auto-loading project variables](direnv.md){ .lvl-advanced }**
