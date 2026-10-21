@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/assets/favicon.svg" alt="Notes logo" width="96"></p>
+
 # Notes
 
 Learning notes and references across software engineering, ML, and AI topics.

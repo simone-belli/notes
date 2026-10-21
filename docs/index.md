@@ -1,3 +1,5 @@
+![Notes logo](assets/favicon.svg){ width="72" }
+
 # Notes
 
 Learning notes and references across software engineering, ML, and AI topics.
