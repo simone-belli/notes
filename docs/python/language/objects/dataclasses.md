@@ -101,7 +101,7 @@ class Price:
 ```
 
 - `InitVar[T]` fields are passed to `__init__` and forwarded to `__post_init__`, but are not stored, compared, or shown in `__repr__`.
-- `ClassVar[T]` annotations are skipped entirely — a normal class attribute, shared by all instances.
+- `ClassVar[T]` annotations are skipped entirely — a normal [class attribute](classes/class-attributes.md), shared by all instances.
 - Under `frozen=True`, assign in `__post_init__` via `object.__setattr__(self, "rounded", ...)`.
 
 ## Helper functions

@@ -1,5 +1,6 @@
 nav:
   - README.md
+  - class-attributes.md
   - oop.md
   - data-model.md
   - hash.md

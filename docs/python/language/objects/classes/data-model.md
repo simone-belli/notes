@@ -89,7 +89,7 @@ trade = Trade.from_dict({"symbol": "AAPL", "price": 182.5, "side": "BUY"})
 
 - Main use: **alternative constructors** — several named ways to build an instance from different input formats, since `__init__` can only have one signature.
 - Writing `cls(...)` rather than `Trade(...)` is what makes them inheritable: `SpreadTrade.from_dict(...)` returns a `SpreadTrade`.
-- Also used for class-level state and registries — anything whose receiver should be the class, such as a counter in a class attribute or a `register()` that populates a lookup table on the class.
+- Also used for class-level state and registries — anything whose receiver should be the class, such as a counter in a [class attribute](class-attributes.md) or a `register()` that populates a lookup table on the class.
 - Required by Pydantic for [`@field_validator`](../../../libraries/pydantic/pydantic-validators.md).
 
 ### @staticmethod

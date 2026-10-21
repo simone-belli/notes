@@ -2,6 +2,9 @@
 
 How the class and instance machinery works underneath — the protocols your own classes implement.
 
+:material-text-box-outline: **[Class attributes](class-attributes.md){ .lvl-basic }**
+:   Values shared by every instance: class vs instance attributes, shadowing, `ClassVar`/`Final`, mutable-default trap
+
 :material-text-box-outline: **[Classes: Inheritance and ABCs](oop.md){ .lvl-basic }**
 :   Inheritance, MRO, composition over inheritance, ABCs
 
