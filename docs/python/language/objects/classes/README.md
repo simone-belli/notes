@@ -16,6 +16,9 @@ How the class and instance machinery works underneath — the protocols your own
 :material-text-box-outline: **[`__hash__` — Making Objects Hashable](hash.md){ .lvl-intermediate }**
 :   `__hash__`: hash contract, `__eq__` coupling, mutability, dataclasses
 
+:material-text-box-outline: **[Class introspection](introspection.md){ .lvl-intermediate }**
+:   Checking whether a class has a member: `hasattr` pitfalls, `inspect.getattr_static`, own `__dict__` vs MRO, and `ast` for "does it call X?"
+
 :material-text-box-outline: **[Slicing](slicing.md){ .lvl-intermediate }**
 :   The `slice` object behind `obj[a:b:c]`, `.indices()`, tuple and `Ellipsis` keys, and a generic `__getitem__` that dispatches int vs slice
 

@@ -86,5 +86,6 @@ Nothing stops `Circle.unit = "mm"` at runtime; the annotation plus naming conven
 ## Related
 
 - [Attribute lookup protocol](attribute-lookup.md) — the full `obj.x` resolution order, descriptors, `__slots__`
+- [Class introspection](introspection.md) — checking at runtime whether a name is a class attribute, an instance attribute, or only an annotation
 - [Dataclasses](../dataclasses.md) — `ClassVar`, `field()`, `default_factory`
 - [The Data Model and Pythonic Objects](data-model.md) — `@classmethod` for class-level state and registries

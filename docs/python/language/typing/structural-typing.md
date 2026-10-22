@@ -120,4 +120,4 @@ class ReadWritable(Readable, Writable, Protocol): ...   # include Protocol in th
 > Nominal: "Is it *declared* to be the right type?"  
 > Structural: "Does it *have the right shape*?"
 
-Related: [oop.md](../objects/classes/oop.md) for inheritance, MRO, and ABCs; [typing.md](typing.md) for `Literal` and other constructs; [mypy.md](../../tooling/mypy.md) for static checking configuration; [repository-di.md](../objects/repository-di.md) for Protocol-based dependency injection.
+Related: [introspection.md](../objects/classes/introspection.md) for the `hasattr`/`inspect` level below Protocols; [oop.md](../objects/classes/oop.md) for inheritance, MRO, and ABCs; [typing.md](typing.md) for `Literal` and other constructs; [mypy.md](../../tooling/mypy.md) for static checking configuration; [repository-di.md](../objects/repository-di.md) for Protocol-based dependency injection.

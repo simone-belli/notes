@@ -4,6 +4,7 @@ nav:
   - oop.md
   - data-model.md
   - hash.md
+  - introspection.md
   - slicing.md
   - attribute-lookup.md
   - class-creation.md

@@ -62,4 +62,4 @@ This is also the mechanism behind reusable validated/typed fields — a "validat
 
 `obj.x = value` → `object.__setattr__`: check the MRO for a data descriptor and call its `__set__`; otherwise write directly into `obj.__dict__`. Non-data descriptors never intercept writes — only data descriptors (like `property`) can enforce invariants on assignment.
 
-See [oop.md](oop.md) for the Method Resolution Order (MRO) itself and [data-model.md](data-model.md) for dunder methods more broadly.
+See [oop.md](oop.md) for the Method Resolution Order (MRO) itself and [data-model.md](data-model.md) for dunder methods more broadly. [introspection.md](introspection.md) covers querying the result — and `inspect.getattr_static`, which bypasses this whole algorithm.
