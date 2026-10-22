@@ -17,7 +17,7 @@ Verifying Python code: the runner and its fixtures, property-based testing, the 
 :   Property-based testing: strategies, @given, shrinking, invariants, property patterns
 
 :material-text-box-outline: **[Mocking](mocking.md){ .lvl-intermediate }**
-:   Mock vs MagicMock, patch, autospec, AsyncMock, when to mock
+:   Mock vs MagicMock, patch vs mocks, patching class methods, autospec, AsyncMock, when to mock
 
 :material-text-box-outline: **[Patterns](testing-patterns.md){ .lvl-intermediate }**
 :   Seam-based isolation: file/DB deps, tmp_path, StringIO, stdout

@@ -9,6 +9,23 @@ quiz: core
 
 Patterns for replacing dependencies with controlled substitutes. Use mocks when you can't inject a seam (see [testing-patterns.md](testing-patterns.md)) or when you need to assert a side effect was triggered.
 
+## `patch` vs mocks
+
+Not alternatives — they answer different questions. A **mock is an object** (`Mock`, `MagicMock`, `AsyncMock`): a fake that records calls and returns what you configure. **`patch` is an installer**: it temporarily rebinds a name in a namespace and restores the original on exit. They get conflated because `patch`'s default replacement is a freshly made `MagicMock`.
+
+```python
+from unittest.mock import MagicMock, patch
+
+m = MagicMock()                      # mocking — an object exists, nothing is replaced
+with patch("service.send_email"):    # patching — service.send_email is now a MagicMock
+    ...                              # original restored on exit
+```
+
+- **Mock without `patch`** — the dependency is injected, so hand the fake in: `AlertService(MagicMock())`. Preferred: no namespace surgery, no dotted string to get wrong.
+- **`patch` without a mock** — install a real value instead of a recording fake with `new=`: `patch("config.TIMEOUT", new=0.01)`, `patch("service.clock", new=FakeClock())`. Nothing is injected into the test when `new=` is given. `monkeypatch.setattr` is the pytest-native version of this ([mocking-network.md](mocking-network.md#monkeypatch-simpler-pytest-native)).
+
+Patching is the part that breaks: a misbehaving mock fails loudly, but a patch aimed at the wrong namespace silently does nothing and the test runs against the real dependency.
+
 ## When to mock at all — the decision rule
 
 - **Mock boundaries you don't own** — network, clock, randomness, filesystem at the true edge. Slow, nondeterministic, unavailable in CI; patch the outermost function of *yours* that touches them.
@@ -113,6 +130,59 @@ def test_alert(MockNotifier):
 
 !!! note "MagicMock vs Mock"
     `Mock` records calls and returns a child mock for any attribute — but dunder methods are looked up on the *type*, so `len(m)`, `list(m)`, or `with m:` raise `TypeError` on a plain `Mock`. `MagicMock` pre-wires the dunders (`__len__`, `__iter__`, `__enter__`, `__exit__`, …), so it works as a container, iterator, or context manager. Use `MagicMock` by default; drop to `Mock` only if you want dunder access to fail loudly.
+
+## Mocking a method of a class
+
+Three different targets; picking the wrong one is the usual bug.
+
+**Every instance — patch the attribute on the class.** Methods are class attributes looked up at call time, so this also affects instances created before the patch. The patch-where-it's-used rule doesn't bite here: every `from pricing import PriceFeed` points at the *same* class object, and you are mutating an attribute on that object.
+
+```python
+from unittest.mock import patch
+from myapp.pricing import PriceFeed
+
+with patch("myapp.pricing.PriceFeed.get_price", return_value=42.0):
+    assert PriceFeed().get_price("BTC") == 42.0
+
+with patch.object(PriceFeed, "get_price", return_value=42.0) as mock_get:
+    PriceFeed().get_price("BTC")
+mock_get.assert_called_once_with("BTC")
+```
+
+**One instance only — patch the attribute on the object.** Shadows the class attribute; other instances are untouched. Use it when two instances must behave differently in one test.
+
+```python
+feed = PriceFeed()
+with patch.object(feed, "get_price", return_value=42.0):
+    assert feed.get_price("BTC") == 42.0
+```
+
+**A method on an already-mocked instance — configure the mock** (see [Mocking a class](#mocking-a-class) above):
+
+```python
+@patch("service.PriceFeed", autospec=True)
+def test_report(MockFeed):
+    MockFeed.return_value.get_price.return_value = 42.0
+    assert service.report("BTC") == "BTC: 42.0"
+```
+
+!!! warning "`autospec` changes whether `self` is recorded"
+    Patching `PriceFeed.get_price` without `autospec` installs a plain mock on the class, so `self` is **not** passed: `mock_get.assert_called_once_with("BTC")`. With `autospec=True` the mock mimics the real function's descriptor behaviour and the instance **is** recorded: `mock_get.assert_called_once_with(feed, "BTC")`. Prefer `autospec=True` and expect the extra first argument.
+
+### Properties and other descriptors
+
+A `property` is *accessed*, not called, so a normal mock returns the mock itself. Use `PropertyMock`, which must be attached to the **type**:
+
+```python
+from unittest.mock import PropertyMock, patch
+
+with patch.object(PriceFeed, "is_live", new_callable=PropertyMock) as mock_live:
+    mock_live.return_value = True
+    assert PriceFeed().is_live
+```
+
+- `staticmethod` / `classmethod` — patch like any other class attribute; `autospec=True` gets the implicit first argument right (none for static, `cls` for class methods).
+- Dunder methods are looked up on the type, so instance-level patching never works — patch the class attribute or use a `MagicMock`.
 
 ## Testing functions that make network calls
 
