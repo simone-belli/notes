@@ -45,22 +45,64 @@ m.foo()                  # → MagicMock
 m.bar.baz.qux            # → MagicMock (arbitrary depth)
 ```
 
-**Set return values:**
+## Configuring a mock
+
+Four channels, all equivalent — pick by convenience:
 
 ```python
-m.get_price.return_value = 42.0
-m.session.get.return_value.json.return_value = {"price": 42.0}   # chained
+from unittest.mock import MagicMock
+
+m = MagicMock(return_value=7)                              # 1. constructor kwargs
+m.get_price.return_value = 42.0                            # 2. attribute assignment
+m.configure_mock(status=200, **{"fetch.return_value": 1})  # 3. configure_mock
+MagicMock(**{"session.get.return_value.json.return_value": {"price": 42.0}})
+                                                           # 4. dotted keys
 ```
 
-**Side effects** — overrides `return_value`:
+Dotted keys are the one channel that reaches nested children in a single expression — which is why they are the way to configure depth inside `patch(...)`, where no mock object exists yet to assign to.
+
+### `return_value` and `side_effect`
 
 ```python
+m.get_price.return_value = 42.0                                  # fixed result
+m.session.get.return_value.json.return_value = {"price": 42.0}   # chained
+
 m.fetch.side_effect = ValueError("bad")             # always raises
 m.fetch.side_effect = [42.0, 43.0, ValueError()]    # sequential — pops per call
 m.fetch.side_effect = lambda s: PRICES[s]           # dynamic
 ```
 
-**Call inspection:**
+- `side_effect` **wins** over `return_value` — unless the callable returns `unittest.mock.DEFAULT`, the sentinel that means "fall through to `return_value`".
+- A `side_effect` list is consumed per call; a 4th call raises `StopIteration`. Any exception *class* or *instance* in it is raised rather than returned.
+- Setting `side_effect = None` removes it, restoring `return_value`.
+
+```python
+from unittest.mock import DEFAULT, MagicMock
+
+m = MagicMock(return_value=0.0)
+m.side_effect = lambda s: PRICES[s] if s in PRICES else DEFAULT   # 0.0 for unknowns
+```
+
+To keep the real behaviour and merely record the calls, configure `wraps=` instead — a spy rather than a stub ([below](#how-strict-and-configured-with-what)).
+
+### Plain attributes
+
+Anything that isn't a call is just an attribute — `m.status_code = 200`. Two snags:
+
+- `name` is consumed by the constructor to label the mock in reprs, so `MagicMock(name="x")` does *not* set `.name`. Use `m.configure_mock(name="x")` or assign after creation.
+- A real `property` on a spec'd class still behaves as an attribute on the mock; `PropertyMock` is needed only when [patching a real class's property](#properties-and-other-descriptors).
+
+### Resetting
+
+`m.reset_mock()` clears recorded calls but **keeps** configuration. Pass flags to drop that too:
+
+```python
+m.reset_mock(return_value=True, side_effect=True)
+```
+
+Prefer a fresh mock per test over resetting a shared one — resetting is for loops inside a single test.
+
+### Inspecting calls
 
 ```python
 m.send_alert.assert_called_once()
@@ -79,14 +121,20 @@ from unittest.mock import ANY
 m.send.assert_called_once_with(to="ops@example.com", body=ANY)
 ```
 
+### `spec` and `autospec`
+
 **`spec`** — constrains the mock to a real class's interface; typos raise `AttributeError`:
 
 ```python
+from unittest.mock import MagicMock
+
+from notifiers import Notifier
+
 m = MagicMock(spec=Notifier)
 m.sned_email(...)   # AttributeError — typo caught immediately
 ```
 
-`spec` checks attribute *names* only — it does **not** validate call signatures.
+`spec` checks attribute *names* only — it does **not** validate call signatures. `spec_set=` is the stricter form: it also rejects *setting* an attribute the real class lacks, catching a test that silently configures a typo.
 
 **`autospec=True`** — builds the mock recursively from the real object, so every method enforces the real signature; wrong arguments raise `TypeError`. This catches **API drift**: with a bare mock, `m.assert_called_once_with("BTC", threshold=1000)` keeps passing after the real function is refactored to `send_alert(symbol, *, limit)` — the suite stays green while production breaks.
 
@@ -243,7 +291,7 @@ with patch("service.registry", new_callable=Mock):
 
 ### How strict, and configured with what
 
-- **`spec=` / `spec_set=`** — restrict which attribute names exist; `spec_set` also rejects *setting* an unknown attribute, catching a test that configures a typo. **`autospec=True`** additionally enforces real call signatures — the default choice (see [MagicMock](#magicmock) above).
+- **`spec=` / `spec_set=`** — restrict which attribute names exist; `spec_set` also rejects *setting* an unknown attribute, catching a test that configures a typo. **`autospec=True`** additionally enforces real call signatures — the default choice (see [`spec` and `autospec`](#spec-and-autospec) above).
 - **`create=True`** — permit patching a name that doesn't exist yet. The default failure is a feature: it catches renames. Needed only for genuinely runtime-created attributes.
 - **`**kwargs`** — anything the `Mock` constructor accepts, applied at creation:
 
