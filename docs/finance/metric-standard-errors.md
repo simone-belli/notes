@@ -113,7 +113,7 @@ SE(SR_ann) ≈ sqrt(q / n)             q periods per year; the SR²/2 term is
 ```
 
 Three years of daily data: `sqrt(252/756) ≈ 0.58`, so a reported 1.0 is
-"1.0 ± 0.6". See [Tuning a Trading Strategy](../ml/concepts/strategy-tuning.md)
+"1.0 ± 0.6". See [Tuning a Trading Strategy](../ml/concepts/validation/strategy-tuning.md)
 for why that interval, not the point estimate, is what belongs in a report —
 and why the denominator is a scale-invariance concern rather than a noise one.
 
@@ -176,7 +176,7 @@ res.params[0] / res.bse[0]                             # DM statistic, ~ N(0,1)
 
 ## Related
 
-- [Tuning a Trading Strategy](../ml/concepts/strategy-tuning.md) — Lo's Sharpe SE in context, and selection bias on top of it
+- [Tuning a Trading Strategy](../ml/concepts/validation/strategy-tuning.md) — Lo's Sharpe SE in context, and selection bias on top of it
 - [Information Coefficient](information-coefficient.md) — another mean/standard-deviation ratio with the same delta-method SE
-- [Model Validation](../ml/concepts/model-validation.md) — the protocol the predictions being scored must come out of
-- [Time-Series Validation](../ml/concepts/time-series-validation.md) — where overlapping labels come from in the first place
+- [Model Validation](../ml/concepts/validation/model-validation.md) — the protocol the predictions being scored must come out of
+- [Time-Series Validation](../ml/concepts/validation/time-series-validation.md) — where overlapping labels come from in the first place

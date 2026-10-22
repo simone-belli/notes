@@ -4,7 +4,7 @@ Hamilton's model is three probability distributions, and
 [`MarkovRegression`](markov-regression.md) returns an estimate of each one plus the
 posterior laws its filter produces on the way. Every attribute on the results object is
 one of those distributions — this page is the dictionary. The
-[theory](../concepts/markov-models.md) is elsewhere; the point here is which symbol each
+[theory](../concepts/sequence-models/markov-models.md) is elsewhere; the point here is which symbol each
 number is.
 
 $$
@@ -62,7 +62,7 @@ $$
 ## The filter's posteriors
 
 Three laws over the same state, differing only in the conditioning set — which is the
-whole of the [filtering vs smoothing](../concepts/markov-models.md#filtering-vs-smoothing)
+whole of the [filtering vs smoothing](../concepts/sequence-models/markov-inference.md#filtering-vs-smoothing)
 distinction:
 
 | posterior | attribute |
@@ -118,7 +118,7 @@ $$
 
 `res.expected_durations` is not a fourth distribution but a consequence of the kernel: the
 time spent in regime $i$ before leaving is
-[geometric](../concepts/markov-models.md#geometric-dwell-times),
+[geometric](../concepts/sequence-models/markov-models.md#geometric-dwell-times),
 
 $$
 \Pr(D_i = d) = p_{ii}^{\,d-1}(1 - p_{ii}),
@@ -134,12 +134,12 @@ each regime — for $K = 2$ exactly the duration-weighted one, $\pi_0 = d_0 / (d
     $\arg\max \Pr(s_{1:T} \mid y_{1:T})$ — the pointwise-optimal sequence can even have
     zero probability under the model when a transition it implies has $p_{ij} = 0$.
     statsmodels ships no Viterbi decoder, so a maximum-a-posteriori *path* is yours to
-    write; see [Viterbi vs pointwise decoding](../concepts/markov-models.md#viterbi-vs-pointwise-decoding).
+    write; see [Viterbi vs pointwise decoding](../concepts/sequence-models/markov-inference.md#viterbi-vs-pointwise-decoding).
 
 ## Related
 
 - [MarkovRegression](markov-regression.md) — the class these attributes hang off, and the constructor arguments that decide which $\beta_i$ and $\sigma_i^2$ exist
 - [Switching parameters](switching-parameters.md) — the mechanics of slicing the vector, where this page gives the meaning
 - [predict](predict.md) — the weighting argument behind the two expectation rows
-- [Markov Processes](../concepts/markov-models.md) — the derivations summarised here
-- [Bayesian Markov Models](../concepts/bayesian-markov-models.md) — what these point estimates hide, since every table entry is a plug-in at $\hat\theta$
+- [Markov Processes](../concepts/sequence-models/markov-models.md) — the derivations summarised here
+- [Bayesian Markov Models](../concepts/sequence-models/bayesian-markov-models.md) — what these point estimates hide, since every table entry is a plug-in at $\hat\theta$

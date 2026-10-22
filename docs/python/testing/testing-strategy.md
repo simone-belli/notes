@@ -57,7 +57,7 @@ One test, one behaviour. If a test has 10 assertions, split it into 10 tests.
 !!! tip "Mock at your own boundary — don't mock what you don't own"
     Mocking third-party library internals (e.g. `httpx.Response` internals) lets the mock drift from the real API — the library updates and your tests keep passing while your code breaks. Instead, mock at the boundary you own: your function that calls the library, or your repository interface. See the [testing-patterns.md](testing-patterns.md) decision guide.
 
-Don't mock what you don't own — mocking third-party library internals lets the mock drift from reality. Mock at your own boundary. For the mechanics (`patch`, `autospec`, `side_effect`) and the full when-to-mock decision rule, see [mocking.md](mocking.md).
+Don't mock what you don't own — mocking third-party library internals lets the mock drift from reality. Mock at your own boundary. For the mechanics (`patch`, `autospec`, `side_effect`) and the full when-to-mock decision rule, see [mocks.md](mocking/mocks.md).
 
 ```python
 from unittest.mock import MagicMock, patch
@@ -92,7 +92,7 @@ Robert C. Martin's three laws make the loop concrete: write no production code w
 Two schools differ on what a test should verify:
 
 - **Chicago / classic (state-based)** — assert on return values or resulting state; prefers real collaborators over mocks. Resilient to refactoring but can be slower to pinpoint a failure.
-- **London / mockist (interaction-based)** — [mocks](mocking.md) collaborators and asserts the right calls happened; designs top-down, mocking out not-yet-built pieces. Pinpoints failures precisely but the tests can break on refactors that don't change behaviour (testing implementation, not behaviour).
+- **London / mockist (interaction-based)** — [mocks](mocking/mocks.md) collaborators and asserts the right calls happened; designs top-down, mocking out not-yet-built pieces. Pinpoints failures precisely but the tests can break on refactors that don't change behaviour (testing implementation, not behaviour).
 
 Most useful when fixing bugs (write a test that reproduces the bug, then fix it) and when designing new APIs. Less natural for exploratory/throwaway prototyping, where the shape of the solution isn't known yet — spike without tests, then rebuild with TDD once the design settles.
 

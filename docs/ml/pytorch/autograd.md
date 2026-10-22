@@ -98,7 +98,7 @@ for i, (xb, yb) in enumerate(loader):
 |---|---|---|
 | `torch.no_grad()` | a block | validation, manual parameter updates |
 | `torch.inference_mode()` | a block | pure inference — faster, outputs can never re-enter autograd |
-| `.detach()` | one tensor | logging, metrics, cutting a [recurrent history](../concepts/lstm.md) |
+| `.detach()` | one tensor | logging, metrics, cutting a [recurrent history](../concepts/sequence-models/lstm.md) |
 | `requires_grad_(False)` | a parameter | freezing layers |
 
 ```python
@@ -168,5 +168,5 @@ backward op to produce one.
   sit, and what else has to be right around them
 - [Tensors](tensors.md) — `requires_grad`, and the view/copy rules that turn
   into gradient errors
-- [Reproducibility and Seeding](../concepts/reproducibility.md) — the other
+- [Reproducibility and Seeding](../concepts/training/reproducibility.md) — the other
   hidden global state in a training run

@@ -33,7 +33,7 @@ X_train, X_test = X_scaled[:split], X_scaled[split:]
 ```
 
 The fix is structural, not disciplinary: fit every learned step inside the fold.
-See [scikit-learn Pipelines](../scikit-learn/pipelines.md).
+See [scikit-learn Pipelines](../../scikit-learn/pipelines.md).
 
 **Look-ahead (temporal) leakage.** A training row post-dates a test row. Shuffling
 a time series does this wholesale — the model learns the test period's regime,
@@ -96,8 +96,8 @@ There is no linter for leakage. The practical signals:
 
 - [Model Validation](model-validation.md) — the protocol leakage corrupts
 - [Time-Series Validation](time-series-validation.md) — purging and embargo for correlated rows
-- [Markov Processes](markov-models.md) — look-ahead leakage in its purest form: a smoothed state estimate conditions on the whole sample
-- [scikit-learn Pipelines](../scikit-learn/pipelines.md) — the fit boundary, enforced
-- [Custom Transformers](../scikit-learn/custom-transformers.md) — keeping engineered features inside the fold
-- [PyTorch — Data Loading](../pytorch/data-loading.md) — the same boundary in a library that enforces none of it: `random_split`, `Subset`, and where normalisation statistics come from
-- [DVC — Pipelines](../dvc/pipelines.md) — the same "structure beats vigilance" move applied to file staleness: a pipeline stage declares its deps so re-run-or-skip is computed, not remembered
+- [Markov Inference](../sequence-models/markov-inference.md) — look-ahead leakage in its purest form: a smoothed state estimate conditions on the whole sample
+- [scikit-learn Pipelines](../../scikit-learn/pipelines.md) — the fit boundary, enforced
+- [Custom Transformers](../../scikit-learn/custom-transformers.md) — keeping engineered features inside the fold
+- [PyTorch — Data Loading](../../pytorch/data-loading.md) — the same boundary in a library that enforces none of it: `random_split`, `Subset`, and where normalisation statistics come from
+- [DVC — Pipelines](../../dvc/pipelines.md) — the same "structure beats vigilance" move applied to file staleness: a pipeline stage declares its deps so re-run-or-skip is computed, not remembered

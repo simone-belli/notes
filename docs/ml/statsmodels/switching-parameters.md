@@ -198,7 +198,7 @@ se_sigma2 = res.bse[mod.parameters["variance"]]
 
 These carry the usual caveat for switching models: a transition probability estimated near
 0 or 1 — the normal case for a persistent regime — sits on the boundary of the parameter
-space, where [the standard errors are not meaningful](../concepts/bayesian-markov-models.md).
+space, where [the standard errors are not meaningful](../concepts/sequence-models/bayesian-markov-models.md).
 Judge persistence by `res.expected_durations` instead.
 
 ## Related
@@ -208,5 +208,6 @@ Judge persistence by `res.expected_durations` instead.
 - [MarkovAutoregression](markov-autoregression.md) — the extra `autoregressive` block and the regime-path axes
 - [Frozen parameters](frozen-parameters.md) — `mod.filter` / `mod.smooth`, the consumers of an extracted vector
 - [statsmodels](statsmodels.md) — the Model→Results split this exploits
-- [Markov Processes](../concepts/markov-models.md) — what $P$, $\pi$ and the filter are
-- [Bayesian Markov Models](../concepts/bayesian-markov-models.md) — why a plug-in point estimate understates the uncertainty
+- [Markov Processes](../concepts/sequence-models/markov-models.md) — what $P$ and $\pi$ are
+- [Markov Inference](../concepts/sequence-models/markov-inference.md) — what the filter computes, and how EM fits the model
+- [Bayesian Markov Models](../concepts/sequence-models/bayesian-markov-models.md) — why a plug-in point estimate understates the uncertainty

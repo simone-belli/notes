@@ -71,7 +71,7 @@ Optuna replaces the *search strategy*, not the *validation protocol*: explicit
 splitter, `gap` on time series, preprocessing inside the
 [Pipeline](../scikit-learn/pipelines.md). For a trading strategy, don't route
 through `cross_val_score` at all — pool the out-of-fold predictions and score
-once; see [Tuning a Trading Strategy](../concepts/strategy-tuning.md).
+once; see [Tuning a Trading Strategy](../concepts/validation/strategy-tuning.md).
 
 `OptunaSearchCV` (from `optuna-integration`) is the drop-in alternative — same
 `fit`/`best_params_`/`best_estimator_` surface as `RandomizedSearchCV`, so it
@@ -161,7 +161,7 @@ narrow. `optuna-dashboard` renders all of this live against a running study.
     `study.best_value`, and record `len(study.trials)`: the count of
     configurations tried deflates everything you report. In finance this is
     backtest overfitting — see
-    [Tuning a Trading Strategy](../concepts/strategy-tuning.md) for how much Sharpe
+    [Tuning a Trading Strategy](../concepts/validation/strategy-tuning.md) for how much Sharpe
     a zero-skill model buys from 20 trials.
 
 
@@ -173,4 +173,4 @@ narrow. `optuna-dashboard` renders all of this live against a running study.
 - [Optuna — Diverged Trials](optuna-divergence.md) — `COMPLETE` vs `PRUNED` vs `FAIL`, and what `catch=` leaves retryable
 - [MLflow — Nested Runs](mlflow-nested-runs.md) — mapping study/trial onto parent/child runs
 - [Running Cross-Validation](../scikit-learn/cross-validation.md) — the loop the objective usually wraps
-- [Tuning a Trading Strategy](../concepts/strategy-tuning.md) — what the objective should return, and what to report instead of `best_value`
+- [Tuning a Trading Strategy](../concepts/validation/strategy-tuning.md) — what the objective should return, and what to report instead of `best_value`

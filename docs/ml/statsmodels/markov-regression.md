@@ -11,7 +11,7 @@ $$
 
 The statistical background — the Markov property, the Hamilton filter, filtering vs
 smoothing, Expectation–Maximisation (EM) — is in
-[Markov Processes](../concepts/markov-models.md); this is the API on top of it.
+[Markov Processes](../concepts/sequence-models/markov-models.md); this is the API on top of it.
 
 ```python
 import statsmodels.api as sm
@@ -107,7 +107,7 @@ refers to: `True` means the `start_params` *you* pass are in natural units.
 - **`cov_type`** — `'approx'` (numerical Hessian, default), `'opg'`, `'robust'`. None is
   trustworthy for a transition probability estimated near 0 or 1, which is the normal case
   for a persistent regime: the parameter sits at the edge of its space and
-  [the asymptotics fail](../concepts/bayesian-markov-models.md). Judge persistence by
+  [the asymptotics fail](../concepts/sequence-models/bayesian-markov-models.md). Judge persistence by
   expected duration, not by the standard error on `p[0->0]`.
 
 ## Reading the results
@@ -219,7 +219,7 @@ have merged and the fit is degenerate.
 - Features and evaluated forecasts use `filtered_marginal_probabilities` — or
   `predicted_marginal_probabilities` when the target at $t$ is $y_t$ itself, since the
   filtered value has already consumed $y_t$. Smoothed output is for historical narrative
-  only. See [Data Leakage](../concepts/data-leakage.md).
+  only. See [Data Leakage](../concepts/validation/data-leakage.md).
 - Estimate on the training block, `filter` with frozen parameters, canonicalise labels,
   exclude burn-in, and report decoding delay next to any accuracy figure.
 
@@ -247,8 +247,8 @@ autoregression — a different model, and a much cheaper one.
 - [Switching distributions](switching-distributions.md) — every results attribute matched to the distribution it estimates
 - [Switching parameters](switching-parameters.md) — unpacking `res.params` for computation, and the model methods that take a params vector
 - [statsmodels](statsmodels.md) — the library around it: Model→Results, formulas, `cov_type`, and the rest of the catalogue
-- [Markov Processes](../concepts/markov-models.md) — the theory this class implements
-- [Bayesian Markov Models](../concepts/bayesian-markov-models.md) — what the plug-in point estimate leaves out, and the priors that replace the awkward defaults
-- [Data Leakage](../concepts/data-leakage.md) — why the smoothed defaults matter
-- [Time-Series Validation](../concepts/time-series-validation.md) — the walk-forward protocol the refit cadence sits inside
+- [Markov Processes](../concepts/sequence-models/markov-models.md) — the theory this class implements
+- [Bayesian Markov Models](../concepts/sequence-models/bayesian-markov-models.md) — what the plug-in point estimate leaves out, and the priors that replace the awkward defaults
+- [Data Leakage](../concepts/validation/data-leakage.md) — why the smoothed defaults matter
+- [Time-Series Validation](../concepts/validation/time-series-validation.md) — the walk-forward protocol the refit cadence sits inside
 - [Metric Standard Errors](../../finance/metric-standard-errors.md) — `statsmodels` for HAC-corrected inference on the resulting signal

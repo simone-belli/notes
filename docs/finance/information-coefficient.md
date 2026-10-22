@@ -11,7 +11,7 @@ IC_t = spearman( pred_{i,t} , ret_{i,t→t+h} )   over the assets i at date t
 - The horizon `h` must match the label the model was fit on.
 - Predictions and returns must be aligned so `ret` is strictly *forward* of the
   information in `pred` — an IC computed on contemporaneous returns is a
-  [leakage](../ml/concepts/data-leakage.md) check, not a performance metric.
+  [leakage](../ml/concepts/validation/data-leakage.md) check, not a performance metric.
 
 ## Cross-sectional vs time-series
 
@@ -53,7 +53,7 @@ Being a ratio of means it takes the same delta-method
 - **Invariant to any monotone transform of the predictions.** The model's output
   scale, units, and calibration are irrelevant — only the ordering is scored. A
   ridge model and the same model with the coefficients doubled get identical rank
-  IC. See [Tuning a Trading Strategy](../ml/concepts/strategy-tuning.md).
+  IC. See [Tuning a Trading Strategy](../ml/concepts/validation/strategy-tuning.md).
 - **Bounded per-observation influence.** Pearson IC is driven by the tails; one
   6-sigma day can set the number. Moving any single observation changes rank IC
   by `O(1/n)`.
@@ -98,5 +98,5 @@ count without adding breadth.
 ## Related
 
 - [Kelly Criterion](kelly-criterion.md) — sizing once a signal's edge is measured
-- [Tuning a Trading Strategy](../ml/concepts/strategy-tuning.md) — rank IC as a selection objective, and what to report instead
-- [Model Validation](../ml/concepts/model-validation.md) — the protocol the predictions must come out of
+- [Tuning a Trading Strategy](../ml/concepts/validation/strategy-tuning.md) — rank IC as a selection objective, and what to report instead
+- [Model Validation](../ml/concepts/validation/model-validation.md) — the protocol the predictions must come out of

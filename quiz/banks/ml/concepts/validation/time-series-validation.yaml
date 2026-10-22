@@ -1,4 +1,4 @@
-note: ml/concepts/time-series-validation.md
+note: ml/concepts/validation/time-series-validation.md
 tier: core
 questions:
   - id: kfold-bias-direction

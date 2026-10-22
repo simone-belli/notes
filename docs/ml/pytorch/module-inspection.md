@@ -163,7 +163,7 @@ for h in handles:
 
 - [Modules](modules.md) — the registry that gives every node its dotted path in
   the first place
-- [Training Diagnostics](../concepts/training-diagnostics.md) — the per-layer
+- [Training Diagnostics](../concepts/training/training-diagnostics.md) — the per-layer
   statistics worth reading out through a forward hook
 - [Autograd](autograd.md) — why storing a raw hook output pins the graph
 - [Optimisers](optimisers.md) — what a filtered `parameters()` generator feeds

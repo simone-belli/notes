@@ -1,4 +1,4 @@
-note: ml/concepts/data-leakage.md
+note: ml/concepts/validation/data-leakage.md
 tier: core
 questions:
   - id: leakage-definition

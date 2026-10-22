@@ -183,6 +183,7 @@ Test `compute_pnl` directly; leave `report_pnl` to a single smoke test or skip i
 ## Related notes
 
 - [`contract-tests.md`](contract-tests.md) — one Protocol, many implementations, parametrized fixtures
-- [`mocking.md`](mocking.md) — MagicMock, patch, network mocking, AsyncMock, pytest-asyncio
+- [`mocking/mocks.md`](mocking/mocks.md) — MagicMock, configuration, autospec, AsyncMock, pytest-asyncio
+- [`mocking/patch.md`](mocking/patch.md) — installing the fake: targets, arguments, patching classes and methods
 - [`testing-strategy.md`](testing-strategy.md) — philosophy, pyramid, mocks, TDD
 - [`pytest.md`](pytest.md) — command quick-reference

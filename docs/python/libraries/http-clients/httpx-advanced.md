@@ -177,4 +177,4 @@ store — the usual cause of failures behind a TLS-inspecting corporate proxy.
 - [aiohttp-concurrency.md](aiohttp-concurrency.md) — the same fan-out and retry patterns in aiohttp
 - [asyncio.md](../../language/concurrency/asyncio.md) — the event loop, `gather`, `create_task`
 - [testing.md](../fastapi/testing.md) — `TestClient`, the HTTPX client FastAPI ships
-- [mocking-network.md](../../testing/mocking-network.md) — mocking HTTP at each layer
+- [network.md](../../testing/mocking/network.md) — mocking HTTP at each layer

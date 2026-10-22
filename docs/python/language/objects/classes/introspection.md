@@ -207,7 +207,7 @@ Trade.settle.__code__.co_names      # ('log_event', 'notify')
 It is coarse — it mixes plain attribute reads with calls (`return self.sound` gives `('sound',)`) and carries no structure. `dis` has the detail, but opcode names shift between releases (CPython 3.12 removed `LOAD_METHOD`, folding it into `LOAD_ATTR` with a flag bit), so prefer the Abstract Syntax Tree (AST).
 
 !!! note "Static analysis can only approximate"
-    `getattr(obj, name)()` puts the name nowhere in the source; decorators insert and hide calls; `self.run()` doesn't say *which* class's `run` runs; and a call in the source may be dead code. For "did it actually call it?", patch the target and assert on the record (see [mocking.md](../../../testing/mocking.md)):
+    `getattr(obj, name)()` puts the name nowhere in the source; decorators insert and hide calls; `self.run()` doesn't say *which* class's `run` runs; and a call in the source may be dead code. For "did it actually call it?", patch the target and assert on the record (see [patch.md](../../../testing/mocking/patch.md)):
 
     ```python
     from unittest.mock import patch

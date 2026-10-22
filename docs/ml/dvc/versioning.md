@@ -174,7 +174,7 @@ md5 = yaml.safe_load(Path("data/raw.csv.dvc").read_text())["outs"][0]["md5"]
 !!! tip "Log both halves with every run"
     Record the Git commit *and* the data hash next to each result. That pair is the
     difference between reproducing a number months later and guessing at it — see
-    [Reproducibility](../concepts/reproducibility.md).
+    [Reproducibility](../concepts/training/reproducibility.md).
 
 ### Imported data
 
@@ -259,4 +259,4 @@ dvc remote modify --local storage secret_access_key <secret>
 
 - [Pipelines](pipelines.md) — turning tracked files into a reproducible DAG
 - [Workflow](workflow.md) — the day-to-day command sequence
-- [Reproducibility](../concepts/reproducibility.md) — why any of this matters
+- [Reproducibility](../concepts/training/reproducibility.md) — why any of this matters

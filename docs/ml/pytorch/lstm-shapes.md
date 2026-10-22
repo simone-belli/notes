@@ -143,7 +143,7 @@ length.
 Windowing a series of $N$ points with lookback $L$ gives $N - L + 1$ windows, and
 $N - L$ once a next-step target costs you one more. Off-by-one here shifts every label —
 either a dead model or, in the wrong direction, [look-ahead
-leakage](../concepts/data-leakage.md) with a suspiciously good score.
+leakage](../concepts/validation/data-leakage.md) with a suspiciously good score.
 
 ```python
 series = torch.arange(100.0).unsqueeze(1)    # (100, 1)
@@ -188,6 +188,6 @@ CPU even when the data is on GPU.
 ## Related
 
 - [Building an LSTM](lstm-model.md) — the model class around the layer: arguments, initialisation, head, clipping
-- [Long Short-Term Memory](../concepts/lstm.md) — what the cell state and gates actually do
+- [Long Short-Term Memory](../concepts/sequence-models/lstm.md) — what the cell state and gates actually do
 - [Modules](modules.md) — where the `assert`s go in `forward`
 - [Data Loading](data-loading.md) — building the windows, and why `random_split` is wrong here

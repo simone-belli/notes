@@ -41,7 +41,7 @@ torch.as_tensor(a)                       # shares if it can, copies if it must
 ```
 
 `torch.manual_seed(0)` seeds PyTorch's generator only — it has no effect on
-NumPy's or Python's ([seeding](../concepts/reproducibility.md)).
+NumPy's or Python's ([seeding](../concepts/training/reproducibility.md)).
 
 !!! warning "Never use `torch.Tensor(...)` with a capital T"
     `torch.Tensor(5)` returns an **uninitialised float32 tensor of length 5**,
@@ -281,5 +281,5 @@ in code someone else reads.
 - [NumPy — Broadcasting](../../data/numpy/broadcasting.md) — identical rules
 - [Pandas — Reshaping](../../data/pandas/transforming/reshaping.md) — where the
   `stack`/`unstack` vocabulary comes from
-- [Reproducibility and Seeding](../concepts/reproducibility.md) — why
+- [Reproducibility and Seeding](../concepts/training/reproducibility.md) — why
   `torch.manual_seed` isn't enough on its own

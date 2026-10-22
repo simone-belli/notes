@@ -209,6 +209,6 @@ cleanly, but cannot express "`alpha` exists only when `model == "ridge"`".
 
 - [Optuna](optuna.md) — define-by-run search spaces, the suggest API, samplers, and pruning
 - [Optuna — Studies](optuna-studies.md) — storage, parallelism, ask-and-tell, and reading the run
-- [Reproducibility and Seeding](../concepts/reproducibility.md) — the other half of making a search repeatable
+- [Reproducibility and Seeding](../concepts/training/reproducibility.md) — the other half of making a search repeatable
 - [Hyperparameter Search](../scikit-learn/hyperparameter-search.md) — the define-and-run distribution dicts this mirrors
 - [YAML](../../tools/yaml.md) — where a serialised space usually lands

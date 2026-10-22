@@ -50,7 +50,7 @@ self.eps = 1e-5                                        # config
 - `nn.Parameter` is a Tensor subclass whose job is to be recognised by the
   registry; it defaults to `requires_grad=True`.
 - Buffers are model-owned tensors that aren't learned —
-  [batch-norm running statistics](../concepts/normalisation.md#batchnorms-two-modes),
+  [batch-norm running statistics](../concepts/training/normalisation.md#batchnorms-two-modes),
   a causal mask, a positional table. Registering them is what makes them move
   device and get saved.
 - A plain tensor attribute stays on the CPU forever, and the first GPU forward
@@ -249,5 +249,5 @@ a millisecond, before a data loader, a loss, or an optimizer is involved.
 - [Autograd](autograd.md) — why `requires_grad` on a parameter is what makes it
   trainable
 - [Tensors](tensors.md) — `.to()` on a module mutates, on a tensor it returns
-- [Training Diagnostics](../concepts/training-diagnostics.md) — the per-layer
+- [Training Diagnostics](../concepts/training/training-diagnostics.md) — the per-layer
   statistics worth reading out through a forward hook

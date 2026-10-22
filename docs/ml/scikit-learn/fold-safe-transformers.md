@@ -34,7 +34,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 One criterion settles both: a transform leaks **iff some output row depends on
 an input row that comes after it in time**. Direction is everything — prepending
 *earlier* rows is what production does, so it is causal, not leaky. See
-[Time-Series Validation](../concepts/time-series-validation.md) for why the
+[Time-Series Validation](../concepts/validation/time-series-validation.md) for why the
 boundary stays porous in both directions.
 
 ## Carrying a burn-in buffer
@@ -106,7 +106,7 @@ statistic — rolling windows, diffs, ranks.
 ## Burn-in vs embargo
 
 Not the same knob, and easy to conflate. Burn-in fixes a *feature* that is wrong
-at the fold start (an artifact of the split); [purging and embargo](../concepts/purged-cross-validation.md)
+at the fold start (an artifact of the split); [purging and embargo](../concepts/validation/purged-cross-validation.md)
 fix a *score* that is optimistic (overlapping labels, near-duplicate rows) by
 dropping rows. Use both: the dropped rows' raw `X` is still legitimate burn-in —
 those prices are known in production — you just never train or score on them.
@@ -122,7 +122,7 @@ X_model, y_model = X.iloc[k:], y.iloc[k:]   # first k rows are buffer-only
 
 Both `iloc[-k:]` and `index < X.index[0]` assume the training block ends just
 before one contiguous test block. Under a combinatorial splitter
-(Combinatorial Purged Cross-Validation, [CPCV](../concepts/purged-cross-validation.md))
+(Combinatorial Purged Cross-Validation, [CPCV](../concepts/validation/purged-cross-validation.md))
 neither holds, and the
 transformer above fails *silently* — max absolute error across four splits of the
 same data:
@@ -204,8 +204,8 @@ which requires each custom transformer to define `get_feature_names_out`, as
 
 - [Custom Transformers](custom-transformers.md) — the `fit`/`transform` contract
   these build on
-- [Time-Series Validation](../concepts/time-series-validation.md) — why the fold
+- [Time-Series Validation](../concepts/validation/time-series-validation.md) — why the fold
   boundary stays porous in both directions
-- [Purged Cross-Validation](../concepts/purged-cross-validation.md) — purging
+- [Purged Cross-Validation](../concepts/validation/purged-cross-validation.md) — purging
   and embargo, the leak-side counterpart to burn-in
-- [Data Leakage](../concepts/data-leakage.md) — the failure these guard against
+- [Data Leakage](../concepts/validation/data-leakage.md) — the failure these guard against

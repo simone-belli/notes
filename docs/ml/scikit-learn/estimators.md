@@ -96,5 +96,5 @@ one it is:
   `mean_squared_error`, `roc_auc_score`).
 - **`random_state`** — pass an int to any stochastic estimator (tree ensembles,
   k-means, shuffled splits) for reproducibility; see
-  [Reproducibility and Seeding](../concepts/reproducibility.md) for what the
+  [Reproducibility and Seeding](../concepts/training/reproducibility.md) for what the
   int vs `None` vs a `RandomState` instance each mean.

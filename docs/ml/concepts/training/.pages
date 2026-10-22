@@ -1,0 +1,10 @@
+title: Training
+nav:
+  - README.md
+  - diagnostics-cheat-sheet.md
+  - early-stopping.md
+  - gradient-descent.md
+  - lr-range-test.md
+  - normalisation.md
+  - reproducibility.md
+  - training-diagnostics.md

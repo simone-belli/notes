@@ -66,7 +66,7 @@ torch.optim.SGD(params, lr, momentum=0, weight_decay=0, nesterov=False)
 ```
 
 With `momentum=0`, SGD is genuinely stateless — `optimizer.state` stays `{}`. The recurrence (the
-maths is in [Gradient Descent](../concepts/gradient-descent.md)):
+maths is in [Gradient Descent](../concepts/training/gradient-descent.md)):
 
 ```
 g   ← grad + weight_decay · p        # L2 folded into the gradient
@@ -164,7 +164,7 @@ optimizer = torch.optim.AdamW([
 ```
 
 This drives discriminative fine-tuning and the standard "no weight decay on biases and
-[norm parameters](../concepts/normalisation.md)" recipe. `add_param_group({...})` appends later; unspecified keys inherit from
+[norm parameters](../concepts/training/normalisation.md)" recipe. `add_param_group({...})` appends later; unspecified keys inherit from
 `defaults`, not from any existing group.
 
 A parameter may appear in **at most one** group — duplicates raise `ValueError: some parameters
@@ -260,7 +260,7 @@ parameters, then load the optimiser state.
 
 ## Related
 
-- [Gradient Descent](../concepts/gradient-descent.md) — the library-agnostic derivations behind
+- [Gradient Descent](../concepts/training/gradient-descent.md) — the library-agnostic derivations behind
   these update rules
 - [The Training Loop](training-loop.md) — where `zero_grad()` and `step()` sit
 - [Learning Rate Schedulers](lr-schedulers.md) — the object that rewrites `group["lr"]`

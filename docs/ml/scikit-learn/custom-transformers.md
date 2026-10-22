@@ -8,7 +8,7 @@ tags:
 Your real features — [rolling](../../data/pandas/transforming/windows.md) stats, regime tags,
 cross-asset interactions — don't exist in scikit-learn; you write them. Compute
 them in pandas over the full frame before splitting and you
-[leak](../concepts/data-leakage.md): any feature built from a cross-row statistic
+[leak](../concepts/validation/data-leakage.md): any feature built from a cross-row statistic
 (mean, quantile, fitted boundary) folds the test period into training. Fix: wrap the feature as a **transformer** so it lives
 inside the [Pipeline](pipelines.md) and is recomputed per fold, leak-free.
 

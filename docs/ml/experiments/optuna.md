@@ -123,7 +123,7 @@ cannot represent "high learning rate works, but only with shallow trees".
 
 `seed=` above reproduces only the sampler's proposals — the objective's own
 randomness (a train/test split, a model's `random_state`) is a separate seed
-you own; see [Reproducibility and Seeding](../concepts/reproducibility.md).
+you own; see [Reproducibility and Seeding](../concepts/training/reproducibility.md).
 
 | Sampler | Use when |
 |---|---|
@@ -229,7 +229,7 @@ scikit-learn, and reading the result back — see
   surface to plot, which beats a winner.
 - **The bottleneck is features, not knobs** — which it usually is. Tuning buys a
   few percent; a better feature or a fixed
-  [leak](../concepts/data-leakage.md) buys more.
+  [leak](../concepts/validation/data-leakage.md) buys more.
 
 
 ## Related
@@ -244,8 +244,8 @@ scikit-learn, and reading the result back — see
   serialisation, compatibility, and hand-built trials
 - [MLflow](mlflow.md) — the general-purpose durable-record library; see
   [MLflow — Nested Runs](mlflow-nested-runs.md) for mapping study/trial onto parent/child runs
-- [Reproducibility and Seeding](../concepts/reproducibility.md) — the sampler's `seed` vs the objective's own
+- [Reproducibility and Seeding](../concepts/training/reproducibility.md) — the sampler's `seed` vs the objective's own
 - [Hyperparameter Search](../scikit-learn/hyperparameter-search.md) — grid, random, and halving, and why the exhaustive product doesn't scale
-- [Time-Series Validation](../concepts/time-series-validation.md) — the protocol tuning must not break
-- [Tuning a Trading Strategy](../concepts/strategy-tuning.md) — what the objective should return, and what to report instead of `best_value`
-- [Model Validation](../concepts/model-validation.md) — selection bias on the maximum, and nested CV
+- [Time-Series Validation](../concepts/validation/time-series-validation.md) — the protocol tuning must not break
+- [Tuning a Trading Strategy](../concepts/validation/strategy-tuning.md) — what the objective should return, and what to report instead of `best_value`
+- [Model Validation](../concepts/validation/model-validation.md) — selection bias on the maximum, and nested CV

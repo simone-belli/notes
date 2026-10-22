@@ -1,7 +1,7 @@
 # Train/Test Splitting
 
 Hold out data the model never trains on, to estimate how it generalises — see
-[Model Validation](../concepts/model-validation.md) for why the estimate needs a
+[Model Validation](../concepts/validation/model-validation.md) for why the estimate needs a
 protocol at all. The cardinal rule: **split first, then fit everything (scalers,
 imputers, model) on the training part only** — see [Pipelines](pipelines.md) for
 why this must be structural.
@@ -24,7 +24,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 - `stratify=y` — preserve each class's proportion in both splits; standard for
   imbalanced classification.
 - `random_state` — an int gives a fresh, independent, reproducible generator
-  per call; see [Reproducibility and Seeding](../concepts/reproducibility.md)
+  per call; see [Reproducibility and Seeding](../concepts/training/reproducibility.md)
   for what that means next to `None` or a `RandomState` instance.
 - Accepts any number of equal-length arrays (`X, y, weights, …`) and splits them
   consistently.
@@ -62,7 +62,7 @@ cross_val_score(model, X, y, cv=TimeSeriesSplit(n_splits=5))   # expanding windo
   classification default.
 - `TimeSeriesSplit` — expanding train window that always **precedes** its
   validation window; the time-series-safe replacement for `KFold`. See
-  [Time-Series Validation](../concepts/time-series-validation.md) for its
+  [Time-Series Validation](../concepts/validation/time-series-validation.md) for its
   parameters and for the leak it *doesn't* fix.
 
 !!! note "Splitting is the other half of leak-proofing"

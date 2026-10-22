@@ -5,8 +5,8 @@ layer:
 
 - **Feature scaling** — standardising the network's *inputs* once, as
   preprocessing. Outside the model, and must be fit on training data only or it
-  leaks (see [Data Leakage](data-leakage.md) and
-  [Fold-Safe Transformers](../scikit-learn/fold-safe-transformers.md)).
+  leaks (see [Data Leakage](../validation/data-leakage.md) and
+  [Fold-Safe Transformers](../../scikit-learn/fold-safe-transformers.md)).
 - **Normalisation layers** — a module *inside* the network that rescales
   activations on every forward pass, using statistics of the tensor in front of
   it. This page.
@@ -132,7 +132,7 @@ shift after a BatchNorm layer and training was unaffected. What holds up:
 
 A BatchNorm layer holds four tensors: the parameters $\gamma, \beta$ and two
 **buffers**, `running_mean` and `running_var` — state that travels in the
-`state_dict` but gets no gradient (see [Modules](../pytorch/modules.md)).
+`state_dict` but gets no gradient (see [Modules](../../pytorch/modules.md)).
 
 - **`train()`** — normalises with the *current batch's* $\mu_B, \sigma_B^2$, and
   updates the buffers $\hat\mu, \hat\sigma^2$ as an exponential moving average
@@ -186,7 +186,7 @@ block = nn.Sequential(
 
 This does not apply to `nn.RMSNorm`, which subtracts no mean. Note also that
 norm-layer parameters and biases are conventionally excluded from weight decay
-via a separate parameter group (see [Optimisers](../pytorch/optimisers.md)) —
+via a separate parameter group (see [Optimisers](../../pytorch/optimisers.md)) —
 decaying $\gamma$ toward 0 just shrinks the layer's output scale.
 
 **Pre-norm versus post-norm** is the placement choice that matters in a residual
@@ -239,7 +239,7 @@ preference:
 Long Short-Term Memory (LSTM) layers are the awkward case: `nn.LSTM` has no
 internal normalisation and no flag to add one, because the gate arithmetic lives
 in a fused kernel. Normalising the inputs and the LSTM's output is what is
-available from outside — see [Building an LSTM](../pytorch/lstm-model.md).
+available from outside — see [Building an LSTM](../../pytorch/lstm-model.md).
 
 ## Related
 
@@ -247,6 +247,6 @@ available from outside — see [Building an LSTM](../pytorch/lstm-model.md).
   probe that tells you a norm layer is needed
 - [Gradient Descent](gradient-descent.md) — the conditioning argument for why
   smoothing buys a larger learning rate
-- [Modules](../pytorch/modules.md) — parameters vs buffers, and `state_dict`
-- [Data Loading](../pytorch/data-loading.md) — `drop_last` and the batch-of-one
+- [Modules](../../pytorch/modules.md) — parameters vs buffers, and `state_dict`
+- [Data Loading](../../pytorch/data-loading.md) — `drop_last` and the batch-of-one
   error

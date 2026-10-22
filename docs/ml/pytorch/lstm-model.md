@@ -86,7 +86,7 @@ summary = torch.cat([h_n[-2], h_n[-1]], dim=1)      # (batch, 2 * hidden_size)
 !!! danger "Bidirectional is look-ahead leakage on a forecast"
     The backward pass at time $t$ has already consumed $t+1 \ldots T$. On windows cut from
     a time series with a next-step target, that is
-    [look-ahead leakage](../concepts/data-leakage.md) wearing an architecture's clothing —
+    [look-ahead leakage](../concepts/validation/data-leakage.md) wearing an architecture's clothing —
     a beautiful validation curve that evaporates in production.
 
 ## The parameters
@@ -206,7 +206,7 @@ Most of the [training loop](training-loop.md) is unchanged. Three things are rec
   state carried forward but `detach()`ed. Forgetting the detach grows the graph across the
   whole epoch until the process runs out of memory.
 
-There is **no [layer normalisation](../concepts/normalisation.md)** in `nn.LSTM`, and no
+There is **no [layer normalisation](../concepts/training/normalisation.md)** in `nn.LSTM`, and no
 flag to add one — it needs
 `nn.LSTMCell` and a hand-written time loop. Wanting it is usually a signal to check whether
 a transformer fits the problem instead.
@@ -227,7 +227,7 @@ a transformer fits the problem instead.
   attributes to new tensors while the optimiser still holds the old CPU ones — `step()`
   updates tensors the forward pass never reads, and the loss just sits flat.
 - **cuDNN's LSTM backward is nondeterministic.** Bit-exact
-  [reproducibility](../concepts/reproducibility.md) needs
+  [reproducibility](../concepts/training/reproducibility.md) needs
   `torch.use_deterministic_algorithms(True)` plus `CUBLAS_WORKSPACE_CONFIG=:4096:8`, at a
   cost in speed.
 
@@ -249,7 +249,7 @@ a transformer fits the problem instead.
 ## Related
 
 - [LSTM Shapes](lstm-shapes.md) — the axis conventions that fail silently, and which state tensor the head wants
-- [Long Short-Term Memory](../concepts/lstm.md) — what the gates and cell state do, and why the gradient survives
+- [Long Short-Term Memory](../concepts/sequence-models/lstm.md) — what the gates and cell state do, and why the gradient survives
 - [Modules](modules.md) — the `nn.Module` registry this model class relies on,
   and [how to walk to](module-inspection.md#finding-submodules) the `lstm` and `head`
   subtrees by name

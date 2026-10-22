@@ -127,7 +127,7 @@ every step.
 
 | Test | Pass | Fail means |
 |---|---|---|
-| Zero the inputs and train | Performance degrades badly | The model isn't using the input — see [Data Leakage](data-leakage.md) |
+| Zero the inputs and train | Performance degrades badly | The model isn't using the input — see [Data Leakage](../validation/data-leakage.md) |
 | Overfit 2–8 examples | Loss → ~0 | Bug in model, loss, or label alignment — capacity is not the problem |
 | Per-example gradient isolation | Non-zero only on example *i* | Batch-dimension mixing or a backwards-in-time leak |
 
@@ -171,7 +171,7 @@ hypothesis space:
   region at all
 - [Learning Rate Range Test](lr-range-test.md) — locating the edges of that
   region in one run
-- [Module Inspection](../pytorch/module-inspection.md#forward-hooks) — the hook
+- [Module Inspection](../../pytorch/module-inspection.md#forward-hooks) — the hook
   mechanics behind the activation readings
-- [Optuna — Diverged Trials](../experiments/optuna-divergence.md#measuring-divergence)
+- [Optuna — Diverged Trials](../../experiments/optuna-divergence.md#measuring-divergence)
   — turning these readings into an automatic stop inside a hyperparameter search

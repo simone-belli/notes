@@ -49,7 +49,7 @@ $$
 
 - **Monitored quantity and direction** — validation loss (minimise) or a task
   metric (maximise). It has to be the validation split; see
-  [Model Validation](model-validation.md).
+  [Model Validation](../validation/model-validation.md).
 - **Patience $p$** — epochs of no improvement tolerated. This is a noise filter,
   so scale it to how noisy the validation estimate is; $p = 1$ stops on a
   fluctuation.
@@ -97,7 +97,7 @@ model.load_state_dict(best_state)       # the whole point
 `ReduceLROnPlateau` watches the same plateau and has its own `patience`. If the
 early-stopping patience is not comfortably larger, the run stops *before* the
 rate drop that would have produced a fresh improvement — see
-[Learning Rate Schedulers](../pytorch/lr-schedulers.md#reducelronplateau). Budget
+[Learning Rate Schedulers](../../pytorch/lr-schedulers.md#reducelronplateau). Budget
 the scheduler's patience plus a few epochs, times the number of drops you want to
 allow.
 
@@ -112,7 +112,7 @@ allow.
 
 The two compose — early-stop inside the fit, prune across trials — and because
 Optuna's `step` is a single integer they *must* be kept on separate axes. See
-[Optuna — Pruning](../experiments/optuna-pruning.md#what-step-should-count).
+[Optuna — Pruning](../../experiments/optuna-pruning.md#what-step-should-count).
 
 ## With cross-validation
 
@@ -143,21 +143,21 @@ validation split left to stop on. The usual resolution is to refit for the
     Early stopping on a shuffled validation split of a time series is a
     look-ahead leak: the stopping decision uses information from after the
     training window. The validation block must sit later in time — see
-    [Time-Series Validation](time-series-validation.md).
+    [Time-Series Validation](../validation/time-series-validation.md).
 
 ## Related
 
-- [Model Validation](model-validation.md) — the split that early stopping
+- [Model Validation](../validation/model-validation.md) — the split that early stopping
   consumes, and why selecting on it costs you an unbiased estimate
 - [Training Diagnostics](training-diagnostics.md) — the stage-4 regularisers
   early stopping sits among, and the probes that say whether a plateau is real
-- [Learning Rate Schedulers](../pytorch/lr-schedulers.md) — the other consumer of
+- [Learning Rate Schedulers](../../pytorch/lr-schedulers.md) — the other consumer of
   a validation plateau, and the patience it needs
 - [Learning Rate Range Test](lr-range-test.md) — the stopping rule for a
   deliberately diverging run, by contrast
-- [The Training Loop](../pytorch/training-loop.md) — where the validation pass
+- [The Training Loop](../../pytorch/training-loop.md) — where the validation pass
   and the snapshot attach
-- [Optuna — Pruning](../experiments/optuna-pruning.md) — abandoning a whole
+- [Optuna — Pruning](../../experiments/optuna-pruning.md) — abandoning a whole
   configuration rather than a fit
-- [Time-Series Validation](time-series-validation.md) — why the validation block
+- [Time-Series Validation](../validation/time-series-validation.md) — why the validation block
   has to be the later one

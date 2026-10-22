@@ -164,4 +164,4 @@ which is faster and permits `mmap_mode="r"` on load.
 
 - [concurrency.md](../language/concurrency/concurrency.md) — GIL, processes vs threads, pickling costs
 - [cross-validation.md](../../ml/scikit-learn/cross-validation.md) — `n_jobs` on fold loops
-- [reproducibility.md](../../ml/concepts/reproducibility.md) — why `n_jobs > 1` breaks bit-identical runs
+- [reproducibility.md](../../ml/concepts/training/reproducibility.md) — why `n_jobs > 1` breaks bit-identical runs

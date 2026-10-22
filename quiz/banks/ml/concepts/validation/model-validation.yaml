@@ -1,4 +1,4 @@
-note: ml/concepts/model-validation.md
+note: ml/concepts/validation/model-validation.md
 tier: core
 questions:
   - id: validation-vs-test-role

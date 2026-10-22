@@ -9,7 +9,7 @@ you report are different numbers, and both are easy to compute wrongly.
 ## Rule 1 — score once on the pooled out-of-sample series
 
 The strongest of the three. Write the objective directly; don't route it through
-[`cross_val_score`](../scikit-learn/cross-validation.md). Loop the folds
+[`cross_val_score`](../../scikit-learn/cross-validation.md). Loop the folds
 yourself, keep the out-of-fold (OOF) predictions, concatenate them into one
 out-of-sample (OOS) return series, and compute the Sharpe ratio **once** on that.
 
@@ -61,7 +61,7 @@ Three steps, and the order is the point:
 
 1. **Pin position scale** in the position map — before any objective is computed.
 2. **Select on** mean OOS return (or
-   [rank information coefficient](../../finance/information-coefficient.md)).
+   [rank information coefficient](../../../finance/information-coefficient.md)).
 3. **Report** pooled-OOS Sharpe with its standard error.
 
 At fixed variance, `argmax(mean) = argmax(Sharpe)` **exactly**. There is no
@@ -113,7 +113,7 @@ SE(SR_ann) ≈ sqrt(q / n)
 Three years of daily data: `sqrt(252/756) ≈ 0.58`. So a reported 1.0 is really
 "1.0 ± 0.6" — *before* correcting for having searched. Quote the interval, not
 the point. (Autocorrelated returns inflate it further; see
-[Metric Standard Errors](../../finance/metric-standard-errors.md) for the HAC
+[Metric Standard Errors](../../../finance/metric-standard-errors.md) for the HAC
 correction and the standard errors of the other metrics you might report.)
 
 ## Rule 3 — pre-register and log the trial count K
@@ -142,7 +142,7 @@ Write **K** down before the study runs, with the search space. Not after, and no
 - **It is not a formal correction either.** The Deflated Sharpe Ratio (DSR) and
   the Probability of Backtest Overfitting (PBO) are the real machinery, and both
   take K as an input. Logging it now is what makes deflation possible later; you
-  cannot reconstruct it afterwards. [MLflow](../experiments/mlflow.md) (or Optuna's own
+  cannot reconstruct it afterwards. [MLflow](../../experiments/mlflow.md) (or Optuna's own
   storage) makes this a query — `len(mlflow.search_runs(...))` — instead of a
   number you have to remember.
 
@@ -150,8 +150,8 @@ Write **K** down before the study runs, with the search space. Not after, and no
 
 - [Time-Series Validation](time-series-validation.md) — purging, embargo, and why the folds don't partition
 - [Model Validation](model-validation.md) — selection bias on the maximum, and nested CV
-- [Information Coefficient](../../finance/information-coefficient.md) — how rank IC is defined, and what magnitudes are believable
-- [Optuna](../experiments/optuna.md) — where the objective function and trial count live
-- [Optuna — Diverged Trials](../experiments/optuna-divergence.md#the-score-a-diverging-trial-deserves) — what the objective should return when a configuration blows up rather than merely losing
-- [MLflow](../experiments/mlflow.md) — a durable, queryable record of the trial count and every trial's config
-- [Hyperparameter Search](../scikit-learn/hyperparameter-search.md) — the searchers this replaces the scoring of
+- [Information Coefficient](../../../finance/information-coefficient.md) — how rank IC is defined, and what magnitudes are believable
+- [Optuna](../../experiments/optuna.md) — where the objective function and trial count live
+- [Optuna — Diverged Trials](../../experiments/optuna-divergence.md#the-score-a-diverging-trial-deserves) — what the objective should return when a configuration blows up rather than merely losing
+- [MLflow](../../experiments/mlflow.md) — a durable, queryable record of the trial count and every trial's config
+- [Hyperparameter Search](../../scikit-learn/hyperparameter-search.md) — the searchers this replaces the scoring of

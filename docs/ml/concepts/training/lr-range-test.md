@@ -146,7 +146,7 @@ scheduler = CyclicLR(optimizer, base_lr=1e-3, max_lr=6e-3,
   than with Stochastic Gradient Descent (SGD). The test still works; the plateau
   is just wider.
 - **Warmup and the ramp are not the same thing.** The ramp is discarded
-  measurement; a [warmup schedule](../pytorch/lr-schedulers.md#composing-warmup-with-decay)
+  measurement; a [warmup schedule](../../pytorch/lr-schedulers.md#composing-warmup-with-decay)
   is part of the real run.
 - **Restore the weights.** The run ends past the edge of stability. Continuing
   from it — a mistake easily made when the test is a cell in a notebook — trains
@@ -154,14 +154,14 @@ scheduler = CyclicLR(optimizer, base_lr=1e-3, max_lr=6e-3,
 
 ## Related
 
-- [Learning Rate Schedulers](../pytorch/lr-schedulers.md) — `CyclicLR`,
+- [Learning Rate Schedulers](../../pytorch/lr-schedulers.md) — `CyclicLR`,
   `OneCycleLR`, and the object the test's output is fed to
 - [Gradient Descent](gradient-descent.md#why-the-rate-must-decay) — why a
   stable region exists, and why the rate must come down to converge
 - [Training Diagnostics](training-diagnostics.md) — the per-step quantities that
   distinguish a too-high rate from no signal
-- [Optuna](../experiments/optuna.md) — the search the test replaces for this one
+- [Optuna](../../experiments/optuna.md) — the search the test replaces for this one
   hyperparameter
-- [Optuna — Diverged Trials](../experiments/optuna-divergence.md#loss-relative-to-its-own-best-the-workhorse)
+- [Optuna — Diverged Trials](../../experiments/optuna-divergence.md#loss-relative-to-its-own-best-the-workhorse)
   — the same $4\times$-best-loss rule, reused as a divergence detector inside a
   search

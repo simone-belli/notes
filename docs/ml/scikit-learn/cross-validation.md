@@ -152,7 +152,7 @@ into `nan` by the default `error_score`, so develop new scorers with
 
 - **`cv`** — an int picks `StratifiedKFold` for classifiers, `KFold` otherwise.
   Pass a splitter explicitly for anything time-ordered; see
-  [Time-Series Validation](../concepts/time-series-validation.md).
+  [Time-Series Validation](../concepts/validation/time-series-validation.md).
 - **`n_jobs=-1`** — folds are embarrassingly parallel. Watch for
   oversubscription when the estimator has its own `n_jobs`; see
   [joblib](../../python/libraries/joblib.md), which runs these loops.
@@ -206,5 +206,5 @@ predictions are exactly the leak-free features a meta-learner needs.
 - [The Estimator API](estimators.md) — the `fit`/`score` contract being cloned
 - [Hyperparameter Search](hyperparameter-search.md) — the tuning loop wrapped around this one
 - [Optuna — Pruning](../experiments/optuna-pruning.md#what-step-should-count) — pruning a search on the running mean over folds, when there are no epochs to prune on
-- [Model Validation](../concepts/model-validation.md) — what the number this loop returns actually estimates
-- [Time-Series Validation](../concepts/time-series-validation.md) — when the int default is wrong
+- [Model Validation](../concepts/validation/model-validation.md) — what the number this loop returns actually estimates
+- [Time-Series Validation](../concepts/validation/time-series-validation.md) — when the int default is wrong

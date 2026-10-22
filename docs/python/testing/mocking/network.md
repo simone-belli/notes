@@ -3,15 +3,15 @@ tags:
   - testing
 ---
 
-# Testing — Mocking network calls
+# Mocking — Network calls
 
-Worked example of testing functions that make HTTP calls. The goal: test what your code does **with** the response, not whether the network is up. Never hit a real endpoint in a unit test. Core mocking concepts (`MagicMock`, `patch`, `autospec`, `side_effect`) are covered in [mocking.md](mocking.md).
+Worked example of testing functions that make HTTP calls. The goal: test what your code does **with** the response, not whether the network is up. Never hit a real endpoint in a unit test. Core mocking concepts (`MagicMock`, `patch`, `autospec`, `side_effect`) are covered in [mocks.md](mocks.md) and [patch.md](patch.md).
 
 ## Patch at the function boundary
 
 Mock the **outermost function that crosses a boundary you don't own**:
 
-- Testing `fetch_price` itself (response parsing)? Mock [`httpx.get`](../libraries/http-clients/httpx.md).
+- Testing `fetch_price` itself (response parsing)? Mock [`httpx.get`](../../libraries/http-clients/httpx.md).
 - Testing code that *calls* `fetch_price` (orchestration)? Mock `fetch_price`.
 
 ## `monkeypatch` — simpler, pytest-native
@@ -106,11 +106,11 @@ If the module uses `import httpx` and calls `httpx.get(...)`, patch `"mymodule.h
 | Guard against signature drift | `autospec=True` / `create_autospec` |
 | Own repo/gateway interface | in-memory fake behind a `Protocol`, not a mock |
 | Sequential call sequence (first fails, second succeeds) | `side_effect=[...]` list |
-| Async network call | `patch` + [`AsyncMock`](mocking.md#asyncmock) |
+| Async network call | `patch` + [`AsyncMock`](mocks.md#asyncmock) |
 | Whole client under test, not one call | `httpx.MockTransport` — no patching at all |
 
 ## Related notes
 
-- [`mocking.md`](mocking.md) — Mock/MagicMock mechanics, autospec, AsyncMock, when to mock
-- [`mocking.md`](mocking.md#patch-arguments-and-variants) — every `patch` argument and variant: `new`, `new_callable`, `patch.dict`, `wraps`
-- [`testing-patterns.md`](testing-patterns.md) — seam-based isolation: file/DB deps, stdout, DI strategies
+- [`mocks.md`](mocks.md) — Mock/MagicMock mechanics, configuration, autospec, AsyncMock, when to mock
+- [`patch.md`](patch.md#arguments-and-variants) — every `patch` argument and variant: `new`, `new_callable`, `patch.dict`, `wraps`
+- [`../testing-patterns.md`](../testing-patterns.md) — seam-based isolation: file/DB deps, stdout, DI strategies

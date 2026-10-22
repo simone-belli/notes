@@ -172,7 +172,7 @@ search to find the region, then a tight grid inside it.
   fold trains on everything *after* it. No shuffling removes the obvious leak and
   leaves the fundamental one. Pass `TimeSeriesSplit` explicitly, with `gap` — a
   model tuned under a leaking protocol is tuned to exploit the leak. See
-  [Time-Series Validation](../concepts/time-series-validation.md).
+  [Time-Series Validation](../concepts/validation/time-series-validation.md).
 - **Fold cost isn't uniform** — the expanding window makes later folds far more
   expensive, badly so for algorithms superlinear in `n`. `max_train_size` bounds
   it; `Pipeline(steps, memory="./cache")` caches fitted transformers so
@@ -235,5 +235,5 @@ right call runs random ≫ everything else.
 - [Train/Test Splitting](splitting.md) — the splitters passed as `cv=`
 - [scikit-learn Pipelines](pipelines.md) — what `step__param` addresses
 - [The Estimator API](estimators.md) — the contract that makes nesting work
-- [Time-Series Validation](../concepts/time-series-validation.md) — why `cv=5` leaks
-- [Model Validation](../concepts/model-validation.md) — selection bias on the maximum
+- [Time-Series Validation](../concepts/validation/time-series-validation.md) — why `cv=5` leaks
+- [Model Validation](../concepts/validation/model-validation.md) — selection bias on the maximum

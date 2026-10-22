@@ -31,7 +31,7 @@ loader = DataLoader(ds, batch_size=32, shuffle=True, num_workers=4)
 !!! note "The boundary is yours"
     scikit-learn encodes the fit/transform boundary in
     [`Pipeline`](../scikit-learn/pipelines.md) and can therefore make some
-    [leakage](../concepts/data-leakage.md) unreachable. PyTorch has no equivalent
+    [leakage](../concepts/validation/data-leakage.md) unreachable. PyTorch has no equivalent
     — no fit/transform distinction, no notion of a fold. The boundary exists only
     where you put it.
 
@@ -106,11 +106,11 @@ This permutes `0..len-1` and slices — correct only when every index is an
 independent observation. It is silently wrong when:
 
 - **The data is a time series** — future rows land in train, past rows in
-  validation. See [Time-Series Validation](../concepts/time-series-validation.md).
+  validation. See [Time-Series Validation](../concepts/validation/time-series-validation.md).
 - **Windows overlap** — index `i` and `i+1` of a `WindowDataset(length=20)` share
   19 of 20 observations, so both sides of the split hold near-duplicates. Needs a
   purge and embargo at least as wide as the window; see
-  [Purged Cross-Validation](../concepts/purged-cross-validation.md) for the splitting
+  [Purged Cross-Validation](../concepts/validation/purged-cross-validation.md) for the splitting
   and [LSTM Shapes](lstm-shapes.md) for the window arithmetic itself.
 - **Rows are grouped** — several rows per patient, user, session, or augmented
   copy. Every group belongs entirely on one side.
@@ -184,7 +184,7 @@ filling a queue of collated batches.
   (NumPy's global RNG under `fork`) can end up identical, so every worker applies
   the same "random" augmentation. Seed per worker with `worker_init_fn`, or draw
   from `torch` inside the dataset. See
-  [Reproducibility and Seeding](../concepts/reproducibility.md).
+  [Reproducibility and Seeding](../concepts/training/reproducibility.md).
 - `persistent_workers=True` avoids tearing the processes down each epoch;
   `pin_memory=True` stages batches in page-locked memory so `.to(device,
   non_blocking=True)` overlaps transfer with compute; `prefetch_factor` (default
@@ -220,7 +220,7 @@ The loader's shuffling RNG is separate from the global seed; an explicit
 
 - [The Training Loop](training-loop.md) — what consumes the batches this yields
 - [Tensors](tensors.md) — dtype and device rules a batch must satisfy
-- [Data Leakage](../concepts/data-leakage.md) — the taxonomy this page's split
+- [Data Leakage](../concepts/validation/data-leakage.md) — the taxonomy this page's split
   rules defend against
 - [Train/Test Splitting](../scikit-learn/splitting.md) — splitters that produce
   the index lists `Subset` consumes

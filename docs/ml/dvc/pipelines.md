@@ -10,7 +10,7 @@ declares its dependencies explicitly, so staleness becomes something DVC
     It's the same move as a `Makefile` target listing its prerequisites so
     `make` computes rebuild-or-skip instead of a person tracking it by hand —
     and the same move as a leakage boundary (see
-    [Data Leakage](../concepts/data-leakage.md)'s "structure beats vigilance"
+    [Data Leakage](../concepts/validation/data-leakage.md)'s "structure beats vigilance"
     tip): both replace a fact a human must remember with a fact a tool
     enforces or computes, just applied to files instead of cross-validation
     folds.

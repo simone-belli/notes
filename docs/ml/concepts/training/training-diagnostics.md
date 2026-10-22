@@ -51,7 +51,7 @@ Stage-3 rules worth keeping: copy the simplest architecture from a related paper
 ("don't be a hero"), Adam at `3e-4` is the forgiving default, add one feature at
 a time, and **do not trust learning-rate decay defaults** — a schedule tuned to
 another dataset's epoch count can drive the rate to ~0 early. See
-[Learning Rate Schedulers](../pytorch/lr-schedulers.md), and the
+[Learning Rate Schedulers](../../pytorch/lr-schedulers.md), and the
 [Learning Rate Range Test](lr-range-test.md) for measuring the base rate rather
 than inheriting one.
 
@@ -70,7 +70,7 @@ input dimensionality > smaller model > dropout / weight decay /
   learning.
 - **Input-independent baseline.** Zero the inputs and train; performance *must*
   degrade. If it doesn't, the model isn't using the input — see
-  [Data Leakage](data-leakage.md).
+  [Data Leakage](../validation/data-leakage.md).
 - **Overfit one batch.** Two to eight examples, loss to ~0. A model that can't
   memorise two examples has a bug that more data will never fix.
 - **Visualise immediately before `model(x)`.** Decode the actual tensor going in
@@ -133,7 +133,7 @@ Being scale-free, it compares across layers and models where a raw norm can't.
 ### Activation statistics
 
 A forward hook reads any module's output without editing the model (mechanics
-and handle lifetime in [Module Inspection](../pytorch/module-inspection.md#forward-hooks)):
+and handle lifetime in [Module Inspection](../../pytorch/module-inspection.md#forward-hooks)):
 
 ```python
 def stats_hook(module, inputs, output):
@@ -175,8 +175,8 @@ that is too high from data with no signal in it.
   region at all
 - [Learning Rate Range Test](lr-range-test.md) — locating the edges of that
   region in one run
-- [Model Validation](model-validation.md) — what stages 4–5 tune against
-- [The Training Loop](../pytorch/training-loop.md) — where these probes attach
-- [Optuna — Diverged Trials](../experiments/optuna-divergence.md#measuring-divergence)
+- [Model Validation](../validation/model-validation.md) — what stages 4–5 tune against
+- [The Training Loop](../../pytorch/training-loop.md) — where these probes attach
+- [Optuna — Diverged Trials](../../experiments/optuna-divergence.md#measuring-divergence)
   — turning these readings into an automatic stop, and the score a blown-up trial
   should return

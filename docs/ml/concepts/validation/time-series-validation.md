@@ -69,9 +69,9 @@ scores = cross_val_score(pipe, X, y, cv=tscv)   # X must be time-sorted
   averages that death away. Read `scores` per fold, never just `scores.mean()`.
 
 Splitting is only half the guarantee: everything that learns — scalers,
-imputers, [custom feature transformers](../scikit-learn/custom-transformers.md),
+imputers, [custom feature transformers](../../scikit-learn/custom-transformers.md),
 *and feature selection* — must refit inside the fold, which is what a
-[Pipeline](../scikit-learn/pipelines.md) enforces. Picking the top-50 correlated
+[Pipeline](../../scikit-learn/pipelines.md) enforces. Picking the top-50 correlated
 features on the full sample and cross-validating afterwards is
 [feature-selection leakage](data-leakage.md), and it is theatre.
 
@@ -93,7 +93,7 @@ feature windows still reach back into it) — see
 [Purged Cross-Validation](purged-cross-validation.md). Here only purging bites:
 with train always preceding test there are no training rows after the test block
 for an embargo to cut. Neither is the same as a
-[burn-in buffer](../scikit-learn/fold-safe-transformers.md#carrying-a-burn-in-buffer):
+[burn-in buffer](../../scikit-learn/fold-safe-transformers.md#carrying-a-burn-in-buffer):
 these drop rows to stop an *optimistic score*, while burn-in feeds the
 transformer prior raw `X` to stop a *wrong feature*. `gap` implements purging:
 
@@ -122,7 +122,7 @@ TimeSeriesSplit(n_splits=5, gap=max(label_horizon, feature_lookback))
 ## Nested CV
 
 Tuning and scoring on the same folds reports the noise you selected for. Nest
-the [search](../scikit-learn/hyperparameter-search.md), so the number you quote
+the [search](../../scikit-learn/hyperparameter-search.md), so the number you quote
 estimates the *procedure*, not one model:
 
 ```python
@@ -145,10 +145,10 @@ scores = cross_val_score(search, X, y, cv=TimeSeriesSplit(n_splits=5))   # outer
 - [Model Validation](model-validation.md) — the k-fold premise this note is the exception to
 - [Data Leakage](data-leakage.md) — the full taxonomy; purging and embargo close two entries in it
 - [Tuning a Trading Strategy](strategy-tuning.md) — pooled out-of-sample scoring and the selection channel these folds don't close
-- [Running Cross-Validation](../scikit-learn/cross-validation.md) — reading per-fold results out of the loop
-- [Hyperparameter Search](../scikit-learn/hyperparameter-search.md) — why `cv=5` leaks even without shuffling
-- [Train/Test Splitting](../scikit-learn/splitting.md) — the splitter catalogue and stratification
-- [scikit-learn Pipelines](../scikit-learn/pipelines.md) — keeping preprocessing inside the fold
-- [Fold-Safe Transformers](../scikit-learn/fold-safe-transformers.md) — causal windows, warm-up gaps, and the burn-in buffer that closes them
-- [Markov Processes](markov-models.md) — walk-forward refitting of a regime model, and filtered vs smoothed state estimates
-- [PyTorch — Data Loading](../pytorch/data-loading.md) — feeding these folds to a `DataLoader`, and why `random_split` undoes all of it
+- [Running Cross-Validation](../../scikit-learn/cross-validation.md) — reading per-fold results out of the loop
+- [Hyperparameter Search](../../scikit-learn/hyperparameter-search.md) — why `cv=5` leaks even without shuffling
+- [Train/Test Splitting](../../scikit-learn/splitting.md) — the splitter catalogue and stratification
+- [scikit-learn Pipelines](../../scikit-learn/pipelines.md) — keeping preprocessing inside the fold
+- [Fold-Safe Transformers](../../scikit-learn/fold-safe-transformers.md) — causal windows, warm-up gaps, and the burn-in buffer that closes them
+- [Markov Inference](../sequence-models/markov-inference.md) — walk-forward refitting of a regime model, and filtered vs smoothed state estimates
+- [PyTorch — Data Loading](../../pytorch/data-loading.md) — feeding these folds to a `DataLoader`, and why `random_split` undoes all of it

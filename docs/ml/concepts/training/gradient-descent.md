@@ -77,7 +77,7 @@ The noise is not purely a cost:
     minimum of radius $\mathbb{E}\|\theta-\theta^\star\|^2 \sim \alpha\sigma^2/2\mu$ for a
     $\mu$-strongly-convex objective. Noise injects energy, the gradient pulls back, and they
     balance at a radius **proportional to $\alpha$**. To settle, $\alpha$ must shrink. This is
-    the justification for every [learning-rate schedule](../pytorch/lr-schedulers.md).
+    the justification for every [learning-rate schedule](../../pytorch/lr-schedulers.md).
 
 The classical Robbins–Monro conditions make it precise:
 
@@ -225,13 +225,13 @@ This is why AdamW, not Adam, is the default for any regularised model.
 
 ## Related
 
-- [Optimisers](../pytorch/optimisers.md) — these formulas as PyTorch implements them, and the
+- [Optimisers](../../pytorch/optimisers.md) — these formulas as PyTorch implements them, and the
   object that holds the state
-- [Learning Rate Schedulers](../pytorch/lr-schedulers.md) — the decaying $\alpha_t$ the
+- [Learning Rate Schedulers](../../pytorch/lr-schedulers.md) — the decaying $\alpha_t$ the
   convergence argument demands
 - [Learning Rate Range Test](lr-range-test.md) — measuring the band of $\alpha$ that
   trains the model at all
-- [The Training Loop](../pytorch/training-loop.md) — where the update sits among the five
+- [The Training Loop](../../pytorch/training-loop.md) — where the update sits among the five
   statements
 - [Training Diagnostics](training-diagnostics.md) — the per-step quantities that reveal
   when $\alpha$ has left the stable region

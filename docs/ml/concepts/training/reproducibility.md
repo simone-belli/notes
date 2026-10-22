@@ -7,8 +7,8 @@ tags:
 
 Every layer of an ML stack has its own random number generator (RNG), and
 none of them share state: Python's `random`, NumPy's legacy global generator,
-NumPy's modern `Generator`, [scikit-learn](../scikit-learn/estimators.md)'s
-per-call `random_state`, and [Optuna](../experiments/optuna.md)'s sampler `seed` are five
+NumPy's modern `Generator`, [scikit-learn](../../scikit-learn/estimators.md)'s
+per-call `random_state`, and [Optuna](../../experiments/optuna.md)'s sampler `seed` are five
 independent streams. Missing one breaks reproducibility for the whole run
 even if the other four are pinned.
 
@@ -62,7 +62,7 @@ RandomForestClassifier(random_state=rs)     # RandomState/Generator instance →
   distinct bootstrap resamples in a loop.
 
 `sklearn.utils.check_random_state(seed)` normalizes all three forms — use it
-in a [custom estimator](../scikit-learn/custom-transformers.md) that needs
+in a [custom estimator](../../scikit-learn/custom-transformers.md) that needs
 the same convention.
 
 ```python
@@ -74,14 +74,14 @@ RandomizedSearchCV(estimator, param_distributions, random_state=42)
 ```
 
 `TimeSeriesSplit` never shuffles and has no `random_state` at all — see
-[Time-Series Validation](time-series-validation.md).
+[Time-Series Validation](../validation/time-series-validation.md).
 
 !!! warning "Pinned seeds ≠ bit-identical under `n_jobs`"
     Reproducible means the same *sequence of draws*, not necessarily
     bit-identical floating point: parallel workers can sum partial results in
     a nondeterministic completion order, shifting the last bits of a
     float-associativity-sensitive computation. The worker pool is
-    [joblib](../../python/libraries/joblib.md).
+    [joblib](../../../python/libraries/joblib.md).
 
 ## Optuna: two seeds, not one
 
@@ -154,8 +154,8 @@ def make_rng(seed: int = DEFAULT_SEED) -> np.random.Generator:
 
 ## Related
 
-- [Optuna](../experiments/optuna.md) — `TPESampler(seed=...)`
-- [The Estimator API](../scikit-learn/estimators.md) — `random_state` as a hyperparameter
-- [Hyperparameter Search](../scikit-learn/hyperparameter-search.md) — `random_state` on `RandomizedSearchCV`
-- [Train/Test Splitting](../scikit-learn/splitting.md) — `random_state` on splitters
-- [Random permutations](../../python/language/stdlib/random.md) — `random.seed` vs `random.Random`, the stdlib layer this builds on
+- [Optuna](../../experiments/optuna.md) — `TPESampler(seed=...)`
+- [The Estimator API](../../scikit-learn/estimators.md) — `random_state` as a hyperparameter
+- [Hyperparameter Search](../../scikit-learn/hyperparameter-search.md) — `random_state` on `RandomizedSearchCV`
+- [Train/Test Splitting](../../scikit-learn/splitting.md) — `random_state` on splitters
+- [Random permutations](../../../python/language/stdlib/random.md) — `random.seed` vs `random.Random`, the stdlib layer this builds on

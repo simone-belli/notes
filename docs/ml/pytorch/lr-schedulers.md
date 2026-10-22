@@ -21,7 +21,7 @@ for epoch in range(n_epochs):
 - **Early** — large steps cross the flat, badly-scaled regions fast, and the
   step noise keeps the optimizer out of sharp minima.
 - **Late** — stochastic gradient descent (SGD)
-  [doesn't converge to a point](../concepts/gradient-descent.md#why-the-rate-must-decay);
+  [doesn't converge to a point](../concepts/training/gradient-descent.md#why-the-rate-must-decay);
   it orbits the minimum in a ball whose radius scales with the learning rate. To
   settle, the radius must shrink.
 - **Warmup** is the mirror image: Adam's second-moment estimate is meaningless
@@ -84,7 +84,7 @@ LinearLR(optimizer, start_factor=0.01, total_iters=500) # warmup ramp
 | `OneCycleLR` | up 30%, then cosine to ~0 | fixed budget, want fewest epochs; step **per batch** |
 | `CyclicLR` | triangular, up and down | rate cycles between two measured bounds; step **per batch** |
 | `LambdaLR` | any function of step count | anything the library lacks |
-| `ReduceLROnPlateau` | reactive | budget unknown, or with [early stopping](../concepts/early-stopping.md) |
+| `ReduceLROnPlateau` | reactive | budget unknown, or with [early stopping](../concepts/training/early-stopping.md) |
 
 - `CosineAnnealingLR`'s `T_max` **must** be the total run length in whatever
   unit you step. Too short and the cosine turns around and climbs back up; too
@@ -92,7 +92,7 @@ LinearLR(optimizer, start_factor=0.01, total_iters=500) # warmup ramp
 - `OneCycleLR` starts at `max_lr / div_factor` (default 25), not `max_lr`, and
   cycles momentum inversely. `total_steps` must be exact — overshoot raises.
 - `CyclicLR`'s `base_lr`/`max_lr` are meant to be *measured*, not guessed — see
-  the [Learning Rate Range Test](../concepts/lr-range-test.md).
+  the [Learning Rate Range Test](../concepts/training/lr-range-test.md).
 - `LambdaLR`'s function returns a **multiplier** on the base rate. The original
   Transformer schedule is one line:
   `lambda s: min((s+1)**-0.5, (s+1) * 4000**-1.5)`.
@@ -162,11 +162,11 @@ wrong base.
     A good schedule is worth roughly a point of accuracy or a 2× cut in epochs.
     Getting the *base* learning rate right is worth far more — no schedule
     rescues a base rate two orders of magnitude off. One
-    [range test](../concepts/lr-range-test.md) settles it in a few epochs.
+    [range test](../concepts/training/lr-range-test.md) settles it in a few epochs.
 
 ## Related
 
-- [Learning Rate Range Test](../concepts/lr-range-test.md) — how to measure the
+- [Learning Rate Range Test](../concepts/training/lr-range-test.md) — how to measure the
   base rate and the bounds a cyclical schedule needs
 - [The Training Loop](training-loop.md) — where `scheduler.step()` sits among
   the five statements

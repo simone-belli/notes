@@ -235,4 +235,4 @@ def test_missing_required_arg():
 
 - [cli.md](cli.md) — `sys.argv`, the argparse basics, boolean and short/long flags
 - [entrypoint.md](../../runtime/entrypoint.md) — the `__name__ == "__main__"` guard
-- [mocking.md](../../../testing/mocking.md) — `patch`, `patch.object`, `monkeypatch`
+- [patch.md](../../../testing/mocking/patch.md) — `patch`, `patch.object`, `monkeypatch`

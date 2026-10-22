@@ -127,5 +127,5 @@ This factory is the only place that knows both `PostgresTradeRepo` and `TradingS
 
 - [structural-typing.md](../typing/structural-typing.md) — Protocol vs ABC detail, verifying conformance
 - [testing-patterns.md](../../testing/testing-patterns.md) — seams, `tmp_path`, in-memory DB strategies
-- [mocking.md](../../testing/mocking.md) — when a mock beats a fake, and the mechanics (`patch`, `autospec`)
+- [mocks.md](../../testing/mocking/mocks.md) — when a mock beats a fake, and the mechanics (`patch`, `autospec`)
 - [dependencies.md](../../libraries/fastapi/dependencies.md) — how `Depends()` extends this pattern to request-scoped resources

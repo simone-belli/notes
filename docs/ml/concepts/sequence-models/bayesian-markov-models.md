@@ -74,7 +74,7 @@ $$
 p(s_t \mid y_{1:t}) = \int p(s_t \mid y_{1:t}, \theta)\, p(\theta \mid y_{1:t})\,\mathrm{d}\theta
 $$
 
-[`MarkovRegression`](../statsmodels/markov-regression.md) returns the **plug-in** inner
+[`MarkovRegression`](../../statsmodels/markov-regression.md) returns the **plug-in** inner
 term $p(s_t \mid y_{1:t}, \hat\theta)$, which understates uncertainty — most where it
 matters: early in the sample, after a refit, and when regimes are poorly separated. The
 same integral over $y_{t+1}$ gives a posterior predictive that is a **mixture**, hence
@@ -229,7 +229,7 @@ differ in practicality.
   predictive density. Leave-one-out cross-validation and the Watanabe–Akaike information
   criterion (WAIC) estimate the same thing cheaply, but plain leave-one-out conditions on
   future data — use leave-future-out. See
-  [Time-Series Validation](time-series-validation.md).
+  [Time-Series Validation](../validation/time-series-validation.md).
 - **The Bayesian information criterion (BIC)** is a crude Laplace approximation to
   $\log p(y \mid K)$, which is why it works at all for this problem.
 - **Don't choose.** The hierarchical Dirichlet process HMM (HDP-HMM) puts a prior on an
@@ -246,7 +246,7 @@ differ in practicality.
 - **Causality becomes notational.** Smoothed features, full-sample fits, and choosing $K$
   on all the data are one error — conditioning on $y_{1:T}$ when the decision only gives
   you $y_{1:t}$. Write the conditioning set and the bug is visible. See
-  [Data Leakage](data-leakage.md).
+  [Data Leakage](../validation/data-leakage.md).
 - **Tooling.** `statsmodels` is maximum likelihood only — no priors, no parameter
   posterior. Use NumPyro or Stan with the states marginalised, `pymc` for a hand-rolled
   sampler, or `hmmlearn`'s variational Bayes classes for a quick mean-field fit with a
@@ -255,7 +255,7 @@ differ in practicality.
 ## Related
 
 - [Markov Processes](markov-models.md) — the chain structure, forward–backward, and the maximum-likelihood treatment this reframes
-- [MarkovRegression](../statsmodels/markov-regression.md) — the plug-in implementation, and the near-boundary standard errors discussed above
-- [MarkovAutoregression](../statsmodels/markov-autoregression.md) — where the mixture predictive gets $K^{p+1}$ components
-- [Data Leakage](data-leakage.md) — the conditioning-set errors, in their general form
-- [Time-Series Validation](time-series-validation.md) — the leave-future-out protocol predictive scoring needs
+- [MarkovRegression](../../statsmodels/markov-regression.md) — the plug-in implementation, and the near-boundary standard errors discussed above
+- [MarkovAutoregression](../../statsmodels/markov-autoregression.md) — where the mixture predictive gets $K^{p+1}$ components
+- [Data Leakage](../validation/data-leakage.md) — the conditioning-set errors, in their general form
+- [Time-Series Validation](../validation/time-series-validation.md) — the leave-future-out protocol predictive scoring needs

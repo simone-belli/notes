@@ -164,7 +164,7 @@ def objective(trial: optuna.Trial) -> float:
     deterministic — folds are *not* exchangeable, and in a time-series split the
     early ones are a specific regime, not a random sample. Shuffle the fold order
     per trial and the pruner is comparing different quantities. See
-    [Reproducibility and Seeding](../concepts/reproducibility.md).
+    [Reproducibility and Seeding](../concepts/training/reproducibility.md).
 
 `WilcoxonPruner` is built for this axis: report per-fold values and it runs a
 paired signed-rank test against the best trial. Pairing is what exploits
@@ -174,7 +174,7 @@ it strictly more powerful than comparing running means.
 !!! tip "Don't try to nest both axes"
     `step` is one integer, so `(fold, epoch)` has no representation. Either
     flatten it as $k E + e$, or — cleaner — handle epochs with a plain
-    [early-stopping](../concepts/early-stopping.md) callback *inside* the fit and
+    [early-stopping](../concepts/training/early-stopping.md) callback *inside* the fit and
     let Optuna prune on folds only. Early stopping is a within-fit concern and
     does not need the study.
 
@@ -197,5 +197,5 @@ in [Optuna — Diverged Trials](optuna-divergence.md).
   and `catch=` in context
 - [Running Cross-Validation](../scikit-learn/cross-validation.md) — the per-fold
   scores the fold-level axis reports
-- [Purged Cross-Validation](../concepts/purged-cross-validation.md) — the
+- [Purged Cross-Validation](../concepts/validation/purged-cross-validation.md) — the
   combinatorial path count that makes folds the expensive axis

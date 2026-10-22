@@ -83,7 +83,7 @@ in-sample and out-of-sample.
     every step. The fitted line tracks the data beautifully and says nothing about
     multi-step skill. `dynamic=True` — or `dynamic=k`, meaning from offset $k$ onward —
     substitutes the model's own predictions for those lags, so errors compound and the
-    picture gets honest. See [Data Leakage](../concepts/data-leakage.md).
+    picture gets honest. See [Data Leakage](../concepts/validation/data-leakage.md).
 
 A model with `exog` cannot forecast without future regressor values — a useful reminder
 that a feature you can't observe in advance improves the fit, not the forecast.
@@ -111,5 +111,5 @@ step above consumes.
 - [Frozen parameters](frozen-parameters.md) — `mod.predict(params, …)` in a walk-forward loop
 - [MarkovRegression](markov-regression.md) — the `probabilities` / `conditional` variant in context
 - [Switching parameters](switching-parameters.md) — `predict_conditional`, the unweighted building block behind it
-- [Data Leakage](../concepts/data-leakage.md) — why every default here is the wrong one for a backtest
-- [Time-Series Validation](../concepts/time-series-validation.md) — where a `dynamic=True` evaluation belongs
+- [Data Leakage](../concepts/validation/data-leakage.md) — why every default here is the wrong one for a backtest
+- [Time-Series Validation](../concepts/validation/time-series-validation.md) — where a `dynamic=True` evaluation belongs

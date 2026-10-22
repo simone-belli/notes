@@ -1,11 +1,10 @@
 nav:
   - README.md
+  - mocking
   - pytest.md
   - testing-strategy.md
   - fixtures.md
   - hypothesis.md
-  - mocking.md
   - testing-patterns.md
   - contract-tests.md
   - hypothesis-advanced.md
-  - mocking-network.md

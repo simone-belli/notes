@@ -20,7 +20,7 @@ res = mod.fit(search_reps=20)
 It subclasses [`MarkovRegression`](markov-regression.md), so the fitting path, parameter
 naming, probability attributes, `expected_durations` and frozen-parameter `filter` are
 identical. Read that page first; this one covers only what differs. The theory is in
-[Markov Processes](../concepts/markov-models.md).
+[Markov Processes](../concepts/sequence-models/markov-models.md).
 
 ## The mean-adjusted form
 
@@ -134,7 +134,7 @@ duration is near 1 is a degenerate fit, not a bubble.
 These are not state space results: there is no `forecast(h)` or `get_forecast` with
 intervals, and no [`append` / `extend` / `apply`](frozen-parameters.md). More
 fundamentally, the $h$-step predictive density is
-[a mixture](../concepts/bayesian-markov-models.md) over $K^h$ regime paths, so it is
+[a mixture](../concepts/sequence-models/bayesian-markov-models.md) over $K^h$ regime paths, so it is
 multimodal whenever the regimes separate and a point forecast can sit in a trough
 between two modes.
 
@@ -161,6 +161,6 @@ and preferring filtered over smoothed probabilities all carry over unchanged fro
 
 - [MarkovRegression](markov-regression.md) — the shared API, in detail
 - [Switching parameters](switching-parameters.md) — unpacking the parameter vector for computation
-- [Markov Processes](../concepts/markov-models.md) — the theory this class implements
+- [Markov Processes](../concepts/sequence-models/markov-models.md) — the theory this class implements
 - [Frozen parameters](frozen-parameters.md) — `mod.filter(params)` for the walk-forward loop
-- [Data Leakage](../concepts/data-leakage.md) — why the presample offset matters
+- [Data Leakage](../concepts/validation/data-leakage.md) — why the presample offset matters

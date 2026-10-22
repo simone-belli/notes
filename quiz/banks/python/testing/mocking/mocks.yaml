@@ -1,15 +1,6 @@
-note: python/testing/mocking.md
+note: python/testing/mocking/mocks.md
 tier: core
 questions:
-  - id: patch-where-used
-    type: mcq
-    q: "`mymodule.py` does `from httpx import get`. Why does `patch(\"httpx.get\", ...)` not affect the test, and what's the fix?"
-    options:
-      - The import bound `get` into `mymodule`'s namespace, so patching `httpx.get` leaves `mymodule.get` pointing at the original — patch `"mymodule.get"` instead
-      - httpx blocks patching of its public API
-      - patch only works on classes, not functions
-      - The fix is to reload `mymodule` after patching
-    explain: "Rule: patch the dotted path of the name as it appears in the module under test. With `import httpx` + `httpx.get(...)`, patch `\"mymodule.httpx.get\"`."
   - id: magicmock-vs-mock
     type: mcq
     q: What does `MagicMock` add over plain `Mock`?
@@ -37,15 +28,6 @@ questions:
       - It speeds up mock creation
       - It auto-verifies all `Notifier` methods were called
     explain: Without spec, a MagicMock accepts any attribute — tests can pass while asserting against methods that don't exist.
-  - id: monkeypatch-vs-patch
-    type: mcq
-    q: When do you pick pytest's `monkeypatch` over `unittest.mock.patch`?
-    options:
-      - For simple replacement with no call inspection — `monkeypatch.setattr` swaps the attribute and auto-restores; reach for `patch` + `MagicMock` when you need `call_count` or `assert_called_with`
-      - monkeypatch is required for any pytest test; patch only works in unittest
-      - patch is deprecated in favour of monkeypatch
-      - monkeypatch can patch builtins; patch cannot
-    explain: Both restore automatically; the difference is that MagicMock records calls for inspection.
   - id: async-test-vacuous
     type: mcq
     q: Without pytest-asyncio configured, what happens to `async def test_fetch()`?

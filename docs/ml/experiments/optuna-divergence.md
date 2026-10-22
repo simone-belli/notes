@@ -100,7 +100,7 @@ A separate choice: which point on the curve *is* the score.
   biased estimate of the achievable loss, and the bias grows with the number of
   epochs minimised over — the same selection-bias-on-the-extremum effect as
   reporting `study.best_value` as an expected out-of-sample result. See
-  [Model Validation](../concepts/model-validation.md).
+  [Model Validation](../concepts/validation/model-validation.md).
 
 !!! warning "Mixing the two biases towards blow-ups"
     The failure mode is best-value scoring for diverging trials (because `nan`
@@ -199,7 +199,7 @@ $$
 Comparing against $\min_s \ell_s$ rather than $\ell_0$ is the point — it catches
 "fell nicely, then exploded", which the $\ell_0$ test misses once the loss has
 dropped an order of magnitude. It is the stopping rule of the
-[Learning Rate Range Test](../concepts/lr-range-test.md), with $\kappa = 4$.
+[Learning Rate Range Test](../concepts/training/lr-range-test.md), with $\kappa = 4$.
 
 ```python
 best = math.inf
@@ -212,7 +212,7 @@ for step, batch in enumerate(loader):
 
 Smooth a noisy per-batch loss first, with the same bias correction Adam applies
 to its moment estimates (without it the first few values are pulled towards zero
-— see [Gradient Descent](../concepts/gradient-descent.md)):
+— see [Gradient Descent](../concepts/training/gradient-descent.md)):
 
 $$
 \bar\ell_t = \beta\,\bar\ell_{t-1} + (1-\beta)\,\ell_t,
@@ -237,7 +237,7 @@ $\approx 10^{-3}$) is the mechanism observed directly: the update overwrites the
 weight rather than adjusting it. Unbounded $\lVert \theta_t \rVert$ growth is the
 slowest and least ambiguous signal — nothing but divergence makes weights grow
 geometrically. Per-layer versions of all three, and how to read them together,
-are in [Training Diagnostics](../concepts/training-diagnostics.md).
+are in [Training Diagnostics](../concepts/training/training-diagnostics.md).
 
 ### Worse than the trivial baseline
 
@@ -268,13 +268,13 @@ exactly as worthless as one that exploded.
   these scores feed
 - [Optuna — Studies](optuna-studies.md) — `catch=` in context, and the storage
   the forensic user attributes land in
-- [Training Diagnostics](../concepts/training-diagnostics.md) — the per-layer
+- [Training Diagnostics](../concepts/training/training-diagnostics.md) — the per-layer
   probes behind the divergence detectors
-- [Learning Rate Range Test](../concepts/lr-range-test.md) — the
+- [Learning Rate Range Test](../concepts/training/lr-range-test.md) — the
   $4\times$-best-loss stopping rule, used for the same reason
-- [Gradient Descent](../concepts/gradient-descent.md) — the bias correction the
+- [Gradient Descent](../concepts/training/gradient-descent.md) — the bias correction the
   smoothed loss borrows
-- [Model Validation](../concepts/model-validation.md) — why $\min_t$ over a curve
+- [Model Validation](../concepts/validation/model-validation.md) — why $\min_t$ over a curve
   and $\min_i$ over trials are both optimistic
-- [Tuning a Trading Strategy](../concepts/strategy-tuning.md) — what the
+- [Tuning a Trading Strategy](../concepts/validation/strategy-tuning.md) — what the
   objective should return when the metric is a Sharpe ratio rather than a loss

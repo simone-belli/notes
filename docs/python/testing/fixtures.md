@@ -156,4 +156,4 @@ def test_portfolio(make_trade):
 | `caplog` | captures stdlib log records |
 | `request` | test context, `request.param`, `request.addfinalizer()` |
 
-`monkeypatch` and `capsys` are covered with examples in [testing-patterns.md](testing-patterns.md) and [mocking.md](mocking.md).
+`monkeypatch` and `capsys` are covered with examples in [testing-patterns.md](testing-patterns.md) and [mocking/network.md](mocking/network.md).

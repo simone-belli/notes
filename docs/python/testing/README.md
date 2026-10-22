@@ -2,6 +2,10 @@
 
 Verifying Python code: the runner and its fixtures, property-based testing, the isolation techniques that make a unit testable, and the strategy that decides what deserves a test at all.
 
+:material-drama-masks: **[Mocking](mocking/)**
+
+---
+
 :material-card-bulleted-outline: **[pytest](pytest.md){ .lvl-basic }**
 :   Test discovery and command quick-reference, `pytest.raises(match=)`, node IDs, approximate float equality with `pytest.approx`, coverage
 
@@ -16,9 +20,6 @@ Verifying Python code: the runner and its fixtures, property-based testing, the 
 :material-text-box-outline: **[Hypothesis](hypothesis.md){ .lvl-intermediate }**
 :   Property-based testing: strategies, @given, shrinking, invariants, property patterns
 
-:material-text-box-outline: **[Mocking](mocking.md){ .lvl-intermediate }**
-:   Mock vs MagicMock, patch vs mocks, configuring return values and side effects, every `patch` argument and variant, patching class methods, autospec, AsyncMock, when to mock
-
 :material-text-box-outline: **[Patterns](testing-patterns.md){ .lvl-intermediate }**
 :   Seam-based isolation: file/DB deps, tmp_path, StringIO, stdout
 
@@ -29,6 +30,3 @@ Verifying Python code: the runner and its fixtures, property-based testing, the 
 
 :material-text-box-outline: **[Hypothesis — Advanced Strategies](hypothesis-advanced.md){ .lvl-advanced }**
 :   Advanced Hypothesis: constrain vs filter, bounded floats, Pydantic st.builds, composite portfolios, reproduce_failure
-
-:material-text-box-outline: **[Mocking network calls](mocking-network.md){ .lvl-advanced }**
-:   Worked example: testing HTTP-calling functions — boundary patching, monkeypatch vs patch, side_effect sequences

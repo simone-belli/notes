@@ -1,18 +1,6 @@
 title: Concepts
 nav:
   - README.md
-  - model-validation.md
-  - data-leakage.md
-  - diagnostics-cheat-sheet.md
-  - early-stopping.md
-  - gradient-descent.md
-  - lr-range-test.md
-  - lstm.md
-  - normalisation.md
-  - reproducibility.md
-  - training-diagnostics.md
-  - bayesian-markov-models.md
-  - markov-models.md
-  - purged-cross-validation.md
-  - strategy-tuning.md
-  - time-series-validation.md
+  - training
+  - validation
+  - sequence-models
