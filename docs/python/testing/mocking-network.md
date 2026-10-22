@@ -112,4 +112,5 @@ If the module uses `import httpx` and calls `httpx.get(...)`, patch `"mymodule.h
 ## Related notes
 
 - [`mocking.md`](mocking.md) — Mock/MagicMock mechanics, autospec, AsyncMock, when to mock
+- [`mocking.md`](mocking.md#patch-arguments-and-variants) — every `patch` argument and variant: `new`, `new_callable`, `patch.dict`, `wraps`
 - [`testing-patterns.md`](testing-patterns.md) — seam-based isolation: file/DB deps, stdout, DI strategies

@@ -184,6 +184,99 @@ with patch.object(PriceFeed, "is_live", new_callable=PropertyMock) as mock_live:
 - `staticmethod` / `classmethod` — patch like any other class attribute; `autospec=True` gets the implicit first argument right (none for static, `cls` for class methods).
 - Dunder methods are looked up on the type, so instance-level patching never works — patch the class attribute or use a `MagicMock`.
 
+## `patch` — arguments and variants
+
+```python
+from unittest.mock import patch
+
+patch(target, new=DEFAULT, spec=None, create=False,
+      spec_set=None, autospec=None, new_callable=None, **kwargs)
+```
+
+Every input answers one of three questions: **what gets replaced**, **what replaces it**, **how strict and how configured** the replacement is.
+
+### What gets replaced
+
+`target` is a **dotted string**, not a reference — `patch` imports everything up to the last dot and setattrs the final name, so `myapp.service` must be importable at patch time.
+
+| Variant | Targets | Use for |
+|---|---|---|
+| `patch("pkg.mod.name")` | a module attribute, class, method, or builtin | the common case |
+| `patch.object(obj, "attr")` | an attribute of an object you already hold | class/instance methods, no string to typo |
+| `patch.dict(d, {...}, clear=False)` | a dict's **contents**, restored afterwards | `os.environ`, `sys.modules`, config dicts |
+| `patch.multiple(target, a=DEFAULT, b=DEFAULT)` | several attributes at once | avoids three nested `with` blocks |
+
+```python
+import os
+from unittest.mock import patch
+
+with patch.dict(os.environ, {"API_KEY": "test-key"}, clear=True):
+    ...   # restored exactly, including keys the block deleted
+```
+
+`patch.multiple` injects its mocks as **keyword** arguments named after the attributes; plain `patch` injects positionally.
+
+### What replaces it
+
+- **Nothing given** — `patch` builds a `MagicMock` and injects it (as the `as` target or an extra test argument). Since Python 3.8 it inspects the original first: an `async def` target gets an `AsyncMock` automatically.
+- **`new=<object>`** — install exactly this object; **nothing is injected**, since you already hold it. A bare second positional argument *is* `new`.
+- **`new_callable=<factory>`** — `patch` builds the replacement from your factory instead of `MagicMock`, and injects it.
+
+!!! warning "`new=` is not `return_value=`"
+    `patch("service.fetch", 3)` makes `service.fetch` *be* the integer `3`. `patch("service.fetch", return_value=3)` leaves it a callable mock that returns `3`. The decorator form differs too: with `new=`, no extra argument is appended to the test signature.
+
+The three `new_callable` factories worth knowing:
+
+```python
+from unittest.mock import Mock, PropertyMock, mock_open, patch
+from myapp.pricing import PriceFeed
+
+with patch("builtins.open", new_callable=mock_open, read_data="a,b\n1,2\n") as m:
+    assert open("x.csv").read().startswith("a,b")   # fake file contents
+
+with patch.object(PriceFeed, "is_live", new_callable=PropertyMock) as live:
+    live.return_value = True        # a property is accessed, not called
+
+with patch("service.registry", new_callable=Mock):
+    ...                             # dunders not pre-wired — len()/iter() fail loudly
+```
+
+### How strict, and configured with what
+
+- **`spec=` / `spec_set=`** — restrict which attribute names exist; `spec_set` also rejects *setting* an unknown attribute, catching a test that configures a typo. **`autospec=True`** additionally enforces real call signatures — the default choice (see [MagicMock](#magicmock) above).
+- **`create=True`** — permit patching a name that doesn't exist yet. The default failure is a feature: it catches renames. Needed only for genuinely runtime-created attributes.
+- **`**kwargs`** — anything the `Mock` constructor accepts, applied at creation:
+
+```python
+from myapp.service import fetch as real_fetch
+
+patch("service.fetch", return_value={"price": 42.0})
+patch("service.fetch", side_effect=TimeoutError)            # always raises
+patch("service.fetch", side_effect=[1, 2, TimeoutError()])  # per-call sequence
+patch("service.fetch", wraps=real_fetch)                    # spy — calls through, records
+patch("service.session", **{"get.return_value.json.return_value": {"price": 42.0}})
+```
+
+`wraps=` is the underused one: the real function still runs *and* every call is recorded, so `assert_called_once_with` works on real behaviour. That's a spy, not a stub.
+
+### How the patch is applied
+
+| Form | Mock delivery | Scope ends |
+|---|---|---|
+| `@patch(...)` on a function | appended as an argument — **bottom decorator = first argument** | function returns |
+| `@patch(...)` on a class | applied to every `test_*` method | each method |
+| `with patch(...) as m:` | the `as` target | block exits |
+| `p = patch(...); m = p.start()` | `start()`'s return value | `p.stop()` / `patch.stopall()` |
+
+```python
+@patch("service.send_alert")   # outermost → LAST argument
+@patch("service.fetch")        # innermost → FIRST argument
+def test_flow(mock_fetch, mock_alert):
+    ...
+```
+
+Decorators apply inside-out, hence the bottom-up reading. The manual `start()`/`stop()` form leaks: a test that fails before `stop()` leaves the patch installed for the rest of the session — use it only with guaranteed cleanup (a [fixture](fixtures.md) teardown, `addCleanup`), never bare.
+
 ## Testing functions that make network calls
 
 Extracted to [mocking-network.md](mocking-network.md) — a worked example covering boundary patching, `monkeypatch` vs `patch`, `side_effect` sequences, and the patch-where-it's-used rule.
