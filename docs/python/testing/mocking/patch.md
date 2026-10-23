@@ -106,6 +106,70 @@ with patch.object(PriceFeed, "is_live", new_callable=PropertyMock) as mock_live:
 - `staticmethod` / `classmethod` — patch like any other class attribute; `autospec=True` gets the implicit first argument right (none for static, `cls` for class methods).
 - Dunder methods are looked up on the type, so instance-level patching never works — patch the class attribute or use a `MagicMock`.
 
+## Attributes created in `__init__`
+
+An attribute assigned in the constructor isn't on the class, so there is nothing to patch yet:
+
+```python
+# myapp/service.py
+import httpx
+
+class Service:
+    def __init__(self) -> None:
+        self.client = httpx.Client()          # born at runtime, not a class attribute
+
+    def fetch(self, path: str) -> dict:
+        return self.client.get(path).json()
+```
+
+```python
+patch.object(Service, "client")   # AttributeError — <class Service> has no 'client'
+```
+
+!!! warning "`create=True` does not fix this"
+    `patch.object(Service, "client", create=True)` succeeds and then does nothing useful: it sets a **class** attribute, and `__init__` immediately assigns an [**instance** attribute that shadows it](../../language/objects/classes/class-attributes.md). `create=True` is for names nothing ever assigns, not for constructor-assigned state.
+
+**Patch what builds it.** The attribute doesn't exist, but its factory does — patch that in the namespace `__init__` looks it up from, and the assignment hands you the mock. The only option that works when the object is constructed *inside* the code under test:
+
+```python
+from unittest.mock import patch
+
+with patch("myapp.service.httpx.Client", autospec=True) as MockClient:
+    svc = Service()                                  # __init__ assigns the mock
+    MockClient.return_value.get.return_value.json.return_value = {"ok": True}
+    assert svc.fetch("/health") == {"ok": True}
+```
+
+**Patch the instance, once it exists.** If the test constructs the object, the attribute is there by the time the block opens — and `autospec=True` now works, since it specs from the real attribute:
+
+```python
+from unittest.mock import patch
+
+def test_fetch():
+    svc = Service()
+    with patch.object(svc, "client", autospec=True) as client:
+        client.get.return_value.json.return_value = {"ok": True}
+        assert svc.fetch("/health") == {"ok": True}
+```
+
+`monkeypatch.setattr(svc, "client", MagicMock())` is the same move with automatic teardown. Either way `__init__` still runs for real — no good if the constructor opens a socket.
+
+**Skip `__init__`.** `svc = Service.__new__(Service)` builds the object without the constructor; set only what the test needs. Nothing is patched, so nothing needs restoring — but the object breaks as soon as `__init__` grows an attribute the method expects.
+
+**[Inject the dependency](../../language/objects/repository-di.md)** — the fix that removes the problem rather than working around it:
+
+```python
+class Service:
+    def __init__(self, client: httpx.Client | None = None) -> None:
+        self.client = client or httpx.Client()
+```
+
+```python
+svc = Service(client=MagicMock())   # no patch, no namespace, no teardown
+```
+
+Note the spec consequence: `create_autospec(Service)` builds its surface from the class, so it has `fetch` but no `client`. Only a spec taken from a live instance — `create_autospec(Service())` — sees runtime attributes, and that runs the real constructor.
+
 ## Arguments and variants
 
 ```python

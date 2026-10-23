@@ -6,7 +6,7 @@ Replacing a dependency with a controlled substitute: the fake object itself, the
 :   Mock vs MagicMock, the four configuration channels, `return_value` vs `side_effect`, `spec`/`autospec`, call inspection, AsyncMock
 
 :material-text-box-outline: **[patch](patch.md){ .lvl-intermediate }**
-:   Installing the fake: patch-where-it's-used, patching classes, methods and properties, every argument and variant, the four application forms
+:   Installing the fake: patch-where-it's-used, patching classes, methods, properties and `__init__`-created attributes, every argument and variant, the four application forms
 
 ---
 

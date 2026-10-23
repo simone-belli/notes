@@ -132,7 +132,7 @@ with patch("mymodule.send_alert", autospec=True) as m:
 m.assert_called_once_with("BTC", threshold=1000)   # TypeError if signature drifted
 ```
 
-Use `autospec=True` on `patch` by default (`create_autospec(obj)` for standalone mocks). Fall back to `spec=`/bare mocks only for attributes created dynamically at runtime (e.g. set in `__init__`), which autospec can't see.
+Use `autospec=True` on `patch` by default (`create_autospec(obj)` for standalone mocks). Fall back to `spec=`/bare mocks only for [attributes created dynamically at runtime](patch.md#attributes-created-in-__init__) (e.g. set in `__init__`), which autospec can't see.
 
 ## Testing async code
 
