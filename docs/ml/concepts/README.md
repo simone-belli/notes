@@ -2,8 +2,12 @@
 
 The theory behind the tools: how a model is made to converge, how its score is kept honest, and the models that carry state through time.
 
-:material-speedometer: **[Training](training/)**
+<div class="grid cards" markdown>
 
-:material-clipboard-check-outline: **[Validation](validation/)**
+-   :material-speedometer:{ .lg .middle } __[Training](training/)__
 
-:material-waveform: **[Sequence Models](sequence-models/)**
+-   :material-clipboard-check-outline:{ .lg .middle } __[Validation](validation/)__
+
+-   :material-waveform:{ .lg .middle } __[Sequence Models](sequence-models/)__
+
+</div>

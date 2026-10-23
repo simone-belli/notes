@@ -1,6 +1,10 @@
 # Python — Language / Objects
 
-:material-shape-outline: **[Classes](classes/)**
+<div class="grid cards" markdown>
+
+-   :material-shape-outline:{ .lg .middle } __[Classes](classes/)__
+
+</div>
 
 ---
 

@@ -2,13 +2,17 @@
 
 Third-party libraries your program imports at runtime — as opposed to [tooling/](../tooling/), the development-time tools you run.
 
-:material-api: **[FastAPI](fastapi/)**
+<div class="grid cards" markdown>
 
-:material-swap-horizontal: **[HTTP Clients](http-clients/)**
+-   :material-api:{ .lg .middle } __[FastAPI](fastapi/)__
 
-:material-clipboard-check-outline: **[Pydantic](pydantic/)**
+-   :material-swap-horizontal:{ .lg .middle } __[HTTP Clients](http-clients/)__
 
-:material-text-long: **[structlog](structlog/)**
+-   :material-clipboard-check-outline:{ .lg .middle } __[Pydantic](pydantic/)__
+
+-   :material-text-long:{ .lg .middle } __[structlog](structlog/)__
+
+</div>
 
 ---
 

@@ -48,6 +48,8 @@ Two layouts are used, both without a `## Structure` section (the MkDocs sidebar 
 
 Descriptions are for **pages only**. An entry pointing at a subdirectory carries just the icon and linked title — no description, and on a card no `---` divider either. The subdirectory's own README opens with the description of what it holds.
 
+**Subdirectories are always cards**, on every menu page — so a link that opens another menu looks the same as on the main menu. On a description-list README the subdirectory block is a `<div class="grid cards" markdown>` of `-   :material-icon:{ .lg .middle } __[Title](dir/)__` items, followed by the `---` break and the page blocks as description lists.
+
 Every **page** entry also carries a difficulty class on its link, via `attr_list` — `**[Filtering](filtering.md){ .lvl-basic }**`. Subdirectory entries never get one.
 
 - `.lvl-basic` (green) — introductory; what you need to use the thing at all.

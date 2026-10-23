@@ -1,12 +1,10 @@
 # Pandas
 
----
+<div class="grid cards" markdown>
 
----
+-   :material-shuffle-variant:{ .lg .middle } __[Transforming](transforming/)__
 
----
-
-:material-shuffle-variant: **[Transforming](transforming/)**
+</div>
 
 ---
 

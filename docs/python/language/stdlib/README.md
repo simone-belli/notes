@@ -2,11 +2,15 @@
 
 Practical guides to standard-library modules. Language-concept groupings (e.g. [functional/](../functional/), [concurrency/](../concurrency/)) also cover stdlib modules; this folder holds module guides with no better conceptual home.
 
-:material-console-line: **[CLI](cli/)**
+<div class="grid cards" markdown>
 
-:material-desktop-classic: **[OS](os/)**
+-   :material-console-line:{ .lg .middle } __[CLI](cli/)__
 
-:material-format-text: **[Text](text/)**
+-   :material-desktop-classic:{ .lg .middle } __[OS](os/)__
+
+-   :material-format-text:{ .lg .middle } __[Text](text/)__
+
+</div>
 
 ---
 

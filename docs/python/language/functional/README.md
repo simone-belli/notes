@@ -1,6 +1,10 @@
 # Python — Language / Functional
 
-:material-repeat-variant: **[itertools](itertools/)**
+<div class="grid cards" markdown>
+
+-   :material-repeat-variant:{ .lg .middle } __[itertools](itertools/)__
+
+</div>
 
 ---
 

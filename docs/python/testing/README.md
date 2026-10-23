@@ -2,7 +2,11 @@
 
 Verifying Python code: the runner and its fixtures, property-based testing, the isolation techniques that make a unit testable, and the strategy that decides what deserves a test at all.
 
-:material-drama-masks: **[Mocking](mocking/)**
+<div class="grid cards" markdown>
+
+-   :material-drama-masks:{ .lg .middle } __[Mocking](mocking/)__
+
+</div>
 
 ---
 

@@ -1,13 +1,17 @@
 # Python — Language
 
-:material-call-split: **[Concurrency](concurrency/)**
+<div class="grid cards" markdown>
 
-:material-function-variant: **[Functional](functional/)**
+-   :material-call-split:{ .lg .middle } __[Concurrency](concurrency/)__
 
-:material-cube-outline: **[Objects](objects/)**
+-   :material-function-variant:{ .lg .middle } __[Functional](functional/)__
 
-:material-cog-outline: **[Runtime](runtime/)**
+-   :material-cube-outline:{ .lg .middle } __[Objects](objects/)__
 
-:material-bookshelf: **[Stdlib](stdlib/)**
+-   :material-cog-outline:{ .lg .middle } __[Runtime](runtime/)__
 
-:material-shield-check-outline: **[Typing](typing/)**
+-   :material-bookshelf:{ .lg .middle } __[Stdlib](stdlib/)__
+
+-   :material-shield-check-outline:{ .lg .middle } __[Typing](typing/)__
+
+</div>
