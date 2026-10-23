@@ -32,3 +32,6 @@ How the class and instance machinery works underneath — the protocols your own
 
 :material-text-box-outline: **[Class body execution and class creation](class-creation.md){ .lvl-advanced }**
 :   Classes vs. metaclasses, class body execution order, `__init_subclass__`
+
+:material-text-box-outline: **[Class factories](class-factories.md){ .lvl-advanced }**
+:   Functions that return a subclass of the class you pass: `type(name, bases, ns)`, `types.new_class`, mixin injection, caching, pickling

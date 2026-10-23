@@ -115,6 +115,7 @@ Reported(100.0).as_dict()               # {'balance': 100.0}
 
 - Listed **left** of the substantive base so their methods win in the MRO.
 - Name them `...Mixin` and keep them dependency-light: a mixin that assumes `self.balance` exists is coupled to its hosts whether or not it says so.
+- To attach a mixin to a base chosen at runtime, build the class with a [class factory](class-factories.md#injecting-a-mixin) instead of a `class` statement.
 
 ## Subclassing built-in types
 

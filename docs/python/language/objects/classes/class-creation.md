@@ -88,7 +88,7 @@ Plugin._registry   # [CSVPlugin, JSONPlugin]
 
 ## Metaclasses — full control before the class exists
 
-A metaclass (`type` by default) receives the raw `(name, bases, namespace)` triple and constructs the class object itself, so it can rewrite the namespace before the class exists at all — `type.__new__` here is the same [`__new__` protocol](data-model.md#new-vs-init) used to construct ordinary instances, just one level up: metaclass is to class as class is to instance.
+A metaclass (`type` by default) receives the raw `(name, bases, namespace)` triple and constructs the class object itself, so it can rewrite the namespace before the class exists at all — `type.__new__` here is the same [`__new__` protocol](data-model.md#__new__-vs-__init__) used to construct ordinary instances, just one level up: metaclass is to class as class is to instance.
 
 ```python
 class Meta(type):
@@ -103,5 +103,7 @@ class C(metaclass=Meta): ...
     `__init_subclass__` only runs *after* a valid class already exists — simpler, but can't reject or rewrite the class itself. A metaclass intercepts construction *before* the class exists, so it can alter or refuse it — strictly more powerful, harder to compose (a class has exactly one metaclass, and all bases' metaclasses must be compatible). Default to `__init_subclass__` for registries/plugin patterns.
 
 `__set_name__` (see [attribute-lookup.md](attribute-lookup.md#the-descriptor-protocol)) is called by this same construction step, after the namespace exists — which is why it can be told the attribute's name, something a decorator running earlier during body execution has no way to know.
+
+Calling that constructor yourself is how a [class factory](class-factories.md) derives a subclass of a class handed to it at runtime.
 
 See [oop.md](oop.md) for the Method Resolution Order (MRO) these constructed classes participate in, and [subclassing.md](subclassing.md) for how `super()` traverses it.

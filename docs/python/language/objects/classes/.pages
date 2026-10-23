@@ -9,3 +9,4 @@ nav:
   - subclassing.md
   - attribute-lookup.md
   - class-creation.md
+  - class-factories.md
