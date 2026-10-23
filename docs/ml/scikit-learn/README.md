@@ -23,6 +23,9 @@
 :material-text-box-outline: **[scikit-learn Pipelines](pipelines.md){ .lvl-intermediate }**
 :   Chaining preprocessing and an estimator so `fit` touches only the training fold — how it makes `scale-then-split` data leakage structurally impossible
 
+:material-text-box-outline: **[Transforming the Target](target-transform.md){ .lvl-intermediate }**
+:   Regressing on `log(y)` with `TransformedTargetRegressor` — why `y` is not a Pipeline step, `func`/`inverse_func` vs a fitted `transformer=`, and the Jensen bias on the way back
+
 ---
 
 :material-text-box-outline: **[Custom Loss Functions](custom-loss.md){ .lvl-advanced }**

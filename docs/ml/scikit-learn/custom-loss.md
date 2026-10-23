@@ -100,8 +100,8 @@ The Hessian must be positive — leaf values divide by it. Losses with zero seco
 derivative (absolute error) need a constant stand-in.
 
 !!! note "Transforming the target changes the loss silently"
-    `TransformedTargetRegressor(regressor=Ridge(), func=np.log1p,
-    inverse_func=np.expm1)` fits squared error on `log(y)`, which penalises
+    [`TransformedTargetRegressor(regressor=Ridge(), func=np.log1p,
+    inverse_func=np.expm1)`](target-transform.md) fits squared error on `log(y)`, which penalises
     *proportional* error — a relative-error objective from a least-squares
     solver. Deliberate use is excellent; accidental use is a surprise, and
     predictions come back biased low because the mean of a log is not the log

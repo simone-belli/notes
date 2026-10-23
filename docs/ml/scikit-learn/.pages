@@ -8,6 +8,7 @@ nav:
   - hyperparameter-search.md
   - imputation.md
   - pipelines.md
+  - target-transform.md
   - custom-loss.md
   - custom-transformers.md
   - fold-safe-transformers.md

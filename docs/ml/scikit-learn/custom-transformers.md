@@ -79,7 +79,8 @@ log1p = FunctionTransformer(np.log1p)   # wraps a plain function; learns nothing
 ```
 
 Use it when there's nothing to learn; write a `BaseEstimator` class the moment
-`fit` must remember something.
+`fit` must remember something. It acts on `X` only — to log-transform the
+*target*, see [Transforming the Target](target-transform.md).
 
 ## At a fold boundary
 
