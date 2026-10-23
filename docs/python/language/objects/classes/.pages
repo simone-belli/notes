@@ -6,5 +6,6 @@ nav:
   - hash.md
   - introspection.md
   - slicing.md
+  - subclassing.md
   - attribute-lookup.md
   - class-creation.md

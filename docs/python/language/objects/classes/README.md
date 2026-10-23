@@ -22,6 +22,9 @@ How the class and instance machinery works underneath — the protocols your own
 :material-text-box-outline: **[Slicing](slicing.md){ .lvl-intermediate }**
 :   The `slice` object behind `obj[a:b:c]`, `.indices()`, tuple and `Ellipsis` keys, and a generic `__getitem__` that dispatches int vs slice
 
+:material-text-box-outline: **[Subclassing](subclassing.md){ .lvl-intermediate }**
+:   Overriding and extending: `super()` and the MRO, C3 linearisation, cooperative multiple inheritance, mixins, the built-in-type trap, LSP and `@override`
+
 ---
 
 :material-text-box-outline: **[Attribute lookup protocol](attribute-lookup.md){ .lvl-advanced }**

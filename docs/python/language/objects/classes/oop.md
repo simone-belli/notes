@@ -15,6 +15,8 @@ quiz: core
 - Subclassing built-in types has pitfalls — consider before doing.
 - Some say only ABCs (abstract base classes) should be subclassed.
 
+[subclassing.md](subclassing.md) covers the mechanics: what `super()` actually resolves to, how to keep a diamond cooperative, mixins, and the built-in-type trap.
+
 !!! note "Composition over inheritance"
     Inheritance couples the subclass to the parent's implementation, not just its interface — a change in the parent can silently break children. Reach for inheritance only when the subclass genuinely *is* a parent (and usually via an ABC); otherwise hold the other object as an attribute.
 
@@ -43,4 +45,4 @@ class Instrument(ABC):
 
 For duck-typed interfaces — `Protocol`, the Protocol-vs-ABC comparison, `@runtime_checkable`, and how to verify conformance — see [structural-typing.md](../../typing/structural-typing.md).
 
-See also: [data-model.md](data-model.md) for dunder methods and `@dataclass`; [attribute-lookup.md](attribute-lookup.md) for how the MRO is actually walked during `obj.x`; [class-creation.md](class-creation.md) for how the class object (and this MRO) gets built in the first place; [repository-di.md](../repository-di.md) for interface-based dependency injection.
+See also: [subclassing.md](subclassing.md) for `super()`, the MRO and mixins; [data-model.md](data-model.md) for dunder methods and `@dataclass`; [attribute-lookup.md](attribute-lookup.md) for how the MRO is actually walked during `obj.x`; [class-creation.md](class-creation.md) for how the class object (and this MRO) gets built in the first place; [repository-di.md](../repository-di.md) for interface-based dependency injection.
