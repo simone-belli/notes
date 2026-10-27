@@ -20,7 +20,7 @@
 ---
 
 :material-card-bulleted-outline: **[Dataclasses](dataclasses.md){ .lvl-intermediate }**
-:   `@dataclass` cheat sheet: decorator parameters, `field()`, `__post_init__`, `InitVar`, helpers, inheritance
+:   `@dataclass` cheat sheet: decorator parameters, `field()`, optional fields, `__post_init__`, `InitVar`, helpers, inheritance
 
 :material-text-box-outline: **[Mutation of function arguments](mutation.md){ .lvl-intermediate }**
 :   Rebind vs mutate: when function argument changes are visible to the caller

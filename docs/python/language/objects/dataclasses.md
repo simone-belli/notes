@@ -80,6 +80,40 @@ class Order:
 !!! warning "Mutable defaults raise at class-creation time"
     `items: list = []` is a `ValueError`, not a shared-state bug — dataclasses detect `list`/`dict`/`set` defaults and refuse. Always use `default_factory`. Note the check is by unhashability, so a mutable *custom* class as a default slips through and is shared across instances.
 
+## Optional fields
+
+Two independent senses of "optional" — a field can be either, or both:
+
+- **Optional to pass** — it has a default, so the caller may omit it: `retries: int = 3`.
+- **Optional in type** — the value may be `None`: `parent: Node | None` (`typing.Optional[Node]` before 3.10).
+
+```python
+from dataclasses import dataclass, field
+
+@dataclass
+class Job:
+    name: str                                       # required
+    retries: int = 3                                # omittable, never None
+    tags: list[str] = field(default_factory=list)   # omittable, mutable
+    notes: str | None = None                        # omittable and nullable
+```
+
+Adding one to an existing class runs into the generated `__init__` being an ordinary function: no non-default parameter may follow a default one. `field(kw_only=True)` hoists just that field into the keyword-only section, so an optional field can be appended without reordering (or breaking) the existing positional signature:
+
+```python
+@dataclass
+class Job:
+    name: str
+    retries: int = 3
+    timeout: float | None = field(default=None, kw_only=True)
+
+Job("build", 5, timeout=30.0)
+```
+
+Both `kw_only` forms are 3.10+. `kw_only=True` on the whole class is the better default once a class has more than a few fields, and especially for hierarchies — see [Inheritance](#inheritance) below.
+
+To tell "omitted" from "explicitly `None`", use your own module-level sentinel (`_UNSET = object()`) and check it in `__post_init__`. Don't reuse `dataclasses.MISSING` as a default — the decorator reads it as "no default at all".
+
 ## `__post_init__` and `InitVar`
 
 `__post_init__` runs at the end of the generated `__init__` — the place for validation and derived fields.
@@ -100,7 +134,7 @@ class Price:
         self.rounded = round(self.amount, precision)
 ```
 
-- `InitVar[T]` fields are passed to `__init__` and forwarded to `__post_init__`, but are not stored, compared, or shown in `__repr__`.
+- `InitVar[T]` fields are passed to `__init__` and forwarded to `__post_init__`, but are not stored, compared, or shown in `__repr__`. Mirror image of `field(init=False)`, which is a field that is *not* a parameter.
 - `ClassVar[T]` annotations are skipped entirely — a normal [class attribute](classes/class-attributes.md), shared by all instances.
 - Under `frozen=True`, assign in `__post_init__` via `object.__setattr__(self, "rounded", ...)`.
 
