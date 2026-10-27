@@ -66,7 +66,7 @@ fs = frozenset({1, 2, 3})    # no add/remove/clear
 d = {frozenset({1, 2}): "x"} # can be a dict key or set element
 ```
 
-All read operations work identically to `set`.
+All read operations work identically to `set`. There is no `frozendict` counterpart — `frozenset(d.items())` is the usual stand-in for a hashable mapping; see [hash.md](classes/hash.md#hashable-mappings-there-is-no-frozendict).
 
 ## Performance
 

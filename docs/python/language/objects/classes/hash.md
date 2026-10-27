@@ -57,6 +57,45 @@ print(b in s)   # False — b is "lost" in the wrong bucket
 
 This is why `list`, `dict`, and `set` are unhashable by design. Only hash **immutable** or **effectively frozen** objects.
 
+## Hashable mappings — there is no `frozendict`
+
+The standard library has no `frozendict` to pair with `frozenset` (PEP 416 was rejected). Three routes, cheapest first:
+
+```python
+import types
+
+key = frozenset(d.items())        # order-insensitive; closest analogue to the dict
+key = tuple(sorted(d.items()))    # deterministic, comparable; needs sortable keys
+types.MappingProxyType(d)         # read-only VIEW — still unhashable
+```
+
+!!! warning "`MappingProxyType` is not an immutable value"
+    It wraps a reference to the original dict, so the owner can still mutate it and the proxy reflects the change. `hash()` on one raises `TypeError: unhashable type: 'dict'` — it delegates to the wrapped dict. Use it to expose a registry without handing out a mutable reference, never as a dict key.
+
+For a real mapping type usable as a key, subclass `collections.abc.Mapping` — it mixes in `keys`, `values`, `items`, `get`, `__contains__`, and `__eq__`, and sets `__hash__ = None`, so supplying `__hash__` is the whole job:
+
+```python
+from collections.abc import Mapping
+
+class FrozenDict(Mapping):
+    def __init__(self, *args, **kwargs):
+        self._data = dict(*args, **kwargs)   # copy, so the caller's dict can't leak in
+        self._hash = None
+
+    def __getitem__(self, key):  return self._data[key]
+    def __iter__(self):          return iter(self._data)
+    def __len__(self):           return len(self._data)
+
+    def __hash__(self):
+        if self._hash is None:               # cache — hashing is O(n)
+            self._hash = hash(frozenset(self._data.items()))
+        return self._hash
+```
+
+- **Values must be hashable too.** `FrozenDict(x=[1])` constructs fine and only fails at `hash()`. Call `hash()` in `__init__` to reject it eagerly.
+- **Keys known at authoring time?** Use `@dataclass(frozen=True)` or a `NamedTuple` instead — same hashability, plus a readable `__repr__` and static attribute checking.
+- Third-party: `frozendict` (a C-accelerated type), `immutables.Map` (a Hash Array Mapped Trie with persistent `set()`, backing `contextvars`), `pyrsistent.pmap`.
+
 ## `@dataclass`
 
 ```python

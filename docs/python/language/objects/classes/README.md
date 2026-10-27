@@ -14,7 +14,7 @@ How the class and instance machinery works underneath — the protocols your own
 :   Dunder methods, `__new__` vs `__init__`, pythonic objects, instance/class/static methods, `@dataclass`
 
 :material-text-box-outline: **[`__hash__` — Making Objects Hashable](hash.md){ .lvl-intermediate }**
-:   `__hash__`: hash contract, `__eq__` coupling, mutability, dataclasses
+:   `__hash__`: hash contract, `__eq__` coupling, mutability, hashable mappings, dataclasses
 
 :material-text-box-outline: **[Class introspection](introspection.md){ .lvl-intermediate }**
 :   Checking whether a class has a member: `hasattr` pitfalls, `inspect.getattr_static`, own `__dict__` vs MRO, and `ast` for "does it call X?"
