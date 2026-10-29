@@ -13,6 +13,24 @@ Learning notes and references across software engineering, ML, and AI topics.
 | [python/](docs/python/) | Python language, libraries, and tooling |
 | [tools/](docs/tools/) | Language-agnostic tools and notation |
 
+## Local preview
+
+The Debian/Ubuntu `mkdocs` package lacks the Material theme and plugins, so install them in a virtualenv (same packages as CI):
+
+```bash
+sudo apt install python3-venv   # once per machine, if `python3 -m venv` fails
+python3 -m venv .venv
+.venv/bin/pip install 'mkdocs-material>=9,<10' 'mkdocs-awesome-pages-plugin>=2.9,<3' -r quiz/requirements.txt
+```
+
+Then build the quiz data (gitignored, so absent on a fresh clone) and serve:
+
+```bash
+source .venv/bin/activate
+python3 quiz/build_web.py
+mkdocs serve
+```
+
 ## Structure
 
 notes/\

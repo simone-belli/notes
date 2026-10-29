@@ -4,3 +4,4 @@ site/
 .claude/settings.local.json
 docs/quiz/data.json
 __pycache__/
+.venv/
