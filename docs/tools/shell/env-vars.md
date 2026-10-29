@@ -59,6 +59,8 @@ source ~/.zshrc   # reload without reopening terminal
 | bash | `~/.bashrc` | Every interactive shell |
 | bash (login) | `~/.bash_profile` | Login shells, SSH |
 
+Background services never read these files — a systemd service sets its variables in its unit file (see [systemd user services](../systemd-user-services.md)).
+
 ## PATH
 
 `PATH` is a colon-separated list of directories searched left-to-right for executables:

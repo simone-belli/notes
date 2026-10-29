@@ -50,6 +50,12 @@ Language-agnostic tools and notation.
 
     Regular expressions: syntax, greedy vs. lazy, lookaround, backtracking vs. RE2
 
+-   :material-card-bulleted-outline:{ .lg .middle } __[systemd user services](systemd-user-services.md){ .lvl-intermediate }__
+
+    ---
+
+    Run a task at startup: unit files in `~/.config/systemd/user/`, `systemctl --user`, lingering, logs
+
 -   :material-card-bulleted-outline:{ .lg .middle } __[Vim](vim.md){ .lvl-intermediate }__
 
     ---
