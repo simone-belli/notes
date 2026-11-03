@@ -11,4 +11,5 @@ nav:
   - target-transform.md
   - custom-loss.md
   - custom-transformers.md
+  - fitted-parameter.md
   - fold-safe-transformers.md

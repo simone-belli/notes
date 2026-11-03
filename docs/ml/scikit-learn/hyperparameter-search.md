@@ -235,5 +235,6 @@ right call runs random ≫ everything else.
 - [Train/Test Splitting](splitting.md) — the splitters passed as `cv=`
 - [scikit-learn Pipelines](pipelines.md) — what `step__param` addresses
 - [The Estimator API](estimators.md) — the contract that makes nesting work
+- [Fitting a Scalar Parameter](fitted-parameter.md) — searching inside `fit` on training loss, and when that is legitimate
 - [Time-Series Validation](../concepts/validation/time-series-validation.md) — why `cv=5` leaks
 - [Model Validation](../concepts/validation/model-validation.md) — selection bias on the maximum

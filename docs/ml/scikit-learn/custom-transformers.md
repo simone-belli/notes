@@ -64,6 +64,9 @@ class VolRegime(BaseEstimator, TransformerMixin):
 fold. In a Pipeline each fold re-learns its own — computing the quantile over the
 full series would leak the future.
 
+When the learned state is a parameter of a formula, chosen by searching for the
+value that best fits `y`, see [Fitting a Scalar Parameter](fitted-parameter.md).
+
 !!! note "Feature engineering is preprocessing"
     Any feature built from a cross-row statistic is a *learned* thing — it must
     live inside the Pipeline's fit boundary (in `fit`), not in a pandas step

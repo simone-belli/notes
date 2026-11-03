@@ -34,5 +34,8 @@
 :material-text-box-outline: **[Custom Transformers](custom-transformers.md){ .lvl-advanced }**
 :   Feature-engineering steps as `fit`/`transform` classes that live inside the Pipeline and stay leak-free, plus `FunctionTransformer` for the stateless case
 
+:material-text-box-outline: **[Fitting a Scalar Parameter](fitted-parameter.md){ .lvl-advanced }**
+:   Learning the scalar of a parametric `f(X, p)` inside `fit` — grid vs random vs bounded minimisation vs bisection, and when it belongs to a CV search instead
+
 :material-text-box-outline: **[Fold-Safe Transformers](fold-safe-transformers.md){ .lvl-advanced }**
 :   Rolling and recursive features across a fold boundary — causal windows, the burn-in buffer, burn-in vs embargo, and why non-contiguous splits fail silently

@@ -125,4 +125,5 @@ for one thing and select for another.
 - [Running Cross-Validation](cross-validation.md) — `make_scorer`, the scorer signature, and the `neg_` convention
 - [The Estimator API](estimators.md) — the `fit`/`predict` contract a custom estimator must honour
 - [Custom Transformers](custom-transformers.md) — the same `BaseEstimator` conventions on the preprocessing side
+- [Fitting a Scalar Parameter](fitted-parameter.md) — the one-parameter case: grid, bounded minimisation, root-finding
 - [Metric Standard Errors](../../finance/metric-standard-errors.md) — once a loss is chosen, how precisely it is measured
