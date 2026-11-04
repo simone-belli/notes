@@ -9,7 +9,7 @@
 ---
 
 :material-text-box-outline: **[ColumnTransformer](column-transformer.md){ .lvl-intermediate }**
-:   Different preprocessing per column group — scale the numerics, encode the categoricals — concatenated into one leak-safe preprocessing step
+:   Different preprocessing per column group — scale the numerics, encode the categoricals — concatenated into one leak-safe preprocessing step; dropping and renaming feature columns
 
 :material-text-box-outline: **[Running Cross-Validation](cross-validation.md){ .lvl-intermediate }**
 :   `cross_val_score` vs `cross_validate` vs `cross_val_predict` — multi-metric scoring, custom scorers, the `neg_` sign convention, and per-fold diagnostics

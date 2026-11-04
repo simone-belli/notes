@@ -53,6 +53,62 @@ Any column not routed to a branch is handled by `remainder`, which defaults to
     `remainder="passthrough"` to append untouched columns (or pass a transformer
     to apply to them).
 
+## Dropping and renaming columns
+
+scikit-learn has no standalone drop or rename step. A `ColumnTransformer` decides
+which columns survive, and `get_feature_names_out()` decides what they are called.
+`set_output(transform="pandas")` turns those names into DataFrame columns.
+
+### Dropping
+
+```python
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import StandardScaler
+
+ct = ColumnTransformer(
+    [("ids", "drop", ["id"]),                    # deny-list: name what goes
+     ("num", StandardScaler(), ["ret", "vol"])],
+    remainder="passthrough",                     # everything else kept as-is
+)
+```
+
+- `"drop"` / `"passthrough"` in the transformer slot discard or keep the listed
+  columns. `remainder="drop"` (the default) is the opposite style: an allow-list
+  where every unlisted column is dropped.
+- Select by regex or dtype with
+  `sklearn.compose.make_column_selector(pattern=..., dtype_include=...)`.
+- A branch is a parameter, so a search can try it both ways:
+  `{"pre__ids": ["drop", "passthrough"]}` turns feature ablation into a
+  [hyperparameter](hyperparameter-search.md).
+
+### Renaming
+
+- `verbose_feature_names_out=False` removes the `num__` / `remainder__` prefixes
+  (`num__ret` → `ret`). If two names collide, it raises a `ValueError` rather
+  than guessing.
+- A format string (scikit-learn ≥ 1.6) sets your own pattern:
+  `verbose_feature_names_out="{feature_name}_{transformer_name}"` → `ret_num`.
+- For an arbitrary mapping, add a [`FunctionTransformer`](custom-transformers.md) step after the
+  ColumnTransformer:
+
+```python
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import FunctionTransformer
+
+mapping = {"ret": "returns", "vol": "volume"}
+rename = FunctionTransformer(
+    lambda df: df.rename(columns=mapping),
+    feature_names_out=lambda self, names: [mapping.get(n, n) for n in names],
+)
+pipe = Pipeline([("pre", ct), ("rename", rename)]).set_output(transform="pandas")
+```
+
+!!! warning "`feature_names_out` wins under pandas output"
+    With `set_output(transform="pandas")`, scikit-learn overwrites a returned
+    DataFrame's columns with `get_feature_names_out()`. A `func` that renames
+    without a matching `feature_names_out` callable has its names replaced.
+    Keep the two in sync.
+
 ## Canonical pattern: nest Pipelines inside branches
 
 A branch's transformer can be a Pipeline, giving "[impute](imputation.md) then scale" for numerics
