@@ -21,7 +21,7 @@ quiz: core
 ## What mypy checks
 
 - Mypy checks type consistency across variables, functions, classes, and modules.
-- Type hints such as `x: int`, `list[str]`, or `float | None` give mypy information to reason about.
+- [Type hints](../language/typing/type-hints.md) such as `x: int`, `list[str]`, or `float | None` give mypy information to reason about.
 - The special type `Any` disables most checking for a value and should be used carefully.
 
 ## What mypy does not check

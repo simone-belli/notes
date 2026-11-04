@@ -23,7 +23,7 @@ t == Trade("AAPL", 190.5)    # True — field-wise equality
 ```
 
 !!! note "Annotations are what create fields, not assignment"
-    Only names with a type annotation in the class body become fields. `x: int = 3` is a field; `x = 3` is a plain class attribute, invisible to `__init__`, `__repr__`, and `__eq__`. The annotation is never type-checked at runtime — it is only a marker (and `typing.Any` works fine if you don't care).
+    Only names with a type annotation in the class body become fields. `x: int = 3` is a field; `x = 3` is a plain class attribute, invisible to `__init__`, `__repr__`, and `__eq__`. The [annotation](../typing/type-hints.md) is never type-checked at runtime — it is only a marker (and `typing.Any` works fine if you don't care).
 
 ## Decorator parameters
 

@@ -1,5 +1,6 @@
 nav:
   - README.md
+  - type-hints.md
   - typing.md
   - structural-typing.md
   - callable.md

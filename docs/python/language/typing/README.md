@@ -1,7 +1,10 @@
 # Python — Language / Typing
 
+:material-text-box-outline: **[Type Hints](type-hints.md){ .lvl-basic }**
+:   The `typing` module overview: modern spellings, unions, `Any` vs `object`, generics, `TypedDict`, `TYPE_CHECKING`, runtime introspection
+
 :material-text-box-outline: **[typing module — selected constructs](typing.md){ .lvl-basic }**
-:   `typing` module: `Literal`, `TypeAlias`, `overload`, `cast` — restrict and narrow types
+:   `Literal`, `overload`, `cast`, `Final`, `Annotated`, `NewType`, `Self`, `Never`, `TypeIs`
 
 ---
 
