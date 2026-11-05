@@ -13,6 +13,9 @@ How the class and instance machinery works underneath — the protocols your own
 :material-text-box-outline: **[The Data Model and Pythonic Objects](data-model.md){ .lvl-intermediate }**
 :   Dunder methods, `__new__` vs `__init__`, pythonic objects, instance/class/static methods, `@dataclass`
 
+:material-text-box-outline: **[Dynamic attributes: `setattr` and friends](dynamic-attributes.md){ .lvl-intermediate }**
+:   Attributes by string name: `getattr`/`setattr`/`delattr`/`hasattr`, dispatch by name, overriding `__setattr__` without recursion, `vars()`
+
 :material-text-box-outline: **[`__hash__` — Making Objects Hashable](hash.md){ .lvl-intermediate }**
 :   `__hash__`: hash contract, `__eq__` coupling, mutability, hashable mappings, dataclasses
 

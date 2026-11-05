@@ -60,6 +60,6 @@ This is also the mechanism behind reusable validated/typed fields — a "validat
 
 ## Setting attributes (mirror algorithm)
 
-`obj.x = value` → `object.__setattr__`: check the MRO for a data descriptor and call its `__set__`; otherwise write directly into `obj.__dict__`. Non-data descriptors never intercept writes — only data descriptors (like `property`) can enforce invariants on assignment.
+`obj.x = value` → `object.__setattr__`: check the MRO for a data descriptor and call its `__set__`; otherwise write directly into `obj.__dict__`. Non-data descriptors never intercept writes — only data descriptors (like `property`) can enforce invariants on assignment. Overriding `__setattr__` itself, and the `setattr`/`delattr` builtins, are covered in [dynamic-attributes.md](dynamic-attributes.md).
 
 See [subclassing.md](subclassing.md) for the Method Resolution Order (MRO) itself and `super()`, [oop.md](oop.md) for ABCs and [data-model.md](data-model.md) for dunder methods more broadly. [introspection.md](introspection.md) covers querying the result — and `inspect.getattr_static`, which bypasses this whole algorithm.
