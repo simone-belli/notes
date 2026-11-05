@@ -1,6 +1,6 @@
 # Markov-switching fit pitfalls
 
-Three things to check before trusting a Hamilton-style
+Things to check before trusting a Hamilton-style
 [`MarkovRegression`](markov-regression.md) fit:
 
 - **`em_iter`** controls how much of the fit runs as Expectation–Maximisation (EM) before
@@ -9,6 +9,15 @@ Three things to check before trusting a Hamilton-style
   that gets worse inside a regime that has few observations.
 - **Overlapping windows in `endog`** add serial correlation that the model's likelihood
   assumes is absent. The Markov chain then absorbs it as fake regimes.
+- **Outliers and fat tails** can turn a regime into a bin for a few extreme points, or
+  shrink its variance towards zero around a single observation.
+- **Structural breaks** produce a regime the chain enters once and never leaves. That is
+  a change point, not a recurring state.
+- **Missing values and gaps** put NaNs into the likelihood, or hide a time gap inside
+  what the chain treats as a single step.
+
+Constructor defaults, random restarts, scaling, and label switching are covered in
+[MarkovRegression](markov-regression.md) and aren't repeated here.
 
 ```python
 import numpy as np
@@ -192,6 +201,85 @@ Overlapping windows in `exog` don't break the independence assumption, which con
 $\varepsilon_t$. They do create the collinearity described above. Overlapping labels also
 leak information across a train/test split; see
 [Time-Series Validation](../concepts/validation/time-series-validation.md).
+
+## Outliers and fat tails
+
+Each regime's density is Gaussian. Returns have fatter tails than that, and the cheapest
+way for the model to explain a crash day is to give it a regime of its own. Two failure
+modes follow:
+
+- **Outlier regime.** One regime covers a handful of extreme points. Its variance is
+  huge, its expected duration is close to 1, and its average probability is tiny. It
+  describes the tails of the distribution, not a persistent state.
+- **Variance collapse.** A regime settles on one or two observations and its variance
+  heads to zero. The likelihood is unbounded as $\sigma^2_i \to 0$, so this "maximum" is
+  degenerate even when `converged` is `True`.
+
+Before interpreting the regimes, check how much of the sample each one covers, how long
+each one lasts, and how small the smallest variance is:
+
+```python
+probs = res.smoothed_marginal_probabilities
+probs.mean()                    # share of the sample in each regime; < 2-3% is suspicious
+res.expected_durations          # close to 1 means a noise or outlier regime
+res.params.filter(like="sigma2")   # compare the smallest with the sample variance of y
+```
+
+Fixes:
+
+- Winsorise the series, for example with `y.clip(y.quantile(0.001), y.quantile(0.999))`.
+- Put known one-off events in `exog` as a dummy column that does not switch.
+- Restart from a different `start_params` and compare `llf`. A degenerate fit usually
+  sits at a suspiciously high likelihood.
+- Accept that the regime is a jump regime and stop calling it "crisis". That name is
+  only earned if the regime persists.
+
+## Structural breaks and few transitions
+
+A one-time change in level or volatility, such as a policy shift or a change in market
+microstructure, fits perfectly as a regime with $p_{ii} \approx 1$ that the chain enters
+once. The fit looks excellent and predicts nothing, because the regime never recurs.
+
+The transition probabilities can only be estimated from switches that actually happen.
+With $N_{ij}$ observed switches from $i$ to $j$, the estimate of $p_{ij}$ rests on those
+few events, whatever the sample length $T$ is:
+
+$$
+\hat p_{ij} \approx \frac{N_{ij}}{\sum_k N_{ik}}
+$$
+
+Count the switches before trusting $\hat p_{ij}$ or `expected_durations`. Smoothed
+probabilities are fine for this check, since it only looks back at the history:
+
+```python
+states = res.smoothed_marginal_probabilities.values.argmax(axis=1)
+n_switches = int((np.diff(states) != 0).sum())   # a handful means p_ij is barely identified
+```
+
+- One switch means a break. Model it with a dummy variable or a split sample instead of
+  a regime.
+- Detrend or difference trending series first. A level that drifts slowly gets carved
+  into "low" and "high" regimes that are really just early and late parts of the sample.
+- Use a longer history with several complete cycles if you want regimes that recur.
+
+## Missing values and gaps
+
+The Hamilton filter needs a value at every step:
+
+- A NaN in `endog` or `exog` turns the log-likelihood into NaN, so the optimiser fails
+  or returns NaN parameters. Drop or fill missing values explicitly before building the
+  model.
+- Dropping rows makes the chain step straight across the gap. A 10-day hole then counts
+  as a single transition, which biases $p_{ii}$ upwards in the regime that was active
+  around the gap.
+- Mixing frequencies does the same thing, for example daily data whose holidays are
+  spaced irregularly, or data that switches from weekly to daily. $p_{ij}$ is a
+  per-step probability, so every step must cover the same length of time.
+
+!!! note "Smoothed probabilities are for diagnostics only"
+    Every check on this page uses smoothed probabilities, and that is fine because they
+    are diagnosing the fit. Features and forecasts still need the filtered or predicted
+    probabilities. See [MarkovRegression](markov-regression.md).
 
 ## Related
 
