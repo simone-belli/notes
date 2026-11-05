@@ -4,6 +4,7 @@ nav:
   - frozen-parameters.md
   - predict.md
   - markov-autoregression.md
+  - markov-fit-pitfalls.md
   - markov-regression.md
   - switching-distributions.md
   - switching-parameters.md

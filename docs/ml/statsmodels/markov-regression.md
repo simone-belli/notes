@@ -101,7 +101,10 @@ refers to: `True` means the `start_params` *you* pass are in natural units.
 
 - **Scale returns to percent.** Daily returns are $O(10^{-3})$, so $\sigma^2$ is
   $O(10^{-6})$ and the log-variance parameters sit far from the rest in magnitude. `100 * r`
-  fixes a surprising share of "it won't converge".
+  fixes a surprising share of "it won't converge". When it still won't, raise `em_iter`
+  and check `exog` for collinearity — both covered in
+  [Markov-switching fit pitfalls](markov-fit-pitfalls.md), along with the fake regimes
+  an overlapping-window `endog` produces.
 - **Check `res.mle_retvals["converged"]`.** `maxiter=100` is not generous for 15+
   parameters. `disp=True` while developing.
 - **`cov_type`** — `'approx'` (numerical Hessian, default), `'opg'`, `'robust'`. None is
@@ -244,6 +247,7 @@ autoregression — a different model, and a much cheaper one.
 ## Related
 
 - [MarkovAutoregression](markov-autoregression.md) — the autoregressive sibling, and the mean- vs intercept-switching choice
+- [Markov-switching fit pitfalls](markov-fit-pitfalls.md) — `em_iter` and non-convergence, collinear `exog`, overlapping `endog`
 - [Switching distributions](switching-distributions.md) — every results attribute matched to the distribution it estimates
 - [Switching parameters](switching-parameters.md) — unpacking `res.params` for computation, and the model methods that take a params vector
 - [statsmodels](statsmodels.md) — the library around it: Model→Results, formulas, `cov_type`, and the rest of the catalogue

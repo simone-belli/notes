@@ -19,6 +19,9 @@ objects they return.
 :material-text-box-outline: **[MarkovAutoregression](markov-autoregression.md){ .lvl-advanced }**
 :   Hamilton's switching autoregression — the mean-adjusted form and its $K^{p+1}$ cost, mean- vs intercept-switching, the presample offset, and why a point forecast is a mixture
 
+:material-text-box-outline: **[Markov-switching fit pitfalls](markov-fit-pitfalls.md){ .lvl-advanced }**
+:   Three reasons a Hamilton fit fails or misleads — what `em_iter` does before BFGS and why raising it fixes non-convergence, collinear `exog` inside a thin regime, and overlapping-window targets that fake regimes
+
 :material-text-box-outline: **[MarkovRegression](markov-regression.md){ .lvl-advanced }**
 :   Markov-switching regression in `statsmodels` — the constructor defaults that change the model, random restarts, reading the results object, and filtering out-of-sample with frozen parameters
 
