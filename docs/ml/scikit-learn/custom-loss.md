@@ -11,11 +11,12 @@ the fitted model.
 
 Choosing a loss is choosing *which functional of the conditional distribution*
 you estimate: squared error targets the mean, absolute error the median, pinball
-at `τ=0.9` the 90th percentile. It is a modelling decision, not a tuning knob.
+at $\tau = 0.9$ the 90th percentile. It is a modelling decision, not a tuning knob.
 
 ## Built-in `loss=` — check here first
 
 ```python
+import numpy as np
 from sklearn.linear_model import SGDRegressor
 from sklearn.ensemble import HistGradientBoostingRegressor
 
@@ -53,7 +54,6 @@ nowhere to hand an arbitrary Python function. Wrap the optimiser in the
 [estimator API](estimators.md) instead:
 
 ```python
-import numpy as np
 from scipy.optimize import minimize
 from sklearn.base import BaseEstimator, RegressorMixin
 
@@ -78,6 +78,104 @@ class AsymmetricLinear(BaseEstimator, RegressorMixin):
 work, so this searches and pipelines like any built-in. The same two conventions
 govern [custom transformers](custom-transformers.md).
 
+- Put a `StandardScaler` ahead of it in the Pipeline — badly scaled columns make
+  quasi-Newton solvers crawl.
+- Warm-start `x0` from the least-squares solution rather than zeros.
+- If `not res.success`, raise `sklearn.exceptions.ConvergenceWarning` as the
+  built-ins do.
+
+## Derivatives: what to hand `minimize`
+
+All the choice is in what `minimize` receives. With parameters $\theta$, the
+objective is
+
+$$
+L(\theta) = \frac{1}{n}\sum_{i=1}^{n} \ell\big(y_i,\, f(x_i;\theta)\big) + \alpha\,\lVert\theta\rVert_2^2
+$$
+
+### No gradient — finite differences
+
+Passing only the function, as above, makes `minimize` run
+Broyden–Fletcher–Goldfarb–Shanno (BFGS) on a finite-difference gradient:
+
+$$
+\frac{\partial L}{\partial \theta_j} \approx \frac{L(\theta + h\,e_j) - L(\theta)}{h}, \qquad h \approx \sqrt{\varepsilon_{\text{mach}}}
+$$
+
+- Costs $p + 1$ full passes over the data per gradient, for $p$ parameters.
+- Loses about half the digits; "Desired error not necessarily achieved due to
+  precision loss" is the usual symptom — check `res.x`, it is often fine.
+- Fine for a smooth loss with tens of parameters.
+
+### Derivative-free methods — non-smooth losses
+
+Kinks and jumps (`np.where`, absolute value, step-shaped costs) make a
+finite-difference gradient meaningless. Use a method that never asks for one:
+
+```python
+minimize(obj, x0, args=(X, y), method="Nelder-Mead")   # simplex, no bounds
+minimize(obj, x0, args=(X, y), method="Powell", bounds=bnds)
+
+from scipy.optimize import differential_evolution
+differential_evolution(obj, bounds=bnds, args=(X, y))   # global, needs bounds
+```
+
+These degrade fast beyond ~20 parameters. Past that, either **smooth** the loss
+(pseudo-Huber $\delta^2\big(\sqrt{1 + (r/\delta)^2} - 1\big)$ for $\lvert r\rvert$)
+and use gradients, or **reformulate** it — absolute and quantile loss are
+linear programs, which `QuantileRegressor(solver="highs")` already solves.
+
+### Analytic gradient — `jac=True`
+
+Return `(value, gradient)` from one function so the residuals are computed once.
+For the asymmetric loss above, with $c_i = k$ where $r_i < 0$ and $1$ otherwise:
+
+$$
+L(w) = \frac{1}{n}\sum_i c_i r_i^2, \qquad \nabla_w L = -\frac{2}{n} X^\top (c \odot r)
+$$
+
+```python
+def _loss_grad(self, w, X, y):
+    r = y - X @ w
+    c = np.where(r < 0, self.penalty, 1.0)
+    return np.mean(c * r**2), -2 * X.T @ (c * r) / len(y)
+
+res = minimize(self._loss_grad, w0, args=(X, y), jac=True, method="L-BFGS-B")
+```
+
+One pass per iteration, exact to machine precision, and Limited-memory BFGS
+(L-BFGS-B) handles thousands of parameters. A `hess=` for `"trust-exact"` or
+`"Newton-CG"` is possible but rarely pays off.
+
+!!! warning "Check every hand-written gradient"
+    A wrong gradient doesn't crash — the fit just stops early or converges to
+    the wrong point. `from scipy.optimize import check_grad`, then
+    `check_grad(loss, grad, w0, X, y)` returns the norm of the gap to a
+    finite-difference estimate; it should be tiny relative to the gradient.
+
+### Automatic differentiation — write the loss, get the gradient
+
+```python
+import jax
+import jax.numpy as jnp
+jax.config.update("jax_enable_x64", True)   # L-BFGS needs float64
+
+def loss(w, X, y, k):
+    r = y - X @ w
+    return jnp.mean(jnp.where(r < 0, k * r**2, r**2))
+
+vg = jax.jit(jax.value_and_grad(loss))
+
+def fun(w, *args):
+    v, g = vg(w, *args)
+    return float(v), np.asarray(g)
+
+minimize(fun, w0, args=(X, y, 5.0), jac=True, method="L-BFGS-B")
+```
+
+Analytic-gradient speed with none of the derivation. At a kink autodiff returns
+*a* subgradient, so a non-smooth loss stays non-smooth.
+
 ## Gradient boosting takes a callable
 
 Boosting needs only the gradient and Hessian of the loss with respect to the
@@ -97,7 +195,9 @@ LGBMRegressor(objective=asymmetric)
 ```
 
 The Hessian must be positive — leaf values divide by it. Losses with zero second
-derivative (absolute error) need a constant stand-in.
+derivative (absolute error) need a constant stand-in, which turns each Newton
+step into a plain gradient step. There is no derivative-free mode here, but
+`jax.vmap(jax.grad(...))` can produce `grad` and `hess` instead of deriving them.
 
 !!! note "Transforming the target changes the loss silently"
     [`TransformedTargetRegressor(regressor=Ridge(), func=np.log1p,
@@ -115,7 +215,9 @@ derivative (absolute error) need a constant stand-in.
 | Reweight, not reshape | `sample_weight` / `class_weight` |
 | Only need the right model *selected* | `scoring=` + `make_scorer` |
 | Trees, novel objective | LightGBM/XGBoost `objective=` callable |
-| Linear, novel objective | Custom estimator over `scipy.optimize` |
+| Linear, novel smooth objective | Custom estimator + gradient (`jac=True` or JAX) + L-BFGS-B |
+| Novel non-smooth objective, few params | Custom estimator + Nelder-Mead / Powell |
+| Novel non-smooth objective, many params | Smooth surrogate, or a linear-program solver |
 
 If you customise the loss, customise the scorer to match — otherwise you train
 for one thing and select for another.

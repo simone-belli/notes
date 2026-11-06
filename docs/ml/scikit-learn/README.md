@@ -29,7 +29,7 @@
 ---
 
 :material-text-box-outline: **[Custom Loss Functions](custom-loss.md){ .lvl-advanced }**
-:   Why `scoring=` never changes fitting, the built-in `loss=` menu, `sample_weight` as the cheap option, and two custom-objective routes
+:   Why `scoring=` never changes fitting, the built-in `loss=` menu, `sample_weight` as the cheap option, custom objectives via `scipy.optimize` with finite-difference, derivative-free, analytic or autodiff gradients, and boosting callables
 
 :material-text-box-outline: **[Custom Transformers](custom-transformers.md){ .lvl-advanced }**
 :   Feature-engineering steps as `fit`/`transform` classes that live inside the Pipeline and stay leak-free, plus `FunctionTransformer` for the stateless case
