@@ -50,6 +50,8 @@ returns = np.diff(prices, axis=0) / prices[:-1]   # (T-1, N)
 b[:, np.newaxis] + a                  # (M, 1) + (N,)  →  (M, N)
 ```
 
+When a broadcast product is followed by a sum over an axis, [`einsum`](einsum.md) writes both steps as one expression.
+
 ## `np.newaxis`
 
 Insert a size-1 axis explicitly to control which dims align:

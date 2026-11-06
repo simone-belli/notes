@@ -10,3 +10,6 @@
 
 :material-text-box-outline: **[dtypes](dtypes.md){ .lvl-intermediate }**
 :   dtype system — numeric types, casting, overflow, memory layout
+
+:material-text-box-outline: **[einsum](einsum.md){ .lvl-intermediate }**
+:   Einstein summation strings — contractions, batch axes, implicit mode, and `optimize`

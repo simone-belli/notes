@@ -4,3 +4,4 @@ nav:
   - broadcasting.md
   - indexing.md
   - dtypes.md
+  - einsum.md
