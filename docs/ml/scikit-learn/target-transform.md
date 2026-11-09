@@ -133,6 +133,9 @@ Options, crudest last-resort first:
   `GammaRegressor`, `HistGradientBoostingRegressor(loss="poisson")`. A link keeps
   the loss on the original scale, so there is no bias to undo.
 
+The general problem — recovering $\mathbb{E}[f(y)]$ from an estimate of
+$\mathbb{E}[y]$ for any $f$ — is covered in [the Jensen gap](../concepts/jensen-gap.md).
+
 !!! warning "The manual version breaks cross-validation"
     `model.fit(X, np.log1p(y))` then `np.expm1(model.predict(X_test))` is fine
     for a single fit. Pass `np.log1p(y)` to `cross_val_score` and every score
@@ -145,3 +148,4 @@ Options, crudest last-resort first:
 - [Pipelines](pipelines.md) — the `X`-side fit boundary this wraps
 - [Custom Loss Functions](custom-loss.md) — transforming `y` as an implicit loss change
 - [Custom Transformers](custom-transformers.md) — `FunctionTransformer`, the `X`-side analogue
+- [The Jensen Gap](../concepts/jensen-gap.md) — retransformation bias for any $f$

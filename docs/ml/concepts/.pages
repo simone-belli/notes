@@ -4,3 +4,4 @@ nav:
   - training
   - validation
   - sequence-models
+  - jensen-gap.md

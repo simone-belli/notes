@@ -11,3 +11,8 @@ The theory behind the tools: how a model is made to converge, how its score is k
 -   :material-waveform:{ .lg .middle } __[Sequence Models](sequence-models/)__
 
 </div>
+
+---
+
+:material-text-box-outline: **[The Jensen Gap](jensen-gap.md){ .lvl-advanced }**
+:   From an estimate of $\mathbb{E}[y]$ to $\mathbb{E}[f(y)]$ — delta method, additive vs multiplicative smearing, when the correction is a constant, recalibration on held-out data, and distributional prediction
