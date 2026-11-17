@@ -147,6 +147,8 @@ scikit-learn equivalent:
 - `statsmodels.tsa.statespace` — SARIMAX, `UnobservedComponents`, and `DynamicFactor` all
   sit on one Kalman filter engine exposed as `MLEModel`, which you can subclass to estimate
   a custom linear-Gaussian state space model by maximum likelihood. Underused.
+- Not here: Generalized Autoregressive Conditional Heteroskedasticity (GARCH) and other
+  volatility models, which live in the separate [`arch`](../arch/arch.md) library.
 
 Time-series results add `res.forecast(steps)`, `res.get_forecast(steps)` (with intervals),
 `res.simulate()`, and — for state space models —

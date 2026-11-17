@@ -4,6 +4,8 @@ Modelling workflow — the library-agnostic protocol first, then the library.
 
 <div class="grid cards" markdown>
 
+-   :material-sine-wave:{ .lg .middle } __[arch](arch/)__
+
 -   :material-lightbulb-outline:{ .lg .middle } __[Concepts](concepts/)__
 
 -   :material-source-repository:{ .lg .middle } __[DVC](dvc/)__

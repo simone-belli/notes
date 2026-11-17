@@ -1,6 +1,7 @@
 title: ML
 nav:
   - README.md
+  - arch
   - concepts
   - dvc
   - experiments

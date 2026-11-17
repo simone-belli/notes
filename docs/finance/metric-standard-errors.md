@@ -69,7 +69,8 @@ mse, se = sq.mean(), sq.std(ddof=1) / np.sqrt(len(sq))
 
 ## QLIKE
 
-The loss function for **volatility forecasts**, comparing a forecast variance
+The loss function for **volatility forecasts** (such as those from
+[`arch`](../ml/arch/arch.md)), comparing a forecast variance
 `h_t` against a realised variance proxy `σ²_t`:
 
 ```
